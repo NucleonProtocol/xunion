@@ -29,7 +29,6 @@ const Lang = () => {
     });
   }
 
-  console.log('locale', locale);
   const items: MenuProps['items'] = languages.map((lan) => ({
     key: lan.value,
     label: lan.label,

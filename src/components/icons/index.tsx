@@ -1,7 +1,9 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 import AntdIcon from '@ant-design/icons';
 // import { cn } from '@/utils/classnames';
-import LogoSvg from '@/assets/svgs/external/logo.svg';
+import LogoSvg from '@/assets/svgs/external/logo.svg?react';
 //
 // import NftSvg from '@/assets/svgs/fuctions/nfts.svg';
 // import PlusSvg from '@/assets/svgs/operation/plus.svg';
