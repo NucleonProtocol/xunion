@@ -1,10 +1,11 @@
 @import url('./styles/base.css');
 @import url('./styles/components.css');
 @import url('@rainbow-me/rainbowkit/styles.css');
+@tailwind utilities;
 
 body {
-  font-family: 'Lexend', 'PingFang SC', 'Helvetica Neue', ' Helvetica',
-    'Microsoft YaHei', 'Arial', ' Noto Sans', sans-serif;
+  font-family: 'Inter', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial',
+  'SF Pro SC', 'PingFang SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
   font-size: 16px;
   background: var(--xunion-bg-primary);
   color: var(--xunion-tc-primary);

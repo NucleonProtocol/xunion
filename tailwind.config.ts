@@ -19,7 +19,7 @@ const config: Config = {
           secondary: 'var(--xunion-tc-secondary)',
           'non-opaque': 'var(--xunion-color-theme-non-opaque)',
         },
-        text: {
+        tc: {
           DEFAULT: 'var(--xunion-color-theme)',
           primary: 'var(--xunion-tc-primary)',
           secondary: 'var(--xunion-tc-secondary)',
@@ -39,7 +39,9 @@ const config: Config = {
         },
         fill: {
           primary: 'var(--xunion-fill-primary)',
+          'e-primary': 'var(--xunion-fill-e-primary)',
           secondary: 'var(--xunion-fill-secondary)',
+          'e-secondary': 'var(--xunion-fill-e-secondary)',
         },
         status: {
           info: 'var(--xunion-color-info)',

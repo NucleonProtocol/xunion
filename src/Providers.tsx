@@ -72,7 +72,15 @@ const Dapp = ({ children, locale }: PropsWithChildren<{ locale: Locale }>) => {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider
-            theme={isDark ? darkTheme() : lightTheme()}
+            theme={
+              isDark
+                ? darkTheme({
+                    accentColor: 'var(--xunion-color-theme)',
+                  })
+                : lightTheme({
+                    accentColor: 'var(--xunion-color-theme)',
+                  })
+            }
             locale={locale === 'zh-HK' ? 'en-US' : (locale as any)}
           >
             {children}

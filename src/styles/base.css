@@ -3,9 +3,9 @@
 /* base colors */
 @layer base {
   :root {
-    --xunion-color-theme: #6E5DE6;
-    --xunion-color-theme-non-opaque: rgba(235, 84, 230, 0.08);
-    --xunion-color-theme-light: #6E5DE6;
+    --xunion-color-theme: #6e5de6;
+    --xunion-color-theme-non-opaque: #e2dffa;
+    --xunion-color-theme-light: #6e5de6;
 
     --xunion-color-info: #007aff;
     --xunion-color-info-non-opaque: rgba(0, 122, 255, 0.12);
@@ -13,15 +13,17 @@
     --xunion-color-warning-non-opaque: rgba(245, 143, 0, 0.12);
     --xunion-color-error: #e0382d;
     --xunion-color-error-non-opaque: rgba(224, 56, 45, 0.08);
-    --xunion-color-success: #33b84e;  
+    --xunion-color-success: #33b84e;
 
-    --xunion-bg-primary: #F5F7FD;
-    --xunion-bg-secondary: #fafafc;
-    --xunion-bg-e-primary: #ffffff;
-    --xunion-bg-e-secondary: #ffffff;
+    --xunion-bg-primary: #f5f7fd;
+    --xunion-bg-secondary: #1a1a1a;
+    --xunion-bg-e-primary: #2c2c2c;
+    --xunion-bg-e-secondary: #7e7e7e;
 
-    --xunion-fill-primary: rgba(126, 126, 143, 0.12);
-    --xunion-fill-secondary: rgba(126, 126, 143, 0.08);
+    --xunion-fill-primary: #7e7e7e;
+    --xunion-fill-e-primary: #e5e7ed;
+    --xunion-fill-secondary: #f1f2f6;
+    --xunion-fill-e-secondary: #f9f9f9;
 
     --xunion-separator-opaque: #f3f3f5;
     --xunion-separator-non-opaque: rgba(126, 126, 143, 0.12);
@@ -31,15 +33,15 @@
     --xunion-toast: rgba(62, 62, 82, 0.92);
 
     --xunion-tc-primary: #17191f;
-    --xunion-tc-secondary: #818799;
+    --xunion-tc-secondary: #7E7E7E;
     --xunion-tc-tertiary: #a3abc2;
     --xunion-tc-theme: #eb54e6;
     --xunion-tc-on-button: #ffffff;
   }
 
   [data-theme='dark'] {
-    --xunion-color-theme: #eb54e6;
-    --xunion-color-theme-non-opaque: rgba(235, 84, 230, 0.12);
+    --xunion-color-theme: #6e5de6;
+    --xunion-color-theme-non-opaque: rgba(110, 93, 230, 0.2);
     --xunion-color-theme-light: #ff5bfa;
 
     --xunion-color-info: #0a84ff;
@@ -51,12 +53,14 @@
     --xunion-color-success: #39cc56;
 
     --xunion-bg-primary: #131313;
-    --xunion-bg-secondary: #1f2133;
-    --xunion-bg-e-primary: #0f1229;
-    --xunion-bg-e-secondary: #2a2c3d;
+    --xunion-bg-secondary: #ffffff;
+    --xunion-bg-e-primary: #f1f2f6;
+    --xunion-bg-e-secondary: #7e7e7e;
 
-    --xunion-fill-primary: rgba(126, 126, 143, 0.24);
-    --xunion-fill-secondary: rgba(126, 126, 143, 0.16);
+    --xunion-fill-primary: #7e7e7e;
+    --xunion-fill-e-primary: #2c2c2c;
+    --xunion-fill-secondary: #2c2c2c;
+    --xunion-fill-e-secondary: #131313;
 
     --xunion-separator-opaque: #2a2a3d;
     --xunion-separator-non-opaque: rgba(126, 126, 143, 0.24);
@@ -110,8 +114,10 @@
     --border-color: #efefef;
     --text-color: #333;
     --handle-color: rgba(0, 0, 0, 0.25);
-    --box-shadow-border: 0 0 0 calc(1px / var(--scale-x, 1)) rgba(63, 63, 68, 0.05);
-    --box-shadow-common: 0 1px calc(3px / var(--scale-x, 1)) 0 rgba(34, 33, 81, 0.15);
+    --box-shadow-border: 0 0 0 calc(1px / var(--scale-x, 1))
+      rgba(63, 63, 68, 0.05);
+    --box-shadow-common: 0 1px calc(3px / var(--scale-x, 1)) 0
+      rgba(34, 33, 81, 0.15);
     --box-shadow: var(--box-shadow-border), var(--box-shadow-common);
     --focused-outline-color: #4c9ffe;
   }
