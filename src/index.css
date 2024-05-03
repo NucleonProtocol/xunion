@@ -1,0 +1,12 @@
+@import url('./styles/base.css');
+@import url('./styles/components.css');
+@import url('./styles/utilities.css');
+@import url('@rainbow-me/rainbowkit/styles.css');
+
+body {
+  font-family: 'Lexend', 'PingFang SC', 'Helvetica Neue', ' Helvetica',
+    'Microsoft YaHei', 'Arial', ' Noto Sans', sans-serif;
+  font-size: 16px;
+  background: var(--xunion-bg-primary);
+  color: var(--xunion-tc-primary);
+}

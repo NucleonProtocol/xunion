@@ -1,0 +1,26 @@
+@tailwind utilities;
+
+@layer utilities {
+  .flex-center-between {
+    @apply flex justify-between items-center;
+  }
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-row-end {
+    @apply flex justify-center items-end;
+  }
+  .flex-around {
+    @apply flex justify-around  items-center;
+  }
+  @variants responsive {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+}
