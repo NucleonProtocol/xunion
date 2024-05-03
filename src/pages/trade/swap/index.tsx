@@ -1,5 +1,8 @@
+import { useTranslate } from '@/i18n';
+
 function Home() {
-  return <div>123123</div>;
+  const { t } = useTranslate();
+  return <div>{t('title')}</div>;
 }
 
 export default Home;

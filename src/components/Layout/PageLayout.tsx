@@ -1,20 +1,11 @@
-'use client';
-
 import PageHeader from '@/components/Layout/PageHeader';
-import { PropsWithChildren } from 'react';
-import { useTheme } from 'next-themes';
+import { Outlet } from 'react-router-dom';
 
-const PageLayout = ({ children }: PropsWithChildren) => {
-  const { theme = '', systemTheme } = useTheme();
-  const currentTheme = theme === 'system' ? systemTheme : theme;
-  const isDark = currentTheme === 'dark';
-  if (!currentTheme) {
-    return children;
-  }
+const PageLayout = () => {
   return (
     <div>
       <PageHeader />
-      {children}
+      <Outlet />
     </div>
   );
 };

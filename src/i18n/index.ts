@@ -4,6 +4,9 @@ import enUS from '@/i18n/locales/en-US.json';
 import zhCN from '@/i18n/locales/zh-CN.json';
 import zhHK from '@/i18n/locales/zh-HK.json';
 
+export { default as useLocale } from './useLocale';
+export { default as useTranslate } from './useTranslate';
+
 export type Locale =
   | ('en-US' | 'zh-CN' | 'zh-HK')
   | RainbowType

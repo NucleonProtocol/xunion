@@ -3,7 +3,7 @@ import { flattenMessages } from './flattenMessages';
 import { Locale, messages } from '@/i18n/index';
 import { usePersistStore } from '@/store/persist.ts';
 
-export const useLocale = () => {
+const useLocale = () => {
   const locale = usePersistStore((state) => state.locale);
   const updateLocale = usePersistStore((state) => state.updateLocale);
   const flattenedMessages = useMemo(
@@ -26,3 +26,4 @@ export const useLocale = () => {
     messages: flattenedMessages,
   };
 };
+export default useLocale;

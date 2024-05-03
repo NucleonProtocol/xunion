@@ -1,4 +1,17 @@
 @tailwind components;
 
 @layer components {
+  .flex-center-between {
+    @apply flex items-center justify-between;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-row-end {
+    @apply flex items-end justify-center;
+  }
+  .flex-around {
+    @apply flex items-center  justify-around;
+  }
 }

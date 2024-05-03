@@ -1,5 +1,8 @@
-// import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
-// import LogoSvg from '@/assets/svgs/external/logo.svg';
+import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
+import AntdIcon from '@ant-design/icons';
+// import { cn } from '@/utils/classnames';
+import LogoSvg from '@/assets/svgs/external/logo.svg';
+//
 // import NftSvg from '@/assets/svgs/fuctions/nfts.svg';
 // import PlusSvg from '@/assets/svgs/operation/plus.svg';
 // import DiamondSvg from '@/assets/svgs/fuctions/diamond.svg';
@@ -93,25 +96,29 @@
 // import Launchpads from '@/assets/svgs/menus/launchpads.svg';
 // import Others from '@/assets/svgs/menus/others.svg';
 // import Medianews from '@/assets/svgs/menus/media-news.svg';
-//
-// import { cn } from '@/utils/classnames';
-//
-// type IconProps = PropsWithChildren<
-//   {
-//     className?: string;
-//     style?: CSSProperties;
-//   } & HTMLAttributes<HTMLElement>
-// >;
-//
-// export type IconFn = (props: IconProps) => JSX.Element;
-//
-// export const Icon = ({ className, style, children, ...props }: IconProps) => {
-//   return (
-//     <span className={className} style={style} {...props}>
-//       {children}
-//     </span>
-//   );
-// };
+
+type IconProps = PropsWithChildren<
+  {
+    className?: string;
+    style?: CSSProperties;
+  } & HTMLAttributes<HTMLElement>
+>;
+
+export type IconFn = (props: IconProps) => JSX.Element;
+
+export const Icon = ({ className, style, children, ...props }: IconProps) => {
+  return (
+    <AntdIcon className={className} style={style} {...props}>
+      {children}
+    </AntdIcon>
+  );
+};
+
+export const LogoIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <LogoSvg />
+  </Icon>
+);
 //
 // export const DocsIcon = (props: IconProps) => (
 //   <Icon {...props}>
@@ -207,12 +214,6 @@
 // export const BookMarkFillIcon = (props: IconProps) => (
 //   <Icon {...props}>
 //     <BookMarkFillSvg />
-//   </Icon>
-// );
-//
-// export const LogoIcon = (props: IconProps) => (
-//   <Icon {...props}>
-//     <LogoSvg />
 //   </Icon>
 // );
 //

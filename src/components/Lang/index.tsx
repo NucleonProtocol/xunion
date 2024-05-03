@@ -1,10 +1,7 @@
 import { Dropdown, Button, MenuProps } from 'antd';
-import { Locale } from '@/i18n';
+import { Locale, useLocale } from '@/i18n';
 import { useTransition } from 'react';
-import { usePathname, useRouter } from '@/navigation';
 import { cn } from '@/utils/classnames';
-import { useParams } from 'next/navigation';
-import { useLocale } from 'next-intl';
 
 const languages: { value: Locale; label: string }[] = [
   {
@@ -22,21 +19,13 @@ const languages: { value: Locale; label: string }[] = [
 ];
 
 const Lang = () => {
-  const locale = useLocale();
-  const router = useRouter();
+  const { locale, switchLocale } = useLocale();
   const [isPending, startTransition] = useTransition();
-  const pathname = usePathname();
-  const params = useParams();
 
   function onSelectChange(lang: { value: Locale; label: string }) {
     const nextLocale = lang.value;
-    console.log(nextLocale);
     startTransition(() => {
-      router.replace(
-        // @ts-expect-error -- TypeScript will validate that only known `params`
-        { pathname, params },
-        { locale: nextLocale }
-      );
+      switchLocale(nextLocale);
     });
   }
 
@@ -54,7 +43,7 @@ const Lang = () => {
     <Dropdown menu={{ items }}>
       <Button
         className={cn(
-          'flex-center font-normal text-text-primary',
+          'flex-center text-text-primary font-normal',
           isPending && 'transition-opacity [&:disabled]:opacity-30'
         )}
       >

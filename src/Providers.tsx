@@ -1,3 +1,5 @@
+import { PropsWithChildren } from 'react';
+import { useRoutes, BrowserRouter } from 'react-router-dom';
 import {
   darkTheme,
   getDefaultConfig,
@@ -16,13 +18,15 @@ import {
   polygon,
 } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Locale } from '@/i18n';
+import { Locale, useLocale } from '@/i18n';
 import { WagmiProvider } from 'wagmi';
 import { ConfigProvider, theme as antdTheme } from 'antd';
-import { PropsWithChildren } from 'react';
+
 import { IntlProvider } from 'react-intl';
-import { ThemeProvider } from '@/components/Theme';
-import { useLocale } from '@/i18n/useLocale';
+import { ThemeProvider, useTheme } from '@/components/Theme';
+import routes from './routes';
+
+const Routes = () => useRoutes(routes);
 
 const ENV = {
   WGAMI_ALCHEMY_ID: 'DUZgv5C2XKSeRiBytiIwGKs5QA3nuw8L',
@@ -43,16 +47,15 @@ const config = getDefaultConfig({
     opBNB,
     arbitrum,
   ],
-  ssr: true,
 });
 
 const queryClient = new QueryClient();
 
-const Dapp = ({
-  children,
-  locale,
-  isDark,
-}: PropsWithChildren<{ locale: Locale; isDark: boolean }>) => {
+const Dapp = ({ children, locale }: PropsWithChildren<{ locale: Locale }>) => {
+  const { systemTheme, theme } = useTheme();
+
+  const isDark = theme === 'system' ? systemTheme === 'dark' : theme === 'dark';
+
   return (
     <ConfigProvider
       theme={{
@@ -89,10 +92,12 @@ const Providers = () => {
         locale={locale}
         messages={messages}
         fallbackOnEmptyString
-        defaultLocale="en"
+        defaultLocale="en-US"
       >
-        <Dapp isDark locale={locale}>
-          <div>123123</div>
+        <Dapp locale={locale}>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
         </Dapp>
       </IntlProvider>
     </ThemeProvider>

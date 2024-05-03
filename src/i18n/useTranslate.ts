@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import { TranslationKey } from './flattenMessages';
 
-export const useTranslate = () => {
+const useTranslate = () => {
   const { formatMessage } = useIntl();
   const t = useCallback(
     // @ts-ignore
@@ -13,3 +13,5 @@ export const useTranslate = () => {
 
   return { t };
 };
+
+export default useTranslate;

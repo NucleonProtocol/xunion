@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import Lang from '@/components/Lang';
-import Theme from '@/components/Theme';
+import ThemeSwitcher from '@/components/Theme/ThemeSwitcher';
 // import { LogoIcon } from '@/components/icons';
 
 const PageHeader = () => {
@@ -8,7 +7,7 @@ const PageHeader = () => {
     <div className="flex h-[80px] px-[30px] py-[20px]">
       {/*<LogoIcon />*/}
       <Lang />
-      <Theme />
+      <ThemeSwitcher />
     </div>
   );
 };
