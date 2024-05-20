@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 type Fn = () => void;
 
 const useWindowLoad = (fn?: Fn) => {

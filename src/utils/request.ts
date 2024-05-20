@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 const baseUrl = '/api';
 
@@ -25,11 +24,8 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   function (response) {
     if (response.data) {
-      const { code, msg } = response.data;
+      const { code } = response.data;
       if (code !== 200) {
-        try {
-          toast.error(msg || 'System Error!');
-        } catch {}
         return Promise.reject(response);
       }
     }
