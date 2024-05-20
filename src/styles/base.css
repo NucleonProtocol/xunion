@@ -17,13 +17,14 @@
 
     --xunion-bg-primary: #f5f7fd;
     --xunion-bg-secondary: #1a1a1a;
-    --xunion-bg-e-primary: #2c2c2c;
+    --xunion-bg-e-primary: #f1f2f6;
     --xunion-bg-e-secondary: #7e7e7e;
 
-    --xunion-fill-primary: #7e7e7e;
+    --xunion-fill-primary: #f5f7fd;
     --xunion-fill-e-primary: #e5e7ed;
     --xunion-fill-secondary: #f1f2f6;
     --xunion-fill-e-secondary: #f9f9f9;
+    --xunion-fill-niubi: #fff;
 
     --xunion-separator-opaque: #f3f3f5;
     --xunion-separator-non-opaque: rgba(126, 126, 143, 0.12);
@@ -54,13 +55,14 @@
 
     --xunion-bg-primary: #131313;
     --xunion-bg-secondary: #ffffff;
-    --xunion-bg-e-primary: #f1f2f6;
+    --xunion-bg-e-primary: #2c2c2c;
     --xunion-bg-e-secondary: #7e7e7e;
 
     --xunion-fill-primary: #7e7e7e;
     --xunion-fill-e-primary: #2c2c2c;
     --xunion-fill-secondary: #2c2c2c;
     --xunion-fill-e-secondary: #131313;
+    --xunion-fill-niubi: #1A1A1A;
 
     --xunion-separator-opaque: #2a2a3d;
     --xunion-separator-non-opaque: rgba(126, 126, 143, 0.24);

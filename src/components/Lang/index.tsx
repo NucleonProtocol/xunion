@@ -2,6 +2,7 @@ import { Dropdown, Button, MenuProps } from 'antd';
 import { Locale, useLocale } from '@/i18n';
 import { useTransition } from 'react';
 import { cn } from '@/utils/classnames';
+import { DownOutlined } from '@ant-design/icons';
 
 const languages: { value: Locale; label: string }[] = [
   {
@@ -42,11 +43,12 @@ const Lang = () => {
     <Dropdown menu={{ items }}>
       <Button
         className={cn(
-          'flex-center text-text-primary font-normal',
+          'flex-center text-text-primary border-0 font-normal',
           isPending && 'transition-opacity [&:disabled]:opacity-30'
         )}
       >
         <span className="text-[12px]">{lang?.label}</span>
+        <DownOutlined />
       </Button>
     </Dropdown>
   );

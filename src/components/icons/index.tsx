@@ -6,6 +6,10 @@ import CreatePool from '@/assets/svgs/other/create-pool.svg?react';
 import Pools from '@/assets/svgs/other/pools.svg?react';
 import Swap from '@/assets/svgs/other/swap.svg?react';
 import Liquidity from '@/assets/svgs/other/liquidity.svg?react';
+import Metamask from '@/assets/svgs/external/Metamask.svg?react';
+import Fluent from '@/assets/svgs/external/fluent.svg?react';
+import Avatar from '@/assets/svgs/other/avatar.svg?react';
+import Setting from '@/assets/svgs/menus/setting.svg?react';
 
 type IconProps = PropsWithChildren<
   {
@@ -51,5 +55,29 @@ export const SwapIcon = (props: IconProps) => (
 export const LiquidityIcon = (props: IconProps) => (
   <Icon {...props}>
     <Liquidity />
+  </Icon>
+);
+
+export const MetamaskIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Metamask />
+  </Icon>
+);
+
+export const FluentIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Fluent />
+  </Icon>
+);
+
+export const AvatarIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Avatar />
+  </Icon>
+);
+
+export const SettingIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Setting />
   </Icon>
 );

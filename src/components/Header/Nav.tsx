@@ -20,7 +20,7 @@ const MenuItem = ({
       <div className="pr-[20px] text-[24px]">{item.icon}</div>
       <div className="flex flex-col">
         <span className="text-[16px] ">{item.name}</span>
-        <span className="text-tc-secondary text-[14px]">
+        <span className="text-[14px] text-tc-secondary">
           {item.description}
         </span>
       </div>
@@ -76,10 +76,10 @@ const Nav = () => {
         </div>
       </Dropdown>
 
-      <Link to={'/'} className="text-tc-secondary  px-[12px]">
+      <Link to={'/'} className="px-[12px]  text-tc-secondary">
         SLC
       </Link>
-      <Link to={'/'} className="text-tc-secondary px-[12px] ">
+      <Link to={'/'} className="px-[12px] text-tc-secondary">
         Explore
       </Link>
     </div>
