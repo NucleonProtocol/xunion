@@ -8,6 +8,7 @@ import {
   RightOutlined,
 } from '@ant-design/icons';
 import { CFXIcon, ETHIcon } from '@/components/icons/tokens';
+import Slippage from '@/pages/trade/swap/component/Slippage.tsx';
 
 function Home() {
   const { t } = useTranslate();
@@ -36,10 +37,7 @@ function Home() {
               Send
             </div>
           </div>
-          <div className="flex-center gap-[5px]">
-            <span className="text-[14px] text-tc-secondary">0.1%</span>
-            <SettingIcon className="cursor-pointer hover:text-theme" />
-          </div>
+          <Slippage />
         </div>
         <div className="mt-[20px]">
           <TokenInput title="You pay" editable />
