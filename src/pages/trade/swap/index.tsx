@@ -1,5 +1,5 @@
 import { useTranslate } from '@/i18n';
-import { LiquidityIcon, SettingIcon, SwapIcon } from '@/components/icons';
+import { LiquidityIcon, SwapIcon } from '@/components/icons';
 import TokenInput from '@/pages/trade/swap/component/TokenInput.tsx';
 import { Button } from 'antd';
 import {
@@ -24,7 +24,7 @@ function Home() {
           <span>Liquidity</span>
         </div>
       </div>
-      <div className="bg-fill-niubi mt-[30px] min-h-[420px] w-[500px] rounded-[20px]  p-[20px]">
+      <div className="mt-[30px] min-h-[420px] w-[500px] rounded-[20px] bg-fill-niubi  p-[20px]">
         <div className="flex items-center justify-between ">
           <div className="flex-center gap-[10px]">
             <div className="flex-center h-[36px] rounded-[20px] bg-fill-primary px-[16px]">

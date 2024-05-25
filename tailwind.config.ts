@@ -53,6 +53,9 @@ const config: Config = {
           'warning-non-opaque': 'var(--xunion-color-warning-non-opaque)',
           'error-non-opaque': 'var(--xunion-color-error-non-opaque)',
         },
+        line: {
+          primary: 'var(--xunion-line-primary)',
+        },
       },
       borderRadius: {
         sm: '0.25rem',
