@@ -105,9 +105,11 @@ const SlippageSelector = ({
 const Slippage = ({
   value,
   onChange,
+  disabled,
 }: {
   value: string;
   onChange: (v: string) => void;
+  disabled: boolean;
 }) => {
   return (
     <Popover
@@ -133,7 +135,11 @@ const Slippage = ({
       trigger={['click']}
       placement="bottomRight"
     >
-      <div className="flex-center gap-[5px]">
+      <div
+        className={cn('flex-center gap-[5px] ', {
+          'pointer-events-none opacity-75': disabled,
+        })}
+      >
         <span className="text-[14px] text-tc-secondary">
           {Number(value || 0) > 0 ? `${value}%` : 'Auto'}
         </span>

@@ -1,18 +1,9 @@
-import React, { HTMLAttributes, PropsWithChildren } from 'react';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import React, { HTMLAttributes, PropsWithChildren, ReactElement } from 'react';
+import { useSwitchChain } from 'wagmi';
 import { Button } from 'antd';
-import { usePersistStore } from '@/store/persist.ts';
 import useWalletStore from '@/store/wallet.ts';
-
-const CHAIN_ID = 71; //eSpace testnet
-// const CHAIN_ID = 1_030; //eSpace main
-
-export enum BUTTON_ACCESS {
-  'TOKEN',
-  'CONNECTED',
-  'WHITELIST',
-  'CHAIN',
-}
+import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
+import { BUTTON_ACCESS } from '@/types/auth.ts';
 
 const WithAuthButton = ({
   onClick,
@@ -20,21 +11,11 @@ const WithAuthButton = ({
   access = [BUTTON_ACCESS.CONNECTED, BUTTON_ACCESS.CHAIN],
   ...props
 }: HTMLAttributes<HTMLElement> &
-  PropsWithChildren<{ access?: BUTTON_ACCESS[] }>) => {
+  PropsWithChildren<{ access?: BUTTON_ACCESS[]; disabled?: boolean }>) => {
   const { switchChain } = useSwitchChain();
-  const { isConnected } = useAccount();
-  const chainId = useChainId();
-  const { address } = useAccount();
-  const wallet = usePersistStore((state) => state.wallet);
+
+  const { walletConnected, isErrorNetwork, CHAIN_ID } = useWalletAuth(access);
   const onOpen = useWalletStore((state) => state.onOpen);
-  const walletConnected =
-    wallet &&
-    !(!isConnected && !address && access.includes(BUTTON_ACCESS.CONNECTED));
-
-  console.log(chainId, CHAIN_ID);
-
-  const isErrorNetwork =
-    chainId !== CHAIN_ID && access.includes(BUTTON_ACCESS.CHAIN);
 
   const child = children;
   const onAuthClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -53,30 +34,36 @@ const WithAuthButton = ({
   };
 
   if (!walletConnected) {
-    return React.cloneElement(
-      <span />,
-      { ...props, onClick: onAuthClick },
-      <Button size="large" className=" w-full  bg-theme-non-opaque text-theme">
+    return (
+      <Button
+        size="large"
+        className=" w-full bg-theme-non-opaque text-theme"
+        {...props}
+        onClick={onAuthClick}
+      >
         Connect Wallet
       </Button>
     );
   }
 
   if (isErrorNetwork) {
-    return React.cloneElement(
-      <span />,
-      { ...props, onClick: onAuthClick },
-      <Button className="w-full" size="large" danger>
+    return (
+      <Button
+        className="w-full"
+        size="large"
+        danger
+        {...props}
+        onClick={onAuthClick}
+      >
         Swatch network
       </Button>
     );
   }
 
-  return React.cloneElement(
-    <span />,
-    { ...props, onClick: onAuthClick },
-    child
-  );
+  return React.cloneElement(child as ReactElement, {
+    ...props,
+    onClick: onAuthClick,
+  });
 };
 
 export default WithAuthButton;

@@ -7,6 +7,7 @@ import Slippage from '@/pages/trade/swap/component/Slippage.tsx';
 import useSwap from '@/pages/trade/swap/useSwap.ts';
 import SwapInfo from '@/pages/trade/swap/component/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
+import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 
 function Home() {
   const { t } = useTranslate();
@@ -29,6 +30,7 @@ function Home() {
     rate,
     feeAmount,
   } = useSwap();
+  const { disabled } = useWalletAuth();
   return (
     <div className="flex flex-1 flex-col items-center justify-center pt-[70px]">
       <div className="flex-center gap-[40px]">
@@ -54,7 +56,11 @@ function Home() {
               Send
             </div>
           </div>
-          <Slippage value={slippage} onChange={setSlippage} />
+          <Slippage
+            value={slippage}
+            onChange={setSlippage}
+            disabled={disabled}
+          />
         </div>
         <div className="mt-[20px]">
           <TokenInput
@@ -65,6 +71,11 @@ function Home() {
             amount={payAmount}
             onAmountChange={setPayAmount}
             disabledToken={outputToken}
+            disabled={disabled}
+            onMax={() => {
+              // TODO replacement to balance
+              setPayAmount('1.013');
+            }}
           />
           <div
             className="relative h-[20px] cursor-pointer hover:opacity-75"
@@ -81,6 +92,7 @@ function Home() {
             amount={receiveAmount}
             onAmountChange={setReceiveAmount}
             disabledToken={inputToken}
+            disabled={disabled}
           />
         </div>
         {inputToken && outputToken && (
@@ -105,7 +117,14 @@ function Home() {
               console.log(123);
             }}
           >
-            <Button className="w-full" type="primary" size="large">
+            <Button
+              className="w-full"
+              type="primary"
+              size="large"
+              disabled={
+                !inputToken || !outputToken || Number(payAmount || 0) <= 0
+              }
+            >
               Swap
             </Button>
           </WithAuthButton>

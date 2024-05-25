@@ -33,10 +33,12 @@ const TokenSelector = ({
   value,
   onChange,
   disabledToken,
+  disabled,
 }: {
   value?: Token;
   onChange: (value: Token) => void;
   disabledToken?: Token;
+  disabled?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -122,9 +124,16 @@ const TokenSelector = ({
         </div>
       </Modal>
       <div
-        className=" flex-center h-[40px] flex-shrink-0 cursor-pointer gap-[10px] rounded-[20px] px-[10px] hover:bg-theme-non-opaque"
+        className={cn(
+          'flex-center h-[40px] flex-shrink-0  gap-[10px] rounded-[20px] px-[10px]',
+          {
+            ' cursor-pointer hover:bg-theme-non-opaque': !disabled,
+          }
+        )}
         onClick={() => {
-          setOpen(true);
+          if (!disabled) {
+            setOpen(true);
+          }
         }}
       >
         {value?.symbol ? (
