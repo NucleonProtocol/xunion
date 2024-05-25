@@ -79,7 +79,7 @@ const SlippageSelector = ({
         ))}
         <Input
           suffix="Custom"
-          value={value}
+          value={Number(value || 0) > 1 ? value : undefined}
           onChange={(e) => {
             let value = e.target.value;
             value = value.replace(/[^0-9.]/g, '');
