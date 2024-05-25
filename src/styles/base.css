@@ -40,6 +40,7 @@
     --xunion-tc-theme: #eb54e6;
     --xunion-tc-on-button: #ffffff;
     --xunion-line-primary: #e5e7ed;
+    --xunion-line-primary2: #ffffff;
   }
 
   [data-theme='dark'] {
@@ -79,6 +80,7 @@
     --xunion-tc-theme: #eb54e6;
     --xunion-tc-on-button: #ffffff;
     --xunion-line-primary: #1a1a1a;
+    --xunion-line-primary2: #1a1a1a;
   }
 }
 

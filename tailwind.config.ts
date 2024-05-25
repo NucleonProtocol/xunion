@@ -55,6 +55,7 @@ const config: Config = {
         },
         line: {
           primary: 'var(--xunion-line-primary)',
+          primary2: 'var(--xunion-line-primary2)',
         },
       },
       borderRadius: {

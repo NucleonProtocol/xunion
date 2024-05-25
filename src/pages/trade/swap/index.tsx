@@ -81,7 +81,7 @@ function Home() {
             className="relative h-[20px] cursor-pointer hover:opacity-75"
             onClick={onExchange}
           >
-            <div className="flex-center  absolute left-[50%]  top-[-8px] h-[36px] w-[36px] -translate-x-[50%] transform rounded-[2px] border-[3px] border-white bg-background-primary">
+            <div className="flex-center  border-line-primary2 absolute  left-[50%] top-[-8px] h-[36px] w-[36px] -translate-x-[50%] transform rounded-[2px] border-[3px] bg-background-primary">
               <ArrowDownOutlined />
             </div>
           </div>
