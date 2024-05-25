@@ -2,16 +2,33 @@ import { useTranslate } from '@/i18n';
 import { LiquidityIcon, SwapIcon } from '@/components/icons';
 import TokenInput from '@/pages/trade/swap/component/TokenInput.tsx';
 import { Button } from 'antd';
-import {
-  ArrowDownOutlined,
-  UpOutlined,
-  RightOutlined,
-} from '@ant-design/icons';
-import { CFXIcon, ETHIcon } from '@/components/icons/tokens';
+import { ArrowDownOutlined } from '@ant-design/icons';
 import Slippage from '@/pages/trade/swap/component/Slippage.tsx';
+import useSwap from '@/pages/trade/swap/useSwap.ts';
+import SwapInfo from '@/pages/trade/swap/component/SwapInfo.tsx';
+import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 
 function Home() {
   const { t } = useTranslate();
+  const {
+    slippage,
+    setSlippage,
+    onExchange,
+    inputToken,
+    setInputToken,
+    setOutputToken,
+    outputToken,
+    payAmount,
+    setPayAmount,
+    receiveAmount,
+    setReceiveAmount,
+    priceImpact,
+    fee,
+    estReceived,
+    minReceived,
+    rate,
+    feeAmount,
+  } = useSwap();
   return (
     <div className="flex flex-1 flex-col items-center justify-center pt-[70px]">
       <div className="flex-center gap-[40px]">
@@ -37,70 +54,61 @@ function Home() {
               Send
             </div>
           </div>
-          <Slippage />
+          <Slippage value={slippage} onChange={setSlippage} />
         </div>
         <div className="mt-[20px]">
-          <TokenInput title="You pay" editable />
-          <div className="relative h-[20px]">
+          <TokenInput
+            title="You pay"
+            editable
+            token={inputToken}
+            onTokenChange={setInputToken}
+            amount={payAmount}
+            onAmountChange={setPayAmount}
+            disabledToken={outputToken}
+          />
+          <div
+            className="relative h-[20px] cursor-pointer hover:opacity-75"
+            onClick={onExchange}
+          >
             <div className="flex-center  absolute left-[50%]  top-[-8px] h-[36px] w-[36px] -translate-x-[50%] transform rounded-[2px] border-[3px] border-white bg-background-primary">
               <ArrowDownOutlined />
             </div>
           </div>
-          <TokenInput title="You receive" />
+          <TokenInput
+            title="You receive"
+            token={outputToken}
+            onTokenChange={setOutputToken}
+            amount={receiveAmount}
+            onAmountChange={setReceiveAmount}
+            disabledToken={inputToken}
+          />
         </div>
-        <div className="px-[10px] py-[20px] text-[14px]">
-          <div className="flex-center-between">
-            <span>
-              1USDT=0.00028ETH
-              <span className="text-tc-secondary">($1.00)</span>
-            </span>
-            <div className="flex-center cursor-pointer gap-[5px]">
-              <span className="text-tc-secondary">$8.97</span>
-              <UpOutlined className="text-[14px]" />
-            </div>
+        {inputToken && outputToken && (
+          <div className="px-[10px] py-[20px] text-[14px]">
+            <SwapInfo
+              slippage={slippage}
+              priceImpact={priceImpact}
+              fee={fee}
+              feeAmount={feeAmount}
+              estReceived={estReceived}
+              minReceived={minReceived}
+              rate={rate}
+              inputToken={inputToken}
+              outputToken={outputToken}
+            />
           </div>
-          <div className="mt-[10px] flex flex-col gap-[6px]">
-            <div className="flex-center-between">
-              <span className="text-tc-secondary">Price impact</span>
-              <span>~0.22%</span>
-            </div>
-            <div className="flex-center-between">
-              <span className="text-tc-secondary">Slippage tolerance</span>
-              <span>1.5%</span>
-            </div>
-            <div className="flex-center-between">
-              <span className="text-tc-secondary">Fee(0.3%)</span>
-              <span>$8.79</span>
-            </div>
-            <div className="flex-center-between">
-              <span className="text-tc-secondary">Est.received</span>
-              <span>3599.78 USDT</span>
-            </div>
-            <div className="flex-center-between">
-              <span className="text-tc-secondary">Min.received</span>
-              <span>3577.98 USDT</span>
-            </div>
-            <div className="flex-center-between">
-              <span className="text-tc-secondary">Route</span>
-              <div className="flex-center gap-[5px]">
-                <span className="flex-center gap-[5px]">
-                  <ETHIcon />
-                  ETH
-                </span>
-                <RightOutlined className="mx-[10px] text-[12px] text-tc-secondary" />
-                <span className="flex-center gap-[5px]">
-                  <CFXIcon />
-                  CFX
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
 
         <div className="mt-[20px] w-full">
-          <Button className="w-full" type="primary" size="large">
-            Swap
-          </Button>
+          <WithAuthButton
+            onClick={() => {
+              console.log(123);
+            }}
+          >
+            <Button className="w-full" type="primary" size="large">
+              Swap
+            </Button>
+          </WithAuthButton>
         </div>
       </div>
     </div>

@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { ADAIcon, CFXIcon, ETHIcon } from '@/components/icons/tokens';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
+import { Token } from '@/types/swap.ts';
 
-const recommends = [
+const recommends: Token[] = [
   {
     symbol: 'ETH',
     name: 'ETH',
@@ -28,7 +29,15 @@ const recommends = [
   },
 ];
 
-const TokenSelector = () => {
+const TokenSelector = ({
+  value,
+  onChange,
+  disabledToken,
+}: {
+  value?: Token;
+  onChange: (value: Token) => void;
+  disabledToken?: Token;
+}) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="flex-center flex-shrink-0">
@@ -59,10 +68,19 @@ const TokenSelector = () => {
                   'flex-center  h-[32px] cursor-pointer gap-[10px] rounded-[20px] border-2  border-solid px-[16px]',
                   'hover:border-transparent hover:bg-fill-primary',
                   {
-                    'border-transparent bg-fill-primary': item.symbol === 'ETH',
+                    'border-transparent bg-fill-primary':
+                      item.symbol === value?.symbol,
+                    'cursor-not-allowed opacity-75':
+                      disabledToken?.symbol === item.symbol,
                   }
                 )}
                 key={item.symbol}
+                onClick={() => {
+                  if (disabledToken?.symbol !== item.symbol) {
+                    onChange(item);
+                    setOpen(false);
+                  }
+                }}
               >
                 {item.icon}
                 {item.symbol}
@@ -74,9 +92,19 @@ const TokenSelector = () => {
             {recommends.map((item) => (
               <div
                 className={cn(
-                  'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:opacity-75'
+                  'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:opacity-75',
+                  {
+                    'cursor-not-allowed opacity-75':
+                      disabledToken?.symbol === item.symbol,
+                  }
                 )}
                 key={item.symbol}
+                onClick={() => {
+                  if (disabledToken?.symbol !== item.symbol) {
+                    onChange(item);
+                    setOpen(false);
+                  }
+                }}
               >
                 <div className="text-[36px]">{item.icon}</div>
                 <div className="flex flex-1 flex-col">
@@ -99,9 +127,16 @@ const TokenSelector = () => {
           setOpen(true);
         }}
       >
-        <ETHIcon className="text-[25px]" />
-        <span>ETH</span>
-        <DownOutlined className="text-[14px]" />
+        {value?.symbol ? (
+          <>
+            <span className="text-[22px]">{value.icon}</span>
+            <span>{value?.symbol}</span>
+          </>
+        ) : (
+          <span className="text-tc-secondary">Select Token</span>
+        )}
+
+        <DownOutlined className="text-[14px] text-tc-secondary" />
       </div>
     </div>
   );

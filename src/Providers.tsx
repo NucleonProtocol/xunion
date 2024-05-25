@@ -18,7 +18,7 @@ const Routes = () => useRoutes(routes);
 
 const config = createConfig({
   chains: [mainnet, confluxESpaceTestnet, confluxESpace],
-  connectors: [injected()],
+  connectors: [injected({ shimDisconnect: false })],
   transports: {
     [mainnet.id]: http(),
     [confluxESpaceTestnet.id]: http(),

@@ -9,7 +9,6 @@ const ConnectButton = () => {
   const onDetailOpen = useWalletStore((state) => state.onDetailOpen);
   const wallet = usePersistStore((state) => state.wallet);
   const { address, isConnected } = useAccount();
-  console.log(address, isConnected);
 
   if (address && isConnected && wallet) {
     return (

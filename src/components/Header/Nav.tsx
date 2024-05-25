@@ -69,7 +69,7 @@ const Nav = () => {
           Trade
           <DownOutlined
             className={cn(
-              'rotate-0 text-[12px] transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)]',
+              'rotate-0 text-[12px] text-tc-secondary transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)]',
               { 'rotate-180': open }
             )}
           />
