@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 
 export interface Token {
-  symbol: string;
-  name: string;
-  price: string;
+  symbol?: string;
+  name?: string;
+  price?: string;
   address: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   amount?: number;
 }
 

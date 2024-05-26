@@ -1,3 +1,7 @@
+import interfaceABI from './xUnionSwapUserInterface.json';
+import { erc20Abi, isAddress } from 'viem';
+import { getAddress } from 'ethers';
+
 export const E_SPACE_TEST_RPC = 'https://evmtestnet.confluxrpc.org';
 
 export const E_SPACE_MAIN_RPC = 'https://evm.confluxrpc.org';
@@ -26,6 +30,22 @@ export const XUNION_SWAP_CONTRACT = {
   },
   interface: {
     address: '0xa71D71C8A489B75daB7783192618d955fbdC741B',
-    abi: [],
+    abi: interfaceABI,
   },
+  slc: {
+    address: '0x4dAfEa49A8F138F2Aaf20B8Abe67Ec56200c3073',
+    abi: erc20Abi,
+  },
+  usdt: {
+    address: '0x4a64578C034bbb338b4A78151F5e26A85D6ABeD6',
+    abi: erc20Abi,
+  },
+};
+
+export const isSLCToken = (address: string) => {
+  return (
+    isAddress(address) &&
+    getAddress(address).toLowerCase() ===
+      getAddress(XUNION_SWAP_CONTRACT.slc.address).toLowerCase()
+  );
 };

@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { RateInfo, Token } from '@/types/swap.ts';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
+import usePair from '@/pages/trade/swap/usePair.ts';
+import { XUNION_SWAP_CONTRACT } from '@/contracts';
+import useLP from '@/pages/trade/swap/useLP.ts';
+import { formatNumber } from '@/hooks/useErc20Balance.ts';
+import useExchangeAmount from '@/pages/trade/swap/useExchangeAmount.ts';
 
 const SWAP_FEE = 0.3;
 
@@ -13,6 +18,70 @@ const useSwap = () => {
   const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
   const [outputOwnerAmount, setOutputOwnerAmount] = useState(0);
+  const [deadline, setDeadline] = useState('600');
+  const [inputTokenTotalPrice, setInputTokenTotalPrice] = useState(0);
+  const [outputTokenTotalPrice, setOutputTokenTotalPrice] = useState(0);
+
+  const { getOutputAmount, getInputAmount } = useExchangeAmount();
+
+  const { pairAddress: fromWithSLCPairAddress } = usePair({
+    fromToken: inputToken,
+    toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
+  });
+
+  const { pairAddress: toWithSLCPairAddress } = usePair({
+    fromToken: outputToken,
+    toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
+  });
+
+  const { getLpPrice } = useLP();
+
+  useEffect(() => {
+    if (fromWithSLCPairAddress && payAmount) {
+      getLpPrice(fromWithSLCPairAddress).then((unitPrice) => {
+        setInputTokenTotalPrice(formatNumber(Number(payAmount) * unitPrice, 2));
+      });
+    }
+  }, [fromWithSLCPairAddress, payAmount]);
+
+  useEffect(() => {
+    if (toWithSLCPairAddress && receiveAmount) {
+      getLpPrice(toWithSLCPairAddress).then((unitPrice) => {
+        setOutputTokenTotalPrice(
+          formatNumber(Number(receiveAmount) * unitPrice, 2)
+        );
+      });
+    }
+  }, [toWithSLCPairAddress, receiveAmount]);
+
+  useEffect(() => {
+    if (inputToken?.address && outputToken?.address && payAmount) {
+      getOutputAmount(
+        [inputToken?.address, outputToken?.address],
+        payAmount
+      ).then((amount) => {
+        console.log(amount);
+        // setReceiveAmount(
+        //   formatNumber(Number(payAmount) * unitPrice, 2).toString()
+        // );
+      });
+    }
+  }, [inputToken?.address, outputToken?.address, payAmount]);
+
+  // useEffect(() => {
+  //   if (inputToken?.address && outputToken?.address && payAmount) {
+  //     getOutputAmount(
+  //       [inputToken?.address, outputToken?.address],
+  //       payAmount
+  //     ).then((amount) => {
+  //       console.log(amount);
+  //       // setReceiveAmount(
+  //       //   formatNumber(Number(payAmount) * unitPrice, 2).toString()
+  //       // );
+  //     });
+  //   }
+  // }, [inputToken?.address, outputToken?.address, payAmount]);
+
   const onExchange = () => {
     if (inputToken || outputToken) {
       setOutputToken(inputToken);
@@ -74,6 +143,10 @@ const useSwap = () => {
     rate,
     inputOwnerAmount,
     outputOwnerAmount,
+    deadline,
+    setDeadline,
+    inputTokenTotalPrice,
+    outputTokenTotalPrice,
   };
 };
 

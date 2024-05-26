@@ -31,6 +31,10 @@ function Swap() {
     feeAmount,
     inputOwnerAmount,
     outputOwnerAmount,
+    deadline,
+    setDeadline,
+    outputTokenTotalPrice,
+    inputTokenTotalPrice,
   } = useSwap();
   const { disabled } = useWalletAuth();
   return (
@@ -62,6 +66,8 @@ function Swap() {
             value={slippage}
             onChange={setSlippage}
             disabled={disabled}
+            deadline={deadline}
+            onDeadlineChange={setDeadline}
           />
         </div>
         <div className="mt-[20px]">
@@ -78,6 +84,7 @@ function Swap() {
               setPayAmount(ownerAmount.toString());
             }}
             ownerAmount={inputOwnerAmount}
+            totalPrice={inputTokenTotalPrice}
           />
           <div
             className="relative h-[20px] cursor-pointer hover:opacity-75"
@@ -96,6 +103,7 @@ function Swap() {
             disabledToken={inputToken}
             disabled={disabled}
             ownerAmount={outputOwnerAmount}
+            totalPrice={outputTokenTotalPrice}
           />
         </div>
         {inputToken && outputToken && (

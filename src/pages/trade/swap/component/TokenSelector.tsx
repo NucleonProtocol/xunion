@@ -1,5 +1,5 @@
 import { Divider, Input, Modal, Spin } from 'antd';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { Token } from '@/types/swap.ts';
@@ -115,66 +115,64 @@ const ModalContent = ({
   );
 };
 
-const TokenSelector = memo(
-  ({
-    value,
-    onChange,
-    disabledToken,
-    disabled,
-  }: {
-    value?: Token;
-    onChange: (value: Token) => void;
-    disabledToken?: Token;
-    disabled?: boolean;
-  }) => {
-    const [open, setOpen] = useState(false);
+const TokenSelector = ({
+  value,
+  onChange,
+  disabledToken,
+  disabled,
+}: {
+  value?: Token;
+  onChange: (value: Token) => void;
+  disabledToken?: Token;
+  disabled?: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
 
-    return (
-      <div className="flex-center flex-shrink-0">
-        <Modal
-          open={open}
-          maskClosable
-          onCancel={() => {
-            setOpen(false);
-          }}
-          width={500}
-          title="Select a token"
-          footer={null}
-        >
-          <ModalContent
-            value={value}
-            disabledToken={disabledToken}
-            onChange={onChange}
-            onOpen={setOpen}
-          />
-        </Modal>
-        <div
-          className={cn(
-            'flex-center h-[40px] flex-shrink-0  gap-[10px] rounded-[20px] px-[10px]',
-            {
-              ' cursor-pointer hover:bg-theme-non-opaque': !disabled,
-            }
-          )}
-          onClick={() => {
-            if (!disabled) {
-              setOpen(true);
-            }
-          }}
-        >
-          {value?.symbol ? (
-            <>
-              <span className="text-[22px]">{value.icon}</span>
-              <span>{value?.symbol}</span>
-            </>
-          ) : (
-            <span className="text-tc-secondary">Select Token</span>
-          )}
+  return (
+    <div className="flex-center flex-shrink-0">
+      <Modal
+        open={open}
+        maskClosable
+        onCancel={() => {
+          setOpen(false);
+        }}
+        width={500}
+        title="Select a token"
+        footer={null}
+      >
+        <ModalContent
+          value={value}
+          disabledToken={disabledToken}
+          onChange={onChange}
+          onOpen={setOpen}
+        />
+      </Modal>
+      <div
+        className={cn(
+          'flex-center h-[40px] flex-shrink-0  gap-[10px] rounded-[20px] px-[10px]',
+          {
+            ' cursor-pointer hover:bg-theme-non-opaque': !disabled,
+          }
+        )}
+        onClick={() => {
+          if (!disabled) {
+            setOpen(true);
+          }
+        }}
+      >
+        {value?.symbol ? (
+          <>
+            <span className="text-[22px]">{value.icon}</span>
+            <span>{value?.symbol}</span>
+          </>
+        ) : (
+          <span className="text-tc-secondary">Select Token</span>
+        )}
 
-          <DownOutlined className="text-[14px] text-tc-secondary" />
-        </div>
+        <DownOutlined className="text-[14px] text-tc-secondary" />
       </div>
-    );
-  }
-);
+    </div>
+  );
+};
 
 export default TokenSelector;

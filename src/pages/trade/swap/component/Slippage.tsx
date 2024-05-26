@@ -106,7 +106,11 @@ const Slippage = ({
   value,
   onChange,
   disabled,
+  deadline,
+  onDeadlineChange,
 }: {
+  deadline: string;
+  onDeadlineChange: (v: string) => void;
   value: string;
   onChange: (v: string) => void;
   disabled: boolean;
@@ -127,7 +131,18 @@ const Slippage = ({
               </Tooltip>
             </div>
             <div>
-              <Input />
+              <Input
+                value={deadline}
+                onChange={(e) => {
+                  let value = e.target.value;
+                  value = value.replace(/[^0-9]/g, '');
+                  if (value.startsWith('0') && value.length > 1) {
+                    value = value.replace(/^0+/, '');
+                  }
+                  onDeadlineChange(value);
+                }}
+                suffix="Secs"
+              />
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ const TokenInput = ({
   disabled,
   onMax,
   ownerAmount,
+  totalPrice,
 }: {
   title: string;
   editable?: boolean;
@@ -24,6 +25,7 @@ const TokenInput = ({
   disabled?: boolean;
   onMax?: (ownerAmount: number) => void;
   ownerAmount: number;
+  totalPrice: number;
 }) => {
   return (
     <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
@@ -62,7 +64,9 @@ const TokenInput = ({
         />
       </div>
       <div className="flex-center-between pb-[5px]">
-        <span className="text-tc-secondary">$3301.00</span>
+        <span className="text-tc-secondary">
+          {totalPrice > 0 ? `$${totalPrice}` : ''}
+        </span>
         <div className="flex-center gap-[10px] text-[14px]">
           <span className="text-tc-secondary">Balance: {ownerAmount}</span>
           {onMax && ownerAmount > 0 && (

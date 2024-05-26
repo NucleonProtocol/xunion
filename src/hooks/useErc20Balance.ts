@@ -1,7 +1,7 @@
-import { Contract, formatUnits, JsonRpcProvider } from 'ethers';
-import { E_SPACE_TEST_RPC } from '@/contracts';
+import { Contract, formatUnits } from 'ethers';
 import { erc20Abi } from 'viem';
 import { useAccount } from 'wagmi';
+import useProvider from '@/hooks/useProvider.ts';
 
 export function formatNumber(number: number, decimals: number) {
   const factor = Math.pow(10, decimals);
@@ -10,7 +10,7 @@ export function formatNumber(number: number, decimals: number) {
 
 const useErc20Balance = () => {
   const { address: account } = useAccount();
-  const provider = new JsonRpcProvider(E_SPACE_TEST_RPC);
+  const provider = useProvider();
 
   const getBalance = async (address: string, fixed = 4) => {
     try {
