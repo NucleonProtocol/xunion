@@ -9,7 +9,7 @@ import SwapInfo from '@/pages/trade/swap/component/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 
-function Home() {
+function Swap() {
   const { t } = useTranslate();
   const {
     slippage,
@@ -29,6 +29,8 @@ function Home() {
     minReceived,
     rate,
     feeAmount,
+    inputOwnerAmount,
+    outputOwnerAmount,
   } = useSwap();
   const { disabled } = useWalletAuth();
   return (
@@ -72,10 +74,10 @@ function Home() {
             onAmountChange={setPayAmount}
             disabledToken={outputToken}
             disabled={disabled}
-            onMax={() => {
-              // TODO replacement to balance
-              setPayAmount('1.013');
+            onMax={(ownerAmount) => {
+              setPayAmount(ownerAmount.toString());
             }}
+            ownerAmount={inputOwnerAmount}
           />
           <div
             className="relative h-[20px] cursor-pointer hover:opacity-75"
@@ -93,6 +95,7 @@ function Home() {
             onAmountChange={setReceiveAmount}
             disabledToken={inputToken}
             disabled={disabled}
+            ownerAmount={outputOwnerAmount}
           />
         </div>
         {inputToken && outputToken && (
@@ -134,4 +137,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Swap;

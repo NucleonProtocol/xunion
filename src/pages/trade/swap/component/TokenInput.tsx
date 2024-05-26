@@ -12,6 +12,7 @@ const TokenInput = ({
   disabledToken,
   disabled,
   onMax,
+  ownerAmount,
 }: {
   title: string;
   editable?: boolean;
@@ -21,7 +22,8 @@ const TokenInput = ({
   onAmountChange: (value: string) => void;
   disabledToken?: Token;
   disabled?: boolean;
-  onMax?: () => void;
+  onMax?: (ownerAmount: number) => void;
+  ownerAmount: number;
 }) => {
   return (
     <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
@@ -62,13 +64,13 @@ const TokenInput = ({
       <div className="flex-center-between pb-[5px]">
         <span className="text-tc-secondary">$3301.00</span>
         <div className="flex-center gap-[10px] text-[14px]">
-          <span className="text-tc-secondary">Balance: 102.11</span>
-          {onMax && (
+          <span className="text-tc-secondary">Balance: {ownerAmount}</span>
+          {onMax && ownerAmount > 0 && (
             <div
               className={cn(' text-theme', { 'cursor-pointer': !disabled })}
               onClick={() => {
                 if (!disabled) {
-                  onMax();
+                  onMax(ownerAmount);
                 }
               }}
             >

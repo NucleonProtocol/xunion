@@ -1,14 +1,18 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RateInfo, Token } from '@/types/swap.ts';
+import useErc20Balance from '@/hooks/useErc20Balance.ts';
 
 const SWAP_FEE = 0.3;
 
 const useSwap = () => {
+  const { getBalance } = useErc20Balance();
   const [slippage, setSlippage] = useState('-1');
   const [inputToken, setInputToken] = useState<Token | undefined>();
   const [outputToken, setOutputToken] = useState<Token | undefined>();
   const [payAmount, setPayAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
+  const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
+  const [outputOwnerAmount, setOutputOwnerAmount] = useState(0);
   const onExchange = () => {
     if (inputToken || outputToken) {
       setOutputToken(inputToken);
@@ -39,6 +43,17 @@ const useSwap = () => {
     [receiveAmount]
   );
 
+  useEffect(() => {
+    if (inputToken?.address) {
+      getBalance(inputToken.address).then(setInputOwnerAmount);
+    }
+  }, [inputToken]);
+  useEffect(() => {
+    if (outputToken?.address) {
+      getBalance(outputToken.address).then(setOutputOwnerAmount);
+    }
+  }, [outputToken]);
+
   return {
     slippage,
     setSlippage,
@@ -57,6 +72,8 @@ const useSwap = () => {
     estReceived,
     minReceived,
     rate,
+    inputOwnerAmount,
+    outputOwnerAmount,
   };
 };
 

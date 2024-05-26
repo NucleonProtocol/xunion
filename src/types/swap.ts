@@ -6,6 +6,7 @@ export interface Token {
   price: string;
   address: string;
   icon: ReactNode;
+  amount?: number;
 }
 
 export interface RateInfo {
