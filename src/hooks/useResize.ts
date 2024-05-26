@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import useWindowLoad from './useWindowLoad';
 type Fn = () => void;
 
 const useResize = () => {
   const [width, setWidth] = useState(0);
   const handlerRef = useRef<Fn>();
-
-  useWindowLoad(handlerRef.current);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
