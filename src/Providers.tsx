@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { useRoutes, BrowserRouter } from 'react-router-dom';
+import { useRoutes, HashRouter } from 'react-router-dom';
 import { confluxESpace, confluxESpaceTestnet, mainnet } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Locale, useLocale } from '@/i18n';
@@ -93,9 +93,9 @@ const Providers = () => {
           defaultLocale="en-US"
         >
           <Dapp locale={locale}>
-            <BrowserRouter>
+            <HashRouter>
               <Routes />
-            </BrowserRouter>
+            </HashRouter>
           </Dapp>
         </IntlProvider>
       </ThemeProvider>
