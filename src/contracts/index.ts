@@ -2,7 +2,12 @@ import interfaceABI from './xUnionSwapUserInterface.json';
 import { erc20Abi, isAddress } from 'viem';
 import { getAddress } from 'ethers';
 
-export const E_SPACE_TEST_RPC = 'https://evmtestnet.confluxrpc.org';
+// export const E_SPACE_TEST_RPC =
+//   'https://main.confluxrpc.com';
+export const E_SPACE_TEST_RPC =
+  'https://evmtestnet.confluxrpc.org/3zE8uVdvebDSL9KykwKqaDKUYXJiN7jGchiDfpr9Sgr4YqPWGNyi4X877wm7EeBbmtDwXXA3duVLYysoDP2EmD1hC';
+
+// export const E_SPACE_TEST_RPC = 'https://evmtestnet.confluxrpc.org';
 
 export const E_SPACE_MAIN_RPC = 'https://evm.confluxrpc.org';
 
@@ -29,7 +34,7 @@ export const XUNION_SWAP_CONTRACT = {
     abi: [],
   },
   interface: {
-    address: '0xa71D71C8A489B75daB7783192618d955fbdC741B',
+    address: '0x9698e25746195ba599be46a065281888964e7468',
     abi: interfaceABI,
   },
   slc: {

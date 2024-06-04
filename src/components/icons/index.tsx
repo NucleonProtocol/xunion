@@ -10,6 +10,9 @@ import Metamask from '@/assets/svgs/external/Metamask.svg?react';
 import Fluent from '@/assets/svgs/external/fluent.svg?react';
 import Avatar from '@/assets/svgs/other/avatar.svg?react';
 import Setting from '@/assets/svgs/menus/setting.svg?react';
+import ArrowRightTop from '@/assets/svgs/arrow/arrow-right-top.svg?react';
+import ArrowUp from '@/assets/svgs/arrow/arrow-up.svg?react';
+import ArrowLeft from '@/assets/svgs/arrow/arrow-left.svg?react';
 
 type IconProps = PropsWithChildren<
   {
@@ -79,5 +82,21 @@ export const AvatarIcon = (props: IconProps) => (
 export const SettingIcon = (props: IconProps) => (
   <Icon {...props}>
     <Setting />
+  </Icon>
+);
+
+export const ArrowRightTopIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <ArrowRightTop />
+  </Icon>
+);
+export const ArrowUpIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <ArrowUp />
+  </Icon>
+);
+export const ArrowLeftIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <ArrowLeft />
   </Icon>
 );

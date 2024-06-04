@@ -51,11 +51,11 @@ const WithAuthButton = ({
       <Button
         className="w-full"
         size="large"
-        danger
         {...props}
         onClick={onAuthClick}
+        danger
       >
-        Swatch network
+        Switch network
       </Button>
     );
   }

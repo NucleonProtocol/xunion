@@ -3,7 +3,7 @@ import { useRoutes, BrowserRouter } from 'react-router-dom';
 import { confluxESpace, confluxESpaceTestnet, mainnet } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Locale, useLocale } from '@/i18n';
-import { WagmiProvider } from 'wagmi';
+import { useAccount, WagmiProvider } from 'wagmi';
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import { injected } from 'wagmi/connectors';
 import { IntlProvider } from 'react-intl';
@@ -13,11 +13,25 @@ import { ThemeProvider, useTheme } from '@/components/Theme';
 import routes from './routes';
 import ConnectModal from '@/components/Wallet/ConnectModal.tsx';
 import WalletDetailModal from '@/components/Wallet/WalletDetailModal.tsx';
+import SubmittedModal from '@/components/modals/SubmittedModal.tsx';
+import { E_SPACE_TEST_RPC } from '@/contracts';
 
 const Routes = () => useRoutes(routes);
 
 const config = createConfig({
-  chains: [mainnet, confluxESpaceTestnet, confluxESpace],
+  chains: [
+    mainnet,
+    {
+      ...confluxESpaceTestnet,
+      rpcUrls: {
+        default: {
+          http: [E_SPACE_TEST_RPC],
+          webSocket: ['wss://evmtestnet.confluxrpc.org/ws'],
+        },
+      },
+    },
+    confluxESpace,
+  ],
   connectors: [injected({ shimDisconnect: false })],
   transports: {
     [mainnet.id]: http(),
@@ -26,15 +40,25 @@ const config = createConfig({
   },
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnReconnect: false,
+      retryOnMount: false,
+      refetchOnMount: false,
+    },
+  },
+});
 
 const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
   const { systemTheme, theme } = useTheme();
+  const { address } = useAccount();
 
   const isDark = theme === 'system' ? systemTheme === 'dark' : theme === 'dark';
 
   return (
     <ConfigProvider
+      key={address}
       theme={{
         cssVar: true,
         hashed: false,
@@ -46,13 +70,12 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
         },
       }}
     >
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <ConnectModal />
-          <WalletDetailModal />
-          {children}
-        </QueryClientProvider>
-      </WagmiProvider>
+      <QueryClientProvider client={queryClient}>
+        <ConnectModal />
+        <SubmittedModal />
+        <WalletDetailModal />
+        {children}
+      </QueryClientProvider>
     </ConfigProvider>
   );
 };
@@ -61,20 +84,22 @@ const Providers = () => {
   const { locale, messages } = useLocale();
 
   return (
-    <ThemeProvider attribute="data-theme">
-      <IntlProvider
-        locale={locale}
-        messages={messages}
-        fallbackOnEmptyString
-        defaultLocale="en-US"
-      >
-        <Dapp locale={locale}>
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
-        </Dapp>
-      </IntlProvider>
-    </ThemeProvider>
+    <WagmiProvider config={config}>
+      <ThemeProvider attribute="data-theme">
+        <IntlProvider
+          locale={locale}
+          messages={messages}
+          fallbackOnEmptyString
+          defaultLocale="en-US"
+        >
+          <Dapp locale={locale}>
+            <BrowserRouter>
+              <Routes />
+            </BrowserRouter>
+          </Dapp>
+        </IntlProvider>
+      </ThemeProvider>
+    </WagmiProvider>
   );
 };
 export default Providers;

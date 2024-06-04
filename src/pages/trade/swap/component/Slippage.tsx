@@ -5,7 +5,7 @@ import { cn } from '@/utils/classnames.ts';
 
 export const SlippageValue = ({ value }: { value: number }) => {
   if (value === -1) {
-    return <span className="text-tc-secondary">Auto</span>;
+    return <span className="text-tc-secondary">0.5%</span>;
   }
   if (value > 1) {
     return (
@@ -28,10 +28,6 @@ const presets = [
   {
     label: '0.1%',
     value: 0.1,
-  },
-  {
-    label: '0.5%',
-    value: 0.5,
   },
   {
     label: '1%',
@@ -63,8 +59,9 @@ const SlippageSelector = ({
       <div className="flex  flex-nowrap items-center gap-[10px] ">
         {presets.map((item) => (
           <div
+            key={item.label}
             className={cn(
-              'border-line-primary flex h-[32px] cursor-pointer items-center justify-center rounded-[6px] border px-[12px]',
+              'flex h-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-line-primary px-[12px]',
               {
                 'border-transparent bg-theme text-white':
                   Number(value || 0) === item.value,
@@ -80,6 +77,7 @@ const SlippageSelector = ({
         <Input
           suffix="Custom"
           value={Number(value || 0) > 1 ? value : undefined}
+          placeholder="0.5"
           onChange={(e) => {
             let value = e.target.value;
             value = value.replace(/[^0-9.]/g, '');
@@ -141,7 +139,7 @@ const Slippage = ({
                   }
                   onDeadlineChange(value);
                 }}
-                suffix="Secs"
+                suffix="Minutes"
               />
             </div>
           </div>
@@ -156,7 +154,7 @@ const Slippage = ({
         })}
       >
         <span className="text-[14px] text-tc-secondary">
-          {Number(value || 0) > 0 ? `${value}%` : 'Auto'}
+          {Number(value || 0) > 0 ? `${value}%` : 'Auto(0.5%)'}
         </span>
         <SettingIcon className="cursor-pointer hover:text-theme" />
       </div>

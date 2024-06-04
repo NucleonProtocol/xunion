@@ -5,6 +5,7 @@ import ADA from '@/assets/svgs/tokens/ADA.svg?react';
 import CFX from '@/assets/svgs/tokens/CFX (Conflux.svg?react';
 import ETH from '@/assets/svgs/tokens/ETH-Ethereum.svg?react';
 import OP from '@/assets/svgs/tokens/OP (Optimism.svg?react';
+import Exchange from '@/assets/svgs/other/exchange.svg?react';
 
 type IconProps = PropsWithChildren<
   {
@@ -42,5 +43,10 @@ export const ETHIcon = (props: IconProps) => (
 export const OPIcon = (props: IconProps) => (
   <Icon {...props}>
     <OP />
+  </Icon>
+);
+export const ExchangeIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Exchange />
   </Icon>
 );
