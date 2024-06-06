@@ -8,7 +8,7 @@ import {
 import { Token } from '@/types/swap.ts';
 import { formatUnits, parseUnits } from 'ethers';
 import { useEffect, useMemo } from 'react';
-import { isNumeric } from '@/pages/trade/swap/hooks/useSwap.ts';
+import { isNumeric } from '@/pages/trade/hooks/useSwap.ts';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
 

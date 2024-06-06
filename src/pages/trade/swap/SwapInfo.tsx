@@ -1,5 +1,5 @@
 import { RightOutlined, UpOutlined } from '@ant-design/icons';
-import { SlippageValue } from '@/pages/trade/swap/component/Slippage.tsx';
+import { SlippageValue } from '@/pages/trade/swap/Slippage.tsx';
 import { Token } from '@/types/swap.ts';
 import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';

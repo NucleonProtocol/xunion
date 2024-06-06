@@ -1,16 +1,13 @@
-import Slippage from '@/pages/trade/swap/Slippage.tsx';
 import TokenInput from '@/pages/trade/component/TokenInput.tsx';
 import { ArrowDownOutlined } from '@ant-design/icons';
 import SwapInfo from '@/pages/trade/swap/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
-import { useTranslate } from '@/i18n';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import { SwapReturnType } from '@/pages/trade/hooks/useSwap.ts';
 
 const SwapPanel = ({
   slippage,
-  setSlippage,
   onExchange,
   inputToken,
   setInputToken,
@@ -27,8 +24,6 @@ const SwapPanel = ({
   feeAmount,
   inputOwnerAmount,
   outputOwnerAmount,
-  deadline,
-  setDeadline,
   outputTokenTotalPrice,
   inputTokenTotalPrice,
   toPairUnit,
@@ -38,8 +33,6 @@ const SwapPanel = ({
   isInsufficientLiquidity,
   onConfirm,
 }: SwapReturnType) => {
-  const { t } = useTranslate();
-
   const { disabled } = useWalletAuth();
 
   const renderSwapText = () => {
@@ -52,30 +45,10 @@ const SwapPanel = ({
     return 'Swap';
   };
   return (
-    <div className="mt-[30px] min-h-[420px] w-[500px] rounded-[20px] bg-fill-niubi  p-[20px]">
-      <div className="flex items-center justify-between ">
-        <div className="flex-center gap-[10px]">
-          <div className="flex-center h-[36px] rounded-[20px] bg-fill-primary px-[16px]">
-            {t('swap')}
-          </div>
-          <div className="flex-center h-[36px] rounded-[20px] px-[16px] text-tc-secondary">
-            Limit
-          </div>
-          <div className="flex-center h-[36px] rounded-[20px] px-[16px] text-tc-secondary">
-            Send
-          </div>
-        </div>
-        <Slippage
-          value={slippage}
-          onChange={setSlippage}
-          disabled={disabled}
-          deadline={deadline}
-          onDeadlineChange={setDeadline}
-        />
-      </div>
+    <div className="mt-[30px] min-h-[400px] w-[500px] rounded-[20px] bg-fill-niubi  p-[20px]">
       <div className="mt-[20px]">
         <TokenInput
-          title="You pay"
+          title="Token A"
           editable
           token={inputToken}
           onTokenChange={setInputToken}
@@ -98,7 +71,7 @@ const SwapPanel = ({
           </div>
         </div>
         <TokenInput
-          title="You receive"
+          title="Token B"
           editable
           token={outputToken}
           onTokenChange={setOutputToken}
@@ -106,6 +79,9 @@ const SwapPanel = ({
           onAmountChange={setReceiveAmount}
           disabledToken={inputToken}
           disabled={disabled}
+          onMax={(ownerAmount) => {
+            setReceiveAmount(ownerAmount.toString());
+          }}
           ownerAmount={outputOwnerAmount}
           totalPrice={outputTokenTotalPrice}
         />

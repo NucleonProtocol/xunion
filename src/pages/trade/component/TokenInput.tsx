@@ -1,4 +1,4 @@
-import TokenSelector from '@/pages/trade/swap/component/TokenSelector.tsx';
+import TokenSelector from '@/pages/trade/component/TokenSelector.tsx';
 import { Token } from '@/types/swap.ts';
 import { cn } from '@/utils/classnames.ts';
 

@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Token } from '@/types/swap.ts';
 import { formatEther, parseEther } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
-import { isNumeric } from '@/pages/trade/swap/hooks/useSwap.ts';
+import { isNumeric } from '@/pages/trade/hooks/useSwap.ts';
 
 const useCalcAmount = ({
   setIsInsufficientLiquidity,
