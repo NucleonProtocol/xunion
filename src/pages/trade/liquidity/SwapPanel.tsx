@@ -41,7 +41,7 @@ const SwapPanel = ({
               set up an initial pool using the SLC.
             </Warning>
             <Link to="/trade/create-pool?tokenA=0x123123&tokenB=0x881233">
-              <Button className="w-full" type="primary" size="large" disabled>
+              <Button className="w-full" type="primary" size="large">
                 {`Initialize ${tokenA?.symbol} pool`}
               </Button>
             </Link>
