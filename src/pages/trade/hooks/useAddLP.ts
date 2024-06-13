@@ -140,17 +140,31 @@ const useAddLP = (): LiquidityReturnType => {
           tokenBAddress: tokenB?.address,
         });
         setLpPairInfo(res);
-        if (res && tokenAAmount) {
+        if (res) {
           const { tokenALPTotal, tokenBLPTotal } = res;
-          const tokenBAmount =
-            (Number(tokenAAmount) / Number(tokenALPTotal)) *
-            Number(tokenBLPTotal);
-          const amount = formatNumber(tokenBAmount, 6).toString();
-          setTokenBAmount(isNumeric(amount) ? amount : '');
+          if (tokenAAmount) {
+            const tokenBAmountRef =
+              (Number(tokenAAmount) / Number(tokenALPTotal)) *
+              Number(tokenBLPTotal);
+            const amount = formatNumber(tokenBAmountRef, 6).toString();
+            setTokenBAmount(isNumeric(amount) ? amount : '');
+          } else if (tokenBAmount) {
+            const tokenAAmountRef =
+              (Number(tokenBAmount) / Number(tokenBLPTotal)) *
+              Number(tokenALPTotal);
+            console.log(
+              'tokenAAmountRef',
+              tokenAAmountRef,
+              tokenBLPTotal,
+              tokenBAmount
+            );
+            const amount = formatNumber(tokenAAmountRef, 6).toString();
+            setTokenAAmount(isNumeric(amount) ? amount : '');
+          }
         }
       }
     },
-    [tokenAAmount, tokenB?.address]
+    [tokenAAmount, tokenB?.address, tokenBAmount]
   );
 
   const onTokenBChange = useCallback(
@@ -165,17 +179,25 @@ const useAddLP = (): LiquidityReturnType => {
           tokenBAddress: token.address,
         });
         setLpPairInfo(res);
-        if (res && tokenBAmount) {
+        if (res) {
           const { tokenALPTotal, tokenBLPTotal } = res;
-          const tokenAAmount =
-            (Number(tokenBAmount) / Number(tokenBLPTotal)) *
-            Number(tokenALPTotal);
-          const amount = formatNumber(tokenAAmount, 6).toString();
-          setTokenAAmount(isNumeric(amount) ? amount : '');
+          if (tokenBAmount) {
+            const tokenAAmountRef =
+              (Number(tokenBAmount) / Number(tokenBLPTotal)) *
+              Number(tokenALPTotal);
+            const amount = formatNumber(tokenAAmountRef, 6).toString();
+            setTokenAAmount(isNumeric(amount) ? amount : '');
+          } else if (tokenAAmount) {
+            const tokenBAmountRef =
+              (Number(tokenAAmount) / Number(tokenALPTotal)) *
+              Number(tokenBLPTotal);
+            const amount = formatNumber(tokenBAmountRef, 6).toString();
+            setTokenBAmount(isNumeric(amount) ? amount : '');
+          }
         }
       }
     },
-    [tokenBAmount, tokenA?.address]
+    [tokenBAmount, tokenAAmount, tokenA?.address]
   );
 
   const onTokenAAmountChange = useCallback(
