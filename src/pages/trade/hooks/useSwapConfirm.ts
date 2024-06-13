@@ -11,7 +11,7 @@ import useTxStore from '@/store/transaction.ts';
 import dayjs from 'dayjs';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 
-const useConfirm = ({
+const useSwapConfirm = ({
   inputToken,
   payAmount,
   deadline,
@@ -104,4 +104,4 @@ const useConfirm = ({
   };
 };
 
-export default useConfirm;
+export default useSwapConfirm;

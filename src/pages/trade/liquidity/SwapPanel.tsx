@@ -1,48 +1,115 @@
 import TokenInput from '@/pages/trade/component/TokenInput.tsx';
-import { ArrowDownOutlined } from '@ant-design/icons';
-import SwapInfo from '@/pages/trade/swap/SwapInfo.tsx';
+import { PlusOutlined } from '@ant-design/icons';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
-import { SwapReturnType } from '@/pages/trade/hooks/useSwap.ts';
+import { LiquidityReturnType } from '@/pages/trade/hooks/useAddLP.ts';
+import { isNumeric } from '@/utils/isNumeric.ts';
+import LiquidityInfo from '@/pages/trade/liquidity/LiquidityInfo.tsx';
+import Warning from '@/pages/trade/component/Warning.tsx';
+import { Link } from 'react-router-dom';
 
 const SwapPanel = ({
-  slippage,
-  onExchange,
-  inputToken,
-  setInputToken,
-  setOutputToken,
-  outputToken,
-  payAmount,
-  setPayAmount,
-  receiveAmount,
-  setReceiveAmount,
-  priceImpact,
-  fee,
-  estReceived,
-  minReceived,
-  feeAmount,
-  inputOwnerAmount,
-  outputOwnerAmount,
-  outputTokenTotalPrice,
-  inputTokenTotalPrice,
-  toPairUnit,
-  fromPairUnit,
-  isInsufficient,
-  isReady,
+  tokenAAmount,
+  tokenBAmount,
+  tokenA,
+  tokenB,
+  onTokenBAmountChange,
+  onTokenAAmountChange,
+  onTokenBChange,
+  onTokenAChange,
+  tokenAOwnerAmount,
+  tokenBOwnerAmount,
+  tokenASLCPairAddress,
+  tokenBSLCPairAddress,
   isInsufficientLiquidity,
-  onConfirm,
-}: SwapReturnType) => {
-  const { disabled } = useWalletAuth();
+  invalidPool,
+  isReady,
+  shareOfPool,
+  setStep,
+}: LiquidityReturnType) => {
+  const { disabled: invalidWallet } = useWalletAuth();
 
-  const renderSwapText = () => {
-    if (isInsufficient) {
-      return `Insufficient ${inputToken?.symbol} Balance`;
+  const renderADDLPText = () => {
+    if (tokenA?.address && tokenB?.address) {
+      if (!tokenASLCPairAddress) {
+        return (
+          <div className="flex flex-col gap-[10px]">
+            <Warning>
+              Initial pool not found. You need to first set up an initial pool
+              using the SLC. Swap SLC Initial pool not found. You need to first
+              set up an initial pool using the SLC.
+            </Warning>
+            <Link to="/trade/create-pool?tokenA=0x123123&tokenB=0x881233">
+              <Button className="w-full" type="primary" size="large" disabled>
+                {`Initialize ${tokenA?.symbol} pool`}
+              </Button>
+            </Link>
+          </div>
+        );
+      }
+      if (!tokenBSLCPairAddress) {
+        return (
+          <div className="flex flex-col gap-[10px]">
+            <Warning>
+              Initial pool not found. You need to first set up an initial pool
+              using the SLC. Swap SLC Initial pool not found. You need to first
+              set up an initial pool using the SLC.
+            </Warning>
+            <Link to="/trade/create-pool?tokenA=0x123123&tokenB=0x881233">
+              <Button className="w-full" type="primary" size="large">
+                {`Initialize ${tokenB?.symbol} pool`}
+              </Button>
+            </Link>
+          </div>
+        );
+      }
+      if (invalidPool || isInsufficientLiquidity) {
+        return (
+          <div className="flex flex-col gap-[10px]">
+            <Warning>
+              Initial pool not found. You need to first set up an initial pool
+              using the SLC.
+            </Warning>
+            <Link to="/trade/create-pool?tokenA=0x123123&tokenB=0x881233">
+              <Button className="w-full" type="primary" size="large">
+                Create pool
+              </Button>
+            </Link>
+          </div>
+        );
+      }
+      if (isNumeric(tokenAAmount) && Number(tokenAAmount) > tokenAOwnerAmount) {
+        return (
+          <Button className="w-full" type="primary" size="large" disabled>
+            {`Insufficient ${tokenA?.symbol} balance`}
+          </Button>
+        );
+      }
+      if (isNumeric(tokenBAmount) && Number(tokenBAmount) > tokenBOwnerAmount) {
+        return (
+          <Button className="w-full" type="primary" size="large" disabled>
+            {`Insufficient ${tokenB?.symbol} balance`}
+          </Button>
+        );
+      }
     }
-    if (isInsufficientLiquidity) {
-      return 'Insufficient liquidity for this trade.';
-    }
-    return 'Swap';
+
+    return (
+      <Button
+        className="w-full"
+        type="primary"
+        size="large"
+        onClick={() => {
+          if (isReady) {
+            setStep('CONFIRM');
+          }
+        }}
+        disabled={!isReady}
+      >
+        Add Liquidity
+      </Button>
+    );
   };
   return (
     <div className="mt-[30px] min-h-[400px] w-[500px] rounded-[20px] bg-fill-niubi  p-[20px]">
@@ -50,70 +117,53 @@ const SwapPanel = ({
         <TokenInput
           title="Token A"
           editable
-          token={inputToken}
-          onTokenChange={setInputToken}
-          amount={payAmount}
-          onAmountChange={setPayAmount}
-          disabledToken={outputToken}
-          disabled={disabled}
+          token={tokenA}
+          onTokenChange={onTokenAChange}
+          amount={tokenAAmount}
+          onAmountChange={onTokenAAmountChange}
+          disabledToken={tokenB}
+          disabled={invalidWallet}
           onMax={(ownerAmount) => {
-            setPayAmount(ownerAmount.toString());
+            onTokenAAmountChange(ownerAmount.toString());
           }}
-          ownerAmount={inputOwnerAmount}
-          totalPrice={inputTokenTotalPrice}
+          ownerAmount={tokenAOwnerAmount}
+          totalPrice={0}
         />
-        <div
-          className="relative h-[20px] cursor-pointer hover:opacity-75"
-          onClick={onExchange}
-        >
+        <div className="relative h-[20px]">
           <div className="flex-center  absolute left-[50%]  top-[-8px] h-[36px] w-[36px] -translate-x-[50%] transform rounded-[2px] border-[3px] border-line-primary2 bg-background-primary">
-            <ArrowDownOutlined />
+            <PlusOutlined />
           </div>
         </div>
         <TokenInput
           title="Token B"
           editable
-          token={outputToken}
-          onTokenChange={setOutputToken}
-          amount={receiveAmount}
-          onAmountChange={setReceiveAmount}
-          disabledToken={inputToken}
-          disabled={disabled}
+          token={tokenB}
+          onTokenChange={onTokenBChange}
+          amount={tokenBAmount}
+          onAmountChange={onTokenBAmountChange}
+          disabledToken={tokenA}
+          disabled={invalidWallet}
           onMax={(ownerAmount) => {
-            setReceiveAmount(ownerAmount.toString());
+            onTokenBAmountChange(ownerAmount.toString());
           }}
-          ownerAmount={outputOwnerAmount}
-          totalPrice={outputTokenTotalPrice}
+          ownerAmount={tokenBOwnerAmount}
+          totalPrice={0}
         />
       </div>
-      {isReady && (
-        <div className="px-[10px] py-[20px] text-[14px]">
-          <SwapInfo
-            slippage={slippage}
-            priceImpact={priceImpact}
-            fee={fee}
-            feeAmount={feeAmount}
-            estReceived={estReceived}
-            minReceived={minReceived}
-            inputToken={inputToken}
-            outputToken={outputToken}
-            toPairUnit={toPairUnit}
-            fromPairUnit={fromPairUnit}
+
+      {isReady && tokenASLCPairAddress && tokenBSLCPairAddress && (
+        <div className="px-[20px] py-[10px]">
+          <LiquidityInfo
+            tokenA={tokenA}
+            tokenBAmount={tokenBAmount}
+            tokenB={tokenB}
+            tokenAAmount={tokenAAmount}
+            shareOfPool={shareOfPool}
           />
         </div>
       )}
-
       <div className="mt-[20px] w-full">
-        <WithAuthButton onClick={onConfirm}>
-          <Button
-            className="w-full"
-            type="primary"
-            size="large"
-            disabled={!isReady || isInsufficient || isInsufficientLiquidity}
-          >
-            {renderSwapText()}
-          </Button>
-        </WithAuthButton>
+        <WithAuthButton>{renderADDLPText()}</WithAuthButton>
       </div>
     </div>
   );

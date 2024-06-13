@@ -3,7 +3,8 @@ import { useCallback } from 'react';
 import { Token } from '@/types/swap.ts';
 import { formatEther, parseEther } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
-import { isNumeric } from '@/pages/trade/hooks/useSwap.ts';
+
+import { isNumeric } from '@/utils/isNumeric.ts';
 
 const useCalcAmount = ({
   setIsInsufficientLiquidity,
@@ -103,8 +104,7 @@ const useCalcAmount = ({
             setFee(Number(info[0].toString()) / 10000);
             setPriceImpact(impact);
           })
-          .catch((e) => {
-            console.log(e);
+          .catch(() => {
             setIsInsufficientLiquidity(true);
             setReceiveAmount('');
             setOutputTokenTotalPrice(0);

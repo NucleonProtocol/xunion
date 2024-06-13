@@ -6,7 +6,6 @@ import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import { BUTTON_ACCESS } from '@/types/auth.ts';
 
 const WithAuthButton = ({
-  onClick,
   children,
   access = [BUTTON_ACCESS.CONNECTED, BUTTON_ACCESS.CHAIN],
   ...props
@@ -29,15 +28,13 @@ const WithAuthButton = ({
       switchChain({ chainId: CHAIN_ID });
       return;
     }
-
-    onClick?.(e);
   };
 
   if (!walletConnected) {
     return (
       <Button
         size="large"
-        className=" w-full bg-theme-non-opaque text-theme"
+        className=" h-[56px] w-full bg-theme-non-opaque text-theme"
         {...props}
         onClick={onAuthClick}
       >
@@ -49,7 +46,7 @@ const WithAuthButton = ({
   if (isErrorNetwork) {
     return (
       <Button
-        className="w-full"
+        className="h-[56px]  w-full"
         size="large"
         {...props}
         onClick={onAuthClick}
@@ -62,7 +59,6 @@ const WithAuthButton = ({
 
   return React.cloneElement(child as ReactElement, {
     ...props,
-    onClick: onAuthClick,
   });
 };
 

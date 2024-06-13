@@ -1,15 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Token } from '@/types/swap.ts';
-import useErc20Balance from '@/hooks/useErc20Balance.ts';
+import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
 import usePair from '@/pages/trade/hooks/usePair.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useLP from '@/pages/trade/hooks/useLP.ts';
-import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import useCalcAmount from '@/pages/trade/hooks/useCalcAmount.ts';
-import { isNumber } from 'lodash';
-
-export const isNumeric = (value: string) =>
-  isNumber(Number(value)) && Number(value) > 0;
+import { isNumeric } from '@/utils/isNumeric.ts';
 
 type SwapStep = 'FILL' | 'CONFIRM';
 

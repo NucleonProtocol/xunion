@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { LiquidityIcon, SwapIcon } from '@/components/icons';
 import SwapPanel from './SwapPanel.tsx';
-import useSwap from '@/pages/trade/hooks/useSwap.ts';
 import ConfirmPanel from './ConfirmPanel.tsx';
+import useAddLP from '@/pages/trade/hooks/useAddLP.ts';
 
-function Swap() {
-  const { swapStep, ...rest } = useSwap();
+function Liquidity() {
+  const props = useAddLP();
   return (
     <div className="flex flex-1 flex-col items-center justify-center pt-[70px]">
       <div className="flex-center gap-[40px]">
@@ -21,13 +21,13 @@ function Swap() {
           <span>Liquidity</span>
         </div>
       </div>
-      {swapStep === 'FILL' ? (
-        <SwapPanel {...rest} />
+      {props.step === 'FILL' ? (
+        <SwapPanel {...props} />
       ) : (
-        <ConfirmPanel {...rest} />
+        <ConfirmPanel {...props} />
       )}
     </div>
   );
 }
 
-export default Swap;
+export default Liquidity;

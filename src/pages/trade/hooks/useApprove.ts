@@ -5,23 +5,21 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
-import { Token } from '@/types/swap.ts';
 import { formatUnits, parseUnits } from 'ethers';
 import { useEffect, useMemo } from 'react';
-import { isNumeric } from '@/pages/trade/hooks/useSwap.ts';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
+import { isNumeric } from '@/utils/isNumeric.ts';
 
 const useApprove = ({
-  inputToken,
-  payAmount,
+  tokenAddress,
+  amount,
   spenderAddress,
 }: {
-  inputToken?: Token;
-  payAmount: string;
+  tokenAddress: Address;
+  amount: string;
   spenderAddress: Address;
 }) => {
-  const tokenAddress = inputToken?.address as Address;
   const updateSubmitted = useTxStore((state) => state.updateSubmitted);
   const { address: ownerAddress } = useAccount();
   const {
@@ -75,19 +73,19 @@ const useApprove = ({
   }, [isSubmitted]);
 
   const isApproved = useMemo(() => {
-    if (allowance && isNumeric(payAmount) && decimals) {
+    if (allowance && isNumeric(amount) && decimals) {
       const allowanceAmount = formatUnits(allowance.toString(), decimals);
-      return Number(payAmount) <= Number(allowanceAmount);
+      return Number(amount) <= Number(allowanceAmount);
     }
     return false;
-  }, [allowance, payAmount, decimals]);
+  }, [allowance, amount, decimals]);
 
   const approve = () => {
     writeContractAsync({
       address: tokenAddress,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [spenderAddress, parseUnits(payAmount, decimals)],
+      args: [spenderAddress, parseUnits(amount, decimals)],
     });
   };
 

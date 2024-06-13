@@ -127,13 +127,14 @@ const SwapPanel = ({
         </div>
       )}
 
-      <div className="mt-[20px] w-full">
-        <WithAuthButton onClick={onConfirm}>
+      <div className="mt-[20px] h-[56px]  w-full">
+        <WithAuthButton>
           <Button
             className="w-full"
             type="primary"
             size="large"
             disabled={!isReady || isInsufficient || isInsufficientLiquidity}
+            onClick={onConfirm}
           >
             {renderSwapText()}
           </Button>

@@ -59,6 +59,7 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
   return (
     <ConfigProvider
       key={address}
+      wave={{ disabled: true }}
       theme={{
         cssVar: true,
         hashed: false,
@@ -67,6 +68,11 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
         ],
         token: {
           colorPrimary: '#6E5DE6',
+        },
+        components: {
+          Button: {
+            controlHeightLG: 56,
+          },
         },
       }}
     >

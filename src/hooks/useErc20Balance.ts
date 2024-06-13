@@ -23,8 +23,18 @@ const useErc20Balance = () => {
     }
   };
 
+  const getTotalSupply = async (address: string) => {
+    try {
+      const Erc20Contract = new Contract(address, erc20Abi, provider);
+      return await Erc20Contract.totalSupply();
+    } catch (e) {
+      return 0;
+    }
+  };
+
   return {
     getBalance,
+    getTotalSupply,
   };
 };
 

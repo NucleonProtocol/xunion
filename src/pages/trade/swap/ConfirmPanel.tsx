@@ -7,7 +7,7 @@ import { Token } from '@/types/swap.ts';
 import useApprove from '@/pages/trade/hooks/useApprove.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
-import useConfirm from '@/pages/trade/hooks/useConfirm.ts';
+import useSwapConfirm from '@/pages/trade/hooks/useSwapConfirm.ts';
 
 const TokenItem = ({
   token,
@@ -49,11 +49,11 @@ const ConfirmPanel = ({
   deadline,
 }: SwapReturnType) => {
   const { isApproved, loading, approve } = useApprove({
-    inputToken,
-    payAmount,
+    tokenAddress: inputToken?.address as Address,
+    amount: payAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });
-  const { confirm, isSubmittedLoading } = useConfirm({
+  const { confirm, isSubmittedLoading } = useSwapConfirm({
     inputToken,
     outputToken,
     payAmount,
@@ -113,7 +113,7 @@ const ConfirmPanel = ({
           }}
         >
           <Button
-            className="w-full"
+            className="h-[56px]  w-full"
             type="primary"
             size="large"
             loading={loading || isSubmittedLoading}

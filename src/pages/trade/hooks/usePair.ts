@@ -21,9 +21,15 @@ const usePair = ({
   }, [fromToken?.address, toToken?.address]);
 
   const getPairAddress = useCallback(async () => {
-    const pairAddress = await contract.getPair(fromToken?.address, toAddress);
-    setPairAddress(pairAddress);
-  }, [fromToken, toToken]);
+    if (fromToken?.address && toToken?.address) {
+      const pairAddress = await contract.getPair(fromToken?.address, toAddress);
+      if (pairAddress === '0x0000000000000000000000000000000000000000') {
+        setPairAddress('');
+      } else {
+        setPairAddress(pairAddress);
+      }
+    }
+  }, [fromToken?.address, toToken?.address]);
 
   useEffect(() => {
     if (fromToken?.address && toAddress) {

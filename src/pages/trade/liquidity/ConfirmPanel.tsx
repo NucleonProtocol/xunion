@@ -1,31 +1,50 @@
-import { LeftOutlined } from '@ant-design/icons';
-import { ConfirmContent } from '@/pages/trade/swap/SwapInfo.tsx';
+import { CheckCircleOutlined, LeftOutlined } from '@ant-design/icons';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
-import { SwapReturnType } from '@/pages/trade/hooks/useSwap.ts';
-import { Token } from '@/types/swap.ts';
 import useApprove from '@/pages/trade/hooks/useApprove.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
-import useConfirm from '@/pages/trade/hooks/useConfirm.ts';
+import { LiquidityReturnType } from '@/pages/trade/hooks/useAddLP.ts';
+import useAddLPConfirm from '@/pages/trade/hooks/useAddLPConfirm.ts';
+import { getPerAmount } from '@/pages/trade/liquidity/LiquidityInfo.tsx';
+import { getAddress } from 'ethers';
+import { useMemo } from 'react';
 
-const TokenItem = ({
-  token,
-  amount,
-  title,
-}: {
-  token?: Token;
-  amount?: string;
-  title?: string;
-}) => {
+const LPTokenItem = ({
+  tokenB,
+  tokenA,
+  lpTokens,
+  lpPairInfo,
+}: Pick<
+  LiquidityReturnType,
+  'tokenB' | 'tokenA' | 'lpTokens' | 'lpPairInfo'
+>) => {
+  const sortedTokens = useMemo(
+    () =>
+      (lpPairInfo?.lpPair || []).map((address) =>
+        [tokenA, tokenB].find(
+          (token) =>
+            getAddress(token?.address as Address).toLowerCase() ===
+            getAddress(address).toLowerCase()
+        )
+      ),
+    [lpPairInfo?.lpPair]
+  );
+
   return (
-    <div className="flex flex-col">
-      <p className="text-[14px] text-tc-secondary">{title}</p>
-      <div className="flex items-center py-[10px]">
-        <span className="flex-1 text-[26px] font-bold">{amount}</span>
-        <div className="flex-center gap-[5px]">
-          <span className="text-[20px]">{token?.icon}</span>
-          <span>{token?.symbol}</span>
+    <div className="flex-center-between">
+      <div className="text-[32px] font-bold">{lpTokens || 0}</div>
+      <div className="flex-center gap-[10px] ">
+        <div className="flex-center">
+          <span className=" text-[24px]">{sortedTokens[0]?.icon}</span>
+          <span className=" ml-[-5px] text-[24px]">
+            {sortedTokens[1]?.icon}
+          </span>
+        </div>
+        <div className="flex-center gap-[2px] text-[18px]">
+          <span>{sortedTokens[0]?.symbol}</span>
+          <span>/</span>
+          <span>{sortedTokens[1]?.symbol}</span>
         </div>
       </div>
     </div>
@@ -33,95 +52,134 @@ const TokenItem = ({
 };
 
 const ConfirmPanel = ({
-  slippage,
-  inputToken,
-  outputToken,
-  payAmount,
-  receiveAmount,
-  priceImpact,
-  fee,
-  estReceived,
-  minReceived,
-  feeAmount,
-  isInsufficient,
-  isReady,
-  onFillSwap,
-  deadline,
-}: SwapReturnType) => {
-  const { isApproved, loading, approve } = useApprove({
-    inputToken,
-    payAmount,
+  setStep,
+  lpTokens,
+  tokenA,
+  tokenAAmount,
+  tokenBAmount,
+  tokenB,
+  lpPairInfo,
+  shareOfPool,
+}: LiquidityReturnType) => {
+  const {
+    isApproved: isTokenAApproved,
+    loading: isTokenAApproving,
+    approve: approveTokenA,
+  } = useApprove({
+    tokenAddress: tokenA?.address as Address,
+    amount: tokenAAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });
-  const { confirm, isSubmittedLoading } = useConfirm({
-    inputToken,
-    outputToken,
-    payAmount,
-    receiveAmount,
-    slippage,
-    deadline,
-    onFillSwap,
+
+  const {
+    isApproved: isTokenBApproved,
+    loading: isTokenBApproving,
+    approve: approveTokenB,
+  } = useApprove({
+    tokenAddress: tokenB?.address as Address,
+    amount: tokenBAmount,
+    spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
+  });
+
+  const { confirm, isSubmittedLoading } = useAddLPConfirm({
+    tokenA,
+    tokenB,
+    tokenBAmount,
+    tokenAAmount,
+    lpPairInfo,
+    setStep,
   });
 
   return (
     <div className="mt-[30px] min-h-[420px] w-[500px] rounded-[20px] bg-fill-niubi  p-[20px]">
       <a
         className="inline-block w-auto cursor-pointer font-bold hover:text-theme"
-        onClick={onFillSwap}
+        onClick={() => setStep('FILL')}
       >
         <LeftOutlined />
-        <span className="pl-[10px]">Confirm Swap</span>
+        <span className="pl-[10px]">Confirm liquidity</span>
       </a>
       <div className="mt-[20px]">
-        <TokenItem token={inputToken} amount={payAmount} title="You pay" />
-        <TokenItem
-          token={outputToken}
-          amount={receiveAmount}
-          title="You receive"
-        />
+        <div className="flex-center-between text-tc-secondary">
+          <span>You receive</span>
+          <span>LP tokens</span>
+        </div>
+        <div>
+          <LPTokenItem
+            tokenB={tokenB}
+            tokenA={tokenA}
+            lpTokens={lpTokens}
+            lpPairInfo={lpPairInfo}
+          />
+        </div>
       </div>
-      <div className="px-[10px] py-[20px] text-[14px]">
-        <ConfirmContent
-          slippage={slippage}
-          priceImpact={priceImpact}
-          fee={fee}
-          feeAmount={feeAmount}
-          estReceived={estReceived}
-          minReceived={minReceived}
-          inputToken={inputToken}
-          outputToken={outputToken}
-        />
-      </div>
-      <div className="rounded-[8px] bg-status-warning-non-opaque p-[10px]">
-        <span className="text-[14px]">
-          Output is estimated. You will receive at least
-          <span className="px-[5px] text-status-error">
-            {receiveAmount} {outputToken?.symbol}
-          </span>
-          or the transaction will revert.
-        </span>
+      <div className="flex flex-col gap-[6px]  px-[10px] py-[20px] text-[14px]">
+        <div className="flex-center-between">
+          <span className="text-tc-secondary">{tokenA?.symbol} deposit</span>
+          <span>{tokenAAmount || 0}</span>
+        </div>
+        <div className="flex-center-between">
+          <span className="text-tc-secondary">{tokenB?.symbol} deposit</span>
+          <span>{tokenBAmount || 0}</span>
+        </div>
+        <div className="flex-center-between">
+          <span className="text-tc-secondary">Share of pool</span>
+          <span>{shareOfPool || 0}%</span>
+        </div>
+        <div className="flex items-start justify-between">
+          <span className="text-tc-secondary">Rates</span>
+          <div className="flex flex-col items-end justify-end">
+            <span>
+              {`1 ${tokenA?.symbol} = ${getPerAmount(tokenAAmount, tokenBAmount)} ${tokenB?.symbol}`}
+            </span>
+            <span>
+              {`1 ${tokenB?.symbol} = ${getPerAmount(tokenBAmount, tokenAAmount)} ${tokenA?.symbol}`}
+            </span>
+          </div>
+        </div>
       </div>
       <div className="mt-[20px] w-full">
-        <WithAuthButton
-          disabled={!isReady || isInsufficient}
-          onClick={() => {
-            if (!isApproved) {
-              approve();
-            } else {
-              confirm();
-            }
-          }}
-        >
-          <Button
-            className="w-full"
-            type="primary"
-            size="large"
-            loading={loading || isSubmittedLoading}
-          >
-            {!isApproved
-              ? `Give permission to use ${inputToken?.symbol}`
-              : 'Swap'}
-          </Button>
+        <WithAuthButton>
+          <div>
+            <div className="flex-center mb-[10px] gap-[20px]">
+              <Button
+                className="flex-1"
+                type="primary"
+                size="large"
+                disabled={isTokenAApproved}
+                icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
+                loading={isTokenAApproving}
+                onClick={approveTokenA}
+              >
+                {isTokenAApproved
+                  ? `${tokenA?.symbol} Approved`
+                  : `Approve ${tokenA?.symbol}`}
+              </Button>
+              <Button
+                className="flex-1"
+                type="primary"
+                size="large"
+                disabled={isTokenBApproved}
+                loading={isTokenBApproving}
+                icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
+                onClick={approveTokenB}
+              >
+                {isTokenBApproved
+                  ? `${tokenB?.symbol} Approved`
+                  : `Approve ${tokenB?.symbol}`}
+              </Button>
+            </div>
+            <Button
+              className="w-full"
+              type="primary"
+              size="large"
+              loading={isSubmittedLoading}
+              disabled={!isTokenBApproved || !isTokenAApproved}
+              onClick={confirm}
+            >
+              Confirm
+            </Button>
+          </div>
         </WithAuthButton>
       </div>
     </div>
