@@ -152,12 +152,6 @@ const useAddLP = (): LiquidityReturnType => {
             const tokenAAmountRef =
               (Number(tokenBAmount) / Number(tokenBLPTotal)) *
               Number(tokenALPTotal);
-            console.log(
-              'tokenAAmountRef',
-              tokenAAmountRef,
-              tokenBLPTotal,
-              tokenBAmount
-            );
             const amount = formatNumber(tokenAAmountRef, 6).toString();
             setTokenAAmount(isNumeric(amount) ? amount : '');
           }
