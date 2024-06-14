@@ -149,9 +149,9 @@ const TokenSelector = ({
       </Modal>
       <div
         className={cn(
-          'flex-center h-[40px] flex-shrink-0  gap-[10px] rounded-[20px] px-[10px]',
+          'flex-center h-[40px] flex-shrink-0  gap-[10px] rounded-[20px]',
           {
-            ' cursor-pointer hover:bg-theme-non-opaque': !disabled,
+            'cursor-pointer hover:bg-theme-non-opaque': !disabled,
           }
         )}
         onClick={() => {

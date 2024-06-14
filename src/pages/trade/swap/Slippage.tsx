@@ -103,7 +103,6 @@ const SlippageSelector = ({
 const Slippage = ({
   value,
   onChange,
-  disabled,
   deadline,
   onDeadlineChange,
 }: {
@@ -116,7 +115,7 @@ const Slippage = ({
   return (
     <Popover
       content={
-        <div className="min-h-[160px] w-[400px]">
+        <div className="min-h-[160px] max-md:w-[290px] md:w-[400px]">
           <div className="mt-[20px] flex flex-col gap-[10px]">
             <SlippageSelector value={value} onChange={onChange} />
             <div className="flex items-center gap-[10px]">
@@ -148,11 +147,7 @@ const Slippage = ({
       trigger={['click']}
       placement="bottomRight"
     >
-      <div
-        className={cn('flex-center gap-[5px] ', {
-          'pointer-events-none opacity-75': disabled,
-        })}
-      >
+      <div className={cn('flex-center gap-[5px] ')}>
         <span className="text-[14px] text-tc-secondary">
           {Number(value || 0) > 0 ? `${value}%` : 'Auto(0.5%)'}
         </span>

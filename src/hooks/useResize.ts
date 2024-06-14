@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { debounce } from 'lodash';
 type Fn = () => void;
 
 const useResize = () => {
@@ -8,7 +9,7 @@ const useResize = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       handlerRef.current = () => setWidth(window.innerWidth);
-      window.addEventListener('resize', handlerRef.current);
+      window.addEventListener('resize', debounce(handlerRef.current, 300));
     }
     return () => {
       if (typeof window !== 'undefined' && handlerRef.current) {

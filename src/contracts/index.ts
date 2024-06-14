@@ -14,31 +14,31 @@ export const E_SPACE_MAIN_RPC = 'https://evm.confluxrpc.org';
 //   test net
 export const XUNION_SWAP_CONTRACT = {
   factory: {
-    address: '0x322725e74D8ce7E3Fa06E0219883Ee4ca627Fb0A',
+    address: '0x3A9d595D7130145955097b1B304CA735f13e200C',
     abi: [],
   },
   vaults: {
-    address: '0x7Cf4bdf8b9c7419A7FAaFC82C5DAEb30a3d6C8E3',
+    address: '0xd823a46F3c905958c0CE4fB55d742492D344E510',
     abi: [],
   },
   lpvaults: {
-    address: '0x2436Ae533baa7e1cf01062B62E6c926C9D78d3B4',
+    address: '0xfD9fE7A26FE6D26aa82Ec654B653bd75d078bB10',
     abi: [],
   },
   lpmanager: {
-    address: '0xba0c9221da0207b49D35dEf9fc064B7d967417c1',
+    address: '0xc640458bcC2a4fF9DE87838f9097563313a154D5',
     abi: [],
   },
   core: {
-    address: '0x96b491AD541F0fa558DbCb107bCD8F400C1B1BCa',
+    address: '0x62594F9309068527563459539713DFAAde6c544A',
     abi: [],
   },
   interface: {
-    address: '0x9698e25746195ba599be46a065281888964e7468',
+    address: '0xE973d4ae8A80B4E7Cce49Cc847A36895D1CaabA6',
     abi: interfaceABI,
   },
   slc: {
-    address: '0x4dAfEa49A8F138F2Aaf20B8Abe67Ec56200c3073',
+    address: '0x84A1894b366a2346D92a7a57D4150Ee08aaf3423',
     abi: erc20Abi,
   },
   usdt: {
