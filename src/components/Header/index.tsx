@@ -11,7 +11,7 @@ import { cn } from '@/utils/classnames.ts';
 const Header = () => {
   const { setTheme, theme } = useTheme();
   return (
-    <div className="py-[20px flex h-[80px] items-center justify-between px-[30px]">
+    <div className="py-[20px flex h-[80px] items-center justify-between px-[30px] max-md:px-[20px]">
       <Link to="/" className="flex-center gap-[5px]">
         <span className="text-[40px] max-md:text-[30px]">
           <LogoIcon />
