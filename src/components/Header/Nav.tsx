@@ -63,8 +63,8 @@ const Nav = () => {
   }));
 
   return (
-    <div className="flex items-center gap-[20px] text-[16px]">
-      <Dropdown menu={{ items }} trigger={['hover']} onOpenChange={setOpen}>
+    <div className="flex items-center gap-[20px] text-[16px] max-md:flex-1 max-md:justify-around max-md:gap-[10px]">
+      <Dropdown menu={{ items }} trigger={['click']} onOpenChange={setOpen}>
         <div className="flex cursor-pointer items-center gap-[10px] px-[12px]">
           Trade
           <DownOutlined
@@ -76,10 +76,10 @@ const Nav = () => {
         </div>
       </Dropdown>
 
-      <Link to={'/'} className="px-[12px]  text-tc-secondary">
+      <Link to={'/'} className="px-[12px]  text-tc-secondary max-md:px-[8px]">
         SLC
       </Link>
-      <Link to={'/'} className="px-[12px] text-tc-secondary">
+      <Link to={'/'} className="px-[12px] text-tc-secondary max-md:px-[8px]">
         Explore
       </Link>
     </div>

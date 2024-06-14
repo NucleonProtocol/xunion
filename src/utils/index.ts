@@ -27,6 +27,6 @@ export function maskAddress4(address: string) {
 }
 
 export function isValidURL(url: string) {
-  var urlRegex = /^(https):\/\/[^\s/$.?#].[^\s]*$/;
+  const urlRegex = /^(https):\/\/[^\s/$.?#].[^\s]*$/;
   return urlRegex.test(url);
 }

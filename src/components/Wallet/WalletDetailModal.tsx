@@ -1,4 +1,3 @@
-import { Drawer } from 'antd';
 import useWalletStore from '@/store/wallet.ts';
 import { MetamaskIcon, FluentIcon, AvatarIcon } from '@/components/icons';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -6,6 +5,7 @@ import { usePersistStore } from '@/store/persist.ts';
 import { maskAddress4 } from '@/utils';
 import { CopyOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useCopy } from '@/hooks/useCopy.ts';
+import DrawerContainer from '@/components/DrawerContainer.tsx';
 
 const WalletDetailModal = () => {
   const open = useWalletStore((state) => state.detailOpen);
@@ -15,26 +15,16 @@ const WalletDetailModal = () => {
   const wallet = usePersistStore((state) => state.wallet);
   const { address } = useAccount();
   const { copy } = useCopy();
+
   return (
     address && (
-      <Drawer
-        placement="right"
-        closable={false}
+      <DrawerContainer
+        open={open}
         onClose={() => {
           onOpen(false);
         }}
-        open={open}
-        contentWrapperStyle={{
-          margin: 20,
-          borderRadius: 20,
-        }}
-        rootClassName="outline-0 border-0"
-        className="rounded-[20px] "
-        maskStyle={{
-          opacity: 0,
-        }}
       >
-        <div>
+        <div className="h-full">
           <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center gap-[10px]">
               <div className="relative h-[40px] w-[40px]">
@@ -66,7 +56,7 @@ const WalletDetailModal = () => {
 
           <div className="mt-[20px] flex flex-col gap-[16px]"></div>
         </div>
-      </Drawer>
+      </DrawerContainer>
     )
   );
 };
