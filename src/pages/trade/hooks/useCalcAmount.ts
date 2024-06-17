@@ -56,7 +56,7 @@ const useCalcAmount = ({
             const amountStr = formatEther(amount[0].toString());
             setPayAmount(formatNumber(Number(amountStr), 8).toString());
             const info = amount[1];
-            setFee(Number(info[0].toString()) / 10000);
+            setFee((Number(info[0].toString()) / 10000) * 100);
             setPriceImpact(
               Number((info[1] - info[2]).toString()) /
                 Number(info[2].toString())
@@ -101,7 +101,7 @@ const useCalcAmount = ({
                 100,
               2
             );
-            setFee(Number(info[0].toString()) / 10000);
+            setFee((Number(info[0].toString()) / 10000) * 100);
             setPriceImpact(impact);
           })
           .catch(() => {
