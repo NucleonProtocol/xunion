@@ -239,9 +239,7 @@ const useAddLP = (): LiquidityReturnType => {
     if (isNumeric(tokenAAmount) && lpPairInfo) {
       const { tokenALPTotal } = lpPairInfo;
       return formatNumber(
-        (Number(tokenAAmount) /
-          (Number(tokenAAmount) + Number(tokenALPTotal))) *
-          100,
+        Number(tokenAAmount) / (Number(tokenAAmount) + Number(tokenALPTotal)),
         2
       );
     }
