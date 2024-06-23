@@ -1,6 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import PageLayout from '@/components/Layout/PageLayout';
 import Swap from '@/pages/trade/swap';
+import Limit from '@/pages/trade/swap/limit';
+import Send from '@/pages/trade/swap/send';
 import Pools from '@/pages/trade/pools';
 import Liquidity from '@/pages/trade/liquidity';
 import CreatePool from '@/pages/trade/create-pool';
@@ -22,6 +24,18 @@ const routes = [
           {
             path: '',
             element: <Navigate to="swap" replace />,
+          },
+          {
+            path: 'swap',
+            element: <Swap />,
+          },
+          {
+            path: 'limit',
+            element: <Limit />,
+          },
+          {
+            path: 'send',
+            element: <Send />,
           },
           {
             path: 'swap',

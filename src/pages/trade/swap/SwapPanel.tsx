@@ -4,9 +4,9 @@ import { ArrowDownOutlined } from '@ant-design/icons';
 import SwapInfo from '@/pages/trade/swap/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
-import { useTranslate } from '@/i18n';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import { SwapReturnType } from '@/pages/trade/hooks/useSwap.ts';
+import SecondTabs from '@/pages/trade/swap/SecondTabs.tsx';
 
 const SwapPanel = ({
   slippage,
@@ -38,8 +38,6 @@ const SwapPanel = ({
   isInsufficientLiquidity,
   onConfirm,
 }: SwapReturnType) => {
-  const { t } = useTranslate();
-
   const { disabled } = useWalletAuth();
 
   const renderSwapText = () => {
@@ -54,17 +52,7 @@ const SwapPanel = ({
   return (
     <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
       <div className="flex items-center justify-between ">
-        <div className="flex-center gap-[10px]">
-          <div className="flex-center h-[36px] rounded-[20px] bg-fill-primary px-[16px]">
-            {t('swap')}
-          </div>
-          <div className="flex-center h-[36px] rounded-[20px] px-[16px] text-tc-secondary">
-            Limit
-          </div>
-          <div className="flex-center h-[36px] rounded-[20px] px-[16px] text-tc-secondary">
-            Send
-          </div>
-        </div>
+        <SecondTabs active="Swap" />
         <Slippage
           value={slippage}
           onChange={setSlippage}

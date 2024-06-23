@@ -1,10 +1,11 @@
-import { Divider, Input, Modal, Spin } from 'antd';
+import { Divider, Input, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { Token } from '@/types/swap.ts';
 import { recommends } from '@/pages/trade/swap/tokens.tsx';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
+import { SpinIcon } from '@/components/icons/tokens';
 
 const ModalContent = ({
   value,
@@ -40,78 +41,77 @@ const ModalContent = ({
     getAllBalance();
   }, []);
 
+  console.log(loading);
   return (
-    <Spin spinning={loading}>
-      <div className="h-[600px] overflow-y-auto">
-        <div className="mb-[20px] text-[14px] text-tc-secondary">
-          Select a token from our default list or search for a token by symbol
-          or address.
-        </div>
-        <Input
-          prefix={<SearchOutlined />}
-          placeholder="Search name or paste address"
-          className="rounded-[20px]"
-        />
-        <div className="my-[20px] flex flex-wrap gap-[20px]">
-          {recommends.map((item) => (
-            <div
-              className={cn(
-                'flex-center  h-[32px] cursor-pointer gap-[10px] rounded-[20px] border-2  border-solid px-[16px]',
-                'hover:border-transparent hover:bg-fill-primary',
-                {
-                  'border-transparent bg-fill-primary':
-                    item.symbol === value?.symbol,
-                  'cursor-not-allowed opacity-75':
-                    disabledToken?.symbol === item.symbol,
-                }
-              )}
-              key={item.symbol}
-              onClick={() => {
-                if (disabledToken?.symbol !== item.symbol) {
-                  onChange(item);
-                  onOpen(false);
-                }
-              }}
-            >
-              {item.icon}
-              {item.symbol}
-            </div>
-          ))}
-        </div>
-        <Divider />
-        <div className="my-[20px] flex flex-col gap-[20px]">
-          {recommendsWithAmount.map((item) => (
-            <div
-              className={cn(
-                'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:opacity-75',
-                {
-                  'cursor-not-allowed opacity-75':
-                    disabledToken?.symbol === item.symbol,
-                }
-              )}
-              key={item.symbol}
-              onClick={() => {
-                if (disabledToken?.symbol !== item.symbol) {
-                  onChange(item);
-                  onOpen(false);
-                }
-              }}
-            >
-              <div className="text-[36px]">{item.icon}</div>
-              <div className="flex flex-1 flex-col">
-                <span className="text-[16px]"> {item.name}</span>
-                <span className="text-[14px] text-tc-secondary">
-                  {item.symbol}
-                </span>
-              </div>
-              <div className="">
-                <span>{item.amount}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="h-[600px] overflow-y-auto">
+      <div className="mb-[20px] text-[14px] text-tc-secondary">
+        Select a token from our default list or search for a token by symbol or
+        address.
       </div>
-    </Spin>
+      <Input
+        prefix={<SearchOutlined />}
+        placeholder="Search name or paste address"
+        className="rounded-[20px]"
+      />
+      <div className="my-[20px] flex flex-wrap gap-[20px]">
+        {recommends.map((item) => (
+          <div
+            className={cn(
+              'flex-center  h-[32px] cursor-pointer gap-[10px] rounded-[20px] border-2  border-solid px-[16px]',
+              'hover:border-transparent hover:bg-fill-primary',
+              {
+                'border-transparent bg-fill-primary':
+                  item.symbol === value?.symbol,
+                'cursor-not-allowed opacity-75':
+                  disabledToken?.symbol === item.symbol,
+              }
+            )}
+            key={item.symbol}
+            onClick={() => {
+              if (disabledToken?.symbol !== item.symbol) {
+                onChange(item);
+                onOpen(false);
+              }
+            }}
+          >
+            {item.icon}
+            {item.symbol}
+          </div>
+        ))}
+      </div>
+      <Divider />
+      <div className="my-[20px] flex flex-col gap-[20px]">
+        {recommendsWithAmount.map((item) => (
+          <div
+            className={cn(
+              'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:opacity-75',
+              {
+                'cursor-not-allowed opacity-75':
+                  disabledToken?.symbol === item.symbol,
+              }
+            )}
+            key={item.symbol}
+            onClick={() => {
+              if (disabledToken?.symbol !== item.symbol) {
+                onChange(item);
+                onOpen(false);
+              }
+            }}
+          >
+            <div className="text-[36px]">{item.icon}</div>
+            <div className="flex flex-1 flex-col">
+              <span className="text-[16px]"> {item.name}</span>
+              <span className="text-[14px] text-tc-secondary">
+                {item.symbol}
+              </span>
+            </div>
+            <div className="">
+              {loading ? <SpinIcon /> : <span>{item.amount}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
