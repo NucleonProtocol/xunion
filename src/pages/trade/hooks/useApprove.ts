@@ -24,23 +24,28 @@ const useApprove = ({
   const { address: ownerAddress } = useAccount();
   const {
     data: allowance,
-    isPending: isAllowanceLoading,
+    isLoading: isAllowanceLoading,
     refetch,
   } = useReadContract({
     address: tokenAddress,
     abi: erc20Abi,
     functionName: 'allowance',
     args: [ownerAddress!, spenderAddress],
+    query: {
+      enabled: !!tokenAddress,
+    },
   });
-  const { data: decimals, isPending: isDecimalsLoading } = useReadContract({
+  const { data: decimals, isLoading: isDecimalsLoading } = useReadContract({
     address: tokenAddress,
     abi: erc20Abi,
     functionName: 'decimals',
+    query: {
+      enabled: !!tokenAddress,
+    },
   });
 
   const {
     data: hash,
-    isPending: isApproveLoading,
     writeContractAsync,
     isSuccess: isSubmitted,
   } = useWriteContract();
@@ -89,8 +94,10 @@ const useApprove = ({
     });
   };
 
-  const loading =
-    isAllowanceLoading || isDecimalsLoading || isApproveLoading || isTxLoading;
+  const loading = isAllowanceLoading || isDecimalsLoading || isTxLoading;
+  console.log(isAllowanceLoading);
+  console.log(isDecimalsLoading);
+  console.log(isTxLoading);
   return {
     isApproved,
     approve,

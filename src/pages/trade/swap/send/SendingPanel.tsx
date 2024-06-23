@@ -35,8 +35,8 @@ const SendingPanel = () => {
     if (isInsufficient) {
       return `Insufficient ${inputToken?.symbol} Balance`;
     }
-    if (!isApproved) {
-      return `Give permission to use ${inputToken?.symbol}`;
+    if (!isApproved && inputToken?.symbol) {
+      return `Approve ${inputToken?.symbol}`;
     }
     return 'Send';
   };
