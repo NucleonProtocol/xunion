@@ -65,7 +65,6 @@ const SendingPanel = () => {
             rules={[
               {
                 validator: async (_, value) => {
-                  console.log(value);
                   if (value) {
                     if (!isAddress(value)) {
                       const addr = await getAddrByCISId(value);

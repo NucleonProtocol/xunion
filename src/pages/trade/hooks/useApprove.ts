@@ -95,9 +95,6 @@ const useApprove = ({
   };
 
   const loading = isAllowanceLoading || isDecimalsLoading || isTxLoading;
-  console.log(isAllowanceLoading);
-  console.log(isDecimalsLoading);
-  console.log(isTxLoading);
   return {
     isApproved,
     approve,
