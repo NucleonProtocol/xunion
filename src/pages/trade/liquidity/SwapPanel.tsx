@@ -22,15 +22,32 @@ const SwapPanel = ({
   tokenBOwnerAmount,
   tokenASLCPairAddress,
   tokenBSLCPairAddress,
-  isInsufficientLiquidity,
-  invalidPool,
   isReady,
   shareOfPool,
   setStep,
+  loading,
+  lpPairInfo,
+  tokenATotalPrice,
+  tokenBTotalPrice,
+  tokenAMinimum1000,
+  tokenBMinimum1000,
 }: LiquidityReturnType) => {
   const { disabled: invalidWallet } = useWalletAuth();
 
-  const renderADDLPText = () => {
+  const renderAction = () => {
+    if (loading) {
+      return (
+        <Button
+          className="w-full"
+          type="primary"
+          size="large"
+          loading={loading}
+          disabled
+        >
+          Add Liquidity
+        </Button>
+      );
+    }
     if (tokenA?.address && tokenB?.address) {
       if (!tokenASLCPairAddress) {
         return (
@@ -64,7 +81,7 @@ const SwapPanel = ({
           </div>
         );
       }
-      if (invalidPool || isInsufficientLiquidity) {
+      if (!lpPairInfo?.pairAddress) {
         return (
           <div className="flex flex-col gap-[10px]">
             <Warning>
@@ -96,19 +113,27 @@ const SwapPanel = ({
     }
 
     return (
-      <Button
-        className="w-full"
-        type="primary"
-        size="large"
-        onClick={() => {
-          if (isReady) {
+      <div className="flex flex-col gap-[10px]">
+        {lpPairInfo?.isInitialPool && (
+          <Warning>
+            When adding liquidity for the first time, the amount of each
+            currency must be greater than or equal to 1000 $SLC
+          </Warning>
+        )}
+        <Button
+          className="w-full"
+          type="primary"
+          size="large"
+          onClick={() => {
             setStep('CONFIRM');
-          }
-        }}
-        disabled={!isReady}
-      >
-        Add Liquidity
-      </Button>
+          }}
+          disabled={!isReady || !tokenAMinimum1000 || !tokenBMinimum1000}
+        >
+          {!tokenAMinimum1000 || !tokenBMinimum1000
+            ? `Token ${!tokenAMinimum1000 ? 'A' : 'B'} Minimum 1000 $SLC`
+            : 'Add Liquidity'}
+        </Button>
+      </div>
     );
   };
   return (
@@ -116,7 +141,7 @@ const SwapPanel = ({
       <div className="mt-[20px]">
         <TokenInput
           title="Token A"
-          editable
+          editable={!loading}
           token={tokenA}
           onTokenChange={onTokenAChange}
           amount={tokenAAmount}
@@ -127,7 +152,7 @@ const SwapPanel = ({
             onTokenAAmountChange(ownerAmount.toString());
           }}
           ownerAmount={tokenAOwnerAmount}
-          totalPrice={0}
+          totalPrice={tokenATotalPrice}
         />
         <div className="relative h-[20px]">
           <div className="flex-center  absolute left-[50%]  top-[-8px] h-[36px] w-[36px] -translate-x-[50%] transform rounded-[2px] border-[3px] border-line-primary2 bg-background-primary">
@@ -136,7 +161,7 @@ const SwapPanel = ({
         </div>
         <TokenInput
           title="Token B"
-          editable
+          editable={!loading}
           token={tokenB}
           onTokenChange={onTokenBChange}
           amount={tokenBAmount}
@@ -147,10 +172,9 @@ const SwapPanel = ({
             onTokenBAmountChange(ownerAmount.toString());
           }}
           ownerAmount={tokenBOwnerAmount}
-          totalPrice={0}
+          totalPrice={tokenBTotalPrice}
         />
       </div>
-
       {isReady && tokenASLCPairAddress && tokenBSLCPairAddress && (
         <div className="px-[20px] py-[10px]">
           <LiquidityInfo
@@ -163,7 +187,7 @@ const SwapPanel = ({
         </div>
       )}
       <div className="mt-[20px] w-full">
-        <WithAuthButton>{renderADDLPText()}</WithAuthButton>
+        <WithAuthButton>{renderAction()}</WithAuthButton>
       </div>
     </div>
   );

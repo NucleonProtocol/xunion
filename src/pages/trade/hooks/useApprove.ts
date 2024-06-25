@@ -60,7 +60,6 @@ const useApprove = ({
       enabled: !!hash,
     },
   });
-
   useEffect(() => {
     if (isSuccess && hash) {
       writeTxNotification(hash);

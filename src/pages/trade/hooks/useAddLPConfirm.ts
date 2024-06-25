@@ -83,12 +83,12 @@ const useAddLPConfirm = ({
             getAddress(address).toLowerCase()
         )?.amount
     );
-  }, [lpPairInfo?.lpPair, tokenAAmount, tokenBAmount]);
+  }, [lpPairInfo, tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
 
   const confirm = () => {
     if (tokenADecimals && tokenBDecimals) {
       const { address, abi } = XUNION_SWAP_CONTRACT.interface;
-
+      console.log(lpPairInfo?.pairAddress, sortedAmounts);
       writeContractAsync({
         address: address as Address,
         abi,

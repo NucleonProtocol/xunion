@@ -1,17 +1,18 @@
 import { useCallback } from 'react';
 import useInterfaceContract from '@/hooks/useInterfaceContract.ts';
 import { formatUnits } from 'ethers';
-import { isSLCToken } from '@/contracts';
+import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
 
 const useLP = () => {
   const contract = useInterfaceContract();
 
   const getSLCPairAddress = async (coinAddress: string) => {
+    let tokenAddress = coinAddress;
     if (isSLCToken(coinAddress)) {
-      return '0x0000000000000000000000000000000000000000';
+      tokenAddress = XUNION_SWAP_CONTRACT.usdt.address;
     }
     return await contract
-      .getCoinToStableLpPair(coinAddress)
+      .getCoinToStableLpPair(tokenAddress)
       .then((res) =>
         res === '0x0000000000000000000000000000000000000000' ? '' : res
       );

@@ -41,7 +41,6 @@ const ModalContent = ({
     getAllBalance();
   }, []);
 
-  console.log(loading);
   return (
     <div className="h-[600px] overflow-y-auto">
       <div className="mb-[20px] text-[14px] text-tc-secondary">
@@ -149,9 +148,9 @@ const TokenSelector = ({
       </Modal>
       <div
         className={cn(
-          'flex-center h-[40px] flex-shrink-0  gap-[10px] rounded-[20px] px-[5px]',
+          'flex-center h-[40px] flex-shrink-0  gap-[5px] rounded-[20px] text-tc-secondary',
           {
-            'cursor-pointer hover:bg-theme-non-opaque': !disabled,
+            'cursor-pointer hover:text-theme': !disabled,
           }
         )}
         onClick={() => {
@@ -166,10 +165,10 @@ const TokenSelector = ({
             <span>{value?.symbol}</span>
           </>
         ) : (
-          <span className="text-tc-secondary">Select Token</span>
+          <span className="">Select Token</span>
         )}
 
-        <DownOutlined className="text-[14px] text-tc-secondary" />
+        <DownOutlined className="text-[14px]" />
       </div>
     </div>
   );

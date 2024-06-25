@@ -14,6 +14,7 @@ const TokenInput = ({
   onMax,
   ownerAmount,
   totalPrice,
+  placeholder = '0',
 }: {
   title: string;
   editable?: boolean;
@@ -26,6 +27,7 @@ const TokenInput = ({
   onMax?: (ownerAmount: number) => void;
   ownerAmount: number;
   totalPrice: number;
+  placeholder?: string;
 }) => {
   return (
     <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
@@ -35,7 +37,7 @@ const TokenInput = ({
         <div className="flex-1">
           <input
             className="w-full border-0 bg-transparent text-[30px] font-bold outline-0 focus:border-0 focus:bg-transparent "
-            placeholder="0"
+            placeholder={placeholder}
             disabled={!editable || disabled}
             value={amount}
             onChange={(e) => {

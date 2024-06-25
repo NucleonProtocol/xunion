@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, PropsWithChildren } from 'react';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 const CHAIN_ID = 1;
 
@@ -19,8 +19,7 @@ const WithAuth = ({
   PropsWithChildren<{ access?: BUTTON_ACCESS[] }>) => {
   const { switchChain } = useSwitchChain();
   const { isConnected } = useAccount();
-  const chainId = useChainId();
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
 
   const walletConnected = !(
     !isConnected &&

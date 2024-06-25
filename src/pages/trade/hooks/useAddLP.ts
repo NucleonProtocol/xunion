@@ -4,6 +4,7 @@ import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { Token } from '@/types/swap.ts';
 import { formatEther, getAddress } from 'ethers';
 import { isNumeric } from '@/utils/isNumeric.ts';
+import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
 
 type Step = 'FILL' | 'CONFIRM';
 
@@ -13,9 +14,13 @@ export interface LpPairInfo {
   pairAddress: string;
   lpTotalSupply: string;
   lpPair: string[];
+  isInitialPool: boolean;
 }
 export interface LiquidityReturnType {
   isReady: boolean;
+  loading: boolean;
+  tokenAMinimum1000: boolean;
+  tokenBMinimum1000: boolean;
   tokenA?: Token;
   tokenB?: Token;
   tokenAAmount: string;
@@ -28,10 +33,10 @@ export interface LiquidityReturnType {
   onTokenAAmountChange: (amount: string) => void;
   onTokenBChange: (token: Token) => void;
   onTokenAChange: (token: Token) => void;
-  invalidPool: boolean;
-  isInsufficientLiquidity: boolean;
   shareOfPool: number;
   lpTokens: number;
+  tokenBTotalPrice: number;
+  tokenATotalPrice: number;
   lpPairInfo?: LpPairInfo;
   step: Step;
   setStep: (step: Step) => void;
@@ -46,8 +51,10 @@ const useAddLP = (): LiquidityReturnType => {
   const [tokenB, setTokenB] = useState<Token | undefined>();
   const [tokenAOwnerAmount, setTokenAOwnerAmount] = useState(0);
   const [tokenBOwnerAmount, setTokenBOwnerAmount] = useState(0);
-  const [invalidPool, setInvalidPool] = useState(false);
-  const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
+  const [tokenAUnitPrice, setTokenAUnitPrice] = useState(0);
+  const [tokenBUnitPrice, setTokenBUnitPrice] = useState(0);
+  const [SLCUnitPrice, setSLCUnitPrice] = useState(0);
+
   const [tokenASLCPairAddress, setTokenAPairAddress] = useState<
     string | undefined
   >();
@@ -60,18 +67,42 @@ const useAddLP = (): LiquidityReturnType => {
   const { getSLCPairAddress, getLpReserve, getLpPair, getPairAddress } =
     useLP();
 
+  const [loading, setLoading] = useState(false);
+
+  const { getLpPrice } = useLP();
+
   useEffect(() => {
-    if (tokenA?.address) {
-      getBalance(tokenA.address).then(setTokenAOwnerAmount);
-      getSLCPairAddress(tokenA.address).then(setTokenAPairAddress);
+    if (tokenASLCPairAddress) {
+      getLpPrice(tokenASLCPairAddress).then(setTokenAUnitPrice);
     }
-  }, [tokenA]);
+  }, [tokenASLCPairAddress]);
+
   useEffect(() => {
-    if (tokenB?.address) {
-      getBalance(tokenB.address).then(setTokenBOwnerAmount);
-      getSLCPairAddress(tokenB.address).then(setTokenBPairAddress);
+    if (tokenBSLCPairAddress) {
+      getLpPrice(tokenBSLCPairAddress).then(setTokenBUnitPrice);
     }
-  }, [tokenB]);
+  }, [tokenBSLCPairAddress]);
+
+  useEffect(() => {
+    getSLCPairAddress(XUNION_SWAP_CONTRACT.slc.address).then((pairAddress) => {
+      getLpPrice(pairAddress).then(setSLCUnitPrice);
+    });
+  }, []);
+
+  const tokenATotalPrice = useMemo(
+    () =>
+      tokenAUnitPrice && tokenAAmount
+        ? formatNumber(Number(tokenAAmount) * tokenAUnitPrice, 2)
+        : 0,
+    [tokenAUnitPrice, tokenAAmount]
+  );
+  const tokenBTotalPrice = useMemo(
+    () =>
+      tokenBUnitPrice && tokenBAmount
+        ? formatNumber(Number(tokenBAmount) * tokenBUnitPrice, 2)
+        : 0,
+    [tokenBUnitPrice, tokenBAmount]
+  );
 
   const getLpTotal = async ({
     tokenAAddress,
@@ -85,7 +116,6 @@ const useAddLP = (): LiquidityReturnType => {
       tokenBAddress
     );
     if (!pairAddress) {
-      setIsInsufficientLiquidity(true);
       return;
     }
     const lpPair = await getLpPair(pairAddress);
@@ -96,66 +126,93 @@ const useAddLP = (): LiquidityReturnType => {
 
     return getLpReserve(pairAddress).then((reserve) => {
       const invalid = reserve[0].every((unit: bigint) => unit === 0n);
-      if (invalid) {
-        setInvalidPool(invalid);
-      } else {
-        const tokenAPairIndex = lpPair.findIndex(
-          (item) =>
-            getAddress(item).toLowerCase() ===
-            getAddress(tokenAAddress).toLowerCase()
-        );
-        const tokenBPairIndex = lpPair.findIndex(
-          (item) =>
-            getAddress(item).toLowerCase() ===
-            getAddress(tokenBAddress).toLowerCase()
-        );
+      const tokenAPairIndex = lpPair.findIndex(
+        (item) =>
+          getAddress(item).toLowerCase() ===
+          getAddress(tokenAAddress).toLowerCase()
+      );
+      const tokenBPairIndex = lpPair.findIndex(
+        (item) =>
+          getAddress(item).toLowerCase() ===
+          getAddress(tokenBAddress).toLowerCase()
+      );
 
-        const tokenALPTotal = formatEther(
-          reserve[0][tokenAPairIndex].toString()
-        );
-        const tokenBLPTotal = formatEther(
-          reserve[0][tokenBPairIndex].toString()
-        );
-
-        return {
-          tokenALPTotal,
-          tokenBLPTotal,
-          pairAddress,
-          lpTotalSupply,
-          lpPair,
-        };
-      }
+      const tokenALPTotal = formatEther(reserve[0][tokenAPairIndex].toString());
+      const tokenBLPTotal = formatEther(reserve[0][tokenBPairIndex].toString());
+      return {
+        tokenALPTotal,
+        tokenBLPTotal,
+        pairAddress,
+        lpTotalSupply,
+        lpPair,
+        isInitialPool: !!invalid,
+      };
     });
   };
+  const calcAmountA = useCallback(
+    (valueB: string) => {
+      if (lpPairInfo && tokenAUnitPrice && tokenBUnitPrice) {
+        const { tokenALPTotal, tokenBLPTotal, isInitialPool } = lpPairInfo;
+        if (isInitialPool) {
+          if (!isSLCToken(tokenA?.address || '')) {
+            const totalB = Number(valueB) * tokenBUnitPrice;
+            const amountA = formatNumber(totalB / tokenAUnitPrice, 6);
+            setTokenAAmount(amountA + '');
+          }
+        } else {
+          const tokenAAmountRef =
+            (Number(valueB) / Number(tokenBLPTotal)) * Number(tokenALPTotal);
+          const amount = formatNumber(tokenAAmountRef, 6).toString();
+          setTokenAAmount(isNumeric(amount) ? amount : '');
+        }
+      }
+    },
+    [lpPairInfo, tokenBUnitPrice, tokenAUnitPrice]
+  );
+
+  const calcAmountB = useCallback(
+    (valueA: string) => {
+      if (lpPairInfo && tokenBUnitPrice) {
+        const { tokenALPTotal, tokenBLPTotal, isInitialPool } = lpPairInfo;
+        if (isInitialPool) {
+          if (!isSLCToken(tokenB?.address || '')) {
+            const totalA = Number(valueA) * tokenAUnitPrice;
+            const amountB = formatNumber(totalA / tokenBUnitPrice, 6);
+            setTokenBAmount(amountB + '');
+          }
+        } else {
+          const tokenBAmountRef =
+            (Number(valueA) / Number(tokenALPTotal)) * Number(tokenBLPTotal);
+          const amount = formatNumber(tokenBAmountRef, 6).toString();
+          setTokenBAmount(isNumeric(amount) ? amount : '');
+        }
+      }
+    },
+    [lpPairInfo, tokenBUnitPrice, tokenAUnitPrice]
+  );
 
   const onTokenAChange = useCallback(
     async (token: Token) => {
+      setLoading(true);
       setTokenA(token);
-      setInvalidPool(false);
-      setIsInsufficientLiquidity(false);
       setLpPairInfo(undefined);
-      if (tokenB) {
-        const res = await getLpTotal({
-          tokenAAddress: token?.address,
-          tokenBAddress: tokenB?.address,
-        });
-        setLpPairInfo(res);
-        if (res) {
-          const { tokenALPTotal, tokenBLPTotal } = res;
+      try {
+        await getBalance(token.address).then(setTokenAOwnerAmount);
+        await getSLCPairAddress(token?.address).then(setTokenAPairAddress);
+        if (tokenB) {
+          const lp = await getLpTotal({
+            tokenAAddress: token?.address,
+            tokenBAddress: tokenB?.address,
+          });
+          setLpPairInfo(lp);
           if (tokenAAmount) {
-            const tokenBAmountRef =
-              (Number(tokenAAmount) / Number(tokenALPTotal)) *
-              Number(tokenBLPTotal);
-            const amount = formatNumber(tokenBAmountRef, 6).toString();
-            setTokenBAmount(isNumeric(amount) ? amount : '');
+            calcAmountB(tokenAAmount);
           } else if (tokenBAmount) {
-            const tokenAAmountRef =
-              (Number(tokenBAmount) / Number(tokenBLPTotal)) *
-              Number(tokenALPTotal);
-            const amount = formatNumber(tokenAAmountRef, 6).toString();
-            setTokenAAmount(isNumeric(amount) ? amount : '');
+            calcAmountA(tokenBAmount);
           }
         }
+      } finally {
+        setLoading(false);
       }
     },
     [tokenAAmount, tokenB?.address, tokenBAmount]
@@ -163,32 +220,26 @@ const useAddLP = (): LiquidityReturnType => {
 
   const onTokenBChange = useCallback(
     async (token: Token) => {
+      setLoading(true);
       setTokenB(token);
-      setInvalidPool(false);
-      setIsInsufficientLiquidity(false);
       setLpPairInfo(undefined);
-      if (tokenA) {
-        const res = await getLpTotal({
-          tokenAAddress: tokenA.address,
-          tokenBAddress: token.address,
-        });
-        setLpPairInfo(res);
-        if (res) {
-          const { tokenALPTotal, tokenBLPTotal } = res;
-          if (tokenBAmount) {
-            const tokenAAmountRef =
-              (Number(tokenBAmount) / Number(tokenBLPTotal)) *
-              Number(tokenALPTotal);
-            const amount = formatNumber(tokenAAmountRef, 6).toString();
-            setTokenAAmount(isNumeric(amount) ? amount : '');
-          } else if (tokenAAmount) {
-            const tokenBAmountRef =
-              (Number(tokenAAmount) / Number(tokenALPTotal)) *
-              Number(tokenBLPTotal);
-            const amount = formatNumber(tokenBAmountRef, 6).toString();
-            setTokenBAmount(isNumeric(amount) ? amount : '');
+      try {
+        await getBalance(token.address).then(setTokenBOwnerAmount);
+        await getSLCPairAddress(token.address).then(setTokenBPairAddress);
+        if (tokenA) {
+          const res = await getLpTotal({
+            tokenAAddress: tokenA.address,
+            tokenBAddress: token.address,
+          });
+          setLpPairInfo(res);
+          if (tokenAAmount) {
+            calcAmountB(tokenAAmount);
+          } else if (tokenBAmount) {
+            calcAmountA(tokenBAmount);
           }
         }
+      } finally {
+        setLoading(false);
       }
     },
     [tokenBAmount, tokenAAmount, tokenA?.address]
@@ -197,14 +248,8 @@ const useAddLP = (): LiquidityReturnType => {
   const onTokenAAmountChange = useCallback(
     (value: string) => {
       setTokenAAmount(value);
-      setInvalidPool(false);
-      setIsInsufficientLiquidity(false);
       if (tokenA && tokenB && lpPairInfo) {
-        const { tokenALPTotal, tokenBLPTotal } = lpPairInfo;
-        const tokenBAmount =
-          (Number(value) / Number(tokenALPTotal)) * Number(tokenBLPTotal);
-        const amount = formatNumber(tokenBAmount, 6).toString();
-        setTokenBAmount(isNumeric(amount) ? amount : '');
+        calcAmountB(value);
       }
     },
     [tokenA?.address, tokenB?.address, lpPairInfo]
@@ -213,14 +258,8 @@ const useAddLP = (): LiquidityReturnType => {
   const onTokenBAmountChange = useCallback(
     (value: string) => {
       setTokenBAmount(value);
-      setInvalidPool(false);
-      setIsInsufficientLiquidity(false);
       if (tokenA && tokenB && lpPairInfo) {
-        const { tokenALPTotal, tokenBLPTotal } = lpPairInfo;
-        const tokenAAmount =
-          (Number(value) / Number(tokenBLPTotal)) * Number(tokenALPTotal);
-        const amount = formatNumber(tokenAAmount, 6).toString();
-        setTokenAAmount(isNumeric(amount) ? amount : '');
+        calcAmountA(value);
       }
     },
     [tokenA?.address, tokenB?.address, lpPairInfo]
@@ -233,9 +272,38 @@ const useAddLP = (): LiquidityReturnType => {
       tokenA?.address &&
       tokenB?.address
     );
-  }, [tokenAAmount, tokenBAmount, tokenA, tokenB]);
+  }, [tokenAAmount, tokenBAmount, tokenA, tokenB, lpPairInfo]);
+
+  const tokenAMinimum1000 = useMemo(() => {
+    if (tokenA?.address && tokenB?.address) {
+      if (isSLCToken(tokenB?.address)) {
+        return true;
+      } else {
+        if (lpPairInfo?.isInitialPool && SLCUnitPrice && tokenA?.address) {
+          return tokenATotalPrice >= 1000 * SLCUnitPrice;
+        }
+      }
+    }
+    return true;
+  }, [lpPairInfo, tokenATotalPrice, SLCUnitPrice]);
+
+  const tokenBMinimum1000 = useMemo(() => {
+    if (tokenA?.address && tokenB?.address) {
+      if (isSLCToken(tokenA?.address)) {
+        return true;
+      } else {
+        if (lpPairInfo?.isInitialPool && SLCUnitPrice) {
+          return tokenBTotalPrice >= 1000 * SLCUnitPrice;
+        }
+      }
+    }
+    return true;
+  }, [lpPairInfo, tokenBTotalPrice, SLCUnitPrice]);
 
   const shareOfPool = useMemo(() => {
+    if (lpPairInfo?.isInitialPool) {
+      return 100;
+    }
     if (isNumeric(tokenAAmount) && lpPairInfo) {
       const { tokenALPTotal } = lpPairInfo;
       return formatNumber(
@@ -249,6 +317,14 @@ const useAddLP = (): LiquidityReturnType => {
   }, [lpPairInfo, tokenAAmount]);
 
   const lpTokens = useMemo(() => {
+    if (lpPairInfo?.isInitialPool) {
+      if (isSLCToken(tokenA?.address || '') && isNumeric(tokenAAmount)) {
+        return Number(tokenAAmount);
+      }
+      if (isSLCToken(tokenB?.address || '') && isNumeric(tokenBAmount)) {
+        return Number(tokenBAmount);
+      }
+    }
     if (isNumeric(tokenAAmount) && lpPairInfo) {
       const { lpTotalSupply, tokenALPTotal } = lpPairInfo;
 
@@ -258,7 +334,7 @@ const useAddLP = (): LiquidityReturnType => {
       );
     }
     return 0;
-  }, [lpPairInfo, tokenAAmount]);
+  }, [lpPairInfo, tokenAAmount, tokenBAmount]);
 
   return {
     isReady,
@@ -274,13 +350,16 @@ const useAddLP = (): LiquidityReturnType => {
     onTokenAAmountChange,
     onTokenBChange,
     onTokenAChange,
-    invalidPool,
-    isInsufficientLiquidity,
     shareOfPool,
     lpTokens,
     step,
     setStep,
     lpPairInfo,
+    loading,
+    tokenATotalPrice,
+    tokenBTotalPrice,
+    tokenAMinimum1000,
+    tokenBMinimum1000,
   };
 };
 

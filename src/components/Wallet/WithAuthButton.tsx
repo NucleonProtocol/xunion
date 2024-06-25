@@ -46,7 +46,7 @@ const WithAuthButton = ({
   if (isErrorNetwork) {
     return (
       <Button
-        className="h-[56px]  w-full"
+        className="h-[56px]  w-full border-0 bg-status-error-non-opaque hover:!bg-status-error-non-opaque"
         size="large"
         {...props}
         onClick={onAuthClick}
