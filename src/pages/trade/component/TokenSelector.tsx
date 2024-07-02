@@ -31,12 +31,19 @@ const ModalContent = ({
     mutationFn: getTokenList,
     onSuccess: (res) => {
       if (res?.items) {
-        setRecommends(res?.items);
+        setRecommends([
+          {
+            name: 'CFX',
+            symbol: 'CFX',
+            chainId: 71,
+            address: '0x0000000000000000000000000000000000000000',
+            decimals: 18,
+          },
+          ...res?.items,
+        ]);
       }
     },
   });
-
-  console.log(isPending);
 
   useEffect(() => {
     getTokens({ pageNum: 1, pageSize: 50 });
@@ -54,6 +61,9 @@ const ModalContent = ({
               amount: amounts[index],
             }))
           );
+        })
+        .catch((e) => {
+          console.log(e);
         })
         .finally(() => {
           setLoading(false);
@@ -107,7 +117,7 @@ const ModalContent = ({
           ))}
         </div>
         <Divider />
-        <div className="my-[20px] flex flex-col gap-[20px] ">
+        <div className="my-[10px] flex flex-col gap-[5px] ">
           {(recommends || []).map((item) => (
             <div
               className={cn(
@@ -144,6 +154,7 @@ const ModalContent = ({
                   {loading ? <SpinIcon /> : <span>{item.amount}</span>}
                 </span>
                 <Button
+                  size="small"
                   icon={<PlusOutlined />}
                   onClick={() => {
                     addToken(item);

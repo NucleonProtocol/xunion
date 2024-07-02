@@ -52,7 +52,7 @@ const ConfirmPanel = ({
   deadline,
 }: SwapReturnType) => {
   const { isApproved, loading, approve } = useApprove({
-    tokenAddress: inputToken?.address as Address,
+    token: inputToken!,
     amount: payAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });

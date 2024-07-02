@@ -10,6 +10,7 @@ import {
   useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
+  useSendTransaction,
 } from 'wagmi';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
@@ -17,6 +18,7 @@ import { Address, erc20Abi, isAddress } from 'viem';
 import { Form } from 'antd';
 import useCISContract from '@/hooks/useCISContract.ts';
 import { parseUnits } from 'ethers';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useSendToken = () => {
   const { getBalance } = useErc20Balance();
@@ -31,8 +33,12 @@ const useSendToken = () => {
   const cis = Form.useWatch('address', form);
   const [cisAddress, setCisAddress] = useState<string>();
 
+  const { isNativeToken, getRealAddress } = useNativeToken();
+
+  const { sendTransactionAsync } = useSendTransaction();
+
   const { data: decimals } = useReadContract({
-    address: inputToken?.address as Address,
+    address: getRealAddress(inputToken!) as Address,
     abi: erc20Abi,
     functionName: 'decimals',
   });
@@ -106,12 +112,19 @@ const useSendToken = () => {
     if ((isAddress(cis) || !!cisAddress) && decimals && account.address) {
       const toAddress = cis || cisAddress;
 
-      writeContractAsync({
-        address: inputToken?.address as Address,
-        abi: erc20Abi,
-        functionName: 'transfer',
-        args: [toAddress, parseUnits(payAmount, decimals)],
-      });
+      if (isNativeToken(inputToken!)) {
+        sendTransactionAsync({
+          to: toAddress,
+          value: parseUnits(payAmount, decimals),
+        });
+      } else {
+        writeContractAsync({
+          address: inputToken?.address as Address,
+          abi: erc20Abi,
+          functionName: 'transfer',
+          args: [toAddress, parseUnits(payAmount, decimals)],
+        });
+      }
     }
   };
 

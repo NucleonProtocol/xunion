@@ -5,6 +5,7 @@ import { Token } from '@/types/swap.ts';
 import { formatEther, getAddress } from 'ethers';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 type Step = 'FILL' | 'CONFIRM';
 
@@ -62,6 +63,8 @@ const useAddLP = (): LiquidityReturnType => {
     string | undefined
   >();
 
+  const { getRealAddress } = useNativeToken();
+
   const [lpPairInfo, setLpPairInfo] = useState<LpPairInfo | undefined>();
 
   const { getSLCPairAddress, getLpReserve, getLpPair, getPairAddress } =
@@ -84,9 +87,11 @@ const useAddLP = (): LiquidityReturnType => {
   }, [tokenBSLCPairAddress]);
 
   useEffect(() => {
-    getSLCPairAddress(XUNION_SWAP_CONTRACT.slc.address).then((pairAddress) => {
-      getLpPrice(pairAddress).then(setSLCUnitPrice);
-    });
+    getSLCPairAddress({ address: XUNION_SWAP_CONTRACT.slc.address }).then(
+      (pairAddress) => {
+        getLpPrice(pairAddress).then(setSLCUnitPrice);
+      }
+    );
   }, []);
 
   const tokenATotalPrice = useMemo(
@@ -105,16 +110,13 @@ const useAddLP = (): LiquidityReturnType => {
   );
 
   const getLpTotal = async ({
-    tokenAAddress,
-    tokenBAddress,
+    tokenA,
+    tokenB,
   }: {
-    tokenAAddress: string;
-    tokenBAddress: string;
+    tokenA: Token;
+    tokenB: Token;
   }) => {
-    const pairAddress: string = await getPairAddress(
-      tokenAAddress,
-      tokenBAddress
-    );
+    const pairAddress: string = await getPairAddress(tokenA, tokenB);
     if (!pairAddress) {
       return;
     }
@@ -129,12 +131,12 @@ const useAddLP = (): LiquidityReturnType => {
       const tokenAPairIndex = lpPair.findIndex(
         (item) =>
           getAddress(item).toLowerCase() ===
-          getAddress(tokenAAddress).toLowerCase()
+          getAddress(getRealAddress(tokenA)).toLowerCase()
       );
       const tokenBPairIndex = lpPair.findIndex(
         (item) =>
           getAddress(item).toLowerCase() ===
-          getAddress(tokenBAddress).toLowerCase()
+          getAddress(getRealAddress(tokenB)).toLowerCase()
       );
 
       const tokenALPTotal = formatEther(reserve[0][tokenAPairIndex].toString());
@@ -198,11 +200,11 @@ const useAddLP = (): LiquidityReturnType => {
       setLpPairInfo(undefined);
       try {
         await getBalance(token.address).then(setTokenAOwnerAmount);
-        await getSLCPairAddress(token?.address).then(setTokenAPairAddress);
+        await getSLCPairAddress(token).then(setTokenAPairAddress);
         if (tokenB) {
           const lp = await getLpTotal({
-            tokenAAddress: token?.address,
-            tokenBAddress: tokenB?.address,
+            tokenA: token,
+            tokenB,
           });
           setLpPairInfo(lp);
           if (tokenAAmount) {
@@ -225,11 +227,11 @@ const useAddLP = (): LiquidityReturnType => {
       setLpPairInfo(undefined);
       try {
         await getBalance(token.address).then(setTokenBOwnerAmount);
-        await getSLCPairAddress(token.address).then(setTokenBPairAddress);
+        await getSLCPairAddress(token).then(setTokenBPairAddress);
         if (tokenA) {
           const res = await getLpTotal({
-            tokenAAddress: tokenA.address,
-            tokenBAddress: token.address,
+            tokenA,
+            tokenB: token,
           });
           setLpPairInfo(res);
           if (tokenAAmount) {

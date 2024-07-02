@@ -10,6 +10,8 @@ import useTxStore from '@/store/transaction.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { LiquidityReturnType } from '@/pages/trade/hooks/useAddLP.ts';
 import { getAddress } from 'ethers';
+import useNativeToken from '@/hooks/useNativeToken.ts';
+import { Token } from '@/types/swap.ts';
 
 const useAddLPConfirm = ({
   lpPairInfo,
@@ -29,14 +31,16 @@ const useAddLPConfirm = ({
 >) => {
   const updateSubmitted = useTxStore((state) => state.updateSubmitted);
 
+  const { getRealAddress, isNativeToken } = useNativeToken();
+
   const { data: tokenADecimals } = useReadContract({
-    address: tokenA?.address as Address,
+    address: getRealAddress(tokenA!) as Address,
     abi: erc20Abi,
     functionName: 'decimals',
   });
 
   const { data: tokenBDecimals } = useReadContract({
-    address: tokenB?.address as Address,
+    address: getRealAddress(tokenB!) as Address,
     abi: erc20Abi,
     functionName: 'decimals',
   });
@@ -79,21 +83,32 @@ const useAddLPConfirm = ({
           { ...tokenB, amount: amountOut },
         ].find(
           (token) =>
-            getAddress(token?.address as Address).toLowerCase() ===
-            getAddress(address).toLowerCase()
+            getAddress(
+              getRealAddress(token as Token) as Address
+            ).toLowerCase() === getAddress(address).toLowerCase()
         )?.amount
     );
   }, [lpPairInfo, tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
 
+  const txValue = useMemo(() => {
+    if (isNativeToken(tokenA!) && tokenADecimals) {
+      return Number(tokenAAmount) * 10 ** tokenADecimals;
+    }
+    if (isNativeToken(tokenB!) && tokenBDecimals) {
+      return Number(tokenBAmount) * 10 ** tokenBDecimals;
+    }
+    return 0;
+  }, [tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
+
   const confirm = () => {
     if (tokenADecimals && tokenBDecimals) {
       const { address, abi } = XUNION_SWAP_CONTRACT.interface;
-      console.log(lpPairInfo?.pairAddress, sortedAmounts);
       writeContractAsync({
         address: address as Address,
         abi,
         functionName: 'xLpSubscribe2',
         args: [lpPairInfo?.pairAddress, sortedAmounts],
+        value: `${txValue}` as unknown as bigint,
       });
     }
   };

@@ -4,7 +4,6 @@ import TokenInput from '@/pages/trade/component/TokenInput.tsx';
 import useCreatePool from '@/pages/trade/hooks/useCreatePool.ts';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
-import { recommends } from '@/pages/trade/create-pool/tokens.tsx';
 import { isSLCToken } from '@/contracts';
 import Warning from '@/pages/trade/component/Warning.tsx';
 import UploadInfo from '@/pages/trade/create-pool/UploadInfo.tsx';
@@ -23,13 +22,9 @@ function CreatPool() {
     onCreate,
     loading,
   } = useCreatePool();
-  // 有pair address-> 显示Add Liquidity  跳转到Liquidity页面并带入tokens
-  // 无pair address-> 「1.： tokenA & slc  2. tokenB & slc 3.tokenA & tokenB」
 
-  const slcToken = recommends.find((item) => isSLCToken(item.address));
-  // if(tokenA?.address && )
   const renderAction = () => {
-    if (tokenA?.address && tokenB?.address && slcToken) {
+    if (tokenA?.address && tokenB?.address) {
       if (!tokenASLCPairAddress && !isSLCToken(tokenB?.address)) {
         return (
           <div className="flex flex-col gap-[10px]">
@@ -45,7 +40,6 @@ function CreatPool() {
                 size="large"
                 onClick={() => {
                   onTokenAChange(tokenA);
-                  onTokenBChange(slcToken);
                 }}
               >
                 {`Initialize ${tokenA?.symbol} pool`}
@@ -69,7 +63,6 @@ function CreatPool() {
                 size="large"
                 onClick={() => {
                   onTokenAChange(tokenB);
-                  onTokenBChange(slcToken);
                 }}
               >
                 {`Initialize ${tokenB?.symbol} pool`}

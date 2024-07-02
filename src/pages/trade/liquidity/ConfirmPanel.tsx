@@ -69,7 +69,7 @@ const ConfirmPanel = ({
     loading: isTokenAApproving,
     approve: approveTokenA,
   } = useApprove({
-    tokenAddress: tokenA?.address as Address,
+    token: tokenA!,
     amount: tokenAAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });
@@ -79,7 +79,7 @@ const ConfirmPanel = ({
     loading: isTokenBApproving,
     approve: approveTokenB,
   } = useApprove({
-    tokenAddress: tokenB?.address as Address,
+    token: tokenB!,
     amount: tokenBAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });

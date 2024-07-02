@@ -6,4 +6,5 @@ export interface Token {
   address: string;
   icon?: string;
   amount?: number;
+  chainId?: number;
 }

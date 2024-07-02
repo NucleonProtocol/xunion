@@ -47,6 +47,34 @@ export const XUNION_SWAP_CONTRACT = {
   },
 };
 
+export const NATIVE_TOKENS: Record<number, string> = {
+  // main net
+  1: 'ETH',
+  56: 'BNB',
+  137: 'MATIC',
+  //test net
+  71: 'CFX',
+};
+
+export const NATIVE_GAS_TOKENS: Record<number, string> = {
+  // main net
+  1: 'ETH',
+  56: 'BNB',
+  137: 'MATIC',
+  //test net
+  71: '0x16C2473A9957d00B832C27cFa34773721f47992e',
+};
+export const NATIVE_SWAP_TOKENS: Record<number, string> = {
+  // main net
+  1: '0x0000000000000000000000000000000000000et0',
+  56: 'BNB',
+  137: 'MATIC',
+  //test net
+  71: '0x0000000000000000000000000000000000000cf0',
+};
+
+export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 export const isSLCToken = (address: string) => {
   return (
     isAddress(address) &&

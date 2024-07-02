@@ -98,7 +98,7 @@ const SwapPanel = ({
           totalPrice={outputTokenTotalPrice}
         />
       </div>
-      {isReady && (
+      {isReady && !!toPairUnit && (
         <div className="px-[10px] py-[20px] text-[14px]">
           <SwapInfo
             slippage={slippage}
@@ -121,7 +121,12 @@ const SwapPanel = ({
             className="w-full"
             type="primary"
             size="large"
-            disabled={!isReady || isInsufficient || isInsufficientLiquidity}
+            disabled={
+              !isReady ||
+              isInsufficient ||
+              isInsufficientLiquidity ||
+              !toPairUnit
+            }
             onClick={onConfirm}
           >
             {renderSwapText()}

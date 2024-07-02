@@ -1,7 +1,8 @@
 import { Token } from '@/types/swap.ts';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useInterfaceContract from '@/hooks/useInterfaceContract.ts';
-import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
+import { isSLCToken, XUNION_SWAP_CONTRACT, ZERO_ADDRESS } from '@/contracts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const usePair = ({
   fromToken,
@@ -13,17 +14,22 @@ const usePair = ({
   const [pairAddress, setPairAddress] = useState('');
   const contract = useInterfaceContract();
 
+  const { getRealAddress } = useNativeToken();
+
   const toAddress = useMemo(() => {
     return isSLCToken(fromToken?.address || '') &&
       isSLCToken(toToken?.address || '')
       ? XUNION_SWAP_CONTRACT.usdt.address
-      : toToken?.address;
+      : getRealAddress(toToken!);
   }, [fromToken?.address, toToken?.address]);
 
   const getPairAddress = useCallback(async () => {
     if (fromToken?.address && toToken?.address) {
-      const pairAddress = await contract.getPair(fromToken?.address, toAddress);
-      if (pairAddress === '0x0000000000000000000000000000000000000000') {
+      const pairAddress = await contract.getPair(
+        getRealAddress(fromToken!),
+        toAddress
+      );
+      if (pairAddress === ZERO_ADDRESS) {
         setPairAddress('');
       } else {
         setPairAddress(pairAddress);

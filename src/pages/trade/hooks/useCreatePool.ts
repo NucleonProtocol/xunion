@@ -6,6 +6,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useAddLP = () => {
   const { getBalance } = useErc20Balance();
@@ -24,22 +25,31 @@ const useAddLP = () => {
 
   const { getSLCPairAddress, getPairAddress } = useLP();
 
+  const { isNativeToken, getGasTokenAddress } = useNativeToken();
+
+  const getRealAddress = (token: Token) => {
+    if (isNativeToken(token)) {
+      return getGasTokenAddress(token);
+    }
+    return token?.address;
+  };
+
   useEffect(() => {
     if (tokenA?.address) {
       getBalance(tokenA.address).then(setTokenAOwnerAmount);
-      getSLCPairAddress(tokenA.address).then(setTokenAPairAddress);
+      getSLCPairAddress(tokenA).then(setTokenAPairAddress);
     }
   }, [tokenA]);
   useEffect(() => {
     if (tokenB?.address) {
       getBalance(tokenB.address).then(setTokenBOwnerAmount);
-      getSLCPairAddress(tokenB.address).then(setTokenBPairAddress);
+      getSLCPairAddress(tokenB).then(setTokenBPairAddress);
     }
   }, [tokenB]);
 
   useEffect(() => {
     if (tokenB?.address && tokenA?.address) {
-      getPairAddress(tokenA?.address, tokenB?.address).then(setLpPairAddress);
+      getPairAddress(tokenA, tokenB).then(setLpPairAddress);
     }
   }, [tokenB, tokenA]);
 
@@ -57,7 +67,7 @@ const useAddLP = () => {
       setLoading(false);
       writeTxNotification(hash);
       if (tokenB?.address && tokenA?.address) {
-        getPairAddress(tokenA?.address, tokenB?.address).then(setLpPairAddress);
+        getPairAddress(tokenA, tokenB).then(setLpPairAddress);
       }
     }
   }, [isSuccess]);
@@ -91,7 +101,9 @@ const useAddLP = () => {
         address: address as Address,
         abi,
         functionName: 'createPair',
-        args: [tokenA?.address, tokenB.address],
+        args: [getRealAddress(tokenA), getRealAddress(tokenB)],
+      }).catch(() => {
+        setLoading(false);
       });
     }
   };

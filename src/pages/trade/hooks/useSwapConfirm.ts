@@ -10,6 +10,7 @@ import { writeTxNotification } from '@/components/notices/writeTxNotification.ts
 import useTxStore from '@/store/transaction.ts';
 import dayjs from 'dayjs';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useSwapConfirm = ({
   inputToken,
@@ -30,14 +31,17 @@ const useSwapConfirm = ({
 }) => {
   const updateSubmitted = useTxStore((state) => state.updateSubmitted);
 
+  const { isNativeToken, getRealSwapAddress, getRealAddress } =
+    useNativeToken();
+
   const { data: fromDecimals } = useReadContract({
-    address: inputToken?.address as Address,
+    address: getRealAddress(inputToken!) as Address,
     abi: erc20Abi,
     functionName: 'decimals',
   });
 
   const { data: toDecimals } = useReadContract({
-    address: outputToken?.address as Address,
+    address: getRealAddress(outputToken!) as Address,
     abi: erc20Abi,
     functionName: 'decimals',
   });
@@ -73,8 +77,11 @@ const useSwapConfirm = ({
     if (fromDecimals && toDecimals) {
       const { address, abi } = XUNION_SWAP_CONTRACT.interface;
 
+      let value = 0;
+
       const amountIn = Number(payAmount) * 10 ** fromDecimals;
       const amountOut = Number(receiveAmount) * 10 ** toDecimals;
+
       const limits =
         Number(slippage === '-1' ? '0.5' : slippage) *
         Number(receiveAmount) *
@@ -83,17 +90,22 @@ const useSwapConfirm = ({
 
       const date = dayjs().add(Number(deadline), 'minute').unix() + 100;
 
+      if (isNativeToken(inputToken!)) {
+        value = amountIn;
+      }
+
       writeContractAsync({
         address: address as Address,
         abi,
         functionName: 'xexchange2',
         args: [
-          [inputToken?.address, outputToken?.address],
+          [getRealSwapAddress(inputToken!), getRealSwapAddress(outputToken!)],
           amountIn,
           amountOut,
           limits,
           date,
         ],
+        value: `${value}` as unknown as bigint,
       });
     }
   };

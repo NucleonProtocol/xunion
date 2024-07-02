@@ -2,6 +2,7 @@ import { Contract, formatUnits } from 'ethers';
 import { erc20Abi } from 'viem';
 import { useAccount } from 'wagmi';
 import useProvider from '@/hooks/useProvider.ts';
+import { ZERO_ADDRESS } from '@/contracts';
 
 export function formatNumber(number: number, decimals: number) {
   const factor = Math.pow(10, decimals);
@@ -13,11 +14,17 @@ const useErc20Balance = () => {
   const provider = useProvider();
 
   const getBalance = async (address: string, fixed = 4) => {
+    if (!account) return 0;
     try {
-      const Erc20Contract = new Contract(address, erc20Abi, provider);
-      const result = await Erc20Contract.balanceOf(account);
-      const decimals = await Erc20Contract.decimals();
-      return formatNumber(Number(formatUnits(result, decimals)), fixed);
+      if (address === ZERO_ADDRESS) {
+        const result = await provider.getBalance(account);
+        return formatNumber(Number(formatUnits(result, 18)), fixed);
+      } else {
+        const Erc20Contract = new Contract(address, erc20Abi, provider);
+        const decimals = await Erc20Contract.decimals();
+        const result = await Erc20Contract.balanceOf(account);
+        return formatNumber(Number(formatUnits(result, decimals)), fixed);
+      }
     } catch (e) {
       return 0;
     }

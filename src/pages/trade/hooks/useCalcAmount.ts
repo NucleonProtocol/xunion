@@ -5,6 +5,7 @@ import { formatEther, parseEther } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 import { isNumeric } from '@/utils/isNumeric.ts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useCalcAmount = ({
   setIsInsufficientLiquidity,
@@ -24,6 +25,8 @@ const useCalcAmount = ({
   setOutputTokenTotalPrice: (value: number) => void;
 }) => {
   const contract = useInterfaceContract();
+
+  const { getRealAddress } = useNativeToken();
 
   const getInputAmount = async (tokens: string[], amount: string) => {
     return await contract.xExchangeEstimateOutput(tokens, amount);
@@ -49,7 +52,7 @@ const useCalcAmount = ({
         isNumeric(receiveAmount)
       ) {
         getInputAmount(
-          [inputToken?.address, outputToken?.address],
+          [getRealAddress(inputToken!), getRealAddress(outputToken!)],
           parseEther(receiveAmount).toString()
         )
           .then((amount) => {
@@ -86,7 +89,7 @@ const useCalcAmount = ({
       setIsInsufficientLiquidity(false);
       if (inputToken?.address && outputToken?.address && isNumeric(payAmount)) {
         getOutputAmount(
-          [inputToken?.address, outputToken?.address],
+          [getRealAddress(inputToken!), getRealAddress(outputToken!)],
           parseEther(payAmount).toString()
         )
           .then((amount) => {
