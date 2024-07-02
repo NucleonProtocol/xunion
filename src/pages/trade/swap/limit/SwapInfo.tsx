@@ -4,6 +4,7 @@ import { Token } from '@/types/swap.ts';
 import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
 import { ExchangeIcon } from '@/components/icons/tokens';
+import { TokenIcon } from '@/components/icons';
 
 interface SwapInfoProps {
   slippage: string;
@@ -56,12 +57,12 @@ export const ConfirmContent = ({
         <span className="text-tc-secondary">Route</span>
         <div className="flex-center gap-[5px]">
           <span className="flex-center gap-[5px]">
-            {inputToken?.icon}
+            <TokenIcon src={inputToken?.icon} />
             {inputToken?.symbol}
           </span>
           <RightOutlined className="mx-[10px] text-[12px] text-tc-secondary" />
           <span className="flex-center gap-[5px]">
-            {outputToken?.icon}
+            <TokenIcon src={outputToken?.icon} />
             {outputToken?.symbol}
           </span>
         </div>

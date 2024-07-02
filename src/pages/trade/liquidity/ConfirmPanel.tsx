@@ -9,6 +9,7 @@ import useAddLPConfirm from '@/pages/trade/hooks/useAddLPConfirm.ts';
 import { getPerAmount } from '@/pages/trade/liquidity/LiquidityInfo.tsx';
 import { getAddress } from 'ethers';
 import { useMemo } from 'react';
+import { TokenIcon } from '@/components/icons';
 
 const LPTokenItem = ({
   tokenB,
@@ -36,9 +37,11 @@ const LPTokenItem = ({
       <div className="text-[32px] font-bold">{lpTokens || 0}</div>
       <div className="flex-center gap-[10px] ">
         <div className="flex-center">
-          <span className=" text-[24px]">{sortedTokens[0]?.icon}</span>
+          <span className=" text-[24px]">
+            <TokenIcon src={sortedTokens[0]?.icon} />
+          </span>
           <span className=" ml-[-5px] text-[24px]">
-            {sortedTokens[1]?.icon}
+            <TokenIcon src={sortedTokens[1]?.icon} />
           </span>
         </div>
         <div className="flex-center gap-[2px] text-[18px]">

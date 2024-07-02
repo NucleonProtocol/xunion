@@ -34,7 +34,7 @@ export const XUNION_SWAP_CONTRACT = {
     abi: [],
   },
   interface: {
-    address: '0x7ea0d858300f67fFc8b1Ae160a9096F07DD702EF',
+    address: '0x1E1A2bA16a6F6f76e9b9F2f575f2D321CAA1CE8C',
     abi: interfaceABI,
   },
   slc: {

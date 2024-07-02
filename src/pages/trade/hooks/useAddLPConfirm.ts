@@ -92,7 +92,7 @@ const useAddLPConfirm = ({
       writeContractAsync({
         address: address as Address,
         abi,
-        functionName: 'xLpSubscribe',
+        functionName: 'xLpSubscribe2',
         args: [lpPairInfo?.pairAddress, sortedAmounts],
       });
     }

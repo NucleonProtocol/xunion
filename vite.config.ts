@@ -10,4 +10,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     assetsDir: 'assets',
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://testapi.artixv.com/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });

@@ -8,6 +8,7 @@ import useApprove from '@/pages/trade/hooks/useApprove.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useSwapConfirm from '@/pages/trade/hooks/useSwapConfirm.ts';
+import { TokenIcon } from '@/components/icons';
 
 const TokenItem = ({
   token,
@@ -24,7 +25,9 @@ const TokenItem = ({
       <div className="flex items-center py-[10px]">
         <span className="flex-1 text-[26px] font-bold">{amount}</span>
         <div className="flex-center gap-[5px]">
-          <span className="text-[20px]">{token?.icon}</span>
+          <span className="text-[20px]">
+            <TokenIcon src={token?.icon} />
+          </span>
           <span>{token?.symbol}</span>
         </div>
       </div>

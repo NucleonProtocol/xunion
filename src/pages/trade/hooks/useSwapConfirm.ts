@@ -86,7 +86,7 @@ const useSwapConfirm = ({
       writeContractAsync({
         address: address as Address,
         abi,
-        functionName: 'xexchange',
+        functionName: 'xexchange2',
         args: [
           [inputToken?.address, outputToken?.address],
           amountIn,

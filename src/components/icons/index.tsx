@@ -13,6 +13,7 @@ import Setting from '@/assets/svgs/menus/setting.svg?react';
 import ArrowRightTop from '@/assets/svgs/arrow/arrow-right-top.svg?react';
 import ArrowUp from '@/assets/svgs/arrow/arrow-up.svg?react';
 import ArrowLeft from '@/assets/svgs/arrow/arrow-left.svg?react';
+import { cn } from '@/utils/classnames.ts';
 
 type IconProps = PropsWithChildren<
   {
@@ -100,3 +101,28 @@ export const ArrowLeftIcon = (props: IconProps) => (
     <ArrowLeft />
   </Icon>
 );
+export const TokenIcon = ({
+  src,
+  className,
+  width,
+  height,
+  ...rest
+}: {
+  src?: string;
+  className?: string;
+  width?: number;
+  height?: number;
+} & IconProps) =>
+  src ? (
+    <img
+      src={src}
+      alt=""
+      className={cn('inline-block h-[20px] w-[20px] rounded-full', className)}
+      style={{
+        width,
+        height,
+      }}
+    />
+  ) : (
+    <LogoIcon className={className} {...rest} />
+  );

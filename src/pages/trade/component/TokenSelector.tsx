@@ -1,11 +1,14 @@
-import { Divider, Input, Modal } from 'antd';
+import { Button, Divider, Input, Modal, Spin } from 'antd';
 import { useEffect, useState } from 'react';
-import { DownOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { Token } from '@/types/swap.ts';
-import { recommends } from '@/pages/trade/swap/tokens.tsx';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
 import { SpinIcon } from '@/components/icons/tokens';
+import { useMutation } from '@tanstack/react-query';
+import { getTokenList } from '@/services/token.ts';
+import { TokenIcon } from '@/components/icons';
+import useAddToken from '@/hooks/useAddToken.ts';
 
 const ModalContent = ({
   value,
@@ -21,25 +24,42 @@ const ModalContent = ({
 }) => {
   const { getBalance } = useErc20Balance();
   const [loading, setLoading] = useState(false);
+  const [recommends, setRecommends] = useState<Token[]>();
+  const { addToken } = useAddToken();
 
-  const [recommendsWithAmount, setAmounts] = useState(recommends);
+  const { isPending, mutate: getTokens } = useMutation({
+    mutationFn: getTokenList,
+    onSuccess: (res) => {
+      if (res?.items) {
+        setRecommends(res?.items);
+      }
+    },
+  });
 
-  const getAllBalance = async () => {
-    setLoading(true);
-    const calls = recommends.map((item) => getBalance(item.address));
-    return Promise.all(calls)
-      .then((amounts) => {
-        setAmounts(
-          recommends.map((item, index) => ({ ...item, amount: amounts[index] }))
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  console.log(isPending);
+
   useEffect(() => {
-    getAllBalance();
+    getTokens({ pageNum: 1, pageSize: 50 });
   }, []);
+
+  useEffect(() => {
+    if (recommends?.length) {
+      setLoading(true);
+      const calls = recommends.map((item) => getBalance(item.address));
+      Promise.all(calls)
+        .then((amounts) => {
+          setRecommends(
+            recommends.map((item, index) => ({
+              ...item,
+              amount: amounts[index],
+            }))
+          );
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [recommends?.length]);
 
   return (
     <div className="h-[600px] overflow-y-auto">
@@ -51,65 +71,89 @@ const ModalContent = ({
         prefix={<SearchOutlined />}
         placeholder="Search name or paste address"
         className="rounded-[20px]"
+        onBlur={(e) => {
+          getTokenList({
+            pageNum: 1,
+            pageSize: 50,
+            nameOrAddress: e.target.value,
+          });
+        }}
       />
-      <div className="my-[20px] flex flex-wrap gap-[20px]">
-        {recommends.map((item) => (
-          <div
-            className={cn(
-              'flex-center  h-[32px] cursor-pointer gap-[10px] rounded-[20px] border-2  border-solid px-[16px]',
-              'hover:border-transparent hover:bg-fill-primary',
-              {
-                'border-transparent bg-fill-primary':
-                  item.symbol === value?.symbol,
-                'cursor-not-allowed opacity-75':
-                  disabledToken?.symbol === item.symbol,
-              }
-            )}
-            key={item.symbol}
-            onClick={() => {
-              if (disabledToken?.symbol !== item.symbol) {
-                onChange(item);
-                onOpen(false);
-              }
-            }}
-          >
-            {item.icon}
-            {item.symbol}
-          </div>
-        ))}
-      </div>
-      <Divider />
-      <div className="my-[20px] flex flex-col gap-[20px]">
-        {recommendsWithAmount.map((item) => (
-          <div
-            className={cn(
-              'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:opacity-75',
-              {
-                'cursor-not-allowed opacity-75':
-                  disabledToken?.symbol === item.symbol,
-              }
-            )}
-            key={item.symbol}
-            onClick={() => {
-              if (disabledToken?.symbol !== item.symbol) {
-                onChange(item);
-                onOpen(false);
-              }
-            }}
-          >
-            <div className="text-[36px]">{item.icon}</div>
-            <div className="flex flex-1 flex-col">
-              <span className="text-[16px]"> {item.name}</span>
-              <span className="text-[14px] text-tc-secondary">
-                {item.symbol}
-              </span>
+      <Spin indicator={<SpinIcon />} spinning={isPending}>
+        <div className="my-[20px] flex flex-wrap gap-[20px]">
+          {(recommends || []).slice(0, 6).map((item) => (
+            <div
+              className={cn(
+                'flex-center  h-[32px] cursor-pointer gap-[10px] rounded-[20px] border-2  border-solid px-[16px]',
+                'hover:border-transparent hover:bg-fill-primary',
+                {
+                  'border-transparent bg-fill-primary':
+                    item.symbol === value?.symbol,
+                  'cursor-not-allowed opacity-75':
+                    disabledToken?.symbol === item.symbol,
+                }
+              )}
+              key={item.symbol}
+              onClick={() => {
+                if (disabledToken?.symbol !== item.symbol) {
+                  onChange(item);
+                  onOpen(false);
+                }
+              }}
+            >
+              <TokenIcon src={item.icon} />
+              {item.symbol}
             </div>
-            <div className="">
-              {loading ? <SpinIcon /> : <span>{item.amount}</span>}
+          ))}
+        </div>
+        <Divider />
+        <div className="my-[20px] flex flex-col gap-[20px] ">
+          {(recommends || []).map((item) => (
+            <div
+              className={cn(
+                'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:bg-theme-non-opaque hover:opacity-75',
+                {
+                  'cursor-not-allowed  bg-fill-niubi opacity-75':
+                    disabledToken?.symbol === item.symbol,
+                }
+              )}
+              key={item.symbol}
+              onClick={() => {
+                if (disabledToken?.symbol !== item.symbol) {
+                  onChange(item);
+                  onOpen(false);
+                }
+              }}
+            >
+              <div className="text-[36px]">
+                <TokenIcon src={item.icon} />
+              </div>
+              <div className="flex flex-1 flex-col">
+                <span className="text-[16px]"> {item.name}</span>
+                <span className="text-[14px] text-tc-secondary">
+                  {item.symbol}
+                </span>
+              </div>
+              <div
+                className="flex items-center gap-[20px]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <span>
+                  {loading ? <SpinIcon /> : <span>{item.amount}</span>}
+                </span>
+                <Button
+                  icon={<PlusOutlined />}
+                  onClick={() => {
+                    addToken(item);
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </Spin>
     </div>
   );
 };
@@ -161,7 +205,9 @@ const TokenSelector = ({
       >
         {value?.symbol ? (
           <>
-            <span className="text-[22px]">{value.icon}</span>
+            <span className="text-[22px]">
+              <TokenIcon src={value.icon} />
+            </span>
             <span>{value?.symbol}</span>
           </>
         ) : (
