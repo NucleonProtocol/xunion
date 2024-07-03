@@ -1,9 +1,8 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "http://testapi.artixv.com/$1"
+      "source": "/api/(.*)",
+      "destination": "http://testapi.artixv.com/api/$1"
     }
   ]
 }
