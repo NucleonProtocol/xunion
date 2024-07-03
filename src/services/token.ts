@@ -18,6 +18,6 @@ export const getTokenListCollect = (params: {
   ownerAddress: string;
 }) => {
   return request
-    .get<ResponseType<ListType<Token>>>('/tokens/collect', { params })
+    .get<ResponseType<ListType<Token>>>('/v1/tokens/collect', { params })
     .then((res) => res.data?.data);
 };
