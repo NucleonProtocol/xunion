@@ -6,7 +6,7 @@ import {
   useWriteContract,
 } from 'wagmi';
 import { formatUnits, parseUnits } from 'ethers';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
@@ -23,6 +23,7 @@ const useApprove = ({
   spenderAddress: Address;
 }) => {
   const { isNativeToken } = useNativeToken();
+  const [approveLoading, setApproveLoading] = useState(false);
 
   const isNative = useMemo(() => isNativeToken(token), [token]);
 
@@ -92,15 +93,19 @@ const useApprove = ({
   }, [allowance, amount, decimals, token]);
 
   const approve = () => {
+    setApproveLoading(true);
     writeContractAsync({
       address: token?.address as Address,
       abi: erc20Abi,
       functionName: 'approve',
       args: [spenderAddress, parseUnits(amount, decimals)],
+    }).finally(() => {
+      setApproveLoading(false);
     });
   };
 
-  const loading = isAllowanceLoading || isDecimalsLoading || isTxLoading;
+  const loading =
+    isAllowanceLoading || isDecimalsLoading || approveLoading || isTxLoading;
 
   return {
     isApproved,

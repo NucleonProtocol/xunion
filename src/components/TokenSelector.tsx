@@ -215,12 +215,12 @@ const TokenSelector = ({
         }}
       >
         {value?.symbol ? (
-          <>
-            <span className="text-[22px]">
+          <div className="flex-center gap-[5px]">
+            <span className="flex-center text-[22px]">
               <TokenIcon src={value.icon} />
             </span>
-            <span>{value?.symbol}</span>
-          </>
+            <span className="text-[14px]">{value?.symbol}</span>
+          </div>
         ) : (
           <span className="">Select Token</span>
         )}

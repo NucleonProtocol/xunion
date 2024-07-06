@@ -126,7 +126,10 @@ export const TokenIcon = ({
       }}
     />
   ) : (
-    <LogoIcon className={className} {...rest} />
+    <LogoIcon
+      className={cn('h-[20px] w-[20px] text-[20px]', className)}
+      {...rest}
+    />
   );
 
 export const BuySellIcon = (props: IconProps) => (

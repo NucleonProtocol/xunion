@@ -8,7 +8,7 @@ import {
   XUNION_SWAP_CONTRACT,
 } from '@/contracts';
 import useLP from '@/pages/trade/hooks/useLP.ts';
-import useCalcAmount from '@/pages/trade/hooks/useCalcAmount.ts';
+import useCalcAmount from './useCalcAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Address, erc20Abi } from 'viem';
@@ -31,8 +31,6 @@ const useSellSLC = () => {
   const { autoGetPayAmount, autoGetReceiveAmount } = useCalcAmount({
     setIsInsufficientLiquidity,
     setPayAmount,
-    setFee: () => {},
-    setPriceImpact: () => {},
     setInputTokenTotalPrice,
     setReceiveAmount,
     setOutputTokenTotalPrice,
