@@ -30,3 +30,14 @@ export function isValidURL(url: string) {
   const urlRegex = /^(https):\/\/[^\s/$.?#].[^\s]*$/;
   return urlRegex.test(url);
 }
+
+export function formatCurrency(num: number, symbol = true) {
+  if (isNaN(num)) {
+    return 'Invalid number';
+  }
+  if (!symbol) {
+    return num.toLocaleString();
+  }
+
+  return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}

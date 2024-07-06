@@ -1,5 +1,6 @@
 import SwapInterfaceABI from './abi/SwapInterface.json';
 import SLCInterfaceABI from './abi/SLCInterface.json';
+import iSlcOracleABI from './abi/iSlcOracle.json';
 import { erc20Abi, isAddress } from 'viem';
 import { getAddress } from 'ethers';
 import { Token } from '@/types/swap.ts';
@@ -34,6 +35,10 @@ export const XUNION_SLC_CONTRACT = {
   interface: {
     address: '0xC6A10853d6aAb5880CaB280025B63889216BfE61',
     abi: SLCInterfaceABI,
+  },
+  oracle: {
+    address: '0x559465367614e385Bd85c00a1B573414960763a5',
+    abi: iSlcOracleABI,
   },
 };
 

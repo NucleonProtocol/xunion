@@ -4,7 +4,7 @@ import RouteTabs from '@/components/RouteTabs.tsx';
 
 function Swap() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center pt-[70px] max-md:pt-[40px] ">
+    <div className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:pt-[40px] ">
       <RouteTabs
         tabs={[
           { name: 'Swap', path: '/', icon: <SwapIcon /> },
