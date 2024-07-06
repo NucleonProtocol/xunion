@@ -1,5 +1,4 @@
 import { Button, Skeleton, Table } from 'antd';
-import { formatCurrency } from '@/utils';
 import { Token } from '@/types/swap.ts';
 import { TokenIcon } from '@/components/icons';
 

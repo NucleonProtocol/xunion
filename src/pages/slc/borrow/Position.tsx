@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { formatCurrency } from '@/utils';
 import usePosition from '@/pages/slc/hooks/usePosition.ts';
 import { cn } from '@/utils/classnames.ts';
+import BorrowSLCModal from '@/pages/slc/borrow/BorrowSLCModal.tsx';
+import RepaySLCModal from '@/pages/slc/borrow/RepaySLCModal.tsx';
 
 const Position = ({
   health,
@@ -19,7 +21,8 @@ const Position = ({
     availableTotalPrice,
     healthFactor,
   } = usePosition({ health });
-
+  const [borrowOpen, setBorrowOpen] = useState(false);
+  const [repayOpen, setRepayOpen] = useState(false);
   const [type, setAlignValue] = useState('Popular');
   return (
     <div className="w-full rounded-[16px] bg-fill-niubi">
@@ -29,6 +32,11 @@ const Position = ({
         </div>
       ) : (
         <div className="flex flex-col">
+          <BorrowSLCModal
+            open={borrowOpen}
+            onClose={() => setBorrowOpen(false)}
+          />
+          <RepaySLCModal open={repayOpen} onClose={() => setRepayOpen(false)} />
           <div className="flex h-[64px] items-center justify-between border-2 border-solid  border-transparent border-b-line-primary px-[24px]">
             <div className="flex-center gap-[30px]">
               <span className="font-[500]">Position Management</span>
@@ -65,10 +73,21 @@ const Position = ({
               />
             </div>
             <div className="flex-center gap-[10px]">
-              <Button type="primary" shape="round">
+              <Button
+                type="primary"
+                shape="round"
+                onClick={() => {
+                  setBorrowOpen(true);
+                }}
+              >
                 Borrow
               </Button>
-              <Button type="primary" shape="round" ghost>
+              <Button
+                type="primary"
+                shape="round"
+                ghost
+                onClick={() => setRepayOpen(true)}
+              >
                 Repay
               </Button>
             </div>
