@@ -15,6 +15,7 @@ import ConnectModal from '@/components/Wallet/ConnectModal.tsx';
 import WalletDetailModal from '@/components/Wallet/WalletDetailModal.tsx';
 import SubmittedModal from '@/components/modals/SubmittedModal.tsx';
 import { E_SPACE_TEST_RPC } from '@/contracts';
+import { antdTableTokens } from '@/styles/reset.ts';
 
 const Routes = () => useRoutes(routes);
 
@@ -72,6 +73,9 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
         components: {
           Button: {
             controlHeightLG: 56,
+          },
+          Table: {
+            ...antdTableTokens,
           },
         },
       }}
