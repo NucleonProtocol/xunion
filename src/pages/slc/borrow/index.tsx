@@ -55,7 +55,7 @@ const Borrow = () => {
           <Position loading={isHealthLoading} health={health as bigint[]} />
         </div>
         <div className="mt-[30px]">
-          <Collateral loading={isAssetsLoading} />
+          <Collateral loading={isAssetsLoading} assets={[]} />
         </div>
       </div>
     </div>

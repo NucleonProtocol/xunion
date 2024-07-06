@@ -1,13 +1,92 @@
-import { Button, Skeleton } from 'antd';
+import { Button, Skeleton, Table } from 'antd';
 import { formatCurrency } from '@/utils';
+import { Token } from '@/types/swap.ts';
+import { TokenIcon } from '@/components/icons';
+
+interface CollateralAsset extends Token {
+  balance: {
+    amount: number;
+    price: number;
+  };
+  provided: {
+    amount: number;
+    price: number;
+  };
+  canBeCollateral: boolean;
+}
 
 const Collateral = ({
-  position,
+  assets,
   loading,
 }: {
-  position: any;
+  assets: CollateralAsset[];
   loading: boolean;
 }) => {
+  const columns = [
+    {
+      key: 'name',
+      title: 'Name',
+      dataIndex: 'name',
+      render: (_: string, record: CollateralAsset) => {
+        return (
+          <div className="flex-center gap-[5px]">
+            <span>
+              <TokenIcon src={record.icon} />
+            </span>
+            <span>{record?.symbol}</span>
+          </div>
+        );
+      },
+    },
+    {
+      key: 'balance',
+      title: 'Wallet balance',
+      dataIndex: 'balance',
+      render: (_: string, record: CollateralAsset) => {
+        return (
+          <div className="flex-center flex-col gap-[5px]">
+            <span>{record?.balance?.amount}</span>
+            <span>{record?.balance?.price}</span>
+          </div>
+        );
+      },
+    },
+    {
+      key: 'provided',
+      title: 'Provided',
+      dataIndex: 'balance',
+      render: (_: string, record: CollateralAsset) => {
+        return (
+          <div className="flex-center flex-col gap-[5px]">
+            <span>{record?.provided?.amount}</span>
+            <span>{record?.provided?.price}</span>
+          </div>
+        );
+      },
+    },
+    {
+      key: 'action',
+      title: 'Action',
+      render: (_: string, __: CollateralAsset) => {
+        return (
+          <div className="flex-center flex-col gap-[5px]">
+            <Button type="text" ghost className="text-theme" size="small">
+              Withdraw
+            </Button>
+            <Button
+              type="text"
+              ghost
+              className="text-theme"
+              size="small"
+              disabled
+            >
+              Provide
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
   return (
     <div className="w-full rounded-[16px] bg-fill-niubi">
       {loading ? (
@@ -21,48 +100,13 @@ const Collateral = ({
               <span className="font-[500]">Collateral</span>
             </div>
           </div>
-          <div className="flex justify-between p-[24px]">
-            <div className="flex flex-col">
-              <span className="flex h-[52px] justify-center text-tc-secondary">
-                Collateral value
-              </span>
-              <div className="text-[16px]">{formatCurrency(13000, false)}</div>
-            </div>
 
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center text-tc-secondary">
-                Borrowed value
-              </span>
-              <div className="flex flex-col text-[16px]">
-                <span> {formatCurrency(13000, false)} SLC</span>
-                <span className="text-[12px] text-tc-secondary">
-                  {formatCurrency(13000)}
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center text-tc-secondary">
-                Available to borrow
-              </span>
-              <div className="flex flex-col text-[16px]">
-                <span> {formatCurrency(13000, false)} SLC</span>
-                <span className="text-[12px] text-tc-secondary">
-                  {formatCurrency(13000)}
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center text-tc-secondary">
-                Health Factor
-              </span>
-              <div className="flex items-center gap-[10px] text-[16px]">
-                <span> 2.5</span>
-                <Button type="text" ghost className="text-theme" size="small">
-                  Rist detail
-                </Button>
-              </div>
-            </div>
-          </div>
+          <Table
+            columns={columns}
+            dataSource={assets}
+            bordered={false}
+            rowHoverable={false}
+          />
         </div>
       )}
     </div>
