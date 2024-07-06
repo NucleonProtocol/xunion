@@ -9,7 +9,7 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import useApprove from '@/pages/trade/hooks/useApprove.ts';
-import { XUNION_SWAP_CONTRACT } from '@/contracts';
+import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 
@@ -42,7 +42,7 @@ function BuySLC() {
   } = useApprove({
     token: inputToken!,
     amount: payAmount,
-    spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
+    spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
   });
 
   const { isNativeToken } = useNativeToken();
@@ -71,7 +71,7 @@ function BuySLC() {
         </Button>
       );
     }
-    if (!isTokenAApproved && !isNativeToken(inputToken)) {
+    if (!isTokenAApproved && !isNativeToken(inputToken) && isReady) {
       return (
         <Button
           className="w-full"

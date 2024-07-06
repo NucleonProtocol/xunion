@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
 import { WriteContractErrorType } from 'viem';
+import { writeTxErrorNotification } from '@/components/notices/writeTxErrorNotification.tsx';
 
 const useXWriteContract = ({
   showSubmittedModal = true,
@@ -44,12 +45,14 @@ const useXWriteContract = ({
   useEffect(() => {
     if (isError) {
       onError?.(submittedError as WriteContractErrorType);
+      writeTxErrorNotification(hash);
     }
   }, [submittedError, isError]);
 
   useEffect(() => {
     if (isWriteError) {
       onError?.(writeError as WriteContractErrorType);
+      writeTxErrorNotification(hash);
     }
   }, [writeError, isWriteError]);
 

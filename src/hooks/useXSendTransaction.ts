@@ -1,6 +1,7 @@
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi';
 import { useEffect } from 'react';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
+import { writeTxErrorNotification } from '@/components/notices/writeTxErrorNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
 import { WriteContractErrorType } from 'viem';
 
@@ -42,12 +43,14 @@ const useXSendTransaction = ({
 
   useEffect(() => {
     if (isError) {
+      writeTxErrorNotification(hash);
       onError?.(submittedError as WriteContractErrorType);
     }
   }, [submittedError, isError]);
 
   useEffect(() => {
     if (isWriteError) {
+      writeTxErrorNotification(hash);
       onError?.(writeError as WriteContractErrorType);
     }
   }, [writeError, isWriteError]);

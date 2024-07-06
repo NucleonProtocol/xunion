@@ -15,10 +15,10 @@ import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 
-const useBuySLC = () => {
+const useSellSLC = () => {
   const { getBalance } = useErc20Balance();
-  const [inputToken, setInputToken] = useState<Token | undefined>();
-  const [outputToken] = useState<Token | undefined>(SLCToken);
+  const [inputToken] = useState<Token | undefined>(SLCToken);
+  const [outputToken, setOutputToken] = useState<Token | undefined>();
   const [payAmount, setPayAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
@@ -79,16 +79,16 @@ const useBuySLC = () => {
     }
   }, [outputToken]);
 
-  const onInputTokenChange = useCallback(
+  const onOutputTokenChange = useCallback(
     (token: Token) => {
-      setInputToken(token);
-      if (payAmount) {
-        autoGetReceiveAmount({ outputToken, inputToken: token, payAmount });
+      setOutputToken(token);
+      if (receiveAmount) {
+        autoGetPayAmount({ outputToken: token, inputToken, receiveAmount });
       } else {
-        autoGetPayAmount({ outputToken, inputToken: token, receiveAmount });
+        autoGetReceiveAmount({ outputToken: token, inputToken, payAmount });
       }
     },
-    [outputToken?.address, receiveAmount]
+    [inputToken?.address, payAmount]
   );
 
   const onPayAmountChange = useCallback(
@@ -186,14 +186,14 @@ const useBuySLC = () => {
         writeContractAsync({
           address: address as Address,
           abi,
-          functionName: 'buySlcByCFX',
+          functionName: 'sellSlcByCFX',
           value: `${amountIn}` as unknown as bigint,
         });
       } else {
         writeContractAsync({
           address: address as Address,
           abi,
-          functionName: 'slcTokenBuy',
+          functionName: 'slcTokenSell',
           args: [inputToken?.address, amountIn],
         });
       }
@@ -215,11 +215,11 @@ const useBuySLC = () => {
     isReady,
     isInsufficientLiquidity,
     onConfirm,
-    setInputToken: onInputTokenChange,
+    setOutputToken: onOutputTokenChange,
     setPayAmount: onPayAmountChange,
     setReceiveAmount: onReceiveAmountChange,
     isSubmittedLoading,
   };
 };
 
-export default useBuySLC;
+export default useSellSLC;
