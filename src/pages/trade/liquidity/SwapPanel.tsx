@@ -1,4 +1,4 @@
-import TokenInput from '@/pages/trade/component/TokenInput.tsx';
+import TokenInput from '@/components/TokenInput.tsx';
 import { PlusOutlined } from '@ant-design/icons';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
@@ -6,7 +6,7 @@ import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import { LiquidityReturnType } from '@/pages/trade/hooks/useAddLP.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import LiquidityInfo from '@/pages/trade/liquidity/LiquidityInfo.tsx';
-import Warning from '@/pages/trade/component/Warning.tsx';
+import Warning from '@/components/Warning.tsx';
 import { Link } from 'react-router-dom';
 
 const SwapPanel = ({
@@ -141,7 +141,7 @@ const SwapPanel = ({
       <div className="mt-[20px]">
         <TokenInput
           title="Token A"
-          editable={!loading}
+          editable
           token={tokenA}
           onTokenChange={onTokenAChange}
           amount={tokenAAmount}
@@ -161,7 +161,7 @@ const SwapPanel = ({
         </div>
         <TokenInput
           title="Token B"
-          editable={!loading}
+          editable
           token={tokenB}
           onTokenChange={onTokenBChange}
           amount={tokenBAmount}

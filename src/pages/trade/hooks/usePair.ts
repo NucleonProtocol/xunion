@@ -1,6 +1,6 @@
 import { Token } from '@/types/swap.ts';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import useInterfaceContract from '@/hooks/useInterfaceContract.ts';
+import useSwapContract from '@/hooks/useSwapContract.ts';
 import { isSLCToken, XUNION_SWAP_CONTRACT, ZERO_ADDRESS } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 
@@ -12,7 +12,7 @@ const usePair = ({
   toToken?: Token;
 }) => {
   const [pairAddress, setPairAddress] = useState('');
-  const contract = useInterfaceContract();
+  const contract = useSwapContract();
 
   const { getRealAddress } = useNativeToken();
 

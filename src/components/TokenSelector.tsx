@@ -225,7 +225,7 @@ const TokenSelector = ({
           <span className="">Select Token</span>
         )}
 
-        <DownOutlined className="text-[14px]" />
+        {!disabled && <DownOutlined className="text-[14px]" />}
       </div>
     </div>
   );

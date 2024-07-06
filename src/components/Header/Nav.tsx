@@ -76,7 +76,10 @@ const Nav = () => {
         </div>
       </Dropdown>
 
-      <Link to={'/'} className="px-[12px]  text-tc-secondary max-md:px-[8px]">
+      <Link
+        to={'/slc/buy'}
+        className="px-[12px]  text-tc-secondary max-md:px-[8px]"
+      >
         SLC
       </Link>
       <Link to={'/'} className="px-[12px] text-tc-secondary max-md:px-[8px]">

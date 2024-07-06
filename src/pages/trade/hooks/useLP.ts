@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import useInterfaceContract from '@/hooks/useInterfaceContract.ts';
+import useSwapContract from '@/hooks/useSwapContract.ts';
 import { formatUnits } from 'ethers';
 import { isSLCToken, XUNION_SWAP_CONTRACT, ZERO_ADDRESS } from '@/contracts';
 import { Token } from '@/types/swap.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useLP = () => {
-  const contract = useInterfaceContract();
+  const contract = useSwapContract();
   const { isNativeToken, getGasTokenAddress, getRealAddress } =
     useNativeToken();
 

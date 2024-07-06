@@ -2,71 +2,37 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Token } from '@/types/swap.ts';
 import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
 import usePair from '@/pages/trade/hooks/usePair.ts';
-import { XUNION_SWAP_CONTRACT } from '@/contracts';
+import {
+  SLCToken,
+  XUNION_SLC_CONTRACT,
+  XUNION_SWAP_CONTRACT,
+} from '@/contracts';
 import useLP from '@/pages/trade/hooks/useLP.ts';
 import useCalcAmount from '@/pages/trade/hooks/useCalcAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
+import useXWriteContract from '@/hooks/useXWriteContract.ts';
+import { Address, erc20Abi } from 'viem';
+import { useReadContract } from 'wagmi';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
-type SwapStep = 'FILL' | 'CONFIRM';
-
-export interface SwapReturnType {
-  slippage: string;
-  priceImpact: number;
-  fee: number;
-  feeAmount: number;
-  estReceived: number;
-  minReceived: number;
-  outputToken?: Token;
-  inputToken?: Token;
-  toPairUnit?: { amount: number; price: number };
-  fromPairUnit?: { amount: number; price: number };
-  setSlippage: (v: string) => void;
-  onExchange: () => void;
-  setInputToken: (token: Token) => void;
-  setOutputToken: (token: Token) => void;
-  payAmount: string;
-  setPayAmount: (amount: string) => void;
-  receiveAmount: string;
-  setReceiveAmount: (amount: string) => void;
-  inputOwnerAmount: number;
-  outputOwnerAmount: number;
-  deadline: string;
-  setDeadline: (amount: string) => void;
-  outputTokenTotalPrice: number;
-  inputTokenTotalPrice: number;
-  isInsufficient: boolean;
-  isReady: boolean;
-  isInsufficientLiquidity: boolean;
-  swapStep?: SwapStep;
-  onConfirm?: () => void;
-  onFillSwap?: () => void;
-}
-
-const useSwap = (): SwapReturnType => {
+const useSwap = () => {
   const { getBalance } = useErc20Balance();
-  const [slippage, setSlippage] = useState('-1');
   const [inputToken, setInputToken] = useState<Token | undefined>();
-  const [outputToken, setOutputToken] = useState<Token | undefined>();
+  const [outputToken] = useState<Token | undefined>(SLCToken);
   const [payAmount, setPayAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
   const [outputOwnerAmount, setOutputOwnerAmount] = useState(0);
-  const [deadline, setDeadline] = useState('10');
   const [inputTokenTotalPrice, setInputTokenTotalPrice] = useState(0);
   const [outputTokenTotalPrice, setOutputTokenTotalPrice] = useState(0);
-
-  const [priceImpact, setPriceImpact] = useState(0);
-  const [fee, setFee] = useState(0);
-
-  const [swapStep, setStep] = useState<SwapStep>('FILL');
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
 
   const { autoGetPayAmount, autoGetReceiveAmount } = useCalcAmount({
     setIsInsufficientLiquidity,
     setPayAmount,
-    setFee,
-    setPriceImpact,
+    setFee: () => {},
+    setPriceImpact: () => {},
     setInputTokenTotalPrice,
     setReceiveAmount,
     setOutputTokenTotalPrice,
@@ -102,42 +68,6 @@ const useSwap = (): SwapReturnType => {
     }
   }, [toWithSLCPairAddress, receiveAmount]);
 
-  const onExchange = () => {
-    if (inputToken || outputToken) {
-      setOutputToken(inputToken);
-      setInputToken(outputToken);
-      setPayAmount('');
-      setReceiveAmount('');
-      setInputTokenTotalPrice(0);
-      setOutputTokenTotalPrice(0);
-    }
-  };
-
-  const feeAmount = useMemo(() => {
-    if (fee && outputTokenTotalPrice) {
-      return formatNumber(Number(outputTokenTotalPrice || 0) * fee, 6);
-    }
-    return 0;
-  }, [fee, outputTokenTotalPrice]);
-
-  const minReceived = useMemo(() => {
-    if (slippage && isNumeric(receiveAmount)) {
-      const slippedAmount =
-        (Number(slippage === '-1' ? '0.5' : slippage) / 100) *
-        Number(receiveAmount);
-      return formatNumber(Number(receiveAmount || 0) - slippedAmount, 6);
-    }
-
-    return 0;
-  }, [receiveAmount, slippage]);
-  const estReceived = useMemo(() => {
-    if (isNumeric(receiveAmount)) {
-      return formatNumber(Number(receiveAmount || 0), 6);
-    }
-
-    return 0;
-  }, [receiveAmount]);
-
   useEffect(() => {
     if (inputToken?.address) {
       getBalance(inputToken.address).then(setInputOwnerAmount);
@@ -159,18 +89,6 @@ const useSwap = (): SwapReturnType => {
       }
     },
     [outputToken?.address, receiveAmount]
-  );
-
-  const onOutputTokenChange = useCallback(
-    (token: Token) => {
-      setOutputToken(token);
-      if (receiveAmount) {
-        autoGetPayAmount({ outputToken: token, inputToken, receiveAmount });
-      } else {
-        autoGetReceiveAmount({ outputToken: token, inputToken, payAmount });
-      }
-    },
-    [inputToken?.address, payAmount]
   );
 
   const onPayAmountChange = useCallback(
@@ -252,45 +170,55 @@ const useSwap = (): SwapReturnType => {
     );
   }, [payAmount, inputOwnerAmount, inputToken?.address]);
 
-  const onConfirm = () => {
-    setStep('CONFIRM');
-  };
+  const { writeContractAsync, isSubmittedLoading } = useXWriteContract({});
+  const { getRealAddress, isNativeToken } = useNativeToken();
+  const { data: decimals } = useReadContract({
+    address: getRealAddress(inputToken!) as Address,
+    abi: erc20Abi,
+    functionName: 'decimals',
+  });
 
-  const onFillSwap = () => {
-    setStep('FILL');
+  const onConfirm = () => {
+    if (decimals && payAmount && inputToken) {
+      const amountIn = Number(payAmount) * 10 ** decimals;
+      const { address, abi } = XUNION_SLC_CONTRACT.interface;
+      if (isNativeToken(inputToken)) {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'buySlcByCFX',
+          value: `${amountIn}` as unknown as bigint,
+        });
+      } else {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'slcTokenBuy',
+          args: [inputToken?.address, amountIn],
+        });
+      }
+    }
   };
 
   return {
+    inputToken,
+    outputToken,
+    payAmount,
+    receiveAmount,
+    inputOwnerAmount,
+    outputOwnerAmount,
+    outputTokenTotalPrice,
+    inputTokenTotalPrice,
     toPairUnit,
     fromPairUnit,
     isInsufficient,
     isReady,
-    slippage,
-    setSlippage,
-    onExchange,
-    inputToken,
-    setInputToken: onInputTokenChange,
-    setOutputToken: onOutputTokenChange,
-    setPayAmount: onPayAmountChange,
-    setReceiveAmount: onReceiveAmountChange,
-    outputToken,
-    payAmount,
-    receiveAmount,
-    priceImpact,
-    fee,
-    feeAmount,
-    estReceived,
-    minReceived,
-    inputOwnerAmount,
-    outputOwnerAmount,
-    deadline,
-    setDeadline,
-    inputTokenTotalPrice,
-    outputTokenTotalPrice,
     isInsufficientLiquidity,
     onConfirm,
-    onFillSwap,
-    swapStep,
+    setInputToken: onInputTokenChange,
+    setPayAmount: onPayAmountChange,
+    setReceiveAmount: onReceiveAmountChange,
+    isSubmittedLoading,
   };
 };
 

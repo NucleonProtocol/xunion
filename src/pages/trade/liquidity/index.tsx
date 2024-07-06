@@ -2,7 +2,7 @@ import { LiquidityIcon, SwapIcon } from '@/components/icons';
 import SwapPanel from './SwapPanel.tsx';
 import ConfirmPanel from './ConfirmPanel.tsx';
 import useAddLP from '@/pages/trade/hooks/useAddLP.ts';
-import RouteTabs from '@/pages/trade/component/RouteTabs.tsx';
+import RouteTabs from '@/components/RouteTabs.tsx';
 
 function Liquidity() {
   const props = useAddLP();

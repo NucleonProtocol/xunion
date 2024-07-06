@@ -1,4 +1,4 @@
-import useInterfaceContract from '@/hooks/useInterfaceContract.ts';
+import useSwapContract from '@/hooks/useSwapContract.ts';
 import { useCallback } from 'react';
 import { Token } from '@/types/swap.ts';
 import { formatEther, parseEther } from 'ethers';
@@ -24,7 +24,7 @@ const useCalcAmount = ({
   setInputTokenTotalPrice: (value: number) => void;
   setOutputTokenTotalPrice: (value: number) => void;
 }) => {
-  const contract = useInterfaceContract();
+  const contract = useSwapContract();
 
   const { getRealAddress } = useNativeToken();
 

@@ -10,6 +10,7 @@ import { getPerAmount } from '@/pages/trade/liquidity/LiquidityInfo.tsx';
 import { getAddress } from 'ethers';
 import { useMemo } from 'react';
 import { TokenIcon } from '@/components/icons';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const LPTokenItem = ({
   tokenB,
@@ -73,6 +74,8 @@ const ConfirmPanel = ({
     amount: tokenAAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });
+
+  const { isNativeToken } = useNativeToken();
 
   const {
     isApproved: isTokenBApproved,
@@ -145,32 +148,36 @@ const ConfirmPanel = ({
         <WithAuthButton>
           <div>
             <div className="flex-center mb-[10px] gap-[20px]">
-              <Button
-                className="flex-1"
-                type="primary"
-                size="large"
-                disabled={isTokenAApproved}
-                icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
-                loading={isTokenAApproving}
-                onClick={approveTokenA}
-              >
-                {isTokenAApproved
-                  ? `${tokenA?.symbol} Approved`
-                  : `Approve ${tokenA?.symbol}`}
-              </Button>
-              <Button
-                className="flex-1"
-                type="primary"
-                size="large"
-                disabled={isTokenBApproved}
-                loading={isTokenBApproving}
-                icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
-                onClick={approveTokenB}
-              >
-                {isTokenBApproved
-                  ? `${tokenB?.symbol} Approved`
-                  : `Approve ${tokenB?.symbol}`}
-              </Button>
+              {tokenA && !isNativeToken(tokenA) && (
+                <Button
+                  className="flex-1"
+                  type="primary"
+                  size="large"
+                  disabled={isTokenAApproved}
+                  icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
+                  loading={isTokenAApproving}
+                  onClick={approveTokenA}
+                >
+                  {isTokenAApproved
+                    ? `${tokenA?.symbol} Approved`
+                    : `Approve ${tokenA?.symbol}`}
+                </Button>
+              )}
+              {tokenB && !isNativeToken(tokenB) && (
+                <Button
+                  className="flex-1"
+                  type="primary"
+                  size="large"
+                  disabled={isTokenBApproved}
+                  loading={isTokenBApproving}
+                  icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
+                  onClick={approveTokenB}
+                >
+                  {isTokenBApproved
+                    ? `${tokenB?.symbol} Approved`
+                    : `Approve ${tokenB?.symbol}`}
+                </Button>
+              )}
             </div>
             <Button
               className="w-full"

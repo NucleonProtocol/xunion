@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { LeftOutlined, PlusOutlined } from '@ant-design/icons';
-import TokenInput from '@/pages/trade/component/TokenInput.tsx';
+import TokenInput from '@/components/TokenInput.tsx';
 import useCreatePool from '@/pages/trade/hooks/useCreatePool.ts';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import { isSLCToken } from '@/contracts';
-import Warning from '@/pages/trade/component/Warning.tsx';
+import Warning from '@/components/Warning.tsx';
 import UploadInfo from '@/pages/trade/create-pool/UploadInfo.tsx';
 
 function CreatPool() {

@@ -7,7 +7,9 @@ import Pools from '@/pages/trade/pools';
 import Liquidity from '@/pages/trade/liquidity';
 import CreatePool from 'src/pages/trade/create-pool';
 import Explore from '@/pages/explore';
-import SLC from '@/pages/slc';
+import SLCBuy from '@/pages/slc/buy';
+import SLCSell from '@/pages/slc/sell';
+import SLCBorrow from '@/pages/slc/borrow';
 
 const routes = [
   {
@@ -57,7 +59,24 @@ const routes = [
       },
       {
         path: 'slc',
-        element: <SLC />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="buy" replace />,
+          },
+          {
+            path: 'buy',
+            element: <SLCBuy />,
+          },
+          {
+            path: 'sell',
+            element: <SLCSell />,
+          },
+          {
+            path: 'borrow',
+            element: <SLCBorrow />,
+          },
+        ],
       },
       {
         path: 'explore',

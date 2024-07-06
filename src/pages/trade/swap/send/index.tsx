@@ -1,6 +1,6 @@
 import { LiquidityIcon, SwapIcon } from '@/components/icons';
 import SendingPanel from './SendingPanel.tsx';
-import RouteTabs from '@/pages/trade/component/RouteTabs.tsx';
+import RouteTabs from '@/components/RouteTabs.tsx';
 
 function Swap() {
   return (

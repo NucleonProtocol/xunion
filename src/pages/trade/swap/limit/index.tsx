@@ -1,7 +1,7 @@
 import { LiquidityIcon, SwapIcon } from '@/components/icons';
 import SwapPanel from './SwapPanel.tsx';
 import useSwap from '@/pages/trade/hooks/useSwap.ts';
-import RouteTabs from '@/pages/trade/component/RouteTabs.tsx';
+import RouteTabs from '@/components/RouteTabs.tsx';
 
 function Swap() {
   const { ...rest } = useSwap();

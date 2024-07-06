@@ -1,5 +1,5 @@
-import { LiquidityIcon, SwapIcon } from '@/components/icons';
-import SwapPanel from '@/pages/trade/swap/SwapPanel.tsx';
+import { BuySellIcon, BorrowIcon } from '@/components/icons';
+import SwapPanel from './SwapPanel.tsx';
 import useSwap from '@/pages/trade/hooks/useSwap.ts';
 import ConfirmPanel from '@/pages/trade/swap/ConfirmPanel.tsx';
 import RouteTabs from '@/components/RouteTabs.tsx';
@@ -10,14 +10,19 @@ function Swap() {
     <div className="flex flex-1 flex-col items-center justify-center pt-[70px] max-md:pt-[40px] ">
       <RouteTabs
         tabs={[
-          { name: 'Swap', path: '/', icon: <SwapIcon /> },
           {
-            name: 'Liquidity',
-            path: '/trade/liquidity',
-            icon: <LiquidityIcon />,
+            name: 'Buy',
+            path: '/slc/buy',
+            icon: <BuySellIcon />,
+            label: 'Buy & Sell',
+          },
+          {
+            name: 'Borrow',
+            path: '/slc/borrow',
+            icon: <BorrowIcon />,
           },
         ]}
-        active="Swap"
+        active="Buy"
       />
       {swapStep === 'FILL' ? (
         <SwapPanel {...rest} />

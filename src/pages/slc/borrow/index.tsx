@@ -1,5 +1,5 @@
 function Home() {
-  return <div>123123</div>;
+  return <div>borrow</div>;
 }
 
 export default Home;

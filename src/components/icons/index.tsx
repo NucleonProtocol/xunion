@@ -1,4 +1,5 @@
 /// <reference types="vite-plugin-svgr/client" />
+import { cn } from '@/utils/classnames.ts';
 import { CSSProperties, HTMLAttributes, PropsWithChildren } from 'react';
 import AntdIcon from '@ant-design/icons';
 import LogoSvg from '@/assets/svgs/external/logo.svg?react';
@@ -13,7 +14,8 @@ import Setting from '@/assets/svgs/menus/setting.svg?react';
 import ArrowRightTop from '@/assets/svgs/arrow/arrow-right-top.svg?react';
 import ArrowUp from '@/assets/svgs/arrow/arrow-up.svg?react';
 import ArrowLeft from '@/assets/svgs/arrow/arrow-left.svg?react';
-import { cn } from '@/utils/classnames.ts';
+import BuySell from '@/assets/svgs/menus/buy-sell.svg?react';
+import Borrow from '@/assets/svgs/menus/Borrow.svg?react';
 
 type IconProps = PropsWithChildren<
   {
@@ -126,3 +128,15 @@ export const TokenIcon = ({
   ) : (
     <LogoIcon className={className} {...rest} />
   );
+
+export const BuySellIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <BuySell />
+  </Icon>
+);
+
+export const BorrowIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Borrow />
+  </Icon>
+);

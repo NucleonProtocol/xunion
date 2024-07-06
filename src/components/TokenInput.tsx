@@ -1,4 +1,4 @@
-import TokenSelector from '@/pages/trade/component/TokenSelector.tsx';
+import TokenSelector from '@/components/TokenSelector.tsx';
 import { Token } from '@/types/swap.ts';
 import { cn } from '@/utils/classnames.ts';
 
@@ -38,7 +38,7 @@ const TokenInput = ({
           <input
             className="w-full border-0 bg-transparent text-[30px] font-bold outline-0 focus:border-0 focus:bg-transparent "
             placeholder={placeholder}
-            disabled={!editable || disabled}
+            disabled={!editable}
             value={amount}
             onChange={(e) => {
               let value = e.target.value;
@@ -71,19 +71,23 @@ const TokenInput = ({
         <span className="text-tc-secondary">
           {totalPrice > 0 ? `$${totalPrice}` : ''}
         </span>
-        <div className="flex-center gap-[10px] text-[14px]">
-          <span className="text-tc-secondary">Balance: {ownerAmount}</span>
-          {onMax && ownerAmount > 0 && (
-            <div
-              className={cn(' text-theme', { 'cursor-pointer': !disabled })}
-              onClick={() => {
-                if (!disabled) {
-                  onMax(ownerAmount);
-                }
-              }}
-            >
-              MAX
-            </div>
+        <div className="flex-center h-[32px] gap-[10px] text-[14px]">
+          {token?.address && (
+            <>
+              <span className="text-tc-secondary">Balance: {ownerAmount}</span>
+              {onMax && ownerAmount > 0 && (
+                <div
+                  className={cn(' text-theme', { 'cursor-pointer': !disabled })}
+                  onClick={() => {
+                    if (!disabled) {
+                      onMax(ownerAmount);
+                    }
+                  }}
+                >
+                  MAX
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

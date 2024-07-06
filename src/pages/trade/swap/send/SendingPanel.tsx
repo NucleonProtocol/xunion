@@ -1,8 +1,8 @@
-import TokenInput from '@/pages/trade/component/TokenInput.tsx';
+import TokenInput from '@/components/TokenInput.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button, Form } from 'antd';
 import SecondTabs from '@/pages/trade/swap/SecondTabs.tsx';
-import AddressInput from '@/pages/trade/component/AddressInput.tsx';
+import AddressInput from '@/components/AddressInput.tsx';
 import { Address, isAddress } from 'viem';
 import useSendToken from '@/pages/trade/hooks/useSendToken.ts';
 import useApprove from '@/pages/trade/hooks/useApprove.ts';

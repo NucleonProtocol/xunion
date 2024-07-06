@@ -1,17 +1,12 @@
 import { Address, erc20Abi } from 'viem';
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
-import { useEffect, useMemo } from 'react';
-import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
-import useTxStore from '@/store/transaction.ts';
+import { useReadContract } from 'wagmi';
+import { useMemo } from 'react';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { LiquidityReturnType } from '@/pages/trade/hooks/useAddLP.ts';
 import { getAddress } from 'ethers';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { Token } from '@/types/swap.ts';
+import useXWriteContract from '@/hooks/useXWriteContract.ts';
 
 const useAddLPConfirm = ({
   lpPairInfo,
@@ -29,7 +24,11 @@ const useAddLPConfirm = ({
   | 'tokenB'
   | 'setStep'
 >) => {
-  const updateSubmitted = useTxStore((state) => state.updateSubmitted);
+  const { writeContractAsync, isSubmittedLoading } = useXWriteContract({
+    onSubmitted: () => {
+      setStep('FILL');
+    },
+  });
 
   const { getRealAddress, isNativeToken } = useNativeToken();
 
@@ -44,33 +43,6 @@ const useAddLPConfirm = ({
     abi: erc20Abi,
     functionName: 'decimals',
   });
-
-  const {
-    data: hash,
-    isPending: isSubmittedLoading,
-    writeContractAsync,
-    isSuccess: isSubmitted,
-  } = useWriteContract();
-
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: !!hash,
-    },
-  });
-
-  useEffect(() => {
-    if (isSuccess && hash) {
-      writeTxNotification(hash);
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isSubmitted) {
-      updateSubmitted({ hash });
-      setStep('FILL');
-    }
-  }, [isSubmitted]);
 
   const sortedAmounts = useMemo(() => {
     if (!tokenADecimals || !tokenBDecimals) return [];

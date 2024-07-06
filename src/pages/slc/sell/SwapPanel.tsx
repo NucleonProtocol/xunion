@@ -6,7 +6,7 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import { SwapReturnType } from '@/pages/trade/hooks/useSwap.ts';
-import SecondTabs from '@/pages/trade/swap/SecondTabs.tsx';
+import SecondTabs from './SecondTabs.tsx';
 
 const SwapPanel = ({
   slippage,
@@ -52,7 +52,7 @@ const SwapPanel = ({
   return (
     <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
       <div className="flex items-center justify-between ">
-        <SecondTabs active="Swap" />
+        <SecondTabs active="Sell" />
         <Slippage
           value={slippage}
           onChange={setSlippage}

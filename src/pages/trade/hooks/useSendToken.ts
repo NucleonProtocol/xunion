@@ -5,20 +5,14 @@ import usePair from '@/pages/trade/hooks/usePair.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useLP from '@/pages/trade/hooks/useLP.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
-import {
-  useAccount,
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-  useSendTransaction,
-} from 'wagmi';
-import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
-import useTxStore from '@/store/transaction.ts';
+import { useAccount, useReadContract } from 'wagmi';
 import { Address, erc20Abi, isAddress } from 'viem';
 import { Form } from 'antd';
 import useCISContract from '@/hooks/useCISContract.ts';
 import { parseUnits } from 'ethers';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import useXSendTransaction from '@/hooks/useXSendTransaction.ts';
+import useXWriteContract from '@/hooks/useXWriteContract.ts';
 
 const useSendToken = () => {
   const { getBalance } = useErc20Balance();
@@ -35,7 +29,9 @@ const useSendToken = () => {
 
   const { isNativeToken, getRealAddress } = useNativeToken();
 
-  const { sendTransactionAsync } = useSendTransaction();
+  const { sendTransactionAsync, isSubmittedLoading: isSubmittedLoadingSend } =
+    useXSendTransaction({});
+  const { writeContractAsync, isSubmittedLoading } = useXWriteContract({});
 
   const { data: decimals } = useReadContract({
     address: getRealAddress(inputToken!) as Address,
@@ -59,32 +55,6 @@ const useSendToken = () => {
     toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
   });
   const { getLpPrice } = useLP();
-  const updateSubmitted = useTxStore((state) => state.updateSubmitted);
-  const {
-    data: hash,
-    isPending: isSubmittedLoading,
-    writeContractAsync,
-    isSuccess: isSubmitted,
-  } = useWriteContract();
-
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: !!hash,
-    },
-  });
-
-  useEffect(() => {
-    if (isSuccess && hash) {
-      writeTxNotification(hash);
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isSubmitted) {
-      updateSubmitted({ hash });
-    }
-  }, [isSubmitted]);
 
   useEffect(() => {
     if (fromWithSLCPairAddress && payAmount) {
@@ -116,6 +86,8 @@ const useSendToken = () => {
         sendTransactionAsync({
           to: toAddress,
           value: parseUnits(payAmount, decimals),
+        }).then((res) => {
+          console.log(res);
         });
       } else {
         writeContractAsync({
@@ -141,7 +113,7 @@ const useSendToken = () => {
     form,
     getAddrByCISId,
     cis,
-    isSubmittedLoading,
+    isSubmittedLoading: isSubmittedLoading || isSubmittedLoadingSend,
   };
 };
 

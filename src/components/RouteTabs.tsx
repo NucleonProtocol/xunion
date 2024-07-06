@@ -4,6 +4,7 @@ import { cn } from '@/utils/classnames.ts';
 
 export interface RouteTab {
   name: string;
+  label?: string;
   icon?: ReactNode;
   path: string;
 }
@@ -23,7 +24,7 @@ const RouteTabs = ({ tabs, active }: { tabs: RouteTab[]; active: string }) => {
           )}
         >
           {tab.icon}
-          <span>{tab.name}</span>
+          <span>{tab.label || tab.name}</span>
         </Link>
       ))}
     </div>

@@ -1,16 +1,10 @@
 import { Address, erc20Abi } from 'viem';
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
+import { useReadContract } from 'wagmi';
 import { Token } from '@/types/swap.ts';
-import { useEffect } from 'react';
-import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
-import useTxStore from '@/store/transaction.ts';
 import dayjs from 'dayjs';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import useXWriteContract from '@/hooks/useXWriteContract.ts';
 
 const useSwapConfirm = ({
   inputToken,
@@ -29,8 +23,6 @@ const useSwapConfirm = ({
   deadline: string;
   onFillSwap?: () => void;
 }) => {
-  const updateSubmitted = useTxStore((state) => state.updateSubmitted);
-
   const { isNativeToken, getRealSwapAddress, getRealAddress } =
     useNativeToken();
 
@@ -45,33 +37,11 @@ const useSwapConfirm = ({
     abi: erc20Abi,
     functionName: 'decimals',
   });
-
-  const {
-    data: hash,
-    isPending: isSubmittedLoading,
-    writeContractAsync,
-    isSuccess: isSubmitted,
-  } = useWriteContract();
-
-  const { isSuccess } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: !!hash,
+  const { writeContractAsync, isSubmittedLoading } = useXWriteContract({
+    onSubmitted: () => {
+      onFillSwap?.();
     },
   });
-
-  useEffect(() => {
-    if (isSuccess && hash) {
-      writeTxNotification(hash);
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isSubmitted) {
-      updateSubmitted({ hash });
-      onFillSwap?.();
-    }
-  }, [isSubmitted]);
 
   const confirm = () => {
     if (fromDecimals && toDecimals) {
