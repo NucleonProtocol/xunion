@@ -179,22 +179,22 @@ const useSellSLC = () => {
   });
 
   const onConfirm = () => {
-    if (decimals && payAmount && inputToken) {
-      const amountIn = Number(payAmount) * 10 ** decimals;
+    if (decimals && receiveAmount && outputToken) {
+      const amountIn = Number(receiveAmount) * 10 ** decimals;
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
-      if (isNativeToken(inputToken)) {
+      if (isNativeToken(outputToken)) {
         writeContractAsync({
           address: address as Address,
           abi,
-          functionName: 'sellSlcByCFX',
-          value: `${amountIn}` as unknown as bigint,
+          functionName: 'sellSlcToCFX',
+          args: [amountIn],
         });
       } else {
         writeContractAsync({
           address: address as Address,
           abi,
           functionName: 'slcTokenSell',
-          args: [inputToken?.address, amountIn],
+          args: [outputToken?.address, amountIn],
         });
       }
     }
