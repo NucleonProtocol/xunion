@@ -104,7 +104,7 @@ const RepaySLCModal = ({
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="You pay"
+            title="amount"
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}

@@ -1,18 +1,41 @@
 import { Button, Skeleton, Table } from 'antd';
-import { Token } from '@/types/swap.ts';
-import { TokenIcon } from '@/components/icons';
 
-interface CollateralAsset extends Token {
-  balance: {
-    amount: number;
-    price: number;
-  };
-  provided: {
-    amount: number;
-    price: number;
-  };
-  canBeCollateral: boolean;
-}
+import { TokenIcon } from '@/components/icons';
+import { SLCToken } from '@/contracts';
+import { formatCurrency } from '@/utils';
+import WithdrawModal from '@/pages/slc/borrow/WithdrawModal.tsx';
+import ProvideModal from '@/pages/slc/borrow/ProvideModal.tsx';
+import { useState } from 'react';
+import { CollateralAsset } from '@/types/swap.ts';
+
+const assetsMock: CollateralAsset[] = [
+  {
+    ...SLCToken,
+    balance: {
+      amount: 3,
+      price: 120000,
+    },
+    provided: {
+      amount: 2,
+      price: 111111,
+    },
+    canBeCollateral: false,
+  },
+  {
+    ...SLCToken,
+    symbol: 'ETH',
+    name: 'ETH',
+    balance: {
+      amount: 3,
+      price: 120000,
+    },
+    provided: {
+      amount: 2,
+      price: 111111,
+    },
+    canBeCollateral: true,
+  },
+];
 
 const Collateral = ({
   assets,
@@ -21,6 +44,8 @@ const Collateral = ({
   assets: CollateralAsset[];
   loading: boolean;
 }) => {
+  const [withdrawItem, setWithdrawItem] = useState<CollateralAsset>();
+  const [providedItem, setProvidedItem] = useState<CollateralAsset>();
   const columns = [
     {
       key: 'name',
@@ -28,7 +53,7 @@ const Collateral = ({
       dataIndex: 'name',
       render: (_: string, record: CollateralAsset) => {
         return (
-          <div className="flex-center gap-[5px]">
+          <div className="flex  gap-[5px]">
             <span>
               <TokenIcon src={record.icon} />
             </span>
@@ -43,9 +68,9 @@ const Collateral = ({
       dataIndex: 'balance',
       render: (_: string, record: CollateralAsset) => {
         return (
-          <div className="flex-center flex-col gap-[5px]">
+          <div className="flex flex-col gap-[5px]">
             <span>{record?.balance?.amount}</span>
-            <span>{record?.balance?.price}</span>
+            <span>{formatCurrency(record?.balance?.price)}</span>
           </div>
         );
       },
@@ -56,9 +81,9 @@ const Collateral = ({
       dataIndex: 'balance',
       render: (_: string, record: CollateralAsset) => {
         return (
-          <div className="flex-center flex-col gap-[5px]">
+          <div className="flex flex-col gap-[5px]">
             <span>{record?.provided?.amount}</span>
-            <span>{record?.provided?.price}</span>
+            <span>{formatCurrency(record?.provided?.price)}</span>
           </div>
         );
       },
@@ -66,10 +91,18 @@ const Collateral = ({
     {
       key: 'action',
       title: 'Action',
-      render: (_: string, __: CollateralAsset) => {
+      render: (_: string, record: CollateralAsset) => {
         return (
-          <div className="flex-center flex-col gap-[5px]">
-            <Button type="text" ghost className="text-theme" size="small">
+          <div className="flex  gap-[5px]">
+            <Button
+              type="text"
+              ghost
+              className="text-theme"
+              size="small"
+              onClick={() => {
+                setWithdrawItem(record);
+              }}
+            >
               Withdraw
             </Button>
             <Button
@@ -77,7 +110,10 @@ const Collateral = ({
               ghost
               className="text-theme"
               size="small"
-              disabled
+              disabled={record.canBeCollateral}
+              onClick={() => {
+                setProvidedItem(record);
+              }}
             >
               Provide
             </Button>
@@ -99,12 +135,23 @@ const Collateral = ({
               <span className="font-[500]">Collateral</span>
             </div>
           </div>
-
+          <WithdrawModal
+            open={!!withdrawItem}
+            onClose={() => setWithdrawItem(undefined)}
+            asset={withdrawItem}
+          />
+          <ProvideModal
+            open={!!providedItem}
+            onClose={() => setProvidedItem(undefined)}
+            asset={providedItem}
+          />
           <Table
             columns={columns}
-            dataSource={assets}
+            dataSource={assetsMock || assets}
             bordered={false}
             rowHoverable={false}
+            pagination={false}
+            rowKey="name"
           />
         </div>
       )}

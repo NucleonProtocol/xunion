@@ -5,6 +5,7 @@ import usePosition from '@/pages/slc/hooks/usePosition.ts';
 import { cn } from '@/utils/classnames.ts';
 import BorrowSLCModal from '@/pages/slc/borrow/BorrowSLCModal.tsx';
 import RepaySLCModal from '@/pages/slc/borrow/RepaySLCModal.tsx';
+import RiskModal from '@/pages/slc/borrow/RiskModal.tsx';
 
 const Position = ({
   health,
@@ -23,6 +24,7 @@ const Position = ({
   } = usePosition({ health });
   const [borrowOpen, setBorrowOpen] = useState(false);
   const [repayOpen, setRepayOpen] = useState(false);
+  const [riskOpen, setRiskOpen] = useState(false);
   const [type, setAlignValue] = useState('Popular');
   return (
     <div className="w-full rounded-[16px] bg-fill-niubi">
@@ -32,6 +34,7 @@ const Position = ({
         </div>
       ) : (
         <div className="flex flex-col">
+          <RiskModal open={riskOpen} onClose={() => setRiskOpen(false)} />
           <BorrowSLCModal
             open={borrowOpen}
             onClose={() => setBorrowOpen(false)}
@@ -130,7 +133,13 @@ const Position = ({
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
                 <span>{healthFactor}</span>
-                <Button type="text" ghost className="text-theme" size="small">
+                <Button
+                  type="text"
+                  ghost
+                  className="text-theme"
+                  size="small"
+                  onClick={() => setRiskOpen(true)}
+                >
                   Rist detail
                 </Button>
               </div>

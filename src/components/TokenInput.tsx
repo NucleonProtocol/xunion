@@ -15,6 +15,7 @@ const TokenInput = ({
   ownerAmount,
   totalPrice,
   placeholder = '0',
+  amountLabel = 'Balance',
 }: {
   title: string;
   editable?: boolean;
@@ -28,6 +29,7 @@ const TokenInput = ({
   ownerAmount: number;
   totalPrice: number;
   placeholder?: string;
+  amountLabel?: string;
 }) => {
   return (
     <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
@@ -74,7 +76,9 @@ const TokenInput = ({
         <div className="flex-center h-[32px] gap-[10px] text-[14px]">
           {token?.address && (
             <>
-              <span className="text-tc-secondary">Balance: {ownerAmount}</span>
+              <span className="text-tc-secondary">
+                {amountLabel}: {ownerAmount}
+              </span>
               {onMax && ownerAmount > 0 && (
                 <div
                   className={cn(' text-theme', { 'cursor-pointer': !disabled })}
