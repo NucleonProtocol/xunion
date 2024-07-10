@@ -6,6 +6,7 @@ import { cn } from '@/utils/classnames.ts';
 import BorrowSLCModal from '@/pages/slc/borrow/BorrowSLCModal.tsx';
 import RepaySLCModal from '@/pages/slc/borrow/RepaySLCModal.tsx';
 import RiskModal from '@/pages/slc/borrow/RiskModal.tsx';
+import RiskModeSelector from '@/components/RiskModeSelector.tsx';
 
 const Position = ({
   health,
@@ -142,6 +143,14 @@ const Position = ({
                 >
                   Rist detail
                 </Button>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="flex h-[52px] items-center justify-end text-tc-secondary">
+                Borrow mode
+              </span>
+              <div className="flex items-center gap-[10px] text-[16px]">
+                <RiskModeSelector />
               </div>
             </div>
           </div>

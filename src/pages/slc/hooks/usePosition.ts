@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { formatUnits } from 'ethers';
-import { useReadContract } from 'wagmi';
-import { XUNION_SLC_CONTRACT, XUNION_SWAP_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
+import useTokenPrice from '@/hooks/useTokenPrice.ts';
 
 const usePosition = ({ health }: { health: bigint[] }) => {
   const userAssetsValue = useMemo(() => {
@@ -37,26 +35,13 @@ const usePosition = ({ health }: { health: bigint[] }) => {
     return 0;
   }, [health]);
 
-  const { data: slcUnitPrice } = useReadContract({
-    address: XUNION_SLC_CONTRACT.oracle.address as Address,
-    abi: XUNION_SLC_CONTRACT.oracle.abi,
-    functionName: 'getPrice',
-    args: [XUNION_SWAP_CONTRACT.slc.address],
+  const { totalPrice: borrowedTotalPrice } = useTokenPrice({
+    amount: health ? formatUnits(health?.[2], 18) : '0',
   });
 
-  const borrowedTotalPrice = useMemo(() => {
-    if (slcUnitPrice && health) {
-      return Number(formatUnits(health[2] * (slcUnitPrice as bigint), 18));
-    }
-    return 0;
-  }, [health, slcUnitPrice]);
-
-  const availableTotalPrice = useMemo(() => {
-    if (slcUnitPrice && health) {
-      return Number(formatUnits(health[3] * (slcUnitPrice as bigint), 18));
-    }
-    return 0;
-  }, [health, slcUnitPrice]);
+  const { totalPrice: availableTotalPrice } = useTokenPrice({
+    amount: health ? formatUnits(health?.[3], 18) : '0',
+  });
 
   return {
     userAvailableAmount,

@@ -3,7 +3,7 @@ import TokenInput from '@/components/TokenInput.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
-import { CollateralAsset } from '@/types/swap.ts';
+import { SLCAsset } from '@/types/slc.ts';
 
 const WithdrawModal = ({
   open,
@@ -12,7 +12,7 @@ const WithdrawModal = ({
 }: {
   open: boolean;
   onClose: () => void;
-  asset?: CollateralAsset;
+  asset?: SLCAsset;
 }) => {
   const {
     inputToken,

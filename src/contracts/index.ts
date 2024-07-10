@@ -1,6 +1,7 @@
 import SwapInterfaceABI from './abi/SwapInterface.json';
 import SLCInterfaceABI from './abi/SLCInterface.json';
 import iSlcOracleABI from './abi/iSlcOracle.json';
+import Multicallespacetestnet from './abi/Multicallespacetestnet.json';
 import { erc20Abi, isAddress } from 'viem';
 import { getAddress } from 'ethers';
 import { Token } from '@/types/swap.ts';
@@ -33,12 +34,16 @@ export const XUNION_SWAP_CONTRACT = {
 
 export const XUNION_SLC_CONTRACT = {
   interface: {
-    address: '0xC6A10853d6aAb5880CaB280025B63889216BfE61',
+    address: '0xc30c061fda3b91cc4eede31dd0b20e6fb594014c',
     abi: SLCInterfaceABI,
   },
   oracle: {
     address: '0x559465367614e385Bd85c00a1B573414960763a5',
     abi: iSlcOracleABI,
+  },
+  mutilCall: {
+    address: '0x399b446909DC916C62D741060E709D8FCA785e0A',
+    abi: Multicallespacetestnet,
   },
 };
 

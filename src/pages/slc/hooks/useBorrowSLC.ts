@@ -1,222 +1,78 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Token } from '@/types/swap.ts';
-import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
-import usePair from '@/pages/trade/hooks/usePair.ts';
-import {
-  SLCToken,
-  XUNION_SLC_CONTRACT,
-  XUNION_SWAP_CONTRACT,
-} from '@/contracts';
-import useLP from '@/pages/trade/hooks/useLP.ts';
-import useCalcAmount from './useCalcAmount.ts';
+import useErc20Balance from '@/hooks/useErc20Balance.ts';
+import { SLCToken, XUNION_SLC_CONTRACT } from '@/contracts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import useNativeToken from '@/hooks/useNativeToken.ts';
+import useTokenPrice from '@/hooks/useTokenPrice.ts';
+import useHealthFactor from '@/pages/slc/hooks/useHealthFactor.ts';
 
 const useBorrowSLC = () => {
   const { getBalance } = useErc20Balance();
   const [inputToken] = useState<Token | undefined>(SLCToken);
-  const [outputToken, setOutputToken] = useState<Token | undefined>();
   const [payAmount, setPayAmount] = useState<string>('');
-  const [receiveAmount, setReceiveAmount] = useState<string>('');
+  const [healthFactor, setHealthFactor] = useState<string>();
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
-  const [outputOwnerAmount, setOutputOwnerAmount] = useState(0);
-  const [inputTokenTotalPrice, setInputTokenTotalPrice] = useState(0);
-  const [outputTokenTotalPrice, setOutputTokenTotalPrice] = useState(0);
 
-  const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
-
-  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcAmount({
-    setIsInsufficientLiquidity,
-    setPayAmount,
-    setInputTokenTotalPrice,
-    setReceiveAmount,
-    setOutputTokenTotalPrice,
+  const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
+    amount: payAmount,
   });
 
-  const { pairAddress: fromWithSLCPairAddress } = usePair({
-    fromToken: inputToken,
-    toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
-  });
-
-  const { pairAddress: toWithSLCPairAddress } = usePair({
-    fromToken: outputToken,
-    toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
-  });
-
-  const { getLpPrice } = useLP();
+  const { getBorrowHealth } = useHealthFactor();
 
   useEffect(() => {
-    if (fromWithSLCPairAddress && payAmount) {
-      getLpPrice(fromWithSLCPairAddress).then((unitPrice) => {
-        setInputTokenTotalPrice(formatNumber(Number(payAmount) * unitPrice, 2));
-      });
+    if (payAmount) {
+      getBorrowHealth(payAmount).then(setHealthFactor);
     }
-  }, [fromWithSLCPairAddress, payAmount]);
-
-  useEffect(() => {
-    if (toWithSLCPairAddress && receiveAmount) {
-      getLpPrice(toWithSLCPairAddress).then((unitPrice) => {
-        setOutputTokenTotalPrice(
-          formatNumber(Number(receiveAmount) * unitPrice, 2)
-        );
-      });
-    }
-  }, [toWithSLCPairAddress, receiveAmount]);
+  }, [payAmount]);
 
   useEffect(() => {
     if (inputToken?.address) {
       getBalance(inputToken.address).then(setInputOwnerAmount);
     }
   }, [inputToken]);
-  useEffect(() => {
-    if (outputToken?.address) {
-      getBalance(outputToken.address).then(setOutputOwnerAmount);
-    }
-  }, [outputToken]);
-
-  const onOutputTokenChange = useCallback(
-    (token: Token) => {
-      setOutputToken(token);
-      if (receiveAmount) {
-        autoGetPayAmount({ outputToken: token, inputToken, receiveAmount });
-      } else {
-        autoGetReceiveAmount({ outputToken: token, inputToken, payAmount });
-      }
-    },
-    [inputToken?.address, payAmount]
-  );
-
-  const onPayAmountChange = useCallback(
-    (value: string) => {
-      setPayAmount(value);
-      autoGetReceiveAmount({ outputToken, inputToken, payAmount: value });
-    },
-    [inputToken?.address, outputToken?.address, receiveAmount]
-  );
-
-  const onReceiveAmountChange = useCallback(
-    (value: string) => {
-      setReceiveAmount(value);
-      autoGetPayAmount({ outputToken, inputToken, receiveAmount: value });
-    },
-    [inputToken?.address, outputToken?.address, payAmount]
-  );
-
-  const fromPairUnit = useMemo(() => {
-    if (
-      isNumeric(receiveAmount) &&
-      isNumeric(payAmount) &&
-      outputTokenTotalPrice &&
-      inputTokenTotalPrice
-    ) {
-      const amount = formatNumber(Number(receiveAmount) / Number(payAmount), 8);
-
-      return {
-        amount,
-        price: formatNumber(
-          (Number(outputTokenTotalPrice) / Number(receiveAmount)) *
-            Number(amount),
-          4
-        ),
-      };
-    }
-    return {
-      amount: 0,
-      price: 0,
-    };
-  }, [payAmount, receiveAmount, outputTokenTotalPrice, inputTokenTotalPrice]);
-
-  const toPairUnit = useMemo(() => {
-    if (
-      isNumeric(receiveAmount) &&
-      isNumeric(payAmount) &&
-      outputTokenTotalPrice &&
-      inputTokenTotalPrice
-    ) {
-      const amount = formatNumber(Number(payAmount) / Number(receiveAmount), 8);
-      return {
-        amount,
-        price: formatNumber(
-          (Number(inputTokenTotalPrice) / Number(payAmount)) * Number(amount),
-          4
-        ),
-      };
-    }
-    return {
-      amount: 0,
-      price: 0,
-    };
-  }, [payAmount, receiveAmount, outputTokenTotalPrice, inputTokenTotalPrice]);
 
   const isReady = useMemo(() => {
-    return !!(
-      isNumeric(receiveAmount) &&
-      isNumeric(payAmount) &&
-      inputToken?.address &&
-      outputToken?.address
-    );
-  }, [inputToken, outputToken, payAmount, receiveAmount]);
+    return !!(isNumeric(payAmount) && inputToken?.address);
+  }, [inputToken, payAmount]);
 
   const isInsufficient = useMemo(() => {
-    return !!(
-      inputToken?.address &&
-      isNumeric(payAmount) &&
-      Number(payAmount) > Number(inputOwnerAmount)
-    );
-  }, [payAmount, inputOwnerAmount, inputToken?.address]);
+    return isNumeric(payAmount) && Number(payAmount) > Number(inputOwnerAmount);
+  }, [payAmount, inputOwnerAmount]);
 
   const { writeContractAsync, isSubmittedLoading } = useXWriteContract({});
-  const { getRealAddress, isNativeToken } = useNativeToken();
   const { data: decimals } = useReadContract({
-    address: getRealAddress(inputToken!) as Address,
+    address: inputToken?.address as Address,
     abi: erc20Abi,
     functionName: 'decimals',
   });
 
   const onConfirm = () => {
-    if (decimals && receiveAmount && outputToken) {
-      const amountIn = Number(receiveAmount) * 10 ** decimals;
+    if (decimals) {
+      const amountIn = Number(payAmount) * 10 ** decimals;
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
-      if (isNativeToken(outputToken)) {
-        writeContractAsync({
-          address: address as Address,
-          abi,
-          functionName: 'sellSlcToCFX',
-          args: [amountIn],
-        });
-      } else {
-        writeContractAsync({
-          address: address as Address,
-          abi,
-          functionName: 'slcTokenSell',
-          args: [outputToken?.address, amountIn],
-        });
-      }
+      writeContractAsync({
+        address: address as Address,
+        abi,
+        functionName: 'obtainSLC',
+        args: [amountIn],
+      });
     }
   };
 
   return {
     inputToken,
-    outputToken,
     payAmount,
-    receiveAmount,
+    setPayAmount,
     inputOwnerAmount,
-    outputOwnerAmount,
-    outputTokenTotalPrice,
     inputTokenTotalPrice,
-    toPairUnit,
-    fromPairUnit,
     isInsufficient,
     isReady,
-    isInsufficientLiquidity,
-    onConfirm,
-    setOutputToken: onOutputTokenChange,
-    setPayAmount: onPayAmountChange,
-    setReceiveAmount: onReceiveAmountChange,
     isSubmittedLoading,
+    onConfirm,
+    healthFactor,
   };
 };
 

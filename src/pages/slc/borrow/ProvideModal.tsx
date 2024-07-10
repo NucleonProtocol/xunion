@@ -2,7 +2,7 @@ import { Button, Modal } from 'antd';
 import TokenInput from '@/components/TokenInput.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
-import { CollateralAsset } from '@/types/swap.ts';
+import { SLCAsset } from '@/types/slc.ts';
 
 const ProvideModal = ({
   open,
@@ -11,7 +11,7 @@ const ProvideModal = ({
 }: {
   open: boolean;
   onClose: () => void;
-  asset?: CollateralAsset;
+  asset?: SLCAsset;
 }) => {
   const {
     inputToken,

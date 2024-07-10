@@ -7,7 +7,6 @@ import Collateral from '@/pages/slc/borrow/Collateral.tsx';
 
 const Borrow = () => {
   const {
-    isAssetsLoading,
     isHealthLoading,
     isOverviewLoading,
     tvlAmount,
@@ -55,7 +54,7 @@ const Borrow = () => {
           <Position loading={isHealthLoading} health={health as bigint[]} />
         </div>
         <div className="mt-[30px]">
-          <Collateral loading={isAssetsLoading} assets={[]} />
+          <Collateral />
         </div>
       </div>
     </div>

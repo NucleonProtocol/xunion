@@ -12,6 +12,7 @@ import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import useSellSLC from '@/pages/slc/hooks/useSellSLC.ts';
+import Tip from '@/pages/slc/sell/Tip.tsx';
 
 function BuySLC() {
   const {
@@ -121,6 +122,7 @@ function BuySLC() {
         ]}
         active="Buy"
       />
+      <Tip />
       <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
         <div className="flex items-center justify-between ">
           <SecondTabs active="Sell" />

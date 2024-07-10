@@ -16,6 +16,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "uint256", "name": "num", "type": "uint256" }],
+    "name": "assetsSerialNumber",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "buySlcByCFX",
     "outputs": [
@@ -136,7 +143,19 @@
       { "internalType": "address", "name": "TokenAddr", "type": "address" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
-    "name": "slcTokenBuyEstimate",
+    "name": "slcTokenBuyEstimateIn",
+    "outputs": [
+      { "internalType": "uint256", "name": "inputAmount", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "TokenAddr", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "slcTokenBuyEstimateOut",
     "outputs": [
       { "internalType": "uint256", "name": "outputAmount", "type": "uint256" }
     ],
@@ -160,7 +179,19 @@
       { "internalType": "address", "name": "TokenAddr", "type": "address" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
-    "name": "slcTokenSellEstimate",
+    "name": "slcTokenSellEstimateIn",
+    "outputs": [
+      { "internalType": "uint256", "name": "inputAmount", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "TokenAddr", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "slcTokenSellEstimateOut",
     "outputs": [
       { "internalType": "uint256", "name": "outputAmount", "type": "uint256" }
     ],
@@ -196,8 +227,53 @@
     ],
     "name": "userAssetOverview",
     "outputs": [
+      { "internalType": "address[]", "name": "tokens", "type": "address[]" },
       { "internalType": "uint256[]", "name": "_amount", "type": "uint256[]" },
       { "internalType": "uint256", "name": "SLCborrowed", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" }
+    ],
+    "name": "userMode",
+    "outputs": [
+      { "internalType": "uint8", "name": "mode", "type": "uint8" },
+      { "internalType": "address", "name": "userSetAssets", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint8", "name": "_mode", "type": "uint8" },
+      {
+        "internalType": "address",
+        "name": "_userModeAssetsAddress",
+        "type": "address"
+      }
+    ],
+    "name": "userModeSetting",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "address", "name": "token", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "bool", "name": "operator", "type": "bool" }
+    ],
+    "name": "usersHealthFactorEstimate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "userHealthFactor",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "view",
     "type": "function"

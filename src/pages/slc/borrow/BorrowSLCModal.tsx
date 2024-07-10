@@ -7,6 +7,7 @@ import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
+import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
 
 const BorrowSLCModal = ({
   open,
@@ -21,12 +22,11 @@ const BorrowSLCModal = ({
     setPayAmount,
     inputOwnerAmount,
     inputTokenTotalPrice,
-    toPairUnit,
     isInsufficient,
     isReady,
-    isInsufficientLiquidity,
     isSubmittedLoading,
     onConfirm,
+    healthFactor,
   } = useBorrowSLC();
 
   const {
@@ -40,24 +40,10 @@ const BorrowSLCModal = ({
   });
 
   const renderSwapText = () => {
-    if (!inputToken?.address) {
-      return (
-        <Button className="w-full" type="primary" size="large" disabled>
-          Select a token
-        </Button>
-      );
-    }
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
           {`Insufficient ${inputToken?.symbol} Balance`}
-        </Button>
-      );
-    }
-    if (isInsufficientLiquidity) {
-      return (
-        <Button className="w-full" type="primary" size="large" disabled>
-          Insufficient liquidity for this trade.
         </Button>
       );
     }
@@ -81,9 +67,7 @@ const BorrowSLCModal = ({
         className="w-full"
         type="primary"
         size="large"
-        disabled={
-          !isReady || isInsufficient || isInsufficientLiquidity || !toPairUnit
-        }
+        disabled={!isReady || isInsufficient}
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
@@ -91,6 +75,7 @@ const BorrowSLCModal = ({
       </Button>
     );
   };
+
   return (
     <Modal
       open={open}
@@ -120,7 +105,7 @@ const BorrowSLCModal = ({
               <div className="flex-center gap-[10px]">
                 <span>Infinity</span>
                 <span className="text-[12px] text-tc-secondary">{`>`}</span>
-                <span className="text-status-error">1.62</span>
+                <HealthFactor value={healthFactor || '0'} />
               </div>
               <div className="text-[12px] text-tc-secondary">
                 <span>{`Liquidation at < 1.0`}</span>

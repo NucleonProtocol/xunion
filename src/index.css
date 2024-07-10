@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial',
+  font-family: 'Lexend', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial',
   'SF Pro SC', 'PingFang SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
   font-size: 16px;
   background: var(--xunion-bg-primary);

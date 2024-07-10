@@ -1,57 +1,27 @@
 import { Button, Skeleton, Table } from 'antd';
 
 import { TokenIcon } from '@/components/icons';
-import { SLCToken } from '@/contracts';
 import { formatCurrency } from '@/utils';
 import WithdrawModal from '@/pages/slc/borrow/WithdrawModal.tsx';
 import ProvideModal from '@/pages/slc/borrow/ProvideModal.tsx';
 import { useState } from 'react';
-import { CollateralAsset } from '@/types/swap.ts';
+import useCollateral from '@/pages/slc/hooks/useCollateral.ts';
+import { SLCAsset } from '@/types/slc.ts';
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { ColumnType } from 'antd/es/table';
 
-const assetsMock: CollateralAsset[] = [
-  {
-    ...SLCToken,
-    balance: {
-      amount: 3,
-      price: 120000,
-    },
-    provided: {
-      amount: 2,
-      price: 111111,
-    },
-    canBeCollateral: false,
-  },
-  {
-    ...SLCToken,
-    symbol: 'ETH',
-    name: 'ETH',
-    balance: {
-      amount: 3,
-      price: 120000,
-    },
-    provided: {
-      amount: 2,
-      price: 111111,
-    },
-    canBeCollateral: true,
-  },
-];
+const Collateral = () => {
+  const [withdrawItem, setWithdrawItem] = useState<SLCAsset>();
+  const [providedItem, setProvidedItem] = useState<SLCAsset>();
 
-const Collateral = ({
-  assets,
-  loading,
-}: {
-  assets: CollateralAsset[];
-  loading: boolean;
-}) => {
-  const [withdrawItem, setWithdrawItem] = useState<CollateralAsset>();
-  const [providedItem, setProvidedItem] = useState<CollateralAsset>();
-  const columns = [
+  const { assets, loading } = useCollateral();
+
+  const columns: ColumnType<SLCAsset>[] = [
     {
       key: 'name',
       title: 'Name',
       dataIndex: 'name',
-      render: (_: string, record: CollateralAsset) => {
+      render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex  gap-[5px]">
             <span>
@@ -66,11 +36,11 @@ const Collateral = ({
       key: 'balance',
       title: 'Wallet balance',
       dataIndex: 'balance',
-      render: (_: string, record: CollateralAsset) => {
+      render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            <span>{record?.balance?.amount}</span>
-            <span>{formatCurrency(record?.balance?.price)}</span>
+            <span>{record?.balance || 0}</span>
+            <span>{formatCurrency(record?.balancePrice || 0)}</span>
           </div>
         );
       },
@@ -78,20 +48,33 @@ const Collateral = ({
     {
       key: 'provided',
       title: 'Provided',
-      dataIndex: 'balance',
-      render: (_: string, record: CollateralAsset) => {
+      dataIndex: 'provided',
+      render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            <span>{record?.provided?.amount}</span>
-            <span>{formatCurrency(record?.provided?.price)}</span>
+            <span>{record?.provided || 0}</span>
+            <span>{formatCurrency(record?.providedPrice || 0)}</span>
           </div>
+        );
+      },
+    },
+    {
+      key: 'canBeProvided',
+      title: 'Can be provided',
+      dataIndex: 'canBeProvided',
+      align: 'center',
+      render: (value: string) => {
+        return value ? (
+          <CheckCircleOutlined className="text-status-success" />
+        ) : (
+          <CloseCircleOutlined className="text-status-error" />
         );
       },
     },
     {
       key: 'action',
       title: 'Action',
-      render: (_: string, record: CollateralAsset) => {
+      render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex  gap-[5px]">
             <Button
@@ -110,7 +93,7 @@ const Collateral = ({
               ghost
               className="text-theme"
               size="small"
-              disabled={record.canBeCollateral}
+              disabled={!record.canBeProvided}
               onClick={() => {
                 setProvidedItem(record);
               }}
@@ -147,7 +130,7 @@ const Collateral = ({
           />
           <Table
             columns={columns}
-            dataSource={assetsMock || assets}
+            dataSource={assets}
             bordered={false}
             rowHoverable={false}
             pagination={false}
