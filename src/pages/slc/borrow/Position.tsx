@@ -36,7 +36,11 @@ const Position = ({
         </div>
       ) : (
         <div className="flex flex-col">
-          <RiskModal open={riskOpen} onClose={() => setRiskOpen(false)} />
+          <RiskModal
+            open={riskOpen}
+            onClose={() => setRiskOpen(false)}
+            userHealthFactor={healthFactor}
+          />
           <BorrowSLCModal
             open={borrowOpen}
             onClose={() => setBorrowOpen(false)}
