@@ -22,8 +22,8 @@ const HealthFactorInfo = ({
           its underlying value. If the health factor goes below 1.5, the
           liquidation of your collateral might be triggered.
         </div>
-        <p className="text-right  text-status-error">Liquidation value: 1.0</p>
-        <div className="relative mt-[20px] h-[90px] py-[10px]">
+
+        <div className="relative mt-[20px] h-[70px] py-[10px]">
           <div
             className="absolute  flex h-[36px] flex-col items-center text-[12px]"
             style={{
@@ -75,6 +75,7 @@ const HealthFactorInfo = ({
             </div>
           ))}
         </div>
+        <p className="text-left  text-status-error">Liquidation value: 1.0</p>
       </div>
     </div>
   );
@@ -98,9 +99,7 @@ const CurrentLTV = ({
           your loan to value goes above the liquidation threshold your
           collateral supplied may be liquidated.
         </div>
-        <p className="text-right  text-status-error">
-          Liquidation threshold: 75.03%
-        </p>
+
         <div className="relative mt-[30px] h-[70px] py-[10px]">
           <div
             className="absolute  flex h-[36px] flex-col items-center text-[12px]"
@@ -157,6 +156,9 @@ const CurrentLTV = ({
             </div>
           ))}
         </div>
+        <p className="text-left  text-status-error">
+          Liquidation threshold: 75.03%
+        </p>
       </div>
     </div>
   );
