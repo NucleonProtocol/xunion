@@ -1,44 +1,52 @@
 import { Button, Modal } from 'antd';
 import TokenInput from '@/components/TokenInput.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
-import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
 import { SLCAsset } from '@/types/slc.ts';
+import useWithdraw from '@/pages/slc/hooks/useWithdraw.ts';
+import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
 
 const WithdrawModal = ({
   open,
   onClose,
   asset,
+  refresh,
 }: {
   open: boolean;
   onClose: () => void;
   asset?: SLCAsset;
+  refresh: () => void;
 }) => {
   const {
+    withdraw,
     inputToken,
     payAmount,
     setPayAmount,
-    inputOwnerAmount,
-    inputTokenTotalPrice,
-    toPairUnit,
     isInsufficient,
-    isReady,
-    isInsufficientLiquidity,
     isSubmittedLoading,
-    onConfirm,
-  } = useBorrowSLC();
+    loading,
+    inputTokenTotalPrice,
+    userHealthFactor,
+    estimatedHealthFactor,
+    remainingProvided,
+  } = useWithdraw({ token: asset, refresh });
 
   const renderSwapText = () => {
+    if (isInsufficient && payAmount) {
+      return (
+        <Button className="w-full" type="primary" size="large" disabled>
+          {`Insufficient ${asset?.symbol} Provided`}
+        </Button>
+      );
+    }
     return (
       <Button
         className="w-full"
         type="primary"
         size="large"
-        disabled={
-          !isReady || isInsufficient || isInsufficientLiquidity || !toPairUnit
-        }
-        onClick={onConfirm}
-        loading={isSubmittedLoading}
+        disabled={!payAmount || isInsufficient}
+        onClick={withdraw}
+        loading={isSubmittedLoading || loading}
       >
         {`Withdraw ${asset?.symbol}`}
       </Button>
@@ -51,6 +59,7 @@ const WithdrawModal = ({
       title={`Withdraw ${asset?.symbol}`}
       footer={null}
       centered
+      maskClosable={false}
     >
       <div>
         <div className="mt-[20px]">
@@ -62,7 +71,7 @@ const WithdrawModal = ({
             amount={payAmount}
             onAmountChange={setPayAmount}
             disabled
-            ownerAmount={inputOwnerAmount}
+            ownerAmount={asset?.provided || 0}
             totalPrice={inputTokenTotalPrice}
             amountLabel="Provided"
           />
@@ -70,15 +79,17 @@ const WithdrawModal = ({
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex-center-between">
             <span className="text-tc-secondary">Remaining provided</span>
-            <span>1 ETH</span>
+            <span>
+              {remainingProvided} {asset?.symbol}
+            </span>
           </div>
           <div className="flex items-start justify-between">
             <span className="text-tc-secondary">Health factor</span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
-                <span className="text-status-error">1.62</span>
-                <span className="text-[12px] text-tc-secondary">{`>`}</span>
-                <span className="text-status-success">10.53</span>
+                <HealthFactor value={`${userHealthFactor}`} />
+                <span className="text-[12px] text-tc-secondary">{`->`}</span>
+                <HealthFactor value={`${estimatedHealthFactor}`} />
               </div>
               <div className="text-[12px] text-tc-secondary">
                 <span>{`Liquidation at < 1.0`}</span>

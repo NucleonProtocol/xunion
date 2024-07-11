@@ -9,12 +9,15 @@ import useCollateral from '@/pages/slc/hooks/useCollateral.ts';
 import { SLCAsset } from '@/types/slc.ts';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { ColumnType } from 'antd/es/table';
+import { useAccount } from 'wagmi';
 
-const Collateral = () => {
+const Collateral = ({ refresh }: { refresh: () => void }) => {
   const [withdrawItem, setWithdrawItem] = useState<SLCAsset>();
   const [providedItem, setProvidedItem] = useState<SLCAsset>();
 
   const { assets, loading } = useCollateral();
+
+  const { address } = useAccount();
 
   const columns: ColumnType<SLCAsset>[] = [
     {
@@ -71,40 +74,41 @@ const Collateral = () => {
         );
       },
     },
-    {
-      key: 'action',
-      title: 'Action',
-      render: (_: string, record: SLCAsset) => {
-        return (
-          <div className="flex  gap-[5px]">
-            <Button
-              type="text"
-              ghost
-              className="text-theme"
-              size="small"
-              onClick={() => {
-                setWithdrawItem(record);
-              }}
-            >
-              Withdraw
-            </Button>
-            <Button
-              type="text"
-              ghost
-              className="text-theme"
-              size="small"
-              disabled={!record.canBeProvided}
-              onClick={() => {
-                setProvidedItem(record);
-              }}
-            >
-              Provide
-            </Button>
-          </div>
-        );
-      },
-    },
   ];
+  const actionColumn = {
+    key: 'action',
+    title: 'Action',
+    render: (_: string, record: SLCAsset) => {
+      return (
+        <div className="flex  gap-[5px]">
+          <Button
+            type="text"
+            ghost
+            className="text-theme"
+            size="small"
+            disabled={!record.canBeWithdraw}
+            onClick={() => {
+              setWithdrawItem(record);
+            }}
+          >
+            Withdraw
+          </Button>
+          <Button
+            type="text"
+            ghost
+            className="text-theme"
+            size="small"
+            disabled={!record.canBeProvided}
+            onClick={() => {
+              setProvidedItem(record);
+            }}
+          >
+            Provide
+          </Button>
+        </div>
+      );
+    },
+  };
   return (
     <div className="w-full rounded-[16px] bg-fill-niubi">
       {loading ? (
@@ -122,14 +126,16 @@ const Collateral = () => {
             open={!!withdrawItem}
             onClose={() => setWithdrawItem(undefined)}
             asset={withdrawItem}
+            refresh={refresh}
           />
           <ProvideModal
             open={!!providedItem}
             onClose={() => setProvidedItem(undefined)}
             asset={providedItem}
+            refresh={refresh}
           />
           <Table
-            columns={columns}
+            columns={address ? [...columns, actionColumn] : columns}
             dataSource={assets}
             bordered={false}
             rowHoverable={false}

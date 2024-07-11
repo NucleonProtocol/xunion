@@ -1,17 +1,26 @@
 import { useAccount, useReadContract } from 'wagmi';
 import { Address } from 'viem';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { formatUnits } from 'ethers';
 
 const useBorrow = () => {
+  const [sentinel, random] = useState(0);
   const { address } = useAccount();
-  const { data: overview, isLoading: isOverviewLoading } = useReadContract({
+  const {
+    data: overview,
+    isLoading: isOverviewLoading,
+    refetch: refresh1,
+  } = useReadContract({
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
     functionName: 'licensedAssetOverview',
   });
-  const { data: health, isLoading: isHealthLoading } = useReadContract({
+  const {
+    data: health,
+    isLoading: isHealthLoading,
+    refetch: refresh2,
+  } = useReadContract({
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
     functionName: 'viewUsersHealthFactor',
@@ -21,15 +30,11 @@ const useBorrow = () => {
     },
   });
 
-  const { data: userAssets, isLoading: isAssetsLoading } = useReadContract({
-    address: XUNION_SLC_CONTRACT.interface.address as Address,
-    abi: XUNION_SLC_CONTRACT.interface.abi,
-    functionName: 'userAssetOverview',
-    args: [address],
-    query: {
-      enabled: !!address,
-    },
-  });
+  const refresh = () => {
+    random(Math.random());
+    refresh1();
+    refresh2();
+  };
 
   const tvlAmount = useMemo(() => {
     if (overview) {
@@ -60,10 +65,10 @@ const useBorrow = () => {
     totalSupply,
     unitPrice,
     health,
-    userAssets,
-    isAssetsLoading,
     isHealthLoading,
     isOverviewLoading,
+    refresh,
+    sentinel,
   };
 };
 

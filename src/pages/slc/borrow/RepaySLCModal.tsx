@@ -5,30 +5,37 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import useApprove from '@/pages/trade/hooks/useApprove.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
-import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
 import { formatCurrency } from '@/utils';
+import useRepaySLC from '@/pages/slc/hooks/useRepaySLC.ts';
+import { formatNumber } from '@/hooks/useErc20Balance.ts';
+import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
 
 const RepaySLCModal = ({
   open,
   onClose,
+  availableAmount,
+  refresh,
+  userHealthFactor,
 }: {
   open: boolean;
   onClose: () => void;
+  availableAmount: number;
+  refresh: () => void;
+  userHealthFactor: number;
 }) => {
   const {
     inputToken,
     payAmount,
     setPayAmount,
-    inputOwnerAmount,
     inputTokenTotalPrice,
-    toPairUnit,
     isInsufficient,
     isReady,
-    isInsufficientLiquidity,
     isSubmittedLoading,
     onConfirm,
-  } = useBorrowSLC();
+    healthFactor,
+    loading,
+  } = useRepaySLC({ availableAmount, refresh });
 
   const {
     isApproved: isTokenAApproved,
@@ -41,24 +48,10 @@ const RepaySLCModal = ({
   });
 
   const renderSwapText = () => {
-    if (!inputToken?.address) {
-      return (
-        <Button className="w-full" type="primary" size="large" disabled>
-          Select a token
-        </Button>
-      );
-    }
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Insufficient ${inputToken?.symbol} Balance`}
-        </Button>
-      );
-    }
-    if (isInsufficientLiquidity) {
-      return (
-        <Button className="w-full" type="primary" size="large" disabled>
-          Insufficient liquidity for this trade.
+          {`Available Amount ${availableAmount}`}
         </Button>
       );
     }
@@ -82,13 +75,11 @@ const RepaySLCModal = ({
         className="w-full"
         type="primary"
         size="large"
-        disabled={
-          !isReady || isInsufficient || isInsufficientLiquidity || !toPairUnit
-        }
+        disabled={!isReady || isInsufficient}
         onClick={onConfirm}
-        loading={isSubmittedLoading}
+        loading={isSubmittedLoading || loading}
       >
-        Borrow SLC
+        Repay SLC
       </Button>
     );
   };
@@ -99,6 +90,7 @@ const RepaySLCModal = ({
       title="Repay SLC"
       footer={null}
       centered
+      maskClosable={false}
     >
       <div>
         <div className="mt-[20px]">
@@ -110,8 +102,9 @@ const RepaySLCModal = ({
             amount={payAmount}
             onAmountChange={setPayAmount}
             disabled
-            ownerAmount={inputOwnerAmount}
+            ownerAmount={formatNumber(availableAmount || 0, 6)}
             totalPrice={inputTokenTotalPrice}
+            amountLabel="Available"
           />
         </div>
         <div className="flex flex-col gap-[10px] p-[16px]">
@@ -127,9 +120,9 @@ const RepaySLCModal = ({
             <span className="text-tc-secondary">Health factor</span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
-                <span className="text-status-error">1.62</span>
+                <HealthFactor value={`${userHealthFactor}` || '0'} />
                 <span className="text-[12px] text-tc-secondary">{`>`}</span>
-                <span className="text-status-success">10.53</span>
+                <HealthFactor value={healthFactor || '0'} />
               </div>
               <div className="text-[12px] text-tc-secondary">
                 <span>{`Liquidation at < 1.0`}</span>

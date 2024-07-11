@@ -13,16 +13,21 @@ const Borrow = () => {
     totalSupply,
     unitPrice,
     health,
+    refresh,
+    sentinel,
   } = useBorrow();
   return (
-    <div className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:pt-[40px] ">
+    <div
+      className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:pt-[40px] "
+      key={sentinel}
+    >
       <RouteTabs
         tabs={[
           {
             name: 'Buy',
             path: '/slc/buy',
             icon: <BuySellIcon />,
-            label: 'Buy & Sell',
+            label: 'Mint & Blur',
           },
           {
             name: 'Borrow',
@@ -51,10 +56,14 @@ const Borrow = () => {
           />
         </div>
         <div className="mt-[30px]">
-          <Position loading={isHealthLoading} health={health as bigint[]} />
+          <Position
+            loading={isHealthLoading}
+            health={health as bigint[]}
+            refresh={refresh}
+          />
         </div>
         <div className="mt-[30px]">
-          <Collateral />
+          <Collateral refresh={refresh} />
         </div>
       </div>
     </div>

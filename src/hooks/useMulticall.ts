@@ -29,7 +29,6 @@ const useMulticall = () => {
         contract.interface.encodeFunctionData(call.name, call.values),
       ]);
     }
-    console.log(promises, 'promises');
     return await multicallContract.aggregate.staticCall(promises);
   };
   return { multiCall };

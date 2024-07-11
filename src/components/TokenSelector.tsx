@@ -121,10 +121,14 @@ const ModalContent = ({
           {(recommends || []).map((item) => (
             <div
               className={cn(
-                'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] hover:bg-theme-non-opaque hover:opacity-75',
+                'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px]',
                 {
-                  'cursor-not-allowed  bg-fill-niubi opacity-75':
+                  'cursor-not-allowed  bg-fill-niubi opacity-45':
                     disabledToken?.symbol === item.symbol,
+                },
+                {
+                  'hover:bg-theme-non-opaque hover:opacity-75':
+                    disabledToken?.symbol !== item.symbol,
                 }
               )}
               key={item.symbol}
@@ -135,12 +139,12 @@ const ModalContent = ({
                 }
               }}
             >
-              <div className="text-[36px]">
-                <TokenIcon src={item.icon} />
+              <div className="h-full w-[36px] text-[36px]">
+                <TokenIcon src={item.icon} width={36} height={36} />
               </div>
               <div className="flex flex-1 flex-col">
-                <span className="text-[16px]"> {item.name}</span>
-                <span className="text-[14px] text-tc-secondary">
+                <span className="text-[14px]"> {item.name}</span>
+                <span className="text-[12px] text-tc-secondary">
                   {item.symbol}
                 </span>
               </div>

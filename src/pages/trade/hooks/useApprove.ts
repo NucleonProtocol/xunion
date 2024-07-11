@@ -1,17 +1,11 @@
 import { Address, erc20Abi } from 'viem';
-import {
-  useAccount,
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import { formatUnits, parseUnits } from 'ethers';
-import { useEffect, useMemo, useState } from 'react';
-import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
-import useTxStore from '@/store/transaction.ts';
+import { useMemo, useState } from 'react';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { Token } from '@/types/swap.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import useXWriteContract from '@/hooks/useXWriteContract.ts';
 
 const useApprove = ({
   token,
@@ -27,8 +21,8 @@ const useApprove = ({
 
   const isNative = useMemo(() => isNativeToken(token), [token]);
 
-  const updateSubmitted = useTxStore((state) => state.updateSubmitted);
   const { address: ownerAddress } = useAccount();
+
   const {
     data: allowance,
     isLoading: isAllowanceLoading,
@@ -52,37 +46,12 @@ const useApprove = ({
   });
 
   const {
-    data: hash,
     writeContractAsync,
-    isSuccess: isSubmitted,
-  } = useWriteContract();
-
-  const {
-    isSuccess,
-    isError,
-    isLoading: isTxLoading,
-  } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: !!hash,
-    },
+    loading: isWriteLoading,
+    isSubmittedLoading,
+  } = useXWriteContract({
+    onWriteSuccess: refetch,
   });
-  useEffect(() => {
-    if (isSuccess && hash) {
-      writeTxNotification(hash);
-      refetch();
-    }
-    if (isError) {
-      console.log(isError);
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isSubmitted) {
-      updateSubmitted({ hash });
-    }
-  }, [isSubmitted]);
-
   const isApproved = useMemo(() => {
     if (isNativeToken(token)) return true;
     if (allowance && isNumeric(amount) && decimals) {
@@ -105,7 +74,11 @@ const useApprove = ({
   };
 
   const loading =
-    isAllowanceLoading || isDecimalsLoading || approveLoading || isTxLoading;
+    isAllowanceLoading ||
+    isDecimalsLoading ||
+    approveLoading ||
+    isWriteLoading ||
+    isSubmittedLoading;
 
   return {
     isApproved,

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { cn } from '@/utils/classnames.ts';
 
-const SecondTabs = ({ active }: { active: 'Buy' | 'Sell' }) => {
+const SecondTabs = ({ active }: { active: 'Mint' | 'Blur' }) => {
   const tabs = [
     {
-      name: 'Buy',
+      name: 'Mint',
       path: '/slc/buy',
     },
     {
-      name: 'Sell',
+      name: 'Blur',
       path: '/slc/sell',
     },
   ];

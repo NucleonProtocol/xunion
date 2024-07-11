@@ -11,7 +11,7 @@ export const writeTxErrorNotification = (hash: string | null | undefined) => {
           <CloseCircleFilled className="text-[24px] text-red-600" />
         </div>
         <div className="flex flex-1 flex-col gap-[10px]">
-          <span className="font-bold">System Error</span>
+          <span className="font-bold">Write Error</span>
 
           {hash ? (
             <a

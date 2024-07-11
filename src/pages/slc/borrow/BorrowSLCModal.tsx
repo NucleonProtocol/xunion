@@ -8,26 +8,31 @@ import { Address } from 'viem';
 import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
+import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 const BorrowSLCModal = ({
   open,
   onClose,
+  availableAmount,
+  refresh,
 }: {
   open: boolean;
   onClose: () => void;
+  availableAmount: number;
+  refresh: () => void;
 }) => {
   const {
     inputToken,
     payAmount,
     setPayAmount,
-    inputOwnerAmount,
     inputTokenTotalPrice,
     isInsufficient,
     isReady,
     isSubmittedLoading,
     onConfirm,
     healthFactor,
-  } = useBorrowSLC();
+    loading,
+  } = useBorrowSLC({ availableAmount, refresh });
 
   const {
     isApproved: isTokenAApproved,
@@ -43,7 +48,7 @@ const BorrowSLCModal = ({
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Insufficient ${inputToken?.symbol} Balance`}
+          {`Available Amount ${availableAmount}`}
         </Button>
       );
     }
@@ -67,9 +72,9 @@ const BorrowSLCModal = ({
         className="w-full"
         type="primary"
         size="large"
-        disabled={!isReady || isInsufficient}
+        disabled={!isReady || isInsufficient || loading}
         onClick={onConfirm}
-        loading={isSubmittedLoading}
+        loading={isSubmittedLoading || loading}
       >
         Borrow SLC
       </Button>
@@ -83,6 +88,7 @@ const BorrowSLCModal = ({
       title="Borrow SLC"
       footer={null}
       centered
+      maskClosable={false}
     >
       <div>
         <div className="mt-[20px]">
@@ -94,8 +100,9 @@ const BorrowSLCModal = ({
             amount={payAmount}
             onAmountChange={setPayAmount}
             disabled
-            ownerAmount={inputOwnerAmount}
+            ownerAmount={formatNumber(availableAmount || 0, 6)}
             totalPrice={inputTokenTotalPrice}
+            amountLabel="Available"
           />
         </div>
         <div className="flex flex-col gap-[10px] p-[16px]">
@@ -104,7 +111,7 @@ const BorrowSLCModal = ({
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <span>Infinity</span>
-                <span className="text-[12px] text-tc-secondary">{`>`}</span>
+                <span className="text-[12px] text-tc-secondary">{`->`}</span>
                 <HealthFactor value={healthFactor || '0'} />
               </div>
               <div className="text-[12px] text-tc-secondary">

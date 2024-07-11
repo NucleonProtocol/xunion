@@ -9,7 +9,7 @@
 
     --xunion-color-info: #007aff;
     --xunion-color-info-non-opaque: rgba(0, 122, 255, 0.12);
-    --xunion-color-warning:rgba(254, 192, 29) ;
+    --xunion-color-warning: rgba(254, 192, 29);
     --xunion-color-warning-non-opaque: rgba(254, 192, 29, 0.2);
     --xunion-color-error: #e0382d;
     --xunion-color-error-non-opaque: rgba(224, 56, 45, 0.08);
@@ -25,6 +25,7 @@
     --xunion-fill-secondary: #f1f2f6;
     --xunion-fill-e-secondary: #f9f9f9;
     --xunion-fill-niubi: #fff;
+    --xunion-fill-niubi2: rgba(245, 247, 253, 1);
 
     --xunion-separator-opaque: #f3f3f5;
     --xunion-separator-non-opaque: rgba(126, 126, 143, 0.12);
@@ -65,6 +66,7 @@
     --xunion-fill-secondary: #2c2c2c;
     --xunion-fill-e-secondary: #131313;
     --xunion-fill-niubi: #1a1a1a;
+    --xunion-fill-niubi2: rgba(10, 10, 10, 1);
 
     --xunion-separator-opaque: #2a2a3d;
     --xunion-separator-non-opaque: rgba(126, 126, 143, 0.24);

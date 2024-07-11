@@ -1,5 +1,5 @@
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/transaction.ts';
 import { WriteContractErrorType } from 'viem';
@@ -21,6 +21,7 @@ const useXWriteContract = ({
   onError?: (e: WriteContractErrorType) => void;
 }) => {
   const updateSubmitted = useTxStore((state) => state.updateSubmitted);
+  const [loading, setLoading] = useState(false);
   const {
     data: hash,
     isPending: isSubmittedLoading,
@@ -44,6 +45,7 @@ const useXWriteContract = ({
 
   useEffect(() => {
     if (isError) {
+      setLoading(false);
       onError?.(submittedError as WriteContractErrorType);
       writeTxErrorNotification(hash);
     }
@@ -51,6 +53,7 @@ const useXWriteContract = ({
 
   useEffect(() => {
     if (isWriteError) {
+      setLoading(false);
       onError?.(writeError as WriteContractErrorType);
       writeTxErrorNotification(hash);
     }
@@ -58,6 +61,7 @@ const useXWriteContract = ({
 
   useEffect(() => {
     if (isSuccess && hash && globalNotice) {
+      setLoading(false);
       console.log(pendingPool);
       // pendingPool
       // TODO collect 2 pools
@@ -68,6 +72,7 @@ const useXWriteContract = ({
 
   useEffect(() => {
     if (isSubmitted && showSubmittedModal) {
+      setLoading(true);
       updateSubmitted({ hash });
       onSubmitted?.(hash);
     }
@@ -83,6 +88,7 @@ const useXWriteContract = ({
     writeEvent,
     isSubmitted,
     isSuccess,
+    loading,
     isSubmittedLoading,
     writeContractAsync,
   };

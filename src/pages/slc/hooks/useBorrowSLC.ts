@@ -9,7 +9,13 @@ import { useReadContract } from 'wagmi';
 import useTokenPrice from '@/hooks/useTokenPrice.ts';
 import useHealthFactor from '@/pages/slc/hooks/useHealthFactor.ts';
 
-const useBorrowSLC = () => {
+const useBorrowSLC = ({
+  availableAmount = 0,
+  refresh,
+}: {
+  availableAmount: number;
+  refresh: () => void;
+}) => {
   const { getBalance } = useErc20Balance();
   const [inputToken] = useState<Token | undefined>(SLCToken);
   const [payAmount, setPayAmount] = useState<string>('');
@@ -39,10 +45,14 @@ const useBorrowSLC = () => {
   }, [inputToken, payAmount]);
 
   const isInsufficient = useMemo(() => {
-    return isNumeric(payAmount) && Number(payAmount) > Number(inputOwnerAmount);
-  }, [payAmount, inputOwnerAmount]);
+    return isNumeric(payAmount) && Number(payAmount) > Number(availableAmount);
+  }, [payAmount]);
 
-  const { writeContractAsync, isSubmittedLoading } = useXWriteContract({});
+  const { writeContractAsync, isSubmittedLoading, loading } = useXWriteContract(
+    {
+      onWriteSuccess: refresh,
+    }
+  );
   const { data: decimals } = useReadContract({
     address: inputToken?.address as Address,
     abi: erc20Abi,
@@ -71,6 +81,7 @@ const useBorrowSLC = () => {
     isInsufficient,
     isReady,
     isSubmittedLoading,
+    loading,
     onConfirm,
     healthFactor,
   };

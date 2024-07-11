@@ -1,19 +1,21 @@
-import { Button, Segmented, Skeleton, Tooltip } from 'antd';
+import { Button, Skeleton } from 'antd';
 import { useState } from 'react';
 import { formatCurrency } from '@/utils';
 import usePosition from '@/pages/slc/hooks/usePosition.ts';
-import { cn } from '@/utils/classnames.ts';
 import BorrowSLCModal from '@/pages/slc/borrow/BorrowSLCModal.tsx';
 import RepaySLCModal from '@/pages/slc/borrow/RepaySLCModal.tsx';
 import RiskModal from '@/pages/slc/borrow/RiskModal.tsx';
-import RiskModeSelector from '@/components/RiskModeSelector.tsx';
+import EnableBorrowMode from '@/components/BorrowMode/EnableBorrowMode.tsx';
+import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
 
 const Position = ({
   health,
   loading,
+  refresh,
 }: {
   health: bigint[];
   loading: boolean;
+  refresh: () => void;
 }) => {
   const {
     userAssetsValue,
@@ -26,7 +28,6 @@ const Position = ({
   const [borrowOpen, setBorrowOpen] = useState(false);
   const [repayOpen, setRepayOpen] = useState(false);
   const [riskOpen, setRiskOpen] = useState(false);
-  const [type, setAlignValue] = useState('Popular');
   return (
     <div className="w-full rounded-[16px] bg-fill-niubi">
       {loading ? (
@@ -39,47 +40,25 @@ const Position = ({
           <BorrowSLCModal
             open={borrowOpen}
             onClose={() => setBorrowOpen(false)}
+            availableAmount={userAvailableAmount}
+            refresh={refresh}
           />
-          <RepaySLCModal open={repayOpen} onClose={() => setRepayOpen(false)} />
+          <RepaySLCModal
+            open={repayOpen}
+            onClose={() => setRepayOpen(false)}
+            availableAmount={userBorrowedAmount}
+            refresh={refresh}
+            userHealthFactor={healthFactor}
+          />
           <div className="flex h-[64px] items-center justify-between border-2 border-solid  border-transparent border-b-line-primary px-[24px]">
             <div className="flex-center gap-[30px]">
               <span className="font-[500]">Position Management</span>
-              <Segmented
-                style={{ marginBottom: 8 }}
-                value={type}
-                onChange={(value) => setAlignValue(value)}
-                options={[
-                  {
-                    label: (
-                      <Tooltip title="Collateral with good liquidity on market.">
-                        <span
-                          className={cn(type === 'Popular' && 'text-theme')}
-                        >
-                          Popular
-                        </span>
-                      </Tooltip>
-                    ),
-                    value: 'Popular',
-                  },
-                  {
-                    label: (
-                      <Tooltip title="Minor currency collateral voted by community.">
-                        <span
-                          className={cn(type === 'Non-pop' && 'text-theme')}
-                        >
-                          Non-pop
-                        </span>
-                      </Tooltip>
-                    ),
-                    value: 'Non-pop',
-                  },
-                ]}
-              />
             </div>
             <div className="flex-center gap-[10px]">
               <Button
                 type="primary"
                 shape="round"
+                disabled={!userAvailableAmount}
                 onClick={() => {
                   setBorrowOpen(true);
                 }}
@@ -90,6 +69,7 @@ const Position = ({
                 type="primary"
                 shape="round"
                 ghost
+                disabled={!userBorrowedAmount}
                 onClick={() => setRepayOpen(true)}
               >
                 Repay
@@ -133,7 +113,7 @@ const Position = ({
                 Health Factor
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
-                <span>{healthFactor}</span>
+                <HealthFactor value={`${healthFactor}`} />
                 <Button
                   type="text"
                   ghost
@@ -150,7 +130,7 @@ const Position = ({
                 Borrow mode
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
-                <RiskModeSelector />
+                <EnableBorrowMode onSuccess={refresh} />
               </div>
             </div>
           </div>
