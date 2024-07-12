@@ -48,6 +48,49 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "token", "type": "address" }
+    ],
+    "name": "licensedAssets",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "assetAddr", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "maximumLTV",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "liquidationPenalty",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxDepositAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mortgagedAmountDisposed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mortgagedAmountReturned",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct iSlcVaults.licensedAsset",
+        "name": "asset",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "TokenAddr", "type": "address" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
@@ -272,6 +315,36 @@
       {
         "internalType": "uint256",
         "name": "userHealthFactor",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "user", "type": "address" }
+    ],
+    "name": "usersRiskDetails",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "userHealthFactor",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "userValueUsedRatio",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "userMaxUsedRatio",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenLiquidateRatio",
         "type": "uint256"
       }
     ],

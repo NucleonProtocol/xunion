@@ -1,10 +1,6 @@
 import { Button, Modal } from 'antd';
 import TokenInput from '@/components/TokenInput.tsx';
-import { CheckCircleOutlined } from '@ant-design/icons';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
-import useApprove from '@/pages/trade/hooks/useApprove.ts';
-import { XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
 import useBorrowSLC from '@/pages/slc/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
@@ -15,11 +11,13 @@ const BorrowSLCModal = ({
   onClose,
   availableAmount,
   refresh,
+  userHealthFactor,
 }: {
   open: boolean;
   onClose: () => void;
   availableAmount: number;
   refresh: () => void;
+  userHealthFactor: number;
 }) => {
   const {
     inputToken,
@@ -34,16 +32,6 @@ const BorrowSLCModal = ({
     loading,
   } = useBorrowSLC({ availableAmount, refresh });
 
-  const {
-    isApproved: isTokenAApproved,
-    loading: isTokenAApproving,
-    approve: approveTokenA,
-  } = useApprove({
-    token: inputToken!,
-    amount: payAmount,
-    spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
-  });
-
   const renderSwapText = () => {
     if (isInsufficient) {
       return (
@@ -52,21 +40,7 @@ const BorrowSLCModal = ({
         </Button>
       );
     }
-    if (!isTokenAApproved && isReady) {
-      return (
-        <Button
-          className="w-full"
-          type="primary"
-          size="large"
-          disabled={isTokenAApproved}
-          icon={isTokenAApproved ? <CheckCircleOutlined /> : null}
-          loading={isTokenAApproving}
-          onClick={approveTokenA}
-        >
-          Give permission to use SLC
-        </Button>
-      );
-    }
+
     return (
       <Button
         className="w-full"
@@ -110,7 +84,7 @@ const BorrowSLCModal = ({
             <span className="text-tc-secondary">Health factor</span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
-                <span>Infinity</span>
+                <HealthFactor value={`${userHealthFactor || 0}`} />
                 <span className="text-[12px] text-tc-secondary">{`->`}</span>
                 <HealthFactor value={healthFactor || '0'} />
               </div>

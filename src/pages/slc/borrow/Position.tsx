@@ -46,6 +46,7 @@ const Position = ({
             onClose={() => setBorrowOpen(false)}
             availableAmount={userAvailableAmount}
             refresh={refresh}
+            userHealthFactor={healthFactor}
           />
           <RepaySLCModal
             open={repayOpen}

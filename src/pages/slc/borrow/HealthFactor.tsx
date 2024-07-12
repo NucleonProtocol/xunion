@@ -8,21 +8,21 @@ const HealthFactor = ({ value }: { value: string }) => {
     if (Number(value) >= 2) {
       return (
         <span className="text-status-success">
-          {formatNumber(Number(value), 2)}
+          {formatNumber(Number(value), 4)}
         </span>
       );
     }
-    if (Number(value) >= 1.5 && Number(value) < 2) {
+    if (Number(value) >= 1.5 && Number(value) < 4) {
       return (
         <span className="text-status-warning">
-          {formatNumber(Number(value), 2)}
+          {formatNumber(Number(value), 4)}
         </span>
       );
     }
     if (Number(value) < 1.5) {
       return (
         <span className="text-status-error">
-          {formatNumber(Number(value), 2)}
+          {formatNumber(Number(value), 4)}
         </span>
       );
     }

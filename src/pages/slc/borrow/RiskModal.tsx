@@ -4,6 +4,10 @@ import useRiskProgress, {
   ProgressSegment,
 } from '@/pages/slc/hooks/useRiskProgress.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
+import { useAccount, useReadContract } from 'wagmi';
+import { XUNION_SLC_CONTRACT } from '@/contracts';
+import { Address } from 'viem';
+import { useMemo } from 'react';
 const HealthFactorInfo = ({
   segments,
   userPercent,
@@ -82,13 +86,13 @@ const HealthFactorInfo = ({
 };
 
 const CurrentLTV = ({
-  segments,
-  userPercent,
-  userHealthFactor,
+  userValueUsedRatio,
+  userMaxUsedRatio,
+  tokenLiquidateRatio,
 }: {
-  userPercent: number;
-  segments: ProgressSegment[];
-  userHealthFactor: number;
+  userValueUsedRatio: number;
+  userMaxUsedRatio: number;
+  tokenLiquidateRatio: number;
 }) => {
   return (
     <div className="flex  flex-col gap-[8px] rounded-[8px] border border-line-primary p-[12px]">
@@ -104,7 +108,7 @@ const CurrentLTV = ({
           <div
             className="absolute  flex h-[36px] flex-col items-center text-[12px]"
             style={{
-              left: `${userPercent * 100}%`,
+              left: `${userValueUsedRatio}%`,
             }}
           >
             <div className="relative">
@@ -115,9 +119,9 @@ const CurrentLTV = ({
                 }}
               >
                 <span>
-                  Your value: {formatNumber(userHealthFactor || 0, 2)}
+                  Your value: {formatNumber(userValueUsedRatio || 0, 2)}
                 </span>
-                <span>Max: {formatNumber(userHealthFactor || 0, 2)}</span>
+                <span>Max: {formatNumber(userMaxUsedRatio || 0, 2)}</span>
               </span>
               <span className="text-tc-secondary">
                 <CaretDownOutlined />
@@ -133,31 +137,27 @@ const CurrentLTV = ({
               showInfo={false}
             />
           </div>
-          {segments.map((item) => (
-            <div
-              className="absolute top-[32px] flex flex-col items-center justify-center"
-              key={item.value}
-              style={{
-                left: `${item.percent * 100}%`,
-              }}
-            >
-              <div className="relative">
-                <span className="flex h-[8px] w-[2px] rounded-[2px] bg-tc-secondary" />
-                <span
-                  className="absolute text-[12px]"
-                  style={{
-                    transform: 'translateX(-50%)',
-                    color: item.color ?? 'auto',
-                  }}
-                >
-                  {item.label}
-                </span>
-              </div>
+          <div
+            className="absolute top-[32px] flex flex-col items-center justify-center"
+            style={{
+              left: `${tokenLiquidateRatio}%`,
+            }}
+          >
+            <div className="relative">
+              <span className="flex h-[8px] w-[2px] rounded-[2px] bg-tc-secondary" />
+              <span
+                className="absolute text-[12px]"
+                style={{
+                  transform: 'translateX(-50%)',
+                }}
+              >
+                {`${tokenLiquidateRatio}`}
+              </span>
             </div>
-          ))}
+          </div>
         </div>
         <p className="text-left  text-status-error">
-          Liquidation threshold: 75.03%
+          Liquidation threshold: {`${tokenLiquidateRatio}`}
         </p>
       </div>
     </div>
@@ -176,6 +176,39 @@ const RiskModal = ({
   const { userPercent, segments } = useRiskProgress({
     userHealthFactor: userHealthFactor || 0,
   });
+
+  const { address } = useAccount();
+  const { data: overview } = useReadContract({
+    address: XUNION_SLC_CONTRACT.interface.address as Address,
+    abi: XUNION_SLC_CONTRACT.interface.abi,
+    functionName: 'usersRiskDetails',
+    args: [address],
+  });
+
+  const userValueUsedRatio = useMemo(() => {
+    const value = (overview as bigint[])?.[1] || 0;
+    if (value) {
+      return Number(String(value)) / 100;
+    }
+    return 0;
+  }, [overview]);
+
+  const userMaxUsedRatio = useMemo(() => {
+    const value = (overview as bigint[])?.[2] || 0;
+    if (value) {
+      return Number(String(value)) / 100;
+    }
+    return 0;
+  }, [overview]);
+
+  const tokenLiquidateRatio = useMemo(() => {
+    const value = (overview as bigint[])?.[3] || 0;
+    if (value) {
+      return Number(String(value)) / 100;
+    }
+    return 0;
+  }, [overview]);
+
   return (
     <Modal
       open={open}
@@ -198,16 +231,9 @@ const RiskModal = ({
           userHealthFactor={userHealthFactor}
         />
         <CurrentLTV
-          segments={[
-            {
-              label: '75.03%',
-              percent: 0.903,
-              value: 10,
-              color: 'red',
-            },
-          ]}
-          userPercent={userPercent}
-          userHealthFactor={userHealthFactor}
+          userValueUsedRatio={userValueUsedRatio}
+          userMaxUsedRatio={userMaxUsedRatio}
+          tokenLiquidateRatio={tokenLiquidateRatio}
         />
       </div>
     </Modal>
