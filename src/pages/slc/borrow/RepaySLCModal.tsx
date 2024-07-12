@@ -10,6 +10,7 @@ import { formatCurrency } from '@/utils';
 import useRepaySLC from '@/pages/slc/hooks/useRepaySLC.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
+import { isNumeric } from '@/utils/isNumeric.ts';
 
 const RepaySLCModal = ({
   open,
@@ -107,13 +108,20 @@ const RepaySLCModal = ({
             amountLabel="Available"
           />
         </div>
-        <div className="flex flex-col gap-[10px] p-[16px]">
+        <div className="flex flex-col gap-[5px] p-[16px]">
           <div className="flex-center-between">
             <span className="text-tc-secondary">Remaining debt</span>
-            <div>
-              <span>{formatCurrency(10000, false)} SLC</span>
+            <div className="flex-center flex gap-[10px]">
+              <span>{formatCurrency(availableAmount, false)} SLC</span>
               <span>{`->`}</span>
-              <span>{formatCurrency(9999, false)} SLC</span>
+              <span>
+                {formatCurrency(
+                  availableAmount -
+                    Number(isNumeric(payAmount) ? payAmount : 0),
+                  false
+                )}{' '}
+                SLC
+              </span>
             </div>
           </div>
           <div className="flex items-start justify-between">

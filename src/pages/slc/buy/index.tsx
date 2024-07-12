@@ -112,7 +112,7 @@ function BuySLC() {
             name: 'Buy',
             path: '/slc/buy',
             icon: <BuySellIcon />,
-            label: 'Mint & Blur',
+            label: 'Mint & Burn',
           },
           {
             name: 'Borrow',

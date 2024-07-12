@@ -112,7 +112,7 @@ function BuySLC() {
             name: 'Buy',
             path: '/slc/buy',
             icon: <BuySellIcon />,
-            label: 'Mint & Blur',
+            label: 'Mint & Burn',
           },
           {
             name: 'Borrow',
@@ -125,7 +125,7 @@ function BuySLC() {
       <Tip />
       <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
         <div className="flex items-center justify-between ">
-          <SecondTabs active="Blur" />
+          <SecondTabs active="Burn" />
         </div>
         <div className="mt-[20px]">
           <TokenInput
