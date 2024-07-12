@@ -130,7 +130,9 @@ const RepaySLCModal = ({
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={`${userHealthFactor}` || '0'} />
                 <span className="text-[12px] text-tc-secondary">{`>`}</span>
-                <HealthFactor value={healthFactor || '0'} />
+                <HealthFactor
+                  value={healthFactor || `${userHealthFactor}` || '0'}
+                />
               </div>
               <div className="text-[12px] text-tc-secondary">
                 <span>{`Liquidation at < 1.0`}</span>

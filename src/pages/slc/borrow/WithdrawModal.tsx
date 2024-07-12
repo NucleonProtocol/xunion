@@ -89,7 +89,9 @@ const WithdrawModal = ({
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={`${userHealthFactor}`} />
                 <span className="text-[12px] text-tc-secondary">{`->`}</span>
-                <HealthFactor value={`${estimatedHealthFactor}`} />
+                <HealthFactor
+                  value={`${estimatedHealthFactor}` || `${userHealthFactor}`}
+                />
               </div>
               <div className="text-[12px] text-tc-secondary">
                 <span>{`Liquidation at < 1.0`}</span>
