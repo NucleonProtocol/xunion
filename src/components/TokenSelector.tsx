@@ -31,16 +31,7 @@ const ModalContent = ({
     mutationFn: getTokenList,
     onSuccess: (res) => {
       if (res?.items) {
-        setRecommends([
-          {
-            name: 'CFX',
-            symbol: 'CFX',
-            chainId: 71,
-            address: '0x0000000000000000000000000000000000000000',
-            decimals: 18,
-          },
-          ...res?.items,
-        ]);
+        setRecommends([...res.items]);
       }
     },
   });

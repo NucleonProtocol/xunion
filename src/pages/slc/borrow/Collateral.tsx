@@ -24,6 +24,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       key: 'name',
       title: 'Name',
       dataIndex: 'name',
+      width: 240,
       render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex  gap-[5px]">
@@ -39,6 +40,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       key: 'balance',
       title: 'Wallet balance',
       dataIndex: 'balance',
+      width: 240,
       render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
@@ -52,6 +54,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       key: 'provided',
       title: 'Provided',
       dataIndex: 'provided',
+      width: 240,
       render: (_: string, record: SLCAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">

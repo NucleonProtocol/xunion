@@ -12,7 +12,7 @@ export const getTokenList = async (params: {
     .then((res) => res.data?.data);
 };
 
-export const getTokenListCollect = (params: {
+export const getTokenListCollect = async (params: {
   pageSize: number;
   pageNum: number;
   ownerAddress: string;
@@ -22,7 +22,7 @@ export const getTokenListCollect = (params: {
     .then((res) => res.data?.data);
 };
 
-export const getSwapRouter = (params: {
+export const getSwapRouter = async (params: {
   tokena: number;
   tokenb: number;
   pageSize: number;

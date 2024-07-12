@@ -88,7 +88,7 @@ export interface SwapTransactionData {
   route: Token[];
 }
 
-export interface Record {
+export interface ActivityRecord {
   ownerAddress: string;
   type: ActivityRecordType;
   hash: string;

@@ -73,7 +73,7 @@ const TokenAssetsSelector = ({
       trigger={['click']}
     >
       <div
-        className="bg-fill-niubi2 flex h-[62px] cursor-pointer justify-between rounded-[12px] px-[16px]"
+        className="flex h-[62px] cursor-pointer justify-between rounded-[12px] bg-fill-niubi2 px-[16px]"
         onClick={() => {
           onOpen(true);
         }}

@@ -41,7 +41,11 @@ const DrawerContainer = ({
     rootClassName: 'outline-0 border-0',
   };
   return (
-    <Drawer {...(isPC ? PCDrawerProps : mobileDrawerProps)} {...rest}>
+    <Drawer
+      {...(isPC ? PCDrawerProps : mobileDrawerProps)}
+      {...rest}
+      destroyOnClose
+    >
       <div className="h-full">{children}</div>
     </Drawer>
   );
