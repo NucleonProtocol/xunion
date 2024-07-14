@@ -2,7 +2,7 @@ import { SwapRoute } from '@/types/swap.ts';
 import { TokenIcon } from '@/components/icons';
 import { RightOutlined } from '@ant-design/icons';
 
-const RouteInfo = ({ router }: { router: SwapRoute }) => {
+const RouteInfo = ({ router }: { router?: SwapRoute }) => {
   const routes = router?.route || [];
   return (
     <div className="flex-center gap-[5px]">

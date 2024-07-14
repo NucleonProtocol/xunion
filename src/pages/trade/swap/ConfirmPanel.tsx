@@ -50,6 +50,7 @@ const ConfirmPanel = ({
   isReady,
   onFillSwap,
   deadline,
+  router,
 }: SwapReturnType) => {
   const { isApproved, loading, approve } = useApprove({
     token: inputToken!,
@@ -93,6 +94,7 @@ const ConfirmPanel = ({
           minReceived={minReceived}
           inputToken={inputToken}
           outputToken={outputToken}
+          router={router}
         />
       </div>
       <div className="rounded-[8px] bg-status-warning-non-opaque p-[10px]">

@@ -17,7 +17,7 @@ interface SwapInfoProps {
   inputToken?: Token;
   toPairUnit?: { amount: number; price: number };
   fromPairUnit?: { amount: number; price: number };
-  router: SwapRoute;
+  router?: SwapRoute;
 }
 
 export const ConfirmContent = ({
