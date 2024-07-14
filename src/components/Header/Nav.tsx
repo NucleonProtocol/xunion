@@ -103,7 +103,9 @@ const Nav = () => {
         {menu?.children.map((child) => (
           <Link
             to={child.path}
-            className="px-[12px]  text-tc-secondary max-md:px-[8px]"
+            className={cn('px-[12px]  text-tc-secondary max-md:px-[8px]', {
+              'text-tc-primary': child.mather(pathname),
+            })}
           >
             {child.name}
           </Link>
