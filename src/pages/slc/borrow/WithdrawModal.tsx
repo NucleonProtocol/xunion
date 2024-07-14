@@ -74,6 +74,7 @@ const WithdrawModal = ({
             ownerAmount={asset?.provided || 0}
             totalPrice={inputTokenTotalPrice}
             amountLabel="Provided"
+            showDropArrow={false}
           />
         </div>
         <div className="flex flex-col gap-[10px] p-[16px]">

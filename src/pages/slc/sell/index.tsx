@@ -138,6 +138,7 @@ function BuySLC() {
             disabled
             ownerAmount={inputOwnerAmount}
             totalPrice={inputTokenTotalPrice}
+            showDropArrow={false}
           />
           <div className="relative h-[20px]">
             <div className="flex-center  absolute left-[50%]  top-[-8px] h-[36px] w-[36px] -translate-x-[50%] transform rounded-[2px] border-[3px] border-line-primary2 bg-background-primary">

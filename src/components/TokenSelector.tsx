@@ -1,14 +1,13 @@
 import { Button, Divider, Input, Modal, Spin } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { Token } from '@/types/swap.ts';
-import useErc20Balance from '@/hooks/useErc20Balance.ts';
 import { SpinIcon } from '@/components/icons/tokens';
-import { useMutation } from '@tanstack/react-query';
 import { getTokenList } from '@/services/token.ts';
 import { TokenIcon } from '@/components/icons';
 import useAddToken from '@/hooks/useAddToken.ts';
+import useTokensWithPrice from '@/hooks/useTokensWithPrice.ts';
 
 const ModalContent = ({
   value,
@@ -22,45 +21,12 @@ const ModalContent = ({
   disabled?: boolean;
   onOpen: (v: boolean) => void;
 }) => {
-  const { getBalance } = useErc20Balance();
-  const [loading, setLoading] = useState(false);
-  const [recommends, setRecommends] = useState<Token[]>();
+  const {
+    tokens: recommends,
+    loading,
+    isTokenLoading: isPending,
+  } = useTokensWithPrice();
   const { addToken } = useAddToken();
-
-  const { isPending, mutate: getTokens } = useMutation({
-    mutationFn: getTokenList,
-    onSuccess: (res) => {
-      if (res?.items) {
-        setRecommends([...res.items]);
-      }
-    },
-  });
-
-  useEffect(() => {
-    getTokens({ pageNum: 1, pageSize: 50 });
-  }, []);
-
-  useEffect(() => {
-    if (recommends?.length) {
-      setLoading(true);
-      const calls = recommends.map((item) => getBalance(item.address));
-      Promise.all(calls)
-        .then((amounts) => {
-          setRecommends(
-            recommends.map((item, index) => ({
-              ...item,
-              amount: amounts[index],
-            }))
-          );
-        })
-        .catch((e) => {
-          console.log(e);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [recommends?.length]);
 
   return (
     <div className="h-[600px] overflow-y-auto">
@@ -169,11 +135,13 @@ const TokenSelector = ({
   onChange,
   disabledToken,
   disabled,
+  showDropArrow = true,
 }: {
   value?: Token;
   onChange: (value: Token) => void;
   disabledToken?: Token;
   disabled?: boolean;
+  showDropArrow?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -220,7 +188,7 @@ const TokenSelector = ({
           <span className="">Select Token</span>
         )}
 
-        {!disabled && <DownOutlined className="text-[14px]" />}
+        {showDropArrow && <DownOutlined className="text-[14px]" />}
       </div>
     </div>
   );

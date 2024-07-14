@@ -158,6 +158,7 @@ function BuySLC() {
             disabled
             ownerAmount={outputOwnerAmount}
             totalPrice={outputTokenTotalPrice}
+            showDropArrow={false}
           />
         </div>
         {isReady && !!toPairUnit && (

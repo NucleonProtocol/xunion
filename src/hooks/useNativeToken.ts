@@ -3,13 +3,15 @@ import {
   NATIVE_GAS_TOKENS,
   NATIVE_SWAP_TOKENS,
   NATIVE_TOKENS,
-  ZERO_ADDRESS,
 } from '@/contracts';
 import { useAccount } from 'wagmi';
+import useProvider from '@/hooks/useProvider.ts';
+import { formatUnits } from 'ethers';
 
 const useNativeToken = () => {
-  const { chainId = 71 } = useAccount();
+  const { chainId = 71, address } = useAccount();
 
+  const provider = useProvider();
   const getGasTokenAddress = (token: Token) => {
     return NATIVE_GAS_TOKENS[token?.chainId || chainId];
   };
@@ -17,10 +19,12 @@ const useNativeToken = () => {
   const getSwapTokenAddress = (token: Token) => {
     return NATIVE_SWAP_TOKENS[token?.chainId || chainId];
   };
-
   const isNativeToken = (token: Token) => {
-    if (token?.address === ZERO_ADDRESS) {
-      if (token?.symbol === NATIVE_TOKENS[token.chainId || chainId]) {
+    if (
+      token?.address.toLowerCase() ===
+      NATIVE_SWAP_TOKENS[token?.chainId || chainId].toLowerCase()
+    ) {
+      if (token?.symbol === NATIVE_TOKENS[token?.chainId || chainId]) {
         return true;
       }
     }
@@ -41,12 +45,21 @@ const useNativeToken = () => {
     return token?.address;
   };
 
+  const getNativeTokenBalance = async () => {
+    if (address) {
+      const amount = await provider.getBalance(address).catch(() => 0n);
+      return Number(formatUnits(amount, 18));
+    }
+    return 0;
+  };
+
   return {
     getGasTokenAddress,
     isNativeToken,
     getRealAddress,
     getSwapTokenAddress,
     getRealSwapAddress,
+    getNativeTokenBalance,
   };
 };
 

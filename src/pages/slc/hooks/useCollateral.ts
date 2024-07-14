@@ -8,6 +8,7 @@ import { formatUnits } from 'ethers';
 import { BorrowMode, SLCAsset } from '@/types/slc.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useCollateral = () => {
   const { multiCall } = useMulticall();
@@ -16,6 +17,8 @@ const useCollateral = () => {
 
   const [allUnitPrice, setAllUnitPrices] = useState<[string, number][]>();
 
+  const { getRealAddress, isNativeToken, getNativeTokenBalance } =
+    useNativeToken();
   const { data: assetsOverview, isLoading: isAssetsLoading } = useReadContract({
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
@@ -71,18 +74,27 @@ const useCollateral = () => {
       const calls: ContractCall[] = assets.map((item) => ({
         name: 'balanceOf',
         abi: erc20Abi,
-        address: item.address,
+        address: getRealAddress(item),
         values: [address],
       }));
 
-      multiCall(calls).then((allBalance) => {
-        setAssets((prevState) =>
-          (prevState || [])?.map((item, index) => {
-            const unitPrice =
-              allUnitPrice?.find(
-                (n) => n[0].toLowerCase() === item.address.toLowerCase()
-              )?.[1] || 0;
-            return {
+      multiCall(calls).then(async (allBalance) => {
+        const newData = [];
+        for (let index = 0; index < assets.length; index++) {
+          const item = assets[index];
+          const unitPrice =
+            allUnitPrice?.find(
+              (n) => n[0].toLowerCase() === item.address.toLowerCase()
+            )?.[1] || 0;
+          if (isNativeToken(item)) {
+            const balance = await getNativeTokenBalance();
+            newData.push({
+              ...item,
+              balance: formatNumber(balance, 6),
+              balancePrice: formatNumber(balance * unitPrice, 6),
+            });
+          } else {
+            newData.push({
               ...item,
               balance: formatNumber(
                 Number(formatUnits(allBalance.returnData[index])),
@@ -92,9 +104,11 @@ const useCollateral = () => {
                 Number(formatUnits(allBalance.returnData[index])) * unitPrice,
                 6
               ),
-            };
-          })
-        );
+            });
+          }
+        }
+
+        setAssets(newData);
       });
     }
   }, [assets?.length, address, allUnitPrice]);

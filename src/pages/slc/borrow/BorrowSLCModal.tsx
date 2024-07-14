@@ -77,6 +77,7 @@ const BorrowSLCModal = ({
             ownerAmount={formatNumber(availableAmount || 0, 6)}
             totalPrice={inputTokenTotalPrice}
             amountLabel="Available"
+            showDropArrow={false}
           />
         </div>
         <div className="flex flex-col gap-[10px] p-[16px]">

@@ -16,6 +16,7 @@ const TokenInput = ({
   totalPrice,
   placeholder = '0',
   amountLabel = 'Balance',
+  showDropArrow = true,
 }: {
   title: string;
   editable?: boolean;
@@ -30,6 +31,7 @@ const TokenInput = ({
   totalPrice: number;
   placeholder?: string;
   amountLabel?: string;
+  showDropArrow?: boolean;
 }) => {
   return (
     <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
@@ -66,6 +68,7 @@ const TokenInput = ({
             onChange={onTokenChange}
             disabledToken={disabledToken}
             disabled={disabled}
+            showDropArrow={showDropArrow}
           />
         </div>
       </div>

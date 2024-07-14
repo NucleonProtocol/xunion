@@ -103,6 +103,7 @@ const ProvideModal = ({
             ownerAmount={inputOwnerAmount}
             totalPrice={inputTokenTotalPrice}
             amountLabel="Provided"
+            showDropArrow={false}
           />
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
