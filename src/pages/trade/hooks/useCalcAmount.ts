@@ -1,11 +1,13 @@
-import useSwapContract from '@/hooks/useSwapContract.ts';
-import { useCallback } from 'react';
-import { Token } from '@/types/swap.ts';
-import { formatEther, parseEther } from 'ethers';
+import { useCallback, useState } from 'react';
+import { SwapRoute, Token } from '@/types/swap.ts';
+import { parseEther } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import { useMutation } from '@tanstack/react-query';
+import { getSwapRouter } from '@/services/token.ts';
+import useBestRoute from '@/pages/trade/hooks/useBestRoute.ts';
 
 const useCalcAmount = ({
   setIsInsufficientLiquidity,
@@ -24,16 +26,23 @@ const useCalcAmount = ({
   setInputTokenTotalPrice: (value: number) => void;
   setOutputTokenTotalPrice: (value: number) => void;
 }) => {
-  const contract = useSwapContract();
+  const [router, setRouter] = useState<SwapRoute>();
+  const { mutateAsync: getRoute } = useMutation({
+    mutationFn: getSwapRouter,
+  });
+
+  const { getBestOutputAmount, getBestInputAmount } = useBestRoute();
 
   const { getRealAddress } = useNativeToken();
 
   const getInputAmount = async (tokens: string[], amount: string) => {
-    return await contract.xExchangeEstimateOutput(tokens, amount);
+    const routes = await getRoute({ tokena: tokens[0], tokenb: tokens[1] });
+    return getBestInputAmount(routes, amount);
   };
 
   const getOutputAmount = async (tokens: string[], amount: string) => {
-    return await contract.xExchangeEstimateInput(tokens, amount);
+    const routes = await getRoute({ tokena: tokens[0], tokenb: tokens[1] });
+    return getBestOutputAmount(routes, amount);
   };
   const autoGetPayAmount = useCallback(
     ({
@@ -55,18 +64,19 @@ const useCalcAmount = ({
           [getRealAddress(inputToken!), getRealAddress(outputToken!)],
           parseEther(receiveAmount).toString()
         )
-          .then((amount) => {
-            const amountStr = formatEther(amount[0].toString());
+          .then(({ amount, route }) => {
+            setRouter(route);
+            const amountStr = amount[0];
             setPayAmount(formatNumber(Number(amountStr), 8).toString());
             const info = amount[1];
             setFee((Number(info[0].toString()) / 10000) * 100);
-            setPriceImpact(
-              Number((info[1] - info[2]).toString()) /
-                Number(info[2].toString())
+            const impact = formatNumber(
+              ((Number(info[1]) - Number(info[2])) / Number(info[2])) * 100,
+              2
             );
+            setPriceImpact(impact);
           })
-          .catch((e) => {
-            console.log(e);
+          .catch(() => {
             setIsInsufficientLiquidity(true);
             setPayAmount('');
             setInputTokenTotalPrice(0);
@@ -92,16 +102,13 @@ const useCalcAmount = ({
           [getRealAddress(inputToken!), getRealAddress(outputToken!)],
           parseEther(payAmount).toString()
         )
-          .then((amount) => {
-            const amountStr = formatEther(amount[0].toString());
-
+          .then(({ amount, route }) => {
+            setRouter(route);
+            const amountStr = amount[0];
             setReceiveAmount(formatNumber(Number(amountStr), 8).toString());
-
             const info = amount[1];
             const impact = formatNumber(
-              (Number((info[1] - info[2]).toString()) /
-                Number(info[2].toString())) *
-                100,
+              ((Number(info[1]) - Number(info[2])) / Number(info[2])) * 100,
               2
             );
             setFee((Number(info[0].toString()) / 10000) * 100);
@@ -120,6 +127,7 @@ const useCalcAmount = ({
   return {
     autoGetPayAmount,
     autoGetReceiveAmount,
+    router,
   };
 };
 

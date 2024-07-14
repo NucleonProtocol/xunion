@@ -1,5 +1,5 @@
 import { request } from '@/services/request.ts';
-import { Token } from '@/types/swap.ts';
+import { SwapRoute, Token } from '@/types/swap.ts';
 import { ResponseType, ListType } from '@/types/common.ts';
 
 export const getTokenList = async (params: {
@@ -23,12 +23,10 @@ export const getTokenListCollect = async (params: {
 };
 
 export const getSwapRouter = async (params: {
-  tokena: number;
-  tokenb: number;
-  pageSize: number;
-  pageNum: number;
+  tokena: string;
+  tokenb: string;
 }) => {
   return request
-    .get<ResponseType<ListType<Token>>>('/v1/tokens/router', { params })
-    .then((res) => res.data?.data);
+    .get<ResponseType<ListType<SwapRoute>>>('/v1/tokens/router', { params })
+    .then((res) => res.data?.data?.items || []);
 };

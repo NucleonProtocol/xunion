@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Token } from '@/types/swap.ts';
+import { SwapRoute, Token } from '@/types/swap.ts';
 import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
 import usePair from '@/pages/trade/hooks/usePair.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
@@ -40,6 +40,7 @@ export interface SwapReturnType {
   swapStep?: SwapStep;
   onConfirm?: () => void;
   onFillSwap?: () => void;
+  router?: SwapRoute;
 }
 
 const useSwap = (): SwapReturnType => {
@@ -54,7 +55,6 @@ const useSwap = (): SwapReturnType => {
   const [deadline, setDeadline] = useState('10');
   const [inputTokenTotalPrice, setInputTokenTotalPrice] = useState(0);
   const [outputTokenTotalPrice, setOutputTokenTotalPrice] = useState(0);
-
   const [priceImpact, setPriceImpact] = useState(0);
   const [fee, setFee] = useState(0);
 
@@ -62,7 +62,7 @@ const useSwap = (): SwapReturnType => {
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
 
-  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcAmount({
+  const { autoGetPayAmount, autoGetReceiveAmount, router } = useCalcAmount({
     setIsInsufficientLiquidity,
     setPayAmount,
     setFee,
@@ -291,6 +291,7 @@ const useSwap = (): SwapReturnType => {
     onConfirm,
     onFillSwap,
     swapStep,
+    router,
   };
 };
 

@@ -9,14 +9,6 @@ export interface Token {
   chainId?: number;
 }
 
-export interface CollateralAsset extends Token {
-  balance: {
-    amount: number;
-    price: number;
-  };
-  provided: {
-    amount: number;
-    price: number;
-  };
-  canBeCollateral: boolean;
+export interface SwapRoute {
+  route: Token[];
 }

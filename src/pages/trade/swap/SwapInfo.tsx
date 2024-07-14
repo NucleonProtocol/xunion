@@ -1,10 +1,10 @@
-import { RightOutlined, UpOutlined } from '@ant-design/icons';
+import { UpOutlined } from '@ant-design/icons';
 import { SlippageValue } from '@/pages/trade/swap/Slippage.tsx';
-import { Token } from '@/types/swap.ts';
+import { SwapRoute, Token } from '@/types/swap.ts';
 import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
 import { ExchangeIcon } from '@/components/icons/tokens';
-import { TokenIcon } from '@/components/icons';
+import RouteInfo from '@/pages/trade/swap/RouteInfo.tsx';
 
 interface SwapInfoProps {
   slippage: string;
@@ -17,6 +17,7 @@ interface SwapInfoProps {
   inputToken?: Token;
   toPairUnit?: { amount: number; price: number };
   fromPairUnit?: { amount: number; price: number };
+  router: SwapRoute;
 }
 
 export const ConfirmContent = ({
@@ -26,8 +27,7 @@ export const ConfirmContent = ({
   feeAmount,
   estReceived,
   minReceived,
-  outputToken,
-  inputToken,
+  router,
 }: SwapInfoProps) => {
   return (
     <div className="mt-[10px] flex flex-col gap-[6px]">
@@ -55,17 +55,7 @@ export const ConfirmContent = ({
       </div>
       <div className="flex-center-between">
         <span className="text-tc-secondary">Route</span>
-        <div className="flex-center gap-[5px]">
-          <span className="flex-center gap-[5px]">
-            <TokenIcon src={inputToken?.icon} />
-            {inputToken?.symbol}
-          </span>
-          <RightOutlined className="mx-[10px] text-[12px] text-tc-secondary" />
-          <span className="flex-center gap-[5px]">
-            <TokenIcon src={outputToken?.icon} />
-            {outputToken?.symbol}
-          </span>
-        </div>
+        <RouteInfo router={router} />
       </div>
     </div>
   );

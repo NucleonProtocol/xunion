@@ -37,6 +37,7 @@ const SwapPanel = ({
   isReady,
   isInsufficientLiquidity,
   onConfirm,
+  router,
 }: SwapReturnType) => {
   const { disabled } = useWalletAuth();
 
@@ -111,6 +112,7 @@ const SwapPanel = ({
             outputToken={outputToken}
             toPairUnit={toPairUnit}
             fromPairUnit={fromPairUnit}
+            router={router}
           />
         </div>
       )}

@@ -1,20 +1,13 @@
 import useWalletStore from '@/store/wallet.ts';
-import {
-  MetamaskIcon,
-  FluentIcon,
-  AvatarIcon,
-  TokenIcon,
-} from '@/components/icons';
+import { MetamaskIcon, FluentIcon, AvatarIcon } from '@/components/icons';
 import { useAccount, useDisconnect } from 'wagmi';
 import { usePersistStore } from '@/store/persist.ts';
-import { formatCurrency, maskAddress4 } from '@/utils';
+import { maskAddress4 } from '@/utils';
 import { CopyOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useCopy } from '@/hooks/useCopy.ts';
 import DrawerContainer from '@/components/DrawerContainer.tsx';
 import useWalletDetail from '@/components/Wallet/useWalletDetail.ts';
-import { cn } from '@/utils/classnames.ts';
 import TokenList from '@/components/Wallet/TokenList.tsx';
-import ActivityList from '@/components/Wallet/ActivityList.tsx';
 
 const WalletDetailModal = () => {
   const open = useWalletStore((state) => state.detailOpen);
@@ -24,8 +17,7 @@ const WalletDetailModal = () => {
   const wallet = usePersistStore((state) => state.wallet);
   const { address } = useAccount();
   const { copy } = useCopy();
-  const { activities, tokens, loading, isTokenLoading, totalPrice } =
-    useWalletDetail();
+  const { tokens, loading, isTokenLoading, totalPrice } = useWalletDetail();
 
   return (
     address && (
