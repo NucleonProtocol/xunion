@@ -2,10 +2,9 @@ import { ActivityRecord, ActivityRecordType } from '@/types/activity.ts';
 import { Skeleton } from 'antd';
 import { cn } from '@/utils/classnames.ts';
 import { TokenIcon } from '@/components/icons';
-import { formatCurrency } from '@/utils';
 import TimeAgo from '@/components/Wallet/TimeAgo.tsx';
 
-const ActivityNames = {
+export const ActivityNames = {
   [ActivityRecordType.ADD_LIQUIDITY]: 'Add',
   [ActivityRecordType.SEND_TOKEN]: 'Send',
   [ActivityRecordType.RECEIVED_TOKEN]: 'Received',
