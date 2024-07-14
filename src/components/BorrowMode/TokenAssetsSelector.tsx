@@ -1,6 +1,6 @@
 import { Popover, Spin } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import useCollateral from '@/pages/slc/hooks/useCollateral.ts';
+import useCollateral from '@/pages/x-super-libra-coin/hooks/useCollateral.ts';
 import { SpinIcon } from '@/components/icons/tokens';
 import { cn } from '@/utils/classnames.ts';
 import { TokenIcon } from '@/components/icons';

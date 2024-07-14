@@ -1,7 +1,7 @@
 import { Button, Modal } from 'antd';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
-import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
+import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { XUNION_SLC_CONTRACT, ZERO_ADDRESS } from '@/contracts';
 import { Address } from 'viem';

@@ -1,23 +1,67 @@
 import { Dropdown, MenuProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import {
-  CreatePoolIcon,
-  LiquidityIcon,
-  PoolsIcon,
-  SwapIcon,
-} from '@/components/icons';
-import { ReactElement, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
+import { LogoIcon } from '@/components/icons';
+const menus = [
+  {
+    name: 'X-Dex',
+    description: 'The most user-friendly dex to trade',
+    path: '/x-dex',
+    mather: (pathname: string) => pathname.includes('/x-dex'),
+    children: [
+      {
+        name: 'Swap',
+        path: '/x-dex/swap',
+        mather: (pathname: string) => pathname.includes('/x-dex/swap'),
+      },
+      {
+        name: 'Pools',
+        path: '/x-dex/pools',
+        mather: (pathname: string) => pathname.includes('/x-dex/pools'),
+      },
+      {
+        name: 'Explore',
+        path: '/x-dex/explore',
+        mather: (pathname: string) => pathname.includes('/x-dex/explore'),
+      },
+    ],
+  },
+  {
+    name: 'X-Super Libra Coin',
+    description: 'A decentralized super stable coin',
+    path: '/x-super-libra-coin',
+    mather: (pathname: string) => pathname.includes('/x-super-libra-coin'),
+    children: [],
+  },
+  {
+    name: 'X-Lending',
+    description: 'Borrow, lend and earn',
+    path: '/x-lending',
+    mather: (pathname: string) => pathname.includes('/x-lending'),
+    children: [
+      {
+        name: 'Dashboard',
+        path: '/x-lending/dashboard',
+        mather: (pathname: string) => pathname.includes('/x-lending/dashboard'),
+      },
+      {
+        name: 'Market',
+        path: '/x-lending/market',
+        mather: (pathname: string) => pathname.includes('/x-lending/market'),
+      },
+    ],
+  },
+];
 
 const MenuItem = ({
   item,
 }: {
-  item: { icon: ReactElement; name: string; description: string; path: string };
+  item: { name: string; description: string; path: string };
 }) => {
   return (
     <Link to={item.path} className="flex items-center px-[16px] py-[8px]">
-      <div className="pr-[20px] text-[24px]">{item.icon}</div>
       <div className="flex flex-col">
         <span className="text-[16px] ">{item.name}</span>
         <span className="text-[14px] text-tc-secondary">
@@ -28,33 +72,6 @@ const MenuItem = ({
   );
 };
 
-const menus = [
-  {
-    name: 'Swap',
-    description: 'The most user-friendly way to trade',
-    path: '/trade/swap',
-    icon: <SwapIcon />,
-  },
-  {
-    name: 'Liquidity',
-    description: 'Put your funds to work for earning',
-    path: '/trade/liquidity',
-    icon: <LiquidityIcon />,
-  },
-  {
-    name: 'Create Pool',
-    description: 'Create and manage your pool',
-    path: '/trade/create-pool',
-    icon: <CreatePoolIcon />,
-  },
-  {
-    name: 'Pools',
-    description: 'Find and join the top pools',
-    path: '/trade/pools',
-    icon: <PoolsIcon />,
-  },
-];
-
 const Nav = () => {
   const [open, setOpen] = useState(false);
   const items: MenuProps['items'] = menus.map((item) => ({
@@ -62,29 +79,36 @@ const Nav = () => {
     key: item.name,
   }));
 
-  return (
-    <div className="flex items-center gap-[20px] text-[16px] max-md:flex-1 max-md:justify-around max-md:gap-[10px]">
-      <Dropdown menu={{ items }} trigger={['click']} onOpenChange={setOpen}>
-        <div className="flex cursor-pointer items-center gap-[10px] px-[12px]">
-          Trade
-          <DownOutlined
-            className={cn(
-              'rotate-0 text-[12px] text-tc-secondary transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)]',
-              { 'rotate-180': open }
-            )}
-          />
-        </div>
-      </Dropdown>
+  const { pathname } = useLocation();
 
-      <Link
-        to={'/slc/buy'}
-        className="px-[12px]  text-tc-secondary max-md:px-[8px]"
-      >
-        SLC
-      </Link>
-      <Link to={'/'} className="px-[12px] text-tc-secondary max-md:px-[8px]">
-        Explore
-      </Link>
+  const menu = menus.find((item) => item.mather(pathname));
+
+  return (
+    <div className="flex items-center gap-[40px] text-[16px] max-md:flex-1 max-md:justify-around max-md:gap-[10px]">
+      <div className="flex-center">
+        <LogoIcon className="text-[40px] max-md:text-[30px]" />
+        <Dropdown menu={{ items }} trigger={['click']} onOpenChange={setOpen}>
+          <div className="flex cursor-pointer items-center gap-[10px] px-[12px]">
+            <span className="font-bold">{menu?.name}</span>
+            <DownOutlined
+              className={cn(
+                'rotate-0 text-[14px] font-bold transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)]',
+                { 'rotate-180': open }
+              )}
+            />
+          </div>
+        </Dropdown>
+      </div>
+      <div className="flex-center gap-[30px]">
+        {menu?.children.map((child) => (
+          <Link
+            to={child.path}
+            className="px-[12px]  text-tc-secondary max-md:px-[8px]"
+          >
+            {child.name}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

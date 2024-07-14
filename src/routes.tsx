@@ -1,15 +1,15 @@
 import { Navigate } from 'react-router-dom';
 import PageLayout from '@/components/Layout/PageLayout';
-import Swap from '@/pages/trade/swap';
-import Limit from '@/pages/trade/swap/limit';
-import Send from '@/pages/trade/swap/send';
-import Pools from '@/pages/trade/pools';
-import Liquidity from '@/pages/trade/liquidity';
-import CreatePool from 'src/pages/trade/create-pool';
-import Explore from '@/pages/explore';
-import SLCBuy from '@/pages/slc/buy';
-import SLCSell from '@/pages/slc/sell';
-import SLCBorrow from '@/pages/slc/borrow';
+import Swap from '@/pages/x-dex/swap';
+import Limit from '@/pages/x-dex/swap/limit';
+import Send from '@/pages/x-dex/swap/send';
+import Pools from '@/pages/x-dex/pools';
+import Liquidity from '@/pages/x-dex/liquidity';
+import CreatePool from '@/pages/x-dex/create-pool';
+import Explore from '@/pages/x-dex/explore';
+import MintSLC from 'src/pages/x-super-libra-coin/mint';
+import BurnSLC from 'src/pages/x-super-libra-coin/burn';
+import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
 
 const routes = [
   {
@@ -18,10 +18,10 @@ const routes = [
     children: [
       {
         path: '',
-        element: <Navigate to="trade" replace />,
+        element: <Navigate to="x-dex" replace />,
       },
       {
-        path: 'trade',
+        path: 'x-dex',
         children: [
           {
             path: '',
@@ -44,12 +44,16 @@ const routes = [
             element: <Swap />,
           },
           {
-            path: 'pools',
-            element: <Pools />,
-          },
-          {
             path: 'liquidity',
             element: <Liquidity />,
+          },
+          {
+            path: 'explore',
+            element: <Explore />,
+          },
+          {
+            path: 'pools',
+            element: <Pools />,
           },
           {
             path: 'create-pool',
@@ -58,19 +62,19 @@ const routes = [
         ],
       },
       {
-        path: 'slc',
+        path: 'x-super-libra-coin',
         children: [
           {
             path: '',
-            element: <Navigate to="buy" replace />,
+            element: <Navigate to="mint" replace />,
           },
           {
-            path: 'buy',
-            element: <SLCBuy />,
+            path: 'mint',
+            element: <MintSLC />,
           },
           {
-            path: 'sell',
-            element: <SLCSell />,
+            path: 'burn',
+            element: <BurnSLC />,
           },
           {
             path: 'borrow',
@@ -79,8 +83,21 @@ const routes = [
         ],
       },
       {
-        path: 'explore',
-        element: <Explore />,
+        path: 'x-lending',
+        children: [
+          {
+            path: '',
+            element: <Navigate to="dashboard" replace />,
+          },
+          {
+            path: 'dashboard',
+            element: <div />,
+          },
+          {
+            path: 'market',
+            element: <div />,
+          },
+        ],
       },
     ],
   },

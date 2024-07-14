@@ -1,5 +1,4 @@
-import { LogoIcon, SettingIcon } from '@/components/icons';
-import { Link } from 'react-router-dom';
+import { SettingIcon } from '@/components/icons';
 import Nav from '@/components/Header/Nav.tsx';
 import ConnectButton from '@/components/Wallet/ConnectButton';
 import { Button, Popover } from 'antd';
@@ -12,15 +11,9 @@ const Header = () => {
   const { setTheme, theme } = useTheme();
   return (
     <div className="py-[20px flex h-[80px] items-center justify-between px-[30px] max-md:px-[20px]">
-      <Link to="/" className="flex-center gap-[5px]">
-        <span className="text-[40px] max-md:text-[30px]">
-          <LogoIcon />
-        </span>
-        <span className="text-[20px] font-bold max-md:hidden">Xunion</span>
-      </Link>
       <div
         className={cn(
-          'flex  flex-1 items-center px-[60px]',
+          'flex  flex-1 items-center',
           'max-md:fixed max-md:bottom-[20px] max-md:left-[20px] max-md:right-[20px]',
           'max-md:h-[48px] max-md:rounded-[10px] max-md:bg-fill-niubi max-md:px-[20px]'
         )}

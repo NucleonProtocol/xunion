@@ -1,7 +1,7 @@
 import { Button, Modal } from 'antd';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
-import HealthFactor from '@/pages/slc/borrow/HealthFactor.tsx';
+import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
 import { BorrowMode, SLCAsset } from '@/types/slc.ts';
 import TokenAssetsSelector from '@/components/BorrowMode/TokenAssetsSelector.tsx';
 import { useState } from 'react';
