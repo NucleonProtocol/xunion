@@ -44,6 +44,7 @@ const config: Config = {
           'e-secondary': 'var(--xunion-fill-e-secondary)',
           niubi: 'var(--xunion-fill-niubi)',
           niubi2: 'var(--xunion-fill-niubi2)',
+          niubi3: 'var(--xunion-fill-niubi3)',
         },
         status: {
           info: 'var(--xunion-color-info)',
