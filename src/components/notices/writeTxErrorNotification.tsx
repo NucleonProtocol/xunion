@@ -3,7 +3,10 @@ import { CloseCircleFilled } from '@ant-design/icons';
 
 export const confluxScan = 'https://evmtestnet.confluxscan.io/tx/';
 
-export const writeTxErrorNotification = (hash: string | null | undefined) => {
+export const writeTxErrorNotification = (
+  hash: string | null | undefined,
+  message = 'Unknown message.'
+) => {
   notification.open({
     message: (
       <div className="flex items-start justify-between gap-[20px]">
@@ -22,7 +25,9 @@ export const writeTxErrorNotification = (hash: string | null | undefined) => {
               View on ConfluxScan
             </a>
           ) : (
-            <span className="text-tc-secondary">Unknown message. </span>
+            <span className="flex flex-1 flex-wrap text-tc-secondary">
+              {message}{' '}
+            </span>
           )}
         </div>
       </div>

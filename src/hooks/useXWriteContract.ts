@@ -8,7 +8,6 @@ import { writeTxErrorNotification } from '@/components/notices/writeTxErrorNotif
 const useXWriteContract = ({
   showSubmittedModal = true,
   globalNotice = true,
-  pendingPool = true,
   onSubmitted,
   onWriteSuccess,
   onError,
@@ -47,7 +46,8 @@ const useXWriteContract = ({
     if (isError) {
       setLoading(false);
       onError?.(submittedError as WriteContractErrorType);
-      writeTxErrorNotification(hash);
+      const reasonMatch = submittedError?.message.match(/reason: (.*)/);
+      writeTxErrorNotification(hash, reasonMatch?.[1]);
     }
   }, [submittedError, isError]);
 
@@ -55,14 +55,14 @@ const useXWriteContract = ({
     if (isWriteError) {
       setLoading(false);
       onError?.(writeError as WriteContractErrorType);
-      writeTxErrorNotification(hash);
+      const reasonMatch = writeError?.message.match(/reason: (.*)/);
+      writeTxErrorNotification(hash, reasonMatch?.[1]);
     }
   }, [writeError, isWriteError]);
 
   useEffect(() => {
     if (isSuccess && hash && globalNotice) {
       setLoading(false);
-      console.log(pendingPool);
       // pendingPool
       // TODO collect 2 pools
       writeTxNotification(hash);

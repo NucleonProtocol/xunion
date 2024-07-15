@@ -22,7 +22,7 @@ const useNativeToken = () => {
   const isNativeToken = (token: Token) => {
     if (
       token?.address.toLowerCase() ===
-      NATIVE_SWAP_TOKENS[token?.chainId || chainId].toLowerCase()
+      NATIVE_SWAP_TOKENS[token?.chainId || chainId]?.toLowerCase?.()
     ) {
       if (token?.symbol === NATIVE_TOKENS[token?.chainId || chainId]) {
         return true;

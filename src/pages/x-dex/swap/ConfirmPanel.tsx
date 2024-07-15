@@ -65,6 +65,7 @@ const ConfirmPanel = ({
     slippage,
     deadline,
     onFillSwap,
+    router,
   });
 
   return (

@@ -43,15 +43,15 @@ const useXSendTransaction = ({
 
   useEffect(() => {
     if (isError) {
-      writeTxErrorNotification(hash);
       onError?.(submittedError as WriteContractErrorType);
+      writeTxErrorNotification(hash, submittedError?.message);
     }
   }, [submittedError, isError]);
 
   useEffect(() => {
     if (isWriteError) {
-      writeTxErrorNotification(hash);
       onError?.(writeError as WriteContractErrorType);
+      writeTxErrorNotification(hash, writeError?.message);
     }
   }, [writeError, isWriteError]);
 

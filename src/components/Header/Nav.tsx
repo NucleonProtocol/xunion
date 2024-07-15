@@ -102,6 +102,7 @@ const Nav = () => {
       <div className="flex-center gap-[30px]">
         {menu?.children.map((child) => (
           <Link
+            key={child.path}
             to={child.path}
             className={cn('px-[12px]  text-tc-secondary max-md:px-[8px]', {
               'text-tc-primary': child.mather(pathname),

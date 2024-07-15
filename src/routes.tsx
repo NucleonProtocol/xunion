@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import PageLayout from '@/components/Layout/PageLayout';
-import Swap from '@/pages/x-dex/swap';
-import Limit from '@/pages/x-dex/swap/limit';
-import Send from '@/pages/x-dex/swap/send';
+import Swap from 'src/pages/x-dex/swap';
+import Limit from 'src/pages/x-dex/limit';
+import Send from 'src/pages/x-dex/send';
 import Pools from '@/pages/x-dex/pools';
 import Liquidity from '@/pages/x-dex/liquidity';
 import CreatePool from '@/pages/x-dex/create-pool';

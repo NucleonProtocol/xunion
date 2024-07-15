@@ -1,6 +1,7 @@
 import TokenSelector from '@/components/TokenSelector.tsx';
 import { Token } from '@/types/swap.ts';
 import { cn } from '@/utils/classnames.ts';
+import { ChangeEvent } from 'react';
 
 const TokenInput = ({
   title,
@@ -33,6 +34,19 @@ const TokenInput = ({
   amountLabel?: string;
   showDropArrow?: boolean;
 }) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    let value = event.target.value;
+    value = value.replace(/[^0-9.]/g, '');
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = `${parts[0]}.${parts.slice(1).join('')}`;
+    }
+    if (value.startsWith('0') && value.length > 1 && !value.startsWith('0.')) {
+      value = value.replace(/^0+/, '');
+    }
+    onAmountChange(value);
+  };
+
   return (
     <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
       <div className="text-[14px] text-tc-secondary">{title}</div>
@@ -44,22 +58,7 @@ const TokenInput = ({
             placeholder={placeholder}
             disabled={!editable}
             value={amount}
-            onChange={(e) => {
-              let value = e.target.value;
-              value = value.replace(/[^0-9.]/g, '');
-              const parts = value.split('.');
-              if (parts.length > 2) {
-                value = `${parts[0]}.${parts.slice(1).join('')}`;
-              }
-              if (
-                value.startsWith('0') &&
-                value.length > 1 &&
-                !value.startsWith('0.')
-              ) {
-                value = value.replace(/^0+/, '');
-              }
-              onAmountChange(value);
-            }}
+            onChange={handleChange}
           />
         </div>
         <div className="flex-shrink-0">

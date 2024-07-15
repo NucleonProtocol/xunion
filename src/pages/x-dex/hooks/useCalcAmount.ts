@@ -71,7 +71,8 @@ const useCalcAmount = ({
             const info = amount[1];
             setFee((Number(info[0].toString()) / 10000) * 100);
             const impact = formatNumber(
-              ((Number(info[1]) - Number(info[2])) / Number(info[2])) * 100,
+              ((Number(info[1]) - Number(info[2])) / (Number(info[2]) || 1)) *
+                100,
               2
             );
             setPriceImpact(impact);
@@ -108,7 +109,8 @@ const useCalcAmount = ({
             setReceiveAmount(formatNumber(Number(amountStr), 8).toString());
             const info = amount[1];
             const impact = formatNumber(
-              ((Number(info[1]) - Number(info[2])) / Number(info[2])) * 100,
+              ((Number(info[1]) - Number(info[2])) / (Number(info[2]) || 1)) *
+                100,
               2
             );
             setFee((Number(info[0].toString()) / 10000) * 100);

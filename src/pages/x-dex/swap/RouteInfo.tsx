@@ -1,13 +1,13 @@
-import { SwapRoute } from '@/types/swap.ts';
+import { SwapRoute, Token } from '@/types/swap.ts';
 import { TokenIcon } from '@/components/icons';
 import { RightOutlined } from '@ant-design/icons';
+import { Popover } from 'antd';
 
-const RouteInfo = ({ router }: { router?: SwapRoute }) => {
-  const routes = router?.route || [];
+const RoutePath = ({ routes }: { routes: Token[] }) => {
   return (
     <div className="flex-center gap-[5px]">
       {routes.map((token, index) => (
-        <div className="flex-center gap-[2px]">
+        <div className="flex-center gap-[2px]" key={token.symbol}>
           <span className="flex-center gap-[5px]">
             <TokenIcon src={token?.icon} />
             {token?.symbol}
@@ -17,6 +17,36 @@ const RouteInfo = ({ router }: { router?: SwapRoute }) => {
       ))}
     </div>
   );
+};
+
+const RouteInfo = ({ router }: { router?: SwapRoute }) => {
+  const routes = router?.route || [];
+  if (routes.length > 3) {
+    const fromToken = routes[0];
+    const toToken = routes[routes.length - 1];
+    return (
+      <Popover title={<RoutePath routes={routes} />} placement="topRight">
+        <div className="flex-center cursor-pointer gap-[5px]">
+          <div className="flex-center gap-[2px]">
+            <span className="flex-center gap-[5px]">
+              <TokenIcon src={fromToken?.icon} />
+              {fromToken?.symbol}
+            </span>
+            <RightOutlined />
+          </div>
+          <span>...</span>
+          <RightOutlined />
+          <div className="flex-center gap-[2px]">
+            <span className="flex-center gap-[5px]">
+              <TokenIcon src={toToken?.icon} />
+              {toToken?.symbol}
+            </span>
+          </div>
+        </div>
+      </Popover>
+    );
+  }
+  return <RoutePath routes={routes} />;
 };
 
 export default RouteInfo;

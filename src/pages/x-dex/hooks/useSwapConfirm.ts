@@ -1,6 +1,6 @@
 import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import { Token } from '@/types/swap.ts';
+import { SwapRoute, Token } from '@/types/swap.ts';
 import dayjs from 'dayjs';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
@@ -14,6 +14,7 @@ const useSwapConfirm = ({
   receiveAmount,
   outputToken,
   onFillSwap,
+  router,
 }: {
   inputToken?: Token;
   outputToken?: Token;
@@ -22,6 +23,7 @@ const useSwapConfirm = ({
   slippage: string;
   deadline: string;
   onFillSwap?: () => void;
+  router?: SwapRoute;
 }) => {
   const { isNativeToken, getRealSwapAddress, getRealAddress } =
     useNativeToken();
@@ -44,7 +46,7 @@ const useSwapConfirm = ({
   });
 
   const confirm = () => {
-    if (fromDecimals && toDecimals) {
+    if (fromDecimals && toDecimals && router?.route.length) {
       const { address, abi } = XUNION_SWAP_CONTRACT.interface;
 
       let value = 0;
@@ -64,17 +66,20 @@ const useSwapConfirm = ({
         value = amountIn;
       }
 
+      const routes = router.route;
+
+      const routePath = routes.map((item, index) => {
+        if (index === 0 || index === routes.length - 1) {
+          return getRealSwapAddress(item);
+        }
+        return item.address;
+      });
+
       writeContractAsync({
         address: address as Address,
         abi,
         functionName: 'xexchange2',
-        args: [
-          [getRealSwapAddress(inputToken!), getRealSwapAddress(outputToken!)],
-          amountIn,
-          amountOut,
-          limits,
-          date,
-        ],
+        args: [routePath, amountIn, amountOut, limits, date],
         value: `${value}` as unknown as bigint,
       });
     }
