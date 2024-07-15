@@ -69,7 +69,7 @@ const useWithdraw = ({
         .usersHealthFactorEstimate(
           address,
           getRealAddress(inputToken!),
-          String(Number(payAmount) * 10 ** 18),
+          parseUnits(payAmount),
           1
         )
         .then((factor) => Number(formatUnits(factor, 18)));

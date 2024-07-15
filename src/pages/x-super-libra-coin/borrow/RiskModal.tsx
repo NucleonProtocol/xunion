@@ -8,6 +8,7 @@ import { useAccount, useReadContract } from 'wagmi';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import { useMemo } from 'react';
+import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
 const HealthFactorInfo = ({
   segments,
   userPercent,
@@ -35,14 +36,15 @@ const HealthFactorInfo = ({
             }}
           >
             <span
-              className="absolute top-[-15px] line-clamp-1 flex w-[180px] whitespace-nowrap text-center text-[12px]  "
+              className="absolute top-[-15px] line-clamp-1 flex w-[100px] whitespace-nowrap text-center text-[12px]  "
               style={{
-                transform: 'translateX(0%)',
+                transform: 'translateX(10%)',
               }}
             >
-              {`Your value: ${formatNumber(userHealthFactor || 0, 2)
-                .toString()
-                .substring(0, 6)}`}
+              {`Your value: `}
+              <HealthFactor
+                value={formatNumber(userHealthFactor || 0, 2).toString()}
+              />
             </span>
             <span className="text-tc-secondary">
               <CaretDownOutlined />

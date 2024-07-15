@@ -1,7 +1,7 @@
 import useSLCContract from '@/hooks/useSLCContract.ts';
 import { useAccount } from 'wagmi';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
-import { formatUnits } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers';
 
 const useHealthFactor = () => {
   const contract = useSLCContract();
@@ -14,7 +14,7 @@ const useHealthFactor = () => {
         .usersHealthFactorEstimate(
           address,
           XUNION_SWAP_CONTRACT.slc.address,
-          String(Number(amount) * 10 ** 18),
+          parseUnits(amount),
           0
         )
         .then((factor) => formatUnits(factor, 18));
@@ -26,7 +26,7 @@ const useHealthFactor = () => {
         .usersHealthFactorEstimate(
           address,
           XUNION_SWAP_CONTRACT.slc.address,
-          String(Number(amount) * 10 ** 18),
+          parseUnits(amount),
           1
         )
         .then((factor) => formatUnits(factor, 18));
