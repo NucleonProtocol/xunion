@@ -14,6 +14,7 @@ import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import { parseUnits } from 'ethers';
 
 const useBuySLC = () => {
   const { getBalance } = useErc20Balance();
@@ -48,6 +49,9 @@ const useBuySLC = () => {
 
   const { getLpPrice } = useLP();
 
+  const { getRealAddress, isNativeToken, getNativeTokenBalance } =
+    useNativeToken();
+
   useEffect(() => {
     if (fromWithSLCPairAddress && payAmount) {
       getLpPrice(fromWithSLCPairAddress).then((unitPrice) => {
@@ -68,12 +72,20 @@ const useBuySLC = () => {
 
   useEffect(() => {
     if (inputToken?.address) {
-      getBalance(inputToken.address).then(setInputOwnerAmount);
+      if (isNativeToken(inputToken)) {
+        getNativeTokenBalance().then(setInputOwnerAmount);
+      } else {
+        getBalance(inputToken.address).then(setInputOwnerAmount);
+      }
     }
   }, [inputToken]);
   useEffect(() => {
     if (outputToken?.address) {
-      getBalance(outputToken.address).then(setOutputOwnerAmount);
+      if (isNativeToken(outputToken)) {
+        getNativeTokenBalance().then(setOutputOwnerAmount);
+      } else {
+        getBalance(outputToken.address).then(setOutputOwnerAmount);
+      }
     }
   }, [outputToken]);
 
@@ -169,7 +181,7 @@ const useBuySLC = () => {
   }, [payAmount, inputOwnerAmount, inputToken?.address]);
 
   const { writeContractAsync, isSubmittedLoading } = useXWriteContract({});
-  const { getRealAddress, isNativeToken } = useNativeToken();
+
   const { data: decimals } = useReadContract({
     address: getRealAddress(inputToken!) as Address,
     abi: erc20Abi,
@@ -178,7 +190,7 @@ const useBuySLC = () => {
 
   const onConfirm = () => {
     if (decimals && payAmount && inputToken) {
-      const amountIn = Number(payAmount) * 10 ** decimals;
+      const amountIn = parseUnits(payAmount, decimals);
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
       if (isNativeToken(inputToken)) {
         writeContractAsync({

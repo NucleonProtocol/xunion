@@ -85,7 +85,8 @@ const useWithdraw = ({
 
   const withdrawNormal = async () => {
     if (decimals) {
-      const amountIn = Number(payAmount) * 10 ** decimals;
+      const amountIn = parseUnits(payAmount, decimals);
+
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
       writeContractAsync({
         address: address as Address,

@@ -3,7 +3,7 @@ import { useReadContract } from 'wagmi';
 import { useMemo } from 'react';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { LiquidityReturnType } from '@/pages/x-dex/hooks/useAddLP.ts';
-import { getAddress } from 'ethers';
+import { getAddress, parseUnits } from 'ethers';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { Token } from '@/types/swap.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
@@ -46,8 +46,8 @@ const useAddLPConfirm = ({
 
   const sortedAmounts = useMemo(() => {
     if (!tokenADecimals || !tokenBDecimals) return [];
-    const amountIn = Number(tokenAAmount) * 10 ** tokenADecimals;
-    const amountOut = Number(tokenBAmount) * 10 ** tokenBDecimals;
+    const amountIn = parseUnits(tokenAAmount, tokenADecimals);
+    const amountOut = parseUnits(tokenBAmount, tokenBDecimals);
     return (lpPairInfo?.lpPair || []).map(
       (address) =>
         [
@@ -56,7 +56,7 @@ const useAddLPConfirm = ({
         ].find(
           (token) =>
             getAddress(
-              getRealAddress(token as Token) as Address
+              getRealAddress(token as unknown as Token) as Address
             ).toLowerCase() === getAddress(address).toLowerCase()
         )?.amount
     );

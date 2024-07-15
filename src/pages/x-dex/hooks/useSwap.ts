@@ -6,6 +6,7 @@ import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useLP from '@/pages/x-dex/hooks/useLP.ts';
 import useCalcAmount from '@/pages/x-dex/hooks/useCalcAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 type SwapStep = 'FILL' | 'CONFIRM';
 
@@ -45,6 +46,7 @@ export interface SwapReturnType {
 
 const useSwap = (): SwapReturnType => {
   const { getBalance } = useErc20Balance();
+  const { isNativeToken, getNativeTokenBalance } = useNativeToken();
   const [slippage, setSlippage] = useState('-1');
   const [inputToken, setInputToken] = useState<Token | undefined>();
   const [outputToken, setOutputToken] = useState<Token | undefined>();
@@ -140,12 +142,20 @@ const useSwap = (): SwapReturnType => {
 
   useEffect(() => {
     if (inputToken?.address) {
-      getBalance(inputToken.address).then(setInputOwnerAmount);
+      if (isNativeToken(inputToken)) {
+        getNativeTokenBalance().then(setInputOwnerAmount);
+      } else {
+        getBalance(inputToken.address).then(setInputOwnerAmount);
+      }
     }
   }, [inputToken]);
   useEffect(() => {
     if (outputToken?.address) {
-      getBalance(outputToken.address).then(setOutputOwnerAmount);
+      if (isNativeToken(outputToken)) {
+        getNativeTokenBalance().then(setOutputOwnerAmount);
+      } else {
+        getBalance(outputToken.address).then(setOutputOwnerAmount);
+      }
     }
   }, [outputToken]);
 

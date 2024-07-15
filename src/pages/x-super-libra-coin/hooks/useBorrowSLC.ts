@@ -8,6 +8,7 @@ import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import useTokenPrice from '@/hooks/useTokenPrice.ts';
 import useHealthFactor from '@/pages/x-super-libra-coin/hooks/useHealthFactor.ts';
+import { parseUnits } from 'ethers';
 
 const useBorrowSLC = ({
   availableAmount = 0,
@@ -61,7 +62,8 @@ const useBorrowSLC = ({
 
   const onConfirm = () => {
     if (decimals) {
-      const amountIn = Number(payAmount) * 10 ** decimals;
+      const amountIn = parseUnits(payAmount, decimals);
+
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
       writeContractAsync({
         address: address as Address,

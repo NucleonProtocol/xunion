@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
+import { parseUnits } from 'ethers';
 
 const useSwapConfirm = ({
   inputToken,
@@ -49,10 +50,10 @@ const useSwapConfirm = ({
     if (fromDecimals && toDecimals && router?.route.length) {
       const { address, abi } = XUNION_SWAP_CONTRACT.interface;
 
-      let value = 0;
+      let value = 0n;
 
-      const amountIn = Number(payAmount) * 10 ** fromDecimals;
-      const amountOut = Number(receiveAmount) * 10 ** toDecimals;
+      const amountIn = parseUnits(payAmount, fromDecimals);
+      const amountOut = parseUnits(receiveAmount, toDecimals);
 
       const limits =
         Number(slippage === '-1' ? '0.5' : slippage) *
