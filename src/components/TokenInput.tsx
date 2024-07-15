@@ -83,11 +83,9 @@ const TokenInput = ({
               </span>
               {onMax && ownerAmount > 0 && (
                 <div
-                  className={cn(' text-theme', { 'cursor-pointer': !disabled })}
+                  className={cn('cursor-pointer text-theme')}
                   onClick={() => {
-                    if (!disabled) {
-                      onMax(ownerAmount);
-                    }
+                    onMax(ownerAmount);
                   }}
                 >
                   MAX

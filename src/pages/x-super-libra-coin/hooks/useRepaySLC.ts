@@ -64,7 +64,6 @@ const useRepaySLC = ({
     if (decimals) {
       const amountIn = parseUnits(payAmount, decimals);
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
-      console.log(amountIn);
       writeContractAsync({
         address: address as Address,
         abi,

@@ -132,7 +132,9 @@ const useCollateral = () => {
         )?.[1] || 0;
 
       const canBeProvided =
-        mode === BorrowMode?.HighLiquidity && item.max_deposit_amount === '0';
+        mode === BorrowMode?.HighLiquidity
+          ? item.max_deposit_amount === '0'
+          : item.max_deposit_amount !== '0';
       return {
         ...item,
         provided: formatNumber(provided, 6),

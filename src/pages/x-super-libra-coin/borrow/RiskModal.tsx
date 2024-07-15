@@ -31,22 +31,22 @@ const HealthFactorInfo = ({
           <div
             className="absolute  flex h-[36px] flex-col items-center text-[12px]"
             style={{
-              left: `${userPercent * 100}%`,
+              left: `${userPercent * 96}%`,
             }}
           >
-            <div className="relative">
-              <span
-                className="absolute top-[-13px] flex w-[100px] text-[12px] "
-                style={{
-                  transform: 'translateX(-40%)',
-                }}
-              >
-                Your value: {formatNumber(userHealthFactor || 0, 2)}
-              </span>
-              <span className="text-tc-secondary">
-                <CaretDownOutlined />
-              </span>
-            </div>
+            <span
+              className="absolute top-[-15px] line-clamp-1 flex w-[180px] whitespace-nowrap text-center text-[12px]  "
+              style={{
+                transform: 'translateX(0%)',
+              }}
+            >
+              {`Your value: ${formatNumber(userHealthFactor || 0, 2)
+                .toString()
+                .substring(0, 6)}`}
+            </span>
+            <span className="text-tc-secondary">
+              <CaretDownOutlined />
+            </span>
           </div>
           <div className="absolute top-[16px] w-full">
             <Progress
@@ -64,18 +64,20 @@ const HealthFactorInfo = ({
                 left: `${item.percent * 100}%`,
               }}
             >
-              <div className="relative">
-                <span className="flex h-[8px] w-[2px] rounded-[2px] bg-tc-secondary" />
-                <span
-                  className="absolute text-[12px]"
-                  style={{
-                    transform: 'translateX(-50%)',
-                    color: item.color ?? 'auto',
-                  }}
-                >
-                  {item.label}
-                </span>
-              </div>
+              {item.label !== '10' && (
+                <div className="relative">
+                  <span className="flex h-[8px] w-[2px] rounded-[2px] bg-tc-secondary" />
+                  <span
+                    className="absolute text-[12px]"
+                    style={{
+                      transform: 'translateX(-50%)',
+                      color: item.color ?? 'auto',
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -113,15 +115,12 @@ const CurrentLTV = ({
           >
             <div className="relative">
               <span
-                className="absolute top-[-33px] flex  w-[100px] flex-col text-center text-[12px] "
+                className="absolute top-[-15px] line-clamp-1  flex w-[150px] flex-col text-left text-[12px]  "
                 style={{
-                  transform: 'translateX(-40%)',
+                  transform: 'translateX(-5%)',
                 }}
               >
-                <span>
-                  Your value: {formatNumber(userValueUsedRatio || 0, 2)}
-                </span>
-                <span>Max: {formatNumber(userMaxUsedRatio || 0, 2)}</span>
+                Your value: {formatNumber(userValueUsedRatio || 0, 2)}
               </span>
               <span className="text-tc-secondary">
                 <CaretDownOutlined />
@@ -136,6 +135,24 @@ const CurrentLTV = ({
               strokeColor={{ from: 'rgba(230, 93, 93, 1)', to: '#87d068' }}
               showInfo={false}
             />
+          </div>
+          <div
+            className="absolute top-[32px]  flex h-[36px] flex-col items-center text-[12px]"
+            style={{
+              left: `${userMaxUsedRatio}%`,
+            }}
+          >
+            <div className="relative">
+              <span className="flex h-[18px] w-[2px] rounded-[2px] bg-tc-secondary" />
+              <span
+                className="absolute top-[22px] line-clamp-1 flex w-[100px] text-[12px]"
+                style={{
+                  transform: 'translateX(-50%)',
+                }}
+              >
+                Max Value: {formatNumber(userMaxUsedRatio || 0, 2)}
+              </span>
+            </div>
           </div>
           <div
             className="absolute top-[32px] flex flex-col items-center justify-center"

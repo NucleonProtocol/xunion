@@ -30,7 +30,7 @@ const usePosition = ({ health }: { health: bigint[] }) => {
   const healthFactor = useMemo(() => {
     if (health) {
       const amount = health[0];
-      return Number(formatUnits(amount, 18));
+      return Number(formatUnits(amount));
     }
     return 0;
   }, [health]);

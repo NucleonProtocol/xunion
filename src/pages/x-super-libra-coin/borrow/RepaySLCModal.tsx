@@ -107,6 +107,9 @@ const RepaySLCModal = ({
             totalPrice={inputTokenTotalPrice}
             amountLabel="Available"
             showDropArrow={false}
+            onMax={() => {
+              setPayAmount(String(availableAmount));
+            }}
           />
         </div>
         <div className="flex flex-col gap-[5px] p-[16px]">
