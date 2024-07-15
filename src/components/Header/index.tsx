@@ -1,4 +1,4 @@
-import { SettingIcon } from '@/components/icons';
+import { LogoIcon, SettingIcon } from '@/components/icons';
 import Nav from '@/components/Header/Nav.tsx';
 import ConnectButton from '@/components/Wallet/ConnectButton';
 import { Button, Popover } from 'antd';
@@ -21,6 +21,7 @@ const Header = () => {
         <Nav />
       </div>
       <div className="flex-center gap-[20px]">
+        <LogoIcon className="text-[40px] max-md:text-[30px] md:hidden" />
         <ConnectButton />
         <Popover
           content={

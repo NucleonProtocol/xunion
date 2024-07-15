@@ -8,15 +8,15 @@ import {
   XUNION_SWAP_CONTRACT,
 } from '@/contracts';
 import useLP from '@/pages/x-dex/hooks/useLP.ts';
-import useCalcAmount from './useCalcAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { parseUnits } from 'ethers';
+import useCalcMintAmount from '@/pages/x-super-libra-coin/hooks/useCalcMintAmount.ts';
 
-const useBuySLC = () => {
+const useMintSLC = () => {
   const { getBalance } = useErc20Balance();
   const [inputToken, setInputToken] = useState<Token | undefined>();
   const [outputToken] = useState<Token | undefined>(SLCToken);
@@ -29,7 +29,7 @@ const useBuySLC = () => {
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
 
-  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcAmount({
+  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcMintAmount({
     setIsInsufficientLiquidity,
     setPayAmount,
     setInputTokenTotalPrice,
@@ -141,28 +141,6 @@ const useBuySLC = () => {
     };
   }, [payAmount, receiveAmount, outputTokenTotalPrice, inputTokenTotalPrice]);
 
-  const toPairUnit = useMemo(() => {
-    if (
-      isNumeric(receiveAmount) &&
-      isNumeric(payAmount) &&
-      outputTokenTotalPrice &&
-      inputTokenTotalPrice
-    ) {
-      const amount = formatNumber(Number(payAmount) / Number(receiveAmount), 8);
-      return {
-        amount,
-        price: formatNumber(
-          (Number(inputTokenTotalPrice) / Number(payAmount)) * Number(amount),
-          4
-        ),
-      };
-    }
-    return {
-      amount: 0,
-      price: 0,
-    };
-  }, [payAmount, receiveAmount, outputTokenTotalPrice, inputTokenTotalPrice]);
-
   const isReady = useMemo(() => {
     return !!(
       isNumeric(receiveAmount) &&
@@ -219,7 +197,6 @@ const useBuySLC = () => {
     outputOwnerAmount,
     outputTokenTotalPrice,
     inputTokenTotalPrice,
-    toPairUnit,
     fromPairUnit,
     isInsufficient,
     isReady,
@@ -232,4 +209,4 @@ const useBuySLC = () => {
   };
 };
 
-export default useBuySLC;
+export default useMintSLC;

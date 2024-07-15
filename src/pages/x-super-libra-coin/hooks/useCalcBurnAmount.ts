@@ -7,7 +7,7 @@ import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 
-const useCalcAmount = ({
+const useCalcBurnAmount = ({
   setIsInsufficientLiquidity,
   setPayAmount,
   setInputTokenTotalPrice,
@@ -25,16 +25,15 @@ const useCalcAmount = ({
   const { getRealAddress } = useNativeToken();
 
   const getInputAmount = async (address: string, amount: string) => {
-    return await contract.slcTokenSellEstimate(address, amount);
+    return await contract.slcTokenSellEstimateIn(address, amount);
   };
 
   const getOutputAmount = async (address: string, amount: string) => {
-    return await contract.slcTokenBuyEstimate(address, amount);
+    return await contract.slcTokenSellEstimateOut(address, amount);
   };
   const autoGetPayAmount = useCallback(
     ({
       outputToken,
-      inputToken,
       receiveAmount,
     }: {
       outputToken?: Token;
@@ -42,11 +41,7 @@ const useCalcAmount = ({
       receiveAmount: string;
     }) => {
       setIsInsufficientLiquidity(false);
-      if (
-        inputToken?.address &&
-        outputToken?.address &&
-        isNumeric(receiveAmount)
-      ) {
+      if (outputToken?.address && isNumeric(receiveAmount)) {
         getInputAmount(
           getRealAddress(outputToken!),
           parseEther(receiveAmount).toString()
@@ -68,7 +63,6 @@ const useCalcAmount = ({
   const autoGetReceiveAmount = useCallback(
     ({
       outputToken,
-      inputToken,
       payAmount,
     }: {
       outputToken?: Token;
@@ -76,9 +70,9 @@ const useCalcAmount = ({
       payAmount: string;
     }) => {
       setIsInsufficientLiquidity(false);
-      if (inputToken?.address && outputToken?.address && isNumeric(payAmount)) {
+      if (outputToken?.address && isNumeric(payAmount)) {
         getOutputAmount(
-          getRealAddress(inputToken!),
+          getRealAddress(outputToken!),
           parseEther(payAmount).toString()
         )
           .then((amount) => {
@@ -101,4 +95,4 @@ const useCalcAmount = ({
   };
 };
 
-export default useCalcAmount;
+export default useCalcBurnAmount;

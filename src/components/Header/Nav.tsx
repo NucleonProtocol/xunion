@@ -84,9 +84,9 @@ const Nav = () => {
   const menu = menus.find((item) => item.mather(pathname));
 
   return (
-    <div className="flex items-center gap-[40px] text-[16px] max-md:flex-1 max-md:justify-around max-md:gap-[10px]">
+    <div className="flex items-center gap-[40px] text-[16px] max-md:flex-1 max-md:justify-start max-md:gap-[10px]">
       <div className="flex-center">
-        <LogoIcon className="text-[40px] max-md:text-[30px]" />
+        <LogoIcon className="text-[40px] max-md:hidden" />
         <Dropdown menu={{ items }} trigger={['click']} onOpenChange={setOpen}>
           <div className="flex cursor-pointer items-center gap-[10px] px-[12px]">
             <span className="font-bold">{menu?.name}</span>

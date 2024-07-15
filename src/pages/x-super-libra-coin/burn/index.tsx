@@ -11,7 +11,7 @@ import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
-import useSellSLC from '@/pages/x-super-libra-coin/hooks/useSellSLC.ts';
+import useBurnSLC from '@/pages/x-super-libra-coin/hooks/useBurnSLC.ts';
 import Tip from '@/pages/x-super-libra-coin/burn/Tip.tsx';
 
 function BurnSLC() {
@@ -34,7 +34,7 @@ function BurnSLC() {
     isInsufficientLiquidity,
     isSubmittedLoading,
     onConfirm,
-  } = useSellSLC();
+  } = useBurnSLC();
 
   const {
     isApproved: isTokenAApproved,
@@ -100,7 +100,7 @@ function BurnSLC() {
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
-        Sell
+        Burn
       </Button>
     );
   };

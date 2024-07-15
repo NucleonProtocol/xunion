@@ -8,7 +8,7 @@ import {
   XUNION_SWAP_CONTRACT,
 } from '@/contracts';
 import useLP from '@/pages/x-dex/hooks/useLP.ts';
-import useCalcAmount from './useCalcAmount.ts';
+import useCalcBurnAmount from './useCalcBurnAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Address, erc20Abi } from 'viem';
@@ -16,7 +16,7 @@ import { useReadContract } from 'wagmi';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { parseUnits } from 'ethers';
 
-const useSellSLC = () => {
+const useBurnSLC = () => {
   const { getBalance } = useErc20Balance();
   const [inputToken] = useState<Token | undefined>(SLCToken);
   const [outputToken, setOutputToken] = useState<Token | undefined>();
@@ -29,7 +29,7 @@ const useSellSLC = () => {
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
 
-  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcAmount({
+  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcBurnAmount({
     setIsInsufficientLiquidity,
     setPayAmount,
     setInputTokenTotalPrice,
@@ -230,4 +230,4 @@ const useSellSLC = () => {
   };
 };
 
-export default useSellSLC;
+export default useBurnSLC;

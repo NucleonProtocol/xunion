@@ -1,6 +1,6 @@
 import { BuySellIcon, BorrowIcon } from '@/components/icons';
 import RouteTabs from '@/components/RouteTabs.tsx';
-import useBuySLC from '@/pages/x-super-libra-coin/hooks/useBuySLC.ts';
+import useMintSLC from '@/pages/x-super-libra-coin/hooks/useMintSLC.ts';
 import SecondTabs from '@/pages/x-super-libra-coin/mint/SecondTabs.tsx';
 import TokenInput from '@/components/TokenInput.tsx';
 import { ArrowDownOutlined, CheckCircleOutlined } from '@ant-design/icons';
@@ -27,14 +27,13 @@ function MintSLC() {
     outputOwnerAmount,
     outputTokenTotalPrice,
     inputTokenTotalPrice,
-    toPairUnit,
     fromPairUnit,
     isInsufficient,
     isReady,
     isInsufficientLiquidity,
     isSubmittedLoading,
     onConfirm,
-  } = useBuySLC();
+  } = useMintSLC();
 
   const {
     isApproved: isTokenAApproved,
@@ -94,13 +93,11 @@ function MintSLC() {
         className="w-full"
         type="primary"
         size="large"
-        disabled={
-          !isReady || isInsufficient || isInsufficientLiquidity || !toPairUnit
-        }
+        disabled={!isReady || isInsufficient || isInsufficientLiquidity}
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
-        Buy
+        Mint
       </Button>
     );
   };
@@ -161,7 +158,7 @@ function MintSLC() {
             showDropArrow={false}
           />
         </div>
-        {isReady && !!toPairUnit && (
+        {isReady && (
           <div className="px-[10px] py-[20px] text-[14px]">
             <SwapInfo
               inputToken={inputToken}
