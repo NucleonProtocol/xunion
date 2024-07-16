@@ -19,7 +19,7 @@ export const E_SPACE_MAIN_RPC = 'https://evm.confluxrpc.org';
 //   test net
 export const XUNION_SWAP_CONTRACT = {
   interface: {
-    address: '0x714d0e0df34ed89bdd508063b30591219f8b1294',
+    address: '0xb56f55d30363567ca9d0d6a3faa27ee0e39f3f3a',
     abi: SwapInterfaceABI,
   },
   slc: {
@@ -47,30 +47,13 @@ export const XUNION_SLC_CONTRACT = {
   },
 };
 
-export const NATIVE_TOKENS: Record<number, string> = {
-  // main net
-  1: 'ETH',
-  56: 'BNB',
-  137: 'MATIC',
-  //test net
-  71: 'CFX',
-};
-
-export const NATIVE_GAS_TOKENS: Record<number, string> = {
-  // main net
-  1: 'ETH',
-  56: 'BNB',
-  137: 'MATIC',
-  //test net
-  71: '0x16C2473A9957d00B832C27cFa34773721f47992e',
-};
-export const NATIVE_SWAP_TOKENS: Record<number, string> = {
-  // main net
-  1: '0x0000000000000000000000000000000000000et0',
-  56: 'BNB',
-  137: 'MATIC',
-  //test net
-  71: '0x0000000000000000000000000000000000000cf0',
+export const NATIVE_ERC20_TOKEN: Record<string, Token> = {
+  71: {
+    address: '0x16C2473A9957d00B832C27cFa34773721f47992e',
+    symbol: 'WXCFX',
+    name: 'WXCFX',
+    decimals: 18,
+  },
 };
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';

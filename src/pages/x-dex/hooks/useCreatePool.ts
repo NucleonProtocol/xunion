@@ -25,11 +25,11 @@ const useAddLP = () => {
 
   const { getSLCPairAddress, getPairAddress } = useLP();
 
-  const { isNativeToken, getGasTokenAddress } = useNativeToken();
+  const { isNativeToken, getNativeTokenERC20Address } = useNativeToken();
 
   const getRealAddress = (token: Token) => {
     if (isNativeToken(token)) {
-      return getGasTokenAddress(token);
+      return getNativeTokenERC20Address(token);
     }
     return token?.address;
   };

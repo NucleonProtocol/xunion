@@ -7,7 +7,7 @@ import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useLP = () => {
   const contract = useSwapContract();
-  const { isNativeToken, getGasTokenAddress, getRealAddress } =
+  const { isNativeToken, getNativeTokenERC20Address, getRealAddress } =
     useNativeToken();
 
   const getSLCPairAddress = async (token: Token) => {
@@ -17,7 +17,7 @@ const useLP = () => {
     }
 
     if (isNativeToken(token)) {
-      tokenAddress = getGasTokenAddress(token);
+      tokenAddress = getNativeTokenERC20Address(token);
     }
     return await contract
       .getCoinToStableLpPair(tokenAddress)

@@ -26,8 +26,7 @@ const useSwapConfirm = ({
   router?: SwapRoute;
   writeContractAsync: WriteContractMutateAsync<any>;
 }) => {
-  const { isNativeToken, getRealSwapAddress, getRealAddress } =
-    useNativeToken();
+  const { isNativeToken, getRealAddress } = useNativeToken();
 
   const { data: fromDecimals } = useReadContract({
     address: getRealAddress(inputToken!) as Address,
@@ -66,7 +65,7 @@ const useSwapConfirm = ({
 
       const routePath = routes.map((item, index) => {
         if (index === 0 || index === routes.length - 1) {
-          return getRealSwapAddress(item);
+          return getRealAddress(item);
         }
         return item.address;
       });

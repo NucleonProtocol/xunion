@@ -27,7 +27,8 @@ const useSendToken = () => {
   const cis = Form.useWatch('address', form);
   const [cisAddress, setCisAddress] = useState<string>();
 
-  const { isNativeToken, getRealAddress } = useNativeToken();
+  const { isNativeToken, getRealAddress, getNativeTokenBalance } =
+    useNativeToken();
 
   const { sendTransactionAsync, isSubmittedLoading: isSubmittedLoadingSend } =
     useXSendTransaction({});
@@ -66,10 +67,13 @@ const useSendToken = () => {
 
   useEffect(() => {
     if (inputToken?.address) {
-      getBalance(inputToken.address).then(setInputOwnerAmount);
+      if (isNativeToken(inputToken)) {
+        getNativeTokenBalance().then(setInputOwnerAmount);
+      } else {
+        getBalance(inputToken.address).then(setInputOwnerAmount);
+      }
     }
   }, [inputToken]);
-
   const isInsufficient = useMemo(() => {
     return !!(
       inputToken?.address &&
