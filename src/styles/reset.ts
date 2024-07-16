@@ -5,4 +5,6 @@ export const antdTableTokens = {
   headerFilterHoverBg: 'transparent',
   rowExpandedBg: 'transparent',
   headerSplitColor: 'transparent',
+  cellPaddingBlockMD: 6,
+  cellPaddingInlineMD: 4,
 };

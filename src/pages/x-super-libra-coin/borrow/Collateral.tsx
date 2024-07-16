@@ -80,7 +80,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
   ];
   const actionColumn = {
     key: 'action',
-    title: 'Action',
+    title: '',
     render: (_: string, record: SLCAsset) => {
       return (
         <div className="flex  gap-[5px]">

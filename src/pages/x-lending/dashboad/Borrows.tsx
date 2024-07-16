@@ -103,6 +103,7 @@ const Borrows = () => {
         rowHoverable={false}
         pagination={false}
         rowKey="name"
+        size="middle"
       />
     </LendingCard>
   );

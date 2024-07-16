@@ -10,3 +10,6 @@ body {
   background: var(--xunion-bg-primary);
   color: var(--xunion-tc-primary);
 }
+.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td{
+  color: var(--xunion-tc-secondary);
+}

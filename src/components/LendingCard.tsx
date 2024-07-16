@@ -27,7 +27,7 @@ const LendingCard = ({
             </div>
             {description && <div className="pt-[10px]">{description}</div>}
           </div>
-          <div className="flex flex-col">{children}</div>
+          <div className="flex flex-col px-[18px] py-[5px]">{children}</div>
         </>
       )}
     </div>
