@@ -26,8 +26,8 @@ const TokenItem = ({
       <div className="flex items-center py-[10px]">
         <span className="flex-1 text-[26px] font-bold">{amount}</span>
         <div className="flex-center gap-[5px]">
-          <span className="text-[20px]">
-            <TokenIcon src={token?.icon} />
+          <span className="flex-center text-[20px]">
+            <TokenIcon src={token?.icon} width={20} height={20} />
           </span>
           <span>{token?.symbol}</span>
         </div>

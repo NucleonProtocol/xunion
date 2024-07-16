@@ -31,6 +31,7 @@ function Swap() {
       ) : (
         <ConfirmPanel
           {...rest}
+          onFillSwap={onFillSwap}
           writeContractAsync={
             writeContractAsync as WriteContractMutateAsync<any>
           }
