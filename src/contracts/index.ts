@@ -2,21 +2,19 @@ import SwapInterfaceABI from './abi/SwapInterface.json';
 import SLCInterfaceABI from './abi/SLCInterface.json';
 import iSlcOracleABI from './abi/iSlcOracle.json';
 import Multicallespacetestnet from './abi/Multicallespacetestnet.json';
+import LendingInterfaceABI from './abi/LendingInterface.json';
 import { erc20Abi, isAddress } from 'viem';
 import { getAddress } from 'ethers';
 import { Token } from '@/types/swap.ts';
 import { CHAIN_ID } from '@/components/Wallet/useWalletAuth.ts';
 
-// export const E_SPACE_TEST_RPC =
-//   'https://main.confluxrpc.com';
-export const E_SPACE_TEST_RPC =
-  'https://evmtestnet.confluxrpc.org/3zE8uVdvebDSL9KykwKqaDKUYXJiN7jGchiDfpr9Sgr4YqPWGNyi4X877wm7EeBbmtDwXXA3duVLYysoDP2EmD1hC';
+export const XUNION_LENDING_CONTRACT = {
+  interface: {
+    address: '0xcc9c8c5a36863695786e2c66d0819d542d076314',
+    abi: LendingInterfaceABI,
+  },
+};
 
-// export const E_SPACE_TEST_RPC = 'https://evmtestnet.confluxrpc.org';
-
-export const E_SPACE_MAIN_RPC = 'https://evm.confluxrpc.org';
-
-//   test net
 export const XUNION_SWAP_CONTRACT = {
   interface: {
     address: '0xb56f55d30363567ca9d0d6a3faa27ee0e39f3f3a',

@@ -1,9 +1,9 @@
 import { Button, Modal } from 'antd';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
-import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
+import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { BorrowMode, SLCAsset } from '@/types/slc.ts';
-import TokenAssetsSelector from '@/components/BorrowMode/TokenAssetsSelector.tsx';
+import TokenAssetsSelector from '@/components/Borrow/TokenAssetsSelector.tsx';
 import { useState } from 'react';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';

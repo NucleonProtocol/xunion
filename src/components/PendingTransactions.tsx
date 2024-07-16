@@ -1,6 +1,6 @@
 import { Button } from 'antd';
-import { SpinIcon } from '@/components/icons/tokens';
 import useTxStore from '@/store/pending.ts';
+import { SpinIcon } from '@/components/icons';
 
 const PendingTransactions = () => {
   const pendingTransactions = useTxStore((state) => state.pendingTransactions);

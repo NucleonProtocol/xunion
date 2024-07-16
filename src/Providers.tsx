@@ -1,6 +1,12 @@
 import { PropsWithChildren } from 'react';
 import { useRoutes, HashRouter } from 'react-router-dom';
-import { confluxESpace, confluxESpaceTestnet, mainnet } from 'wagmi/chains';
+import {
+  confluxESpace,
+  confluxESpaceTestnet,
+  mainnet,
+  scrollSepolia,
+  scroll,
+} from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Locale, useLocale } from '@/i18n';
 import { useAccount, WagmiProvider } from 'wagmi';
@@ -14,20 +20,22 @@ import routes from './routes';
 import ConnectModal from '@/components/Wallet/ConnectModal.tsx';
 import WalletDetailModal from '@/components/Wallet/WalletDetailModal.tsx';
 import SubmittedModal from '@/components/modals/SubmittedModal.tsx';
-import { E_SPACE_TEST_RPC } from '@/contracts';
 import { antdTableTokens } from '@/styles/reset.ts';
 import TXPendingProvider from '@/components/PendingProvider.tsx';
+import { CHAINS } from '@/contracts/chains.tsx';
 
 const Routes = () => useRoutes(routes);
 
 const config = createConfig({
   chains: [
+    scrollSepolia,
     mainnet,
+    scroll,
     {
       ...confluxESpaceTestnet,
       rpcUrls: {
         default: {
-          http: [E_SPACE_TEST_RPC],
+          http: [CHAINS.eSpaceTest.rpc[0]],
           webSocket: ['wss://evmtestnet.confluxrpc.org/ws'],
         },
       },
@@ -39,6 +47,8 @@ const config = createConfig({
     [mainnet.id]: http(),
     [confluxESpaceTestnet.id]: http(),
     [confluxESpace.id]: http(),
+    [scrollSepolia.id]: http(),
+    [scroll.id]: http(),
   },
 });
 
@@ -61,7 +71,7 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
   return (
     <ConfigProvider
       key={address}
-      wave={{ disabled: true }}
+      // wave={{ disabled: true }}
       theme={{
         cssVar: true,
         hashed: false,

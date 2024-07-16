@@ -16,8 +16,10 @@ import ArrowUp from '@/assets/svgs/arrow/arrow-up.svg?react';
 import ArrowLeft from '@/assets/svgs/arrow/arrow-left.svg?react';
 import BuySell from '@/assets/svgs/menus/buy-sell.svg?react';
 import Borrow from '@/assets/svgs/menus/Borrow.svg?react';
+import Exchange from '@/assets/svgs/other/exchange.svg?react';
+import SlowmoSvg from '@/assets/svgs/status/slowmo.svg?react';
 
-type IconProps = PropsWithChildren<
+export type IconProps = PropsWithChildren<
   {
     className?: string;
     style?: CSSProperties;
@@ -141,5 +143,15 @@ export const BuySellIcon = (props: IconProps) => (
 export const BorrowIcon = (props: IconProps) => (
   <Icon {...props}>
     <Borrow />
+  </Icon>
+);
+export const ExchangeIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Exchange />
+  </Icon>
+);
+export const SpinIcon = ({ className, ...props }: IconProps) => (
+  <Icon {...props} className={cn('animate-spin', className)}>
+    <SlowmoSvg />
   </Icon>
 );

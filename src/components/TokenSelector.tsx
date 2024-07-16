@@ -3,9 +3,8 @@ import { useState } from 'react';
 import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { Token } from '@/types/swap.ts';
-import { SpinIcon } from '@/components/icons/tokens';
 import { getTokenList } from '@/services/token.ts';
-import { TokenIcon } from '@/components/icons';
+import { SpinIcon, TokenIcon } from '@/components/icons';
 import useAddToken from '@/hooks/useAddToken.ts';
 import useTokensWithPrice from '@/hooks/useTokensWithPrice.ts';
 

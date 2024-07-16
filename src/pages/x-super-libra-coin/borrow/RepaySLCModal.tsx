@@ -9,7 +9,7 @@ import Warning from '@/components/Warning.tsx';
 import { formatCurrency } from '@/utils';
 import useRepaySLC from '@/pages/x-super-libra-coin/hooks/useRepaySLC.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
-import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
+import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { isNumeric } from '@/utils/isNumeric.ts';
 
 const RepaySLCModal = ({

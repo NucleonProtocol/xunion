@@ -4,9 +4,9 @@ import { formatCurrency } from '@/utils';
 import usePosition from '@/pages/x-super-libra-coin/hooks/usePosition.ts';
 import BorrowSLCModal from '@/pages/x-super-libra-coin/borrow/BorrowSLCModal.tsx';
 import RepaySLCModal from '@/pages/x-super-libra-coin/borrow/RepaySLCModal.tsx';
-import RiskModal from '@/pages/x-super-libra-coin/borrow/RiskModal.tsx';
-import EnableBorrowMode from '@/components/BorrowMode/EnableBorrowMode.tsx';
-import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
+import RiskModal from '@/components/Borrow/RiskModal.tsx';
+import EnableBorrowMode from '@/components/Borrow/EnableBorrowMode.tsx';
+import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 
 const Position = ({
   health,

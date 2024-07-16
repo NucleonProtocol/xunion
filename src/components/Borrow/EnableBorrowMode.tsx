@@ -1,8 +1,8 @@
-import BorrowModeSelector from '@/components/BorrowMode/BorrowModeSelector.tsx';
-import HighLiquidityModal from '@/components/BorrowMode/HighLiquidityModal.tsx';
-import useBorrowMode from '@/components/BorrowMode/useBorrowMode.ts';
+import BorrowModeSelector from '@/components/Borrow/BorrowModeSelector.tsx';
+import HighLiquidityModal from '@/components/Borrow/HighLiquidityModal.tsx';
+import useBorrowMode from '@/components/Borrow/useBorrowMode.ts';
 import { BorrowMode } from '@/types/slc.ts';
-import RiskIsolationModal from '@/components/BorrowMode/RiskIsolationModal.tsx';
+import RiskIsolationModal from '@/components/Borrow/RiskIsolationModal.tsx';
 
 const options = [
   {

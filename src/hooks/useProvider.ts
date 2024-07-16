@@ -1,8 +1,9 @@
 import { JsonRpcProvider } from 'ethers';
-import { E_SPACE_TEST_RPC } from '@/contracts';
+import { CHAINS } from '@/contracts/chains.tsx';
 
 const useProvider = () => {
-  return new JsonRpcProvider(E_SPACE_TEST_RPC);
+  const rpc = CHAINS.eSpaceTest.rpc[0];
+  return new JsonRpcProvider(rpc);
 };
 
 export default useProvider;

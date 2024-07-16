@@ -3,7 +3,7 @@ import TokenInput from '@/components/TokenInput.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import useBorrowSLC from '@/pages/x-super-libra-coin/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
-import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
+import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 const BorrowSLCModal = ({

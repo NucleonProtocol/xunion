@@ -1,9 +1,8 @@
 import { Popover, Spin } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import useCollateral from '@/pages/x-super-libra-coin/hooks/useCollateral.ts';
-import { SpinIcon } from '@/components/icons/tokens';
 import { cn } from '@/utils/classnames.ts';
-import { TokenIcon } from '@/components/icons';
+import { SpinIcon, TokenIcon } from '@/components/icons';
 import { SLCAsset } from '@/types/slc.ts';
 import { useState } from 'react';
 

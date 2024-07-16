@@ -10,6 +10,8 @@ import Explore from '@/pages/x-dex/explore';
 import MintSLC from 'src/pages/x-super-libra-coin/mint';
 import BurnSLC from 'src/pages/x-super-libra-coin/burn';
 import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
+import Dashboard from '@/pages/x-lending/dashboad';
+import Markert from '@/pages/x-lending/market';
 
 const routes = [
   {
@@ -91,11 +93,11 @@ const routes = [
           },
           {
             path: 'dashboard',
-            element: <div />,
+            element: <Dashboard />,
           },
           {
             path: 'market',
-            element: <div />,
+            element: <Markert />,
           },
         ],
       },

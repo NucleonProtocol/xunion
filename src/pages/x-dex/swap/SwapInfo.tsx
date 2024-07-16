@@ -3,8 +3,8 @@ import { SlippageValue } from '@/pages/x-dex/swap/Slippage.tsx';
 import { SwapRoute, Token } from '@/types/swap.ts';
 import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
-import { ExchangeIcon } from '@/components/icons/tokens';
 import RouteInfo from '@/pages/x-dex/swap/RouteInfo.tsx';
+import { ExchangeIcon } from '@/components/icons';
 
 interface SwapInfoProps {
   slippage: string;

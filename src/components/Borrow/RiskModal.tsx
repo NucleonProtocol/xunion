@@ -2,13 +2,13 @@ import { Modal, Progress } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import useRiskProgress, {
   ProgressSegment,
-} from '@/pages/x-super-libra-coin/hooks/useRiskProgress.ts';
+} from '@/components/Borrow/useRiskProgress.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { useAccount, useReadContract } from 'wagmi';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import { useMemo } from 'react';
-import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
+import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 const HealthFactorInfo = ({
   segments,
   userPercent,
@@ -141,7 +141,7 @@ const CurrentLTV = ({
           <div
             className="absolute top-[32px]  flex h-[36px] flex-col items-center text-[12px]"
             style={{
-              left: `${userMaxUsedRatio}%`,
+              left: `${userMaxUsedRatio || 95}%`,
             }}
           >
             <div className="relative">
@@ -152,7 +152,7 @@ const CurrentLTV = ({
                   transform: 'translateX(-50%)',
                 }}
               >
-                Max Value: {formatNumber(userMaxUsedRatio || 0, 2)}
+                Max Value: {formatNumber(userMaxUsedRatio || 0, 2) || 'Fine'}
               </span>
             </div>
           </div>

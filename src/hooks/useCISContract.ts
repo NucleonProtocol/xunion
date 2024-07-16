@@ -1,8 +1,9 @@
 import { Contract, JsonRpcProvider } from 'ethers';
-import { E_SPACE_MAIN_RPC } from '@/contracts';
 import CIS from '@/contracts/abi/CIS.json';
+import { CHAINS } from '@/contracts/chains.tsx';
 const useCISContract = () => {
-  const provider = new JsonRpcProvider(E_SPACE_MAIN_RPC);
+  const rpc = CHAINS.eSpace.rpc[0];
+  const provider = new JsonRpcProvider(rpc);
   const contract = new Contract(CIS.address, CIS.abi, provider);
 
   const getCISId = (address: string) => {

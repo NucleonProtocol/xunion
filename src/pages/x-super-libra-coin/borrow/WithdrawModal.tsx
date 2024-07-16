@@ -4,7 +4,7 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
 import { SLCAsset } from '@/types/slc.ts';
 import useWithdraw from '@/pages/x-super-libra-coin/hooks/useWithdraw.ts';
-import HealthFactor from '@/pages/x-super-libra-coin/borrow/HealthFactor.tsx';
+import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 
 const WithdrawModal = ({
   open,

@@ -1,5 +1,5 @@
 export const antdTableTokens = {
-  // borderColor: 'none',
+  borderColor: 'none',
   headerBg: 'transparent',
   headerBorderRadius: 0,
   headerFilterHoverBg: 'transparent',
