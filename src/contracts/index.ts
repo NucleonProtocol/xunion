@@ -19,7 +19,7 @@ export const E_SPACE_MAIN_RPC = 'https://evm.confluxrpc.org';
 //   test net
 export const XUNION_SWAP_CONTRACT = {
   interface: {
-    address: '0x1E1A2bA16a6F6f76e9b9F2f575f2D321CAA1CE8C',
+    address: '0x714d0e0df34ed89bdd508063b30591219f8b1294',
     abi: SwapInterfaceABI,
   },
   slc: {
