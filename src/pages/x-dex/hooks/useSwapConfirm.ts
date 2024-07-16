@@ -4,8 +4,8 @@ import { SwapRoute, Token } from '@/types/swap.ts';
 import dayjs from 'dayjs';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
-import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { parseUnits } from 'ethers';
+import { WriteContractMutateAsync } from '@wagmi/core/query';
 
 const useSwapConfirm = ({
   inputToken,
@@ -14,8 +14,8 @@ const useSwapConfirm = ({
   slippage,
   receiveAmount,
   outputToken,
-  onFillSwap,
   router,
+  writeContractAsync,
 }: {
   inputToken?: Token;
   outputToken?: Token;
@@ -23,8 +23,8 @@ const useSwapConfirm = ({
   receiveAmount: string;
   slippage: string;
   deadline: string;
-  onFillSwap?: () => void;
   router?: SwapRoute;
+  writeContractAsync: WriteContractMutateAsync<any>;
 }) => {
   const { isNativeToken, getRealSwapAddress, getRealAddress } =
     useNativeToken();
@@ -39,11 +39,6 @@ const useSwapConfirm = ({
     address: getRealAddress(outputToken!) as Address,
     abi: erc20Abi,
     functionName: 'decimals',
-  });
-  const { writeContractAsync, isSubmittedLoading } = useXWriteContract({
-    onSubmitted: () => {
-      onFillSwap?.();
-    },
   });
 
   const confirm = () => {
@@ -88,7 +83,6 @@ const useSwapConfirm = ({
 
   return {
     confirm,
-    isSubmittedLoading,
   };
 };
 

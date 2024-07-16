@@ -6,9 +6,12 @@ import { useTheme } from '@/components/Theme';
 import Lang from '@/components/Lang';
 import { MoonOutlined, SunOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
+import PendingTransactions from '@/components/PendingTransactions.tsx';
+import useTxStore from '@/store/pending.ts';
 
 const Header = () => {
   const { setTheme, theme } = useTheme();
+  const pendingTransactions = useTxStore((state) => state.pendingTransactions);
   return (
     <div className="py-[20px flex h-[80px] items-center justify-between px-[30px] max-md:px-[20px]">
       <div
@@ -22,6 +25,7 @@ const Header = () => {
       </div>
       <div className="flex-center gap-[20px]">
         <LogoIcon className="text-[40px] max-md:text-[30px] md:hidden" />
+        {pendingTransactions.length > 100 && <PendingTransactions />}
         <ConnectButton />
         <Popover
           content={

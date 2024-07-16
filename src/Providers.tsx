@@ -16,6 +16,7 @@ import WalletDetailModal from '@/components/Wallet/WalletDetailModal.tsx';
 import SubmittedModal from '@/components/modals/SubmittedModal.tsx';
 import { E_SPACE_TEST_RPC } from '@/contracts';
 import { antdTableTokens } from '@/styles/reset.ts';
+import TXPendingProvider from '@/components/PendingProvider.tsx';
 
 const Routes = () => useRoutes(routes);
 
@@ -81,10 +82,12 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <ConnectModal />
-        <SubmittedModal />
-        <WalletDetailModal />
-        {children}
+        <TXPendingProvider>
+          <ConnectModal />
+          <SubmittedModal />
+          <WalletDetailModal />
+          {children}
+        </TXPendingProvider>
       </QueryClientProvider>
     </ConfigProvider>
   );

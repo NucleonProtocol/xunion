@@ -1,5 +1,5 @@
 import { Modal } from 'antd';
-import useTxStore from '@/store/transaction.ts';
+import useTxStore from '@/store/pending.ts';
 import { confluxScan } from '@/components/notices/writeTxNotification.tsx';
 import { ArrowRightTopIcon, ArrowUpIcon } from '@/components/icons';
 

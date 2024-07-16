@@ -9,6 +9,7 @@ import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useSwapConfirm from '@/pages/x-dex/hooks/useSwapConfirm.ts';
 import { TokenIcon } from '@/components/icons';
+import { WriteContractMutateAsync } from '@wagmi/core/query';
 
 const TokenItem = ({
   token,
@@ -51,21 +52,26 @@ const ConfirmPanel = ({
   onFillSwap,
   deadline,
   router,
-}: SwapReturnType) => {
+  isSubmittedLoading,
+  writeContractAsync,
+}: SwapReturnType & {
+  isSubmittedLoading?: boolean;
+  writeContractAsync: WriteContractMutateAsync<any>;
+}) => {
   const { isApproved, loading, approve } = useApprove({
     token: inputToken!,
     amount: payAmount,
     spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
   });
-  const { confirm, isSubmittedLoading } = useSwapConfirm({
+  const { confirm } = useSwapConfirm({
     inputToken,
     outputToken,
     payAmount,
     receiveAmount,
     slippage,
     deadline,
-    onFillSwap,
     router,
+    writeContractAsync,
   });
 
   return (

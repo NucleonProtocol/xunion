@@ -1,7 +1,7 @@
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
-import useTxStore from '@/store/transaction.ts';
+import useTxStore from '@/store/pending.ts';
 import { WriteContractErrorType } from 'viem';
 import { writeTxErrorNotification } from '@/components/notices/writeTxErrorNotification.tsx';
 
@@ -76,9 +76,6 @@ const useXWriteContract = ({
       updateSubmitted({ hash });
       onSubmitted?.(hash);
     }
-    return () => {
-      updateSubmitted(null);
-    };
   }, [isSubmitted, showSubmittedModal]);
 
   return {

@@ -2,7 +2,7 @@ import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi';
 import { useEffect } from 'react';
 import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import { writeTxErrorNotification } from '@/components/notices/writeTxErrorNotification.tsx';
-import useTxStore from '@/store/transaction.ts';
+import useTxStore from '@/store/pending.ts';
 import { WriteContractErrorType } from 'viem';
 
 const useXSendTransaction = ({
@@ -70,9 +70,6 @@ const useXSendTransaction = ({
       updateSubmitted({ hash });
       onSubmitted?.(hash);
     }
-    return () => {
-      updateSubmitted(null);
-    };
   }, [isSubmitted, showSubmittedModal]);
 
   return {
