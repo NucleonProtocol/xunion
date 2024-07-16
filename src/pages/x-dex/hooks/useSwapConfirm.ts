@@ -55,12 +55,12 @@ const useSwapConfirm = ({
       const amountIn = parseUnits(payAmount, fromDecimals);
       const amountOut = parseUnits(receiveAmount, toDecimals);
 
-      const limits =
+      const rate =
         Number(slippage === '-1' ? '0.5' : slippage) *
         Number(receiveAmount) *
-        0.01 *
-        10 ** toDecimals;
+        0.01;
 
+      const limits = parseUnits(rate.toFixed(8), 18);
       const date = dayjs().add(Number(deadline), 'minute').unix() + 100;
 
       if (isNativeToken(inputToken!)) {

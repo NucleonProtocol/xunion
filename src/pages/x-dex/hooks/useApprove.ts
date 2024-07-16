@@ -1,6 +1,6 @@
 import { Address, erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
-import { formatUnits, parseUnits } from 'ethers';
+import { parseUnits } from 'ethers';
 import { useMemo, useState } from 'react';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { Token } from '@/types/swap.ts';
@@ -55,8 +55,8 @@ const useApprove = ({
   const isApproved = useMemo(() => {
     if (isNativeToken(token)) return true;
     if (allowance && isNumeric(amount) && decimals) {
-      const allowanceAmount = formatUnits(allowance.toString(), decimals);
-      return Number(amount) <= Number(allowanceAmount);
+      const amountIn = parseUnits(amount, decimals);
+      return allowance > amountIn;
     }
     return false;
   }, [allowance, amount, decimals, token]);
@@ -67,7 +67,10 @@ const useApprove = ({
       address: token?.address as Address,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [spenderAddress, parseUnits(amount, decimals)],
+      args: [
+        spenderAddress,
+        parseUnits((Number(amount) * 1.0001).toString(), decimals),
+      ],
     }).finally(() => {
       setApproveLoading(false);
     });

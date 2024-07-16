@@ -34,7 +34,7 @@ export const XUNION_SWAP_CONTRACT = {
 
 export const XUNION_SLC_CONTRACT = {
   interface: {
-    address: '0xF0cD32E1C37965D85ce18FE19734F1461C0982d5',
+    address: '0x3432c540B042FD8c7F8bc11c0f179624b0c51e3F',
     abi: SLCInterfaceABI,
   },
   oracle: {

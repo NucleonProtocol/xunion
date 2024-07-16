@@ -117,7 +117,7 @@ const useSwap = (): SwapReturnType => {
 
   const feeAmount = useMemo(() => {
     if (fee && outputTokenTotalPrice) {
-      return formatNumber(Number(outputTokenTotalPrice || 0) * fee, 6);
+      return formatNumber(Number(outputTokenTotalPrice || 0) * (fee / 100), 6);
     }
     return 0;
   }, [fee, outputTokenTotalPrice]);
