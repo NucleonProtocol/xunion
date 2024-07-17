@@ -3,15 +3,18 @@ import SLCInterfaceABI from './abi/SLCInterface.json';
 import iSlcOracleABI from './abi/iSlcOracle.json';
 import Multicallespacetestnet from './abi/Multicallespacetestnet.json';
 import LendingInterfaceABI from './abi/LendingInterface.json';
-import { erc20Abi, isAddress } from 'viem';
+import { Abi, Address, erc20Abi, isAddress } from 'viem';
 import { getAddress } from 'ethers';
 import { Token } from '@/types/swap.ts';
 import { CHAIN_ID } from '@/components/Wallet/useWalletAuth.ts';
 
-export const XUNION_LENDING_CONTRACT = {
+export const XUNION_LENDING_CONTRACT: Record<
+  'interface',
+  { address: Address; abi: Abi }
+> = {
   interface: {
-    address: '0xcc9c8c5a36863695786e2c66d0819d542d076314',
-    abi: LendingInterfaceABI,
+    address: '0x1a50ad89fb53a94d0ce7438f8f292ed6514d55da',
+    abi: LendingInterfaceABI as Abi,
   },
 };
 
@@ -30,18 +33,21 @@ export const XUNION_SWAP_CONTRACT = {
   },
 };
 
-export const XUNION_SLC_CONTRACT = {
+export const XUNION_SLC_CONTRACT: Record<
+  'interface' | 'oracle' | 'mutilCall',
+  { address: Address; abi: Abi }
+> = {
   interface: {
     address: '0x3432c540B042FD8c7F8bc11c0f179624b0c51e3F',
-    abi: SLCInterfaceABI,
+    abi: SLCInterfaceABI as Abi,
   },
   oracle: {
     address: '0x559465367614e385Bd85c00a1B573414960763a5',
-    abi: iSlcOracleABI,
+    abi: iSlcOracleABI as Abi,
   },
   mutilCall: {
     address: '0x399b446909DC916C62D741060E709D8FCA785e0A',
-    abi: Multicallespacetestnet,
+    abi: Multicallespacetestnet as Abi,
   },
 };
 

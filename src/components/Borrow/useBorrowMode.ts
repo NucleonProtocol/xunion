@@ -1,18 +1,17 @@
 import { useState } from 'react';
-import { BorrowMode } from '@/types/slc.ts';
+import { BorrowModeType } from '@/types/slc.ts';
 import { useAccount, useReadContract } from 'wagmi';
-import { XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
+import { Abi, Address } from 'viem';
 
-const useBorrowMode = () => {
-  const [mode, setMode] = useState<BorrowMode>();
+const useBorrowMode = (contact: { abi: Abi; address: Address }) => {
+  const [mode, setMode] = useState<BorrowModeType>();
 
   const [open, setOpen] = useState(false);
 
   const { address } = useAccount();
   const { data } = useReadContract({
-    address: XUNION_SLC_CONTRACT.interface.address as Address,
-    abi: XUNION_SLC_CONTRACT.interface.abi,
+    address: contact.address,
+    abi: contact.abi,
     functionName: 'userMode',
     args: [address],
     query: {
@@ -25,7 +24,7 @@ const useBorrowMode = () => {
     setOpen,
     mode,
     setMode,
-    effectiveMode: (data as number[])?.[0] || BorrowMode.HighLiquidity,
+    effectiveMode: (data as number[])?.[0] || BorrowModeType.HighLiquidity,
   };
 };
 

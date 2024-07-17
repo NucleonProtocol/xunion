@@ -2,21 +2,25 @@ import { Button, Modal } from 'antd';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
-import { BorrowMode, SLCAsset } from '@/types/slc.ts';
+import { BorrowModeType, SLCAsset } from '@/types/slc.ts';
 import TokenAssetsSelector from '@/components/Borrow/TokenAssetsSelector.tsx';
 import { useState } from 'react';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
-import { XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
+import { Abi, Address } from 'viem';
 
 const BorrowModeModal = ({
   open,
   onClose,
   onSuccess,
+  contact,
 }: {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  contact: {
+    abi: Abi;
+    address: Address;
+  };
 }) => {
   const [token, setToken] = useState<SLCAsset>();
 
@@ -28,12 +32,12 @@ const BorrowModeModal = ({
 
   const enableMode = async () => {
     if (token) {
-      const { address, abi } = XUNION_SLC_CONTRACT.interface;
+      const { address, abi } = contact;
       writeContractAsync({
-        address: address as Address,
+        address: address,
         abi,
         functionName: 'userModeSetting',
-        args: [BorrowMode.RiskIsolation, token.address],
+        args: [BorrowModeType.RiskIsolation, token.address],
       });
     }
   };

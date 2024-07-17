@@ -5,8 +5,9 @@ import usePosition from '@/pages/x-super-libra-coin/hooks/usePosition.ts';
 import BorrowSLCModal from '@/pages/x-super-libra-coin/borrow/BorrowSLCModal.tsx';
 import RepaySLCModal from '@/pages/x-super-libra-coin/borrow/RepaySLCModal.tsx';
 import RiskModal from '@/components/Borrow/RiskModal.tsx';
-import EnableBorrowMode from '@/components/Borrow/EnableBorrowMode.tsx';
+import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
+import { XUNION_SLC_CONTRACT } from '@/contracts';
 
 const Position = ({
   health,
@@ -40,6 +41,10 @@ const Position = ({
             open={riskOpen}
             onClose={() => setRiskOpen(false)}
             userHealthFactor={healthFactor}
+            contact={{
+              abi: XUNION_SLC_CONTRACT.interface.abi,
+              address: XUNION_SLC_CONTRACT.interface.address,
+            }}
           />
           <BorrowSLCModal
             open={borrowOpen}
@@ -135,7 +140,10 @@ const Position = ({
                 Borrow mode
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
-                <EnableBorrowMode onSuccess={refresh} />
+                <BorrowMode
+                  onSuccess={refresh}
+                  contact={{ ...XUNION_SLC_CONTRACT.interface }}
+                />
               </div>
             </div>
           </div>

@@ -1,34 +1,46 @@
 import BorrowModeSelector from '@/components/Borrow/BorrowModeSelector.tsx';
 import HighLiquidityModal from '@/components/Borrow/HighLiquidityModal.tsx';
 import useBorrowMode from '@/components/Borrow/useBorrowMode.ts';
-import { BorrowMode } from '@/types/slc.ts';
+import { BorrowModeType } from '@/types/slc.ts';
 import RiskIsolationModal from '@/components/Borrow/RiskIsolationModal.tsx';
+import { Abi, Address } from 'viem';
 
 const options = [
   {
     label: 'High liquidity mode',
     description: 'Use high liquidity collateral for borrowing',
-    value: BorrowMode.HighLiquidity,
+    value: BorrowModeType.HighLiquidity,
   },
   {
     label: 'Risk isolation mode',
     description: 'Only use one high-risk asset to borrow SLC',
-    value: BorrowMode.RiskIsolation,
+    value: BorrowModeType.RiskIsolation,
   },
 ];
-const EnableBorrowMode = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { mode, effectiveMode, setMode } = useBorrowMode();
+const BorrowMode = ({
+  onSuccess,
+  contact,
+}: {
+  onSuccess: () => void;
+  contact: {
+    abi: Abi;
+    address: Address;
+  };
+}) => {
+  const { mode, effectiveMode, setMode } = useBorrowMode(contact);
   return (
     <div>
       <HighLiquidityModal
-        open={mode === BorrowMode.HighLiquidity}
+        open={mode === BorrowModeType.HighLiquidity}
         onClose={() => setMode(undefined)}
         onSuccess={onSuccess}
+        contact={contact}
       />
       <RiskIsolationModal
-        open={mode === BorrowMode.RiskIsolation}
+        open={mode === BorrowModeType.RiskIsolation}
         onClose={() => setMode(undefined)}
         onSuccess={onSuccess}
+        contact={contact}
       />
       <BorrowModeSelector
         options={options}
@@ -41,4 +53,4 @@ const EnableBorrowMode = ({ onSuccess }: { onSuccess: () => void }) => {
   );
 };
 
-export default EnableBorrowMode;
+export default BorrowMode;

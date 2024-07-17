@@ -5,8 +5,7 @@ import useRiskProgress, {
 } from '@/components/Borrow/useRiskProgress.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { useAccount, useReadContract } from 'wagmi';
-import { XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
+import { Abi, Address } from 'viem';
 import { useMemo } from 'react';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 const HealthFactorInfo = ({
@@ -187,10 +186,15 @@ const RiskModal = ({
   open,
   onClose,
   userHealthFactor,
+  contact,
 }: {
   open: boolean;
   onClose: () => void;
   userHealthFactor: number;
+  contact: {
+    abi: Abi;
+    address: Address;
+  };
 }) => {
   const { userPercent, segments } = useRiskProgress({
     userHealthFactor: userHealthFactor || 0,
@@ -198,8 +202,8 @@ const RiskModal = ({
 
   const { address } = useAccount();
   const { data: overview } = useReadContract({
-    address: XUNION_SLC_CONTRACT.interface.address as Address,
-    abi: XUNION_SLC_CONTRACT.interface.abi,
+    address: contact.address,
+    abi: contact.abi,
     functionName: 'usersRiskDetails',
     args: [address],
   });

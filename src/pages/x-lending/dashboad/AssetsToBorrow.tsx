@@ -52,12 +52,13 @@ const Borrows = () => {
       },
     },
   ];
-  const actionColumn = {
+  const actionColumn: ColumnType<SLCAsset> = {
     key: 'action',
     title: '',
+    align: 'right',
     render: (_: string, __: SLCAsset) => {
       return (
-        <div className="flex  gap-[5px]">
+        <div className="flex  items-center justify-end gap-[5px]">
           <Button
             type="primary"
             className="rounded-[8px] text-[12px]"

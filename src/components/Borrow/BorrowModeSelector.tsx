@@ -2,16 +2,16 @@ import { SettingIcon } from '@/components/icons';
 
 import { Popover } from 'antd';
 import { cn } from '@/utils/classnames.ts';
-import { BorrowMode } from '@/types/slc.ts';
+import { BorrowModeType } from '@/types/slc.ts';
 
 const BorrowModeSelector = ({
   value,
   onChange,
   options,
 }: {
-  value: BorrowMode;
-  onChange: (v: BorrowMode) => void;
-  options: { label: string; description: string; value: BorrowMode }[];
+  value: BorrowModeType;
+  onChange: (v: BorrowModeType) => void;
+  options: { label: string; description: string; value: BorrowModeType }[];
 }) => {
   const selected = options.find((item) => item.value === value);
   return (
@@ -27,7 +27,7 @@ const BorrowModeSelector = ({
                 onChange(item.value);
               }}
               key={item.value}
-              className="hover:bg-fill-niubi2 flex cursor-pointer flex-col gap-[4px] rounded-[6px] p-[10px]"
+              className="flex cursor-pointer flex-col gap-[4px] rounded-[6px] p-[10px] hover:bg-fill-niubi2"
             >
               <span className="text-[16px] font-[500]">{item.label}</span>
               <span className="text-[14px] text-tc-secondary">

@@ -5,7 +5,7 @@ import { Address, erc20Abi } from 'viem';
 import { useMutation } from '@tanstack/react-query';
 import { getTokenList } from '@/services/slc.ts';
 import { formatUnits } from 'ethers';
-import { BorrowMode, SLCAsset } from '@/types/slc.ts';
+import { BorrowModeType, SLCAsset } from '@/types/slc.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
@@ -132,7 +132,7 @@ const useCollateral = () => {
         )?.[1] || 0;
 
       const canBeProvided =
-        mode === BorrowMode?.HighLiquidity
+        mode === BorrowModeType?.HighLiquidity
           ? item.max_deposit_amount === '0'
           : item.max_deposit_amount !== '0';
       return {

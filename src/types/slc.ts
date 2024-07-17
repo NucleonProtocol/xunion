@@ -13,7 +13,7 @@ export interface SLCAsset extends Token {
   canBeWithdraw?: boolean;
 }
 
-export enum BorrowMode {
+export enum BorrowModeType {
   HighLiquidity,
   RiskIsolation,
 }

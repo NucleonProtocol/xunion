@@ -3,18 +3,23 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
-import { XUNION_SLC_CONTRACT, ZERO_ADDRESS } from '@/contracts';
-import { Address } from 'viem';
-import { BorrowMode } from '@/types/slc.ts';
+import { ZERO_ADDRESS } from '@/contracts';
+import { Abi, Address } from 'viem';
+import { BorrowModeType } from '@/types/slc.ts';
 
 const HighLiquidityModal = ({
   open,
   onClose,
   onSuccess,
+  contact,
 }: {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  contact: {
+    abi: Abi;
+    address: Address;
+  };
 }) => {
   const { writeContractAsync, isSubmittedLoading, loading } = useXWriteContract(
     {
@@ -23,12 +28,12 @@ const HighLiquidityModal = ({
   );
 
   const enableMode = async () => {
-    const { address, abi } = XUNION_SLC_CONTRACT.interface;
+    const { address, abi } = contact;
     writeContractAsync({
-      address: address as Address,
+      address: address,
       abi,
       functionName: 'userModeSetting',
-      args: [BorrowMode.HighLiquidity, ZERO_ADDRESS],
+      args: [BorrowModeType.HighLiquidity, ZERO_ADDRESS],
     });
   };
 

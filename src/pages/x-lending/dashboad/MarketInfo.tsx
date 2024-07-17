@@ -3,15 +3,16 @@ import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { useState } from 'react';
 import RiskModal from '@/components/Borrow/RiskModal.tsx';
 import { Button } from 'antd';
+import { XUNION_LENDING_CONTRACT } from '@/contracts';
 
 const MarketInfo = ({
-  netWorth = 81231233,
-  apy = 69.97,
-  healthFactor = 2.7,
+  netWorth,
+  netApy,
+  health,
 }: {
-  netWorth?: number;
-  apy?: number;
-  healthFactor?: number;
+  netWorth: bigint;
+  netApy: bigint;
+  health: number;
 }) => {
   const [riskOpen, setRiskOpen] = useState(false);
   return (
@@ -19,23 +20,26 @@ const MarketInfo = ({
       <RiskModal
         open={riskOpen}
         onClose={() => setRiskOpen(false)}
-        userHealthFactor={healthFactor}
+        userHealthFactor={health}
+        contact={{
+          ...XUNION_LENDING_CONTRACT.interface,
+        }}
       />
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px]">
         <span className="text-[16px] text-tc-secondary">Net worth</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(netWorth, true)}
+          {formatCurrency(Number(netWorth.toString()), true)}
         </span>
       </div>
 
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
         <span className="text-[16px] text-tc-secondary">Net APY</span>
-        <span className="text-[20px] font-bold">{`${apy}%`}</span>
+        <span className="text-[20px] font-bold">{`${netApy}%`}</span>
       </div>
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
         <span className="text-[16px] text-tc-secondary">Health factor</span>
         <div className="flex items-end gap-[10px] text-[16px] ">
-          <HealthFactor value={`${healthFactor}`} />
+          <HealthFactor value={`${health}`} />
           <Button
             type="text"
             ghost

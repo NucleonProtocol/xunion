@@ -70,9 +70,10 @@ const Supplies = () => {
       },
     },
   ];
-  const actionColumn = {
+  const actionColumn: ColumnType<SLCAsset> = {
     key: 'action',
     title: '',
+    align: 'right',
     render: (_: string) => {
       return (
         <Popover
