@@ -14,14 +14,12 @@ import { LendingAsset } from '@/types/Lending.ts';
 const Supplies = ({
   assets,
   loading,
-  userMode,
   depositTotalCollateralBalance,
   depositTotalAPY,
   depositTotalBalance,
 }: {
   assets: LendingAsset[];
   loading: boolean;
-  userMode: string;
   depositTotalCollateralBalance: number;
   depositTotalAPY: number;
   depositTotalBalance: number;
@@ -32,7 +30,7 @@ const Supplies = ({
       key: 'Asset',
       title: 'Asset',
       dataIndex: 'asset',
-      render: (_: string, record: LendingAsset) => {
+      render: (_: string, record) => {
         return (
           <div className="flex  gap-[5px]">
             <span>
@@ -47,7 +45,7 @@ const Supplies = ({
       key: 'balance',
       title: 'Balance',
       dataIndex: 'balance',
-      render: (_: string, record: LendingAsset) => {
+      render: (_: string, record) => {
         return (
           <div className="flex flex-col gap-[5px]">
             <span>{formatCurrency(record?.depositAmount || 0, false)}</span>
@@ -60,7 +58,7 @@ const Supplies = ({
       key: 'apy',
       title: 'APY',
       dataIndex: 'apy',
-      render: (_: string, record: LendingAsset) => {
+      render: (_: string, record) => {
         return (
           <div className="flex flex-col gap-[5px]">
             <span>{record?.depositInterest}%</span>
@@ -71,13 +69,9 @@ const Supplies = ({
     {
       key: 'Collateral',
       title: 'Collateral',
-      dataIndex: 'lending_mode_num',
+      dataIndex: 'canCollateral',
       align: 'center',
-      render: (value: string) => {
-        const canCollateral =
-          (userMode === '0' && value !== '1') ||
-          (userMode === '1' && value === '1') ||
-          (userMode !== '0' && userMode !== '1' && value === userMode);
+      render: (canCollateral: boolean) => {
         return canCollateral ? (
           <CheckCircleOutlined className="text-status-success" />
         ) : (
@@ -90,7 +84,7 @@ const Supplies = ({
     key: 'action',
     title: '',
     align: 'right',
-    render: (_: string) => {
+    render: (_: string, record) => {
       return (
         <Popover
           title={
@@ -99,6 +93,7 @@ const Supplies = ({
                 type="text"
                 ghost
                 className="text-primary text-left"
+                disabled={!record.canCollateral}
                 onClick={() => {}}
               >
                 Supply

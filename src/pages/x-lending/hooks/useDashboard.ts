@@ -80,7 +80,7 @@ const useDashboard = () => {
   });
 
   useEffect(() => {
-    if (userAssets && data?.items?.length && address) {
+    if (userAssets && data?.items?.length && address && userMode) {
       setLoading(true);
       const tokens = (userAssets as string[][])[0];
       const depositAmounts = (userAssets as bigint[][])[1];
@@ -145,6 +145,14 @@ const useDashboard = () => {
                   availableAmount * unitPrice,
                   6
                 );
+                const mode = String((userMode as number[])[0]);
+                const canCollateral =
+                  (mode === '0' && asset.lending_mode_num !== '1') ||
+                  (mode === '1' && asset.lending_mode_num === '1') ||
+                  (mode !== '0' &&
+                    mode !== '1' &&
+                    asset.lending_mode_num === mode);
+
                 const data = {
                   ...asset,
                   depositAmount,
@@ -155,6 +163,7 @@ const useDashboard = () => {
                   lendingTotalPrice,
                   availableTotalPrice,
                   availableAmount,
+                  canCollateral,
                 };
                 if (isNativeToken(asset.token)) {
                   const balance = await getNativeTokenBalance();
@@ -179,7 +188,7 @@ const useDashboard = () => {
           setLoading(false);
         });
     }
-  }, [userAssets, address, data]);
+  }, [userAssets, address, data, userMode]);
 
   const netWorth = useMemo(() => {
     return userProfile ? (userProfile as bigint[])[0] : 0n;
@@ -193,15 +202,7 @@ const useDashboard = () => {
   }, [lendingAssets]);
 
   const depositTotalCollateralBalance = useMemo(() => {
-    const greenAssets = lendingAssets.filter((asset) => {
-      return (
-        (userMode === '0' && asset.lending_mode_num !== '1') ||
-        (userMode === '1' && asset.lending_mode_num === '1') ||
-        (userMode !== '0' &&
-          userMode !== '1' &&
-          asset.lending_mode_num === userMode)
-      );
-    });
+    const greenAssets = lendingAssets.filter((asset) => asset.canCollateral);
     return sumBy(greenAssets || [], (item) => item.lendingAmount || 0);
   }, [lendingAssets, userMode]);
 
@@ -249,7 +250,6 @@ const useDashboard = () => {
     health: Number(String(health || 0n)),
     loading: loading || isLoading || isPending,
     lendingAssets,
-    userMode: userMode ? String((userMode as number[])[0]) : '0',
     depositTotalBalance,
     lendingTotalBalance,
     depositTotalCollateralBalance,

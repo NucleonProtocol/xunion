@@ -33,7 +33,6 @@ function Dashboard() {
     health,
     lendingAssets,
     loading,
-    userMode,
     depositTotalCollateralBalance,
     depositTotalAPY,
     depositTotalBalance,
@@ -68,16 +67,11 @@ function Dashboard() {
             <Supplies
               assets={lendingAssets}
               loading={loading}
-              userMode={userMode}
               depositTotalBalance={depositTotalBalance}
               depositTotalCollateralBalance={depositTotalCollateralBalance}
               depositTotalAPY={depositTotalAPY}
             />
-            <AssetsToSupply
-              assets={lendingAssets}
-              loading={loading}
-              userMode={userMode}
-            />
+            <AssetsToSupply assets={lendingAssets} loading={loading} />
           </div>
           <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
             <Borrows

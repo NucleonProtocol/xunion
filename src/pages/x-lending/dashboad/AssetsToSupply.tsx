@@ -11,11 +11,9 @@ import { useEffect, useState } from 'react';
 const AssetsToSupply = ({
   assets,
   loading,
-  userMode,
 }: {
   assets: LendingAsset[];
   loading: boolean;
-  userMode: string;
 }) => {
   const [filteredAssets, setFilteredAssets] = useState<LendingAsset[]>([]);
   const [checked, setChecked] = useState(false);
@@ -73,13 +71,9 @@ const AssetsToSupply = ({
     {
       key: 'Collateral',
       title: 'Collateral',
-      dataIndex: 'lending_mode_num',
+      dataIndex: 'canCollateral',
       align: 'center',
-      render: (value: string) => {
-        const canCollateral =
-          (userMode === '0' && value !== '1') ||
-          (userMode === '1' && value === '1') ||
-          (userMode !== '0' && userMode !== '1' && value === userMode);
+      render: (canCollateral: boolean) => {
         return canCollateral ? (
           <CheckCircleOutlined className="text-status-success" />
         ) : (
@@ -92,7 +86,7 @@ const AssetsToSupply = ({
     key: 'action',
     title: '',
     align: 'right',
-    render: (_: string, __: LendingAsset) => {
+    render: (_: string, record: LendingAsset) => {
       return (
         <div className="flex  items-center justify-end gap-[5px]">
           <Button
@@ -100,6 +94,7 @@ const AssetsToSupply = ({
             className="rounded-[8px] text-[12px]"
             size="small"
             onClick={() => {}}
+            disabled={!record.canCollateral}
           >
             Supply
           </Button>

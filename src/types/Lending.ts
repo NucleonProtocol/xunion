@@ -20,4 +20,5 @@ export interface LendingAsset {
   erc20Balance?: number;
   availableAmount?: number;
   availableTotalPrice?: number;
+  canCollateral?: boolean;
 }
