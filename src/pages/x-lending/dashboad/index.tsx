@@ -91,8 +91,19 @@ function Dashboard() {
               lendingTotalBalance={lendingTotalBalance}
               lendingTotalAPY={lendingTotalAPY}
               lendingPowerUsed={lendingPowerUsed}
+              health={health}
+              refetch={() => {
+                refetch();
+              }}
             />
-            <AssetsToBorrow assets={lendingAssets} loading={loading} />
+            <AssetsToBorrow
+              assets={lendingAssets}
+              loading={loading}
+              health={health}
+              refetch={() => {
+                refetch();
+              }}
+            />
           </div>
         </div>
       </div>

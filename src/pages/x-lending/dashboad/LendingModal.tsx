@@ -1,21 +1,20 @@
 import { Button, Modal } from 'antd';
 import TokenInput from '@/components/TokenInput.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
-import useBorrowSLC from '@/pages/x-super-libra-coin/hooks/useBorrowSLC.ts';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
+import useLending from '@/pages/x-lending/hooks/useLending.ts';
+import { LendingAsset } from '@/types/Lending.ts';
 
-const BorrowSLCModal = ({
-  open,
+const LendingModal = ({
+  asset,
   onClose,
-  availableAmount,
   refresh,
   userHealthFactor,
 }: {
-  open: boolean;
+  asset: LendingAsset;
   onClose: () => void;
-  availableAmount: number;
   refresh: () => void;
   userHealthFactor: number;
 }) => {
@@ -30,13 +29,14 @@ const BorrowSLCModal = ({
     onConfirm,
     healthFactor,
     loading,
-  } = useBorrowSLC({ availableAmount, refresh });
+    availableAmount,
+  } = useLending({ refresh, asset });
 
   const renderSwapText = () => {
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Available Amount ${availableAmount}`}
+          {`Available Amount ${asset.availableAmount}`}
         </Button>
       );
     }
@@ -50,16 +50,16 @@ const BorrowSLCModal = ({
         onClick={onConfirm}
         loading={isSubmittedLoading || loading}
       >
-        Borrow SLC
+        {`Borrow ${asset.token.symbol}`}
       </Button>
     );
   };
 
   return (
     <Modal
-      open={open}
+      open={!!asset}
       onCancel={onClose}
-      title="Borrow SLC"
+      title={`Borrow ${asset.token.symbol}`}
       footer={null}
       centered
       maskClosable={false}
@@ -111,4 +111,4 @@ const BorrowSLCModal = ({
   );
 };
 
-export default BorrowSLCModal;
+export default LendingModal;
