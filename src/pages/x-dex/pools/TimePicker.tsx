@@ -33,8 +33,8 @@ const TimePicker = ({
           className={cn(
             'flex-center h-[40px] gap-[12px] rounded-[20px] border border-line-primary px-[16px] text-tc-secondary',
             time === tab.value
-              ? 'bg-fill-niubi3 pointer-events-none text-tc-primary'
-              : 'hover:bg-fill-niubi3 cursor-pointer hover:text-tc-primary '
+              ? 'pointer-events-none bg-fill-niubi3 text-tc-primary'
+              : 'cursor-pointer hover:bg-fill-niubi3 hover:text-tc-primary '
           )}
         >
           <span>{tab.label}</span>

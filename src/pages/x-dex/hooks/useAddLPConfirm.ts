@@ -79,7 +79,7 @@ const useAddLPConfirm = ({
         address: address as Address,
         abi,
         functionName: 'xLpSubscribe2',
-        args: [lpPairInfo?.pairAddress, sortedAmounts],
+        args: [lpPairInfo?.pairAddress as Address, sortedAmounts.toString()],
         value: `${txValue}` as unknown as bigint,
       });
     }

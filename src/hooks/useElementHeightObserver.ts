@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-const useElementHeightObserver = (el: HTMLElement, cb: (height: number) => void) => {
-
-  const observerRef = useRef<MutationObserver>()
+const useElementHeightObserver = (
+  el: HTMLElement,
+  cb: (height: number) => void
+) => {
+  const observerRef = useRef<MutationObserver>();
 
   useEffect(() => {
     if (!el) {
@@ -22,7 +24,7 @@ const useElementHeightObserver = (el: HTMLElement, cb: (height: number) => void)
     return () => observerRef.current?.disconnect();
   }, [el, cb]);
 
-  return observerRef.current
-}
+  return observerRef.current;
+};
 
-export default useElementHeightObserver
+export default useElementHeightObserver;

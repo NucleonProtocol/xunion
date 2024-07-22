@@ -25,7 +25,7 @@ function Pools() {
         <div className=" flex w-full items-center gap-[30px]">
           <AmountCard
             title="TVL"
-            amount={278123123111.13444}
+            amount={27812312}
             loading={false}
             className="w-auto flex-1"
           />
