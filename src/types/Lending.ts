@@ -16,4 +16,8 @@ export interface LendingAsset {
   lendingAmount?: number;
   lendingTotalPrice?: number;
   lendingInterest?: number;
+  erc20TotalPrice?: number;
+  erc20Balance?: number;
+  availableAmount?: number;
+  availableTotalPrice?: number;
 }

@@ -1,6 +1,6 @@
 import { useAccount, useReadContract } from 'wagmi';
 import { XUNION_LENDING_CONTRACT, XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
+import { Address, erc20Abi } from 'viem';
 import { useEffect, useMemo, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getLendingAssets } from '@/services/lending.ts';
@@ -10,9 +10,11 @@ import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { LendingAsset } from '@/types/Lending.ts';
 import { Token } from '@/types/swap.ts';
+import { sumBy } from 'lodash';
 
 const useDashboard = () => {
-  const { getRealAddress } = useNativeToken();
+  const { getRealAddress, isNativeToken, getNativeTokenBalance } =
+    useNativeToken();
   const { address } = useAccount();
   const { multiCall } = useMulticall();
   const [lendingAssets, setLendingAssets] = useState<LendingAsset[]>([]);
@@ -30,6 +32,15 @@ const useDashboard = () => {
     getAssets({ pageSize: 20, pageNum: 1 });
   }, []);
 
+  const { data: userMode } = useReadContract({
+    address: XUNION_LENDING_CONTRACT.interface.address as Address,
+    abi: XUNION_LENDING_CONTRACT.interface.abi,
+    functionName: 'userMode',
+    args: [address!],
+    query: {
+      enabled: !!address,
+    },
+  });
   const { data: userProfile } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
@@ -59,6 +70,16 @@ const useDashboard = () => {
     },
   });
 
+  const { data: userDepositAndLendingValue } = useReadContract({
+    address: XUNION_LENDING_CONTRACT.interface.address as Address,
+    abi: XUNION_LENDING_CONTRACT.interface.abi,
+    functionName: 'userDepositAndLendingValue',
+    args: [address!],
+    query: {
+      enabled: !!address,
+    },
+  });
+
   useEffect(() => {
     if (userAssets && data?.items?.length && address) {
       setLoading(true);
@@ -67,47 +88,93 @@ const useDashboard = () => {
       const lendingAmounts = (userAssets as bigint[][])[2];
       const depositInterests = (userAssets as bigint[][])[3];
       const lendingInterests = (userAssets as bigint[][])[4];
-      const calls: ContractCall[] = tokens.map((address) => ({
+      const totalAvailableAmounts = (userAssets as bigint[][])[5];
+      const calls: ContractCall[] = tokens.map((tokenAddress) => ({
         name: 'getPrice',
         abi: XUNION_SLC_CONTRACT.oracle.abi,
         address: XUNION_SLC_CONTRACT.oracle.address as Address,
-        values: [getRealAddress({ address } as Token)],
+        values: [getRealAddress({ address: tokenAddress } as Token)],
+      }));
+
+      const calls2: ContractCall[] = tokens?.map((tokenAddress) => ({
+        name: 'balanceOf',
+        abi: erc20Abi,
+        address: getRealAddress({ address: tokenAddress } as Token),
+        values: [address],
       }));
 
       multiCall(calls)
         .then(async (allUnitPrice) => {
-          const newData = [];
-          for (let index = 0; index < tokens.length; index++) {
-            const tokenAddress = tokens[index];
-            const asset = (data.items || []).find(
-              (n) =>
-                n.token.address?.toLowerCase() === tokenAddress?.toLowerCase()
-            );
-            if (asset) {
-              const unitPrice = Number(
-                formatUnits(allUnitPrice.returnData[index])
+          return multiCall(calls2).then(async (allBalance) => {
+            const newData = [];
+            for (let index = 0; index < tokens.length; index++) {
+              const tokenAddress = tokens[index];
+              const asset = (data.items || []).find(
+                (n) =>
+                  n.token.address?.toLowerCase() === tokenAddress?.toLowerCase()
               );
-              const depositAmount = Number(formatUnits(depositAmounts[index]));
-              const lendingAmount = Number(formatUnits(lendingAmounts[index]));
-              const lendingInterest = Number(
-                formatUnits(lendingInterests[index])
-              );
-              const depositInterest = Number(
-                formatUnits(depositInterests[index])
-              );
-              newData.push({
-                ...asset,
-                depositAmount,
-                depositInterest,
-                lendingAmount,
-                lendingInterest,
-                depositTotalPrice: formatNumber(depositAmount * unitPrice, 6),
-                lendingTotalPrice: formatNumber(lendingAmount * unitPrice, 6),
-              });
+              if (asset) {
+                const unitPrice = Number(
+                  formatUnits(allUnitPrice.returnData[index])
+                );
+                const depositAmount = Number(
+                  formatUnits(depositAmounts[index])
+                );
+                const lendingAmount = Number(
+                  formatUnits(lendingAmounts[index])
+                );
+                const depositTotalPrice = formatNumber(
+                  depositAmount * unitPrice,
+                  6
+                );
+                const lendingTotalPrice = formatNumber(
+                  lendingAmount * unitPrice,
+                  6
+                );
+                const lendingInterest =
+                  Number(lendingInterests[index].toString()) / 100;
+                const depositInterest =
+                  Number(depositInterests[index].toString()) / 100;
+                const erc20Balance = Number(
+                  formatUnits(allBalance.returnData[index])
+                );
+
+                const availableAmount = Number(
+                  formatUnits(totalAvailableAmounts[index])
+                );
+                const availableTotalPrice = formatNumber(
+                  availableAmount * unitPrice,
+                  6
+                );
+                const data = {
+                  ...asset,
+                  depositAmount,
+                  depositInterest,
+                  lendingAmount,
+                  lendingInterest,
+                  depositTotalPrice,
+                  lendingTotalPrice,
+                  availableTotalPrice,
+                  availableAmount,
+                };
+                if (isNativeToken(asset.token)) {
+                  const balance = await getNativeTokenBalance();
+                  newData.push({
+                    ...data,
+                    erc20TotalPrice: formatNumber(balance * unitPrice, 6),
+                    erc20Balance: formatNumber(balance, 6),
+                  });
+                } else {
+                  newData.push({
+                    ...data,
+                    erc20TotalPrice: formatNumber(erc20Balance * unitPrice, 6),
+                    erc20Balance,
+                  });
+                }
+              }
             }
-          }
-          console.log(newData);
-          setLendingAssets(newData);
+            setLendingAssets(newData);
+          });
         })
         .finally(() => {
           setLoading(false);
@@ -122,12 +189,74 @@ const useDashboard = () => {
     return userProfile ? (userProfile as bigint[])[1] : 0n;
   }, [userProfile]);
 
+  const depositTotalBalance = useMemo(() => {
+    return sumBy(lendingAssets || [], (item) => item.lendingAmount || 0);
+  }, [lendingAssets]);
+
+  const depositTotalCollateralBalance = useMemo(() => {
+    const greenAssets = lendingAssets.filter((asset) => {
+      return (
+        (userMode === '0' && asset.lending_mode_num !== '1') ||
+        (userMode === '1' && asset.lending_mode_num === '1') ||
+        (userMode !== '0' &&
+          userMode !== '1' &&
+          asset.lending_mode_num === userMode)
+      );
+    });
+    return sumBy(greenAssets || [], (item) => item.lendingAmount || 0);
+  }, [lendingAssets, userMode]);
+
+  const lendingTotalBalance = useMemo(() => {
+    return sumBy(lendingAssets || [], (item) => item.lendingAmount || 0);
+  }, [lendingAssets]);
+
+  const depositTotalAPY = useMemo(() => {
+    const remainingBalance = sumBy(
+      lendingAssets || [],
+      (item) => (item.depositAmount || 0) * ((item.depositInterest || 0) / 100)
+    );
+    const totalBalance = sumBy(
+      lendingAssets || [],
+      (item) => item.depositAmount || 0
+    );
+    return totalBalance ? (remainingBalance / totalBalance) * 100 : 0;
+  }, [lendingAssets]);
+
+  const lendingTotalAPY = useMemo(() => {
+    const remainingBalance = sumBy(
+      lendingAssets || [],
+      (item) => (item.lendingAmount || 0) * ((item.lendingInterest || 0) / 100)
+    );
+    const totalBalance = sumBy(
+      lendingAssets || [],
+      (item) => item.lendingAmount || 0
+    );
+    return totalBalance ? (remainingBalance / totalBalance) * 100 : 0;
+  }, [lendingAssets]);
+
+  const lendingPowerUsed = useMemo(() => {
+    const totalDeposit = (userDepositAndLendingValue as bigint[])?.[0];
+    const totalLending = (userDepositAndLendingValue as bigint[])?.[1];
+    if (!userDepositAndLendingValue || totalDeposit === 0n) return 0;
+    return (
+      (Number(formatUnits(totalLending)) / Number(formatUnits(totalDeposit))) *
+      100
+    );
+  }, [userDepositAndLendingValue]);
+
   return {
     netWorth,
     netApy,
     health: Number(String(health || 0n)),
     loading: loading || isLoading || isPending,
     lendingAssets,
+    userMode: userMode ? String((userMode as number[])[0]) : '0',
+    depositTotalBalance,
+    lendingTotalBalance,
+    depositTotalCollateralBalance,
+    depositTotalAPY,
+    lendingTotalAPY,
+    lendingPowerUsed,
   };
 };
 

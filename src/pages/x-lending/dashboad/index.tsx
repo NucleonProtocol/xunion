@@ -27,7 +27,20 @@ const options = [
   },
 ];
 function Dashboard() {
-  const { netWorth, netApy, health, lendingAssets, loading } = useDashboard();
+  const {
+    netWorth,
+    netApy,
+    health,
+    lendingAssets,
+    loading,
+    userMode,
+    depositTotalCollateralBalance,
+    depositTotalAPY,
+    depositTotalBalance,
+    lendingTotalBalance,
+    lendingTotalAPY,
+    lendingPowerUsed,
+  } = useDashboard();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
       <div className="max-w-[1200px] overflow-hidden  max-md:mx-[20px]">
@@ -51,11 +64,28 @@ function Dashboard() {
         </div>
         <div className="flex gap-[24px]">
           <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
-            <Supplies assets={lendingAssets} loading={loading} />
-            <AssetsToSupply assets={lendingAssets} loading={loading} />
+            <Supplies
+              assets={lendingAssets}
+              loading={loading}
+              userMode={userMode}
+              depositTotalBalance={depositTotalBalance}
+              depositTotalCollateralBalance={depositTotalCollateralBalance}
+              depositTotalAPY={depositTotalAPY}
+            />
+            <AssetsToSupply
+              assets={lendingAssets}
+              loading={loading}
+              userMode={userMode}
+            />
           </div>
           <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
-            <Borrows assets={lendingAssets} loading={loading} />
+            <Borrows
+              assets={lendingAssets}
+              loading={loading}
+              lendingTotalBalance={lendingTotalBalance}
+              lendingTotalAPY={lendingTotalAPY}
+              lendingPowerUsed={lendingPowerUsed}
+            />
             <AssetsToBorrow assets={lendingAssets} loading={loading} />
           </div>
         </div>

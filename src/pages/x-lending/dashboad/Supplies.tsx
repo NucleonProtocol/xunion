@@ -14,9 +14,17 @@ import { LendingAsset } from '@/types/Lending.ts';
 const Supplies = ({
   assets,
   loading,
+  userMode,
+  depositTotalCollateralBalance,
+  depositTotalAPY,
+  depositTotalBalance,
 }: {
   assets: LendingAsset[];
   loading: boolean;
+  userMode: string;
+  depositTotalCollateralBalance: number;
+  depositTotalAPY: number;
+  depositTotalBalance: number;
 }) => {
   const { address } = useAccount();
   const columns: ColumnType<LendingAsset>[] = [
@@ -42,7 +50,7 @@ const Supplies = ({
       render: (_: string, record: LendingAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            <span>{record?.depositAmount || 0}</span>
+            <span>{formatCurrency(record?.depositAmount || 0, false)}</span>
             <span>{formatCurrency(record?.depositTotalPrice || 0)}</span>
           </div>
         );
@@ -55,7 +63,7 @@ const Supplies = ({
       render: (_: string, record: LendingAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            <span>{record?.depositInterest}</span>
+            <span>{record?.depositInterest}%</span>
           </div>
         );
       },
@@ -63,10 +71,14 @@ const Supplies = ({
     {
       key: 'Collateral',
       title: 'Collateral',
-      dataIndex: 'collateral',
+      dataIndex: 'lending_mode_num',
       align: 'center',
       render: (value: string) => {
-        return value ? (
+        const canCollateral =
+          (userMode === '0' && value !== '1') ||
+          (userMode === '1' && value === '1') ||
+          (userMode !== '0' && userMode !== '1' && value === userMode);
+        return canCollateral ? (
           <CheckCircleOutlined className="text-status-success" />
         ) : (
           <CloseCircleOutlined className="text-status-error" />
@@ -114,13 +126,13 @@ const Supplies = ({
       description={
         <div className="flex items-center gap-[10px]">
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            Balance: $71,050.98
+            {`Balance: ${formatCurrency(depositTotalBalance)}`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            APY: 80.76%
+            {`APY: ${depositTotalAPY}%`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            Collateral: $20,000.98
+            {`Balance: ${formatCurrency(depositTotalCollateralBalance)}`}
           </Button>
         </div>
       }
@@ -131,7 +143,7 @@ const Supplies = ({
         bordered={false}
         rowHoverable={false}
         pagination={false}
-        rowKey="name"
+        rowKey="id"
         size="middle"
       />
     </LendingCard>

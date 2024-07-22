@@ -6,11 +6,13 @@
         "name": "_lendingManager",
         "type": "address"
       },
-      { "internalType": "address", "name": "_wcfx", "type": "address" }
+      { "internalType": "address", "name": "_wcfx", "type": "address" },
+      { "internalType": "address", "name": "_oracleAddr", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
+  { "stateMutability": "payable", "type": "fallback" },
   {
     "inputs": [],
     "name": "ONE_YEAR",
@@ -322,6 +324,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "oracleAddr",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "tokenAddr", "type": "address" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
@@ -393,6 +402,11 @@
       {
         "internalType": "uint256[]",
         "name": "_lendingInterest",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_availableAmount",
         "type": "uint256[]"
       }
     ],
@@ -601,5 +615,6 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  }
+  },
+  { "stateMutability": "payable", "type": "receive" }
 ]
