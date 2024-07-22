@@ -1,43 +1,62 @@
 import { Popover, Spin } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import useCollateral from '@/pages/x-super-libra-coin/hooks/useCollateral.ts';
 import { cn } from '@/utils/classnames.ts';
 import { SpinIcon, TokenIcon } from '@/components/icons';
-import { SLCAsset } from '@/types/slc.ts';
 import { useState } from 'react';
+import useTokenGroupAssets from '@/components/Borrow/useTokenGroupAssets.ts';
+import { LendingAsset } from '@/types/Lending.ts';
 
 const TokenGroupSelector = ({
   value,
   onChange,
 }: {
-  value?: SLCAsset;
-  onChange: (token: SLCAsset) => void;
+  value?: LendingAsset[];
+  onChange: (assets: LendingAsset[]) => void;
 }) => {
-  const { assets, isAssetsLoading } = useCollateral();
+  const { assets, isPending } = useTokenGroupAssets();
+
   const [open, onOpen] = useState(false);
+
+  const renderGroupAsset = (assets: LendingAsset[]) => {
+    return (
+      <div className="flex">
+        {assets.map((asset, index) => (
+          <div
+            key={asset.token?.symbol}
+            className="flex items-center gap-[4px]"
+          >
+            <div className="flex h-full w-[20px] items-center">
+              <TokenIcon src={asset?.token.icon} width={20} height={20} />
+            </div>
+            <div className="flex  flex-1  items-center">
+              <span className="text-[12px] text-tc-secondary">
+                {asset.token.symbol}
+              </span>
+            </div>
+            {index !== assets.length - 1 && (
+              <span className="px-[4px] text-tc-secondary">/</span>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
   return (
     <Popover
       placement="bottom"
       open={open}
       onOpenChange={onOpen}
       content={
-        <Spin spinning={isAssetsLoading} indicator={<SpinIcon />}>
+        <Spin spinning={isPending} indicator={<SpinIcon />}>
           <div className="h-[250px] w-[450px] overflow-y-auto">
-            <div className="my-[10px] flex flex-col gap-[10px] ">
-              {(assets || []).map((item) => (
+            <div className="my-[10px] flex flex-col gap-[10px]">
+              {(assets || []).map((item, index) => (
                 <div
                   className={cn(
-                    'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] ',
-                    {
-                      'cursor-not-allowed  bg-fill-niubi opacity-45':
-                        item.max_deposit_amount === '0',
-                    },
-                    {
-                      'hover:bg-theme-non-opaque hover:opacity-75':
-                        item.max_deposit_amount !== '0',
-                    }
+                    'flex cursor-pointer flex-col gap-[10px] rounded-[12px]  px-[10px] py-[10px]',
+                    'hover:bg-theme-non-opaque hover:opacity-75'
                   )}
-                  key={item.symbol}
+                  key={index}
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -45,23 +64,8 @@ const TokenGroupSelector = ({
                     onOpen(false);
                   }}
                 >
-                  <div className="h-full w-[30px]">
-                    <TokenIcon src={item.icon} width={30} height={30} />
-                  </div>
-                  <div className="flex flex-1 flex-col">
-                    <span className="text-[14px]"> {item.name}</span>
-                    <span className="text-[12px] text-tc-secondary">
-                      {item.symbol}
-                    </span>
-                  </div>
-                  <div
-                    className="flex items-center gap-[20px]"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <span>{item.balance}</span>
-                  </div>
+                  <span className="text-tc-secondary">Group {index}</span>
+                  {renderGroupAsset(item)}
                 </div>
               ))}
             </div>
@@ -81,12 +85,9 @@ const TokenGroupSelector = ({
           Select isolation asset
         </div>
         <div className="flex-center gap-[5px]">
-          {value?.symbol ? (
-            <div className="flex-center gap-[5px]">
-              <span className="flex-center text-[22px]">
-                <TokenIcon src={value.icon} />
-              </span>
-              <span className="text-[14px]">{value?.symbol}</span>
+          {value?.length ? (
+            <div className="flex-center mr-[20px]">
+              {renderGroupAsset(value)}
             </div>
           ) : (
             <span className="text-[16px]">Select a token</span>

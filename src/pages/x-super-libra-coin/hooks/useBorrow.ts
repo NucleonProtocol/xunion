@@ -24,7 +24,7 @@ const useBorrow = () => {
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
     functionName: 'viewUsersHealthFactor',
-    args: [address],
+    args: [address!],
     query: {
       enabled: !!address,
     },

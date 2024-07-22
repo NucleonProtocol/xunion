@@ -39,10 +39,12 @@ const TokenAssetsSelector = ({
                   )}
                   key={item.symbol}
                   onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    onChange(item);
-                    onOpen(false);
+                    if (item.max_deposit_amount !== '0') {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      onChange(item);
+                      onOpen(false);
+                    }
                   }}
                 >
                   <div className="h-full w-[30px]">

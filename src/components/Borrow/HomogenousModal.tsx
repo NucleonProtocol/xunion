@@ -2,11 +2,12 @@ import { Button, Modal } from 'antd';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
-import { BorrowModeType, SLCAsset } from '@/types/slc.ts';
 import { useState } from 'react';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Abi, Address } from 'viem';
 import TokenGroupSelector from '@/components/Borrow/TokenGroupSelector.tsx';
+import { LendingAsset } from '@/types/Lending.ts';
+import { ZERO_ADDRESS } from '@/contracts';
 
 const HomogenousModal = ({
   open,
@@ -22,7 +23,7 @@ const HomogenousModal = ({
     address: Address;
   };
 }) => {
-  const [token, setToken] = useState<SLCAsset>();
+  const [assets, setAssets] = useState<LendingAsset[]>();
 
   const { writeContractAsync, isSubmittedLoading, loading } = useXWriteContract(
     {
@@ -31,13 +32,14 @@ const HomogenousModal = ({
   );
 
   const enableMode = async () => {
-    if (token) {
+    if (assets?.length) {
       const { address, abi } = contact;
+      const mode = assets[0].lending_mode_num;
       writeContractAsync({
         address: address,
         abi,
         functionName: 'userModeSetting',
-        args: [BorrowModeType.RiskIsolation, token.address],
+        args: [mode, ZERO_ADDRESS],
       });
     }
   };
@@ -52,7 +54,7 @@ const HomogenousModal = ({
       maskClosable={false}
     >
       <div>
-        <TokenGroupSelector value={token} onChange={setToken} />
+        <TokenGroupSelector value={assets} onChange={setAssets} />
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex items-start justify-between">
             <span className="text-tc-secondary">Mode category</span>
@@ -60,7 +62,16 @@ const HomogenousModal = ({
           </div>
           <div className="flex items-start justify-between">
             <span className="text-tc-secondary">Available asset</span>
-            <span>{`${token?.symbol || '--'} > SLC`}</span>
+            <div className="text-[12px]">
+              {assets?.map((asset, index) => (
+                <span key={asset.id}>
+                  <span>{asset.token.symbol}</span>
+                  {index !== assets?.length - 1 && (
+                    <span className="px-[5px]">/</span>
+                  )}
+                </span>
+              ))}
+            </div>
           </div>
           <div className="flex items-start justify-between">
             <span className="text-tc-secondary">Health factor</span>
@@ -76,8 +87,8 @@ const HomogenousModal = ({
             </div>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Maximum loan to value</span>
-            <span>{`-- > ${token ? (token?.max_ltv ? Number(token?.max_ltv) / 100 : 0) : '--'}%`}</span>
+            {/*<span className="text-tc-secondary">Maximum loan to value</span>*/}
+            {/*<span>{`-- > ${token ? (token?.max_ltv ? Number(token?.max_ltv) / 100 : 0) : '--'}%`}</span>*/}
           </div>
         </div>
         <div>
@@ -92,7 +103,7 @@ const HomogenousModal = ({
               className="w-full"
               type="primary"
               size="large"
-              disabled={!token}
+              disabled={!assets?.length}
               onClick={enableMode}
               loading={isSubmittedLoading || loading}
             >

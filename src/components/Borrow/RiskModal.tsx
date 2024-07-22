@@ -205,7 +205,7 @@ const RiskModal = ({
     address: contact.address,
     abi: contact.abi,
     functionName: 'usersRiskDetails',
-    args: [address],
+    args: [address!],
   });
 
   const userValueUsedRatio = useMemo(() => {

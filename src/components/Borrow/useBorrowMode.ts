@@ -13,7 +13,7 @@ const useBorrowMode = (contact: { abi: Abi; address: Address }) => {
     address: contact.address,
     abi: contact.abi,
     functionName: 'userMode',
-    args: [address],
+    args: [address!],
     query: {
       enabled: !!address,
     },

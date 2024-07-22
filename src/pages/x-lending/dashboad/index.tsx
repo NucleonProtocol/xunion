@@ -40,6 +40,7 @@ function Dashboard() {
     lendingTotalBalance,
     lendingTotalAPY,
     lendingPowerUsed,
+    refetch,
   } = useDashboard();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
@@ -55,7 +56,7 @@ function Dashboard() {
             </span>
             <div className="flex items-center gap-[10px] text-[16px]">
               <BorrowMode
-                onSuccess={() => {}}
+                onSuccess={refetch}
                 contact={{ ...XUNION_LENDING_CONTRACT.interface }}
                 options={options}
               />

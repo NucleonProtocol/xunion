@@ -15,7 +15,7 @@ const useTokenPrice = ({
     address: XUNION_SLC_CONTRACT.oracle.address as Address,
     abi: XUNION_SLC_CONTRACT.oracle.abi,
     functionName: 'getPrice',
-    args: [address],
+    args: [address!],
   });
 
   const unitPrice = useMemo(() => {

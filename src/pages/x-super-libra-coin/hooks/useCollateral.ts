@@ -23,7 +23,7 @@ const useCollateral = () => {
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
     functionName: 'userAssetOverview',
-    args: [address],
+    args: [address!],
     query: {
       enabled: !!address,
     },
@@ -33,7 +33,7 @@ const useCollateral = () => {
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
     functionName: 'userMode',
-    args: [address],
+    args: [address!],
     query: {
       enabled: !!address,
     },

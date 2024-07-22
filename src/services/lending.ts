@@ -10,3 +10,9 @@ export const getLendingAssets = async (params: {
     .get<ResponseType<ListType<LendingAsset>>>('/v1/lending', { params })
     .then((res) => res.data?.data);
 };
+
+export const getLendingTokenGroup = async () => {
+  return request
+    .get<ResponseType<ListType<LendingAsset[]>>>('/v1/lending/group')
+    .then((res) => res.data?.data);
+};
