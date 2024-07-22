@@ -8,7 +8,20 @@ import RiskModal from '@/components/Borrow/RiskModal.tsx';
 import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
+import { BorrowModeType } from '@/types/slc.ts';
 
+const options = [
+  {
+    label: 'High liquidity mode',
+    description: 'Use high liquidity collateral for borrowing',
+    value: BorrowModeType.HighLiquidity,
+  },
+  {
+    label: 'Risk isolation mode',
+    description: 'Only use one high-risk asset to borrow SLC',
+    value: BorrowModeType.RiskIsolation,
+  },
+];
 const Position = ({
   health,
   loading,
@@ -143,6 +156,7 @@ const Position = ({
                 <BorrowMode
                   onSuccess={refresh}
                   contact={{ ...XUNION_SLC_CONTRACT.interface }}
+                  options={options}
                 />
               </div>
             </div>

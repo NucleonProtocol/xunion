@@ -1,31 +1,22 @@
-import BorrowModeSelector from '@/components/Borrow/BorrowModeSelector.tsx';
+import BorrowModeDropdown from '@/components/Borrow/BorrowModeDropdown.tsx';
 import HighLiquidityModal from '@/components/Borrow/HighLiquidityModal.tsx';
 import useBorrowMode from '@/components/Borrow/useBorrowMode.ts';
 import { BorrowModeType } from '@/types/slc.ts';
 import RiskIsolationModal from '@/components/Borrow/RiskIsolationModal.tsx';
 import { Abi, Address } from 'viem';
+import HomogenousModal from '@/components/Borrow/HomogenousModal.tsx';
 
-const options = [
-  {
-    label: 'High liquidity mode',
-    description: 'Use high liquidity collateral for borrowing',
-    value: BorrowModeType.HighLiquidity,
-  },
-  {
-    label: 'Risk isolation mode',
-    description: 'Only use one high-risk asset to borrow SLC',
-    value: BorrowModeType.RiskIsolation,
-  },
-];
 const BorrowMode = ({
   onSuccess,
   contact,
+  options,
 }: {
   onSuccess: () => void;
   contact: {
     abi: Abi;
     address: Address;
   };
+  options: { label: string; description: string; value: BorrowModeType }[];
 }) => {
   const { mode, effectiveMode, setMode } = useBorrowMode(contact);
   return (
@@ -42,7 +33,13 @@ const BorrowMode = ({
         onSuccess={onSuccess}
         contact={contact}
       />
-      <BorrowModeSelector
+      <HomogenousModal
+        open={mode === BorrowModeType.Homogenous}
+        onClose={() => setMode(undefined)}
+        onSuccess={onSuccess}
+        contact={contact}
+      />
+      <BorrowModeDropdown
         options={options}
         value={effectiveMode}
         onChange={(mode) => {

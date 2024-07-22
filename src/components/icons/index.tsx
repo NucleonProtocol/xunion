@@ -151,7 +151,7 @@ export const ExchangeIcon = (props: IconProps) => (
   </Icon>
 );
 export const SpinIcon = ({ className, ...props }: IconProps) => (
-  <Icon {...props} className={cn('animate-spin', className)}>
+  <Icon {...props} className={cn('animate-spin text-[16px]', className)}>
     <SlowmoSvg />
   </Icon>
 );

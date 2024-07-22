@@ -4,7 +4,7 @@ import { Popover } from 'antd';
 import { cn } from '@/utils/classnames.ts';
 import { BorrowModeType } from '@/types/slc.ts';
 
-const BorrowModeSelector = ({
+const BorrowModeDropdown = ({
   value,
   onChange,
   options,
@@ -48,4 +48,4 @@ const BorrowModeSelector = ({
   );
 };
 
-export default BorrowModeSelector;
+export default BorrowModeDropdown;

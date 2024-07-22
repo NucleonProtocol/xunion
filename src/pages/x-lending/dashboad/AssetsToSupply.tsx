@@ -29,7 +29,7 @@ const AssetsToSupply = () => {
     },
     {
       key: 'balance',
-      title: 'Balance',
+      title: 'Wallet Balance',
       dataIndex: 'balance',
       render: (_: string, record: SLCAsset) => {
         return (
@@ -91,8 +91,12 @@ const AssetsToSupply = () => {
       title="Assets to supply"
       description={
         <div className="flex items-center gap-[5px]">
-          <Checkbox />
-          <span>Show 0 balance assets</span>
+          <label htmlFor="chckbox" className="flex items-center">
+            <Checkbox id="chckbox" />
+            <span className="cursor-pointer select-none pl-[10px]">
+              Show 0 balance assets
+            </span>
+          </label>
         </div>
       }
     >

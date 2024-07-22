@@ -7,9 +7,27 @@ import AssetsToBorrow from '@/pages/x-lending/dashboad/AssetsToBorrow.tsx';
 import useDashboard from '@/pages/x-lending/hooks/useDashboard.ts';
 import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
+import { BorrowModeType } from '@/types/slc.ts';
 
+const options = [
+  {
+    label: 'High liquidity mode',
+    description: 'Use high liquidity collateral for borrowing',
+    value: BorrowModeType.HighLiquidity,
+  },
+  {
+    label: 'Risk isolation mode',
+    description: 'Only use one high-risk asset to borrow SLC',
+    value: BorrowModeType.RiskIsolation,
+  },
+  {
+    label: 'Homogenous mode',
+    description: 'Only use homogenous asset for borrowing',
+    value: BorrowModeType.Homogenous,
+  },
+];
 function Dashboard() {
-  const { netWorth, netApy, health } = useDashboard();
+  const { netWorth, netApy, health, lendingAssets, loading } = useDashboard();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
       <div className="max-w-[1200px] overflow-hidden  max-md:mx-[20px]">
@@ -26,18 +44,19 @@ function Dashboard() {
               <BorrowMode
                 onSuccess={() => {}}
                 contact={{ ...XUNION_LENDING_CONTRACT.interface }}
+                options={options}
               />
             </div>
           </div>
         </div>
         <div className="flex gap-[24px]">
           <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
-            <Supplies />
-            <AssetsToSupply />
+            <Supplies assets={lendingAssets} loading={loading} />
+            <AssetsToSupply assets={lendingAssets} loading={loading} />
           </div>
           <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
-            <Borrows />
-            <AssetsToBorrow />
+            <Borrows assets={lendingAssets} loading={loading} />
+            <AssetsToBorrow assets={lendingAssets} loading={loading} />
           </div>
         </div>
       </div>

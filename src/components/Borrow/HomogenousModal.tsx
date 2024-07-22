@@ -3,12 +3,12 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { BorrowModeType, SLCAsset } from '@/types/slc.ts';
-import TokenAssetsSelector from '@/components/Borrow/TokenAssetsSelector.tsx';
 import { useState } from 'react';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Abi, Address } from 'viem';
+import TokenGroupSelector from '@/components/Borrow/TokenGroupSelector.tsx';
 
-const RiskIsolationModal = ({
+const HomogenousModal = ({
   open,
   onClose,
   onSuccess,
@@ -52,7 +52,7 @@ const RiskIsolationModal = ({
       maskClosable={false}
     >
       <div>
-        <TokenAssetsSelector value={token} onChange={setToken} />
+        <TokenGroupSelector value={token} onChange={setToken} />
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex items-start justify-between">
             <span className="text-tc-secondary">Mode category</span>
@@ -105,4 +105,4 @@ const RiskIsolationModal = ({
   );
 };
 
-export default RiskIsolationModal;
+export default HomogenousModal;

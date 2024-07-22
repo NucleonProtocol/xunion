@@ -16,4 +16,5 @@ export interface SLCAsset extends Token {
 export enum BorrowModeType {
   HighLiquidity,
   RiskIsolation,
+  Homogenous,
 }
