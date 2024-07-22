@@ -223,7 +223,9 @@ const useDashboard = () => {
       lendingAssets || [],
       (item) => item.depositAmount || 0
     );
-    return totalBalance ? (remainingBalance / totalBalance) * 100 : 0;
+    return totalBalance
+      ? formatNumber((remainingBalance / totalBalance) * 100, 2)
+      : 0;
   }, [lendingAssets]);
 
   const lendingTotalAPY = useMemo(() => {
@@ -235,7 +237,9 @@ const useDashboard = () => {
       lendingAssets || [],
       (item) => item.lendingAmount || 0
     );
-    return totalBalance ? (remainingBalance / totalBalance) * 100 : 0;
+    return totalBalance
+      ? formatNumber((remainingBalance / totalBalance) * 100, 2)
+      : 0;
   }, [lendingAssets]);
 
   const lendingPowerUsed = useMemo(() => {

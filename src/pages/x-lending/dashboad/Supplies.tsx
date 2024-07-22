@@ -153,7 +153,10 @@ const Supplies = ({
           onClose={() => {
             setDepositItem(undefined);
           }}
-          refresh={refetch}
+          refresh={() => {
+            refetch();
+            setDepositItem(undefined);
+          }}
           userHealthFactor={health}
         />
       )}
@@ -164,7 +167,10 @@ const Supplies = ({
           onClose={() => {
             setWithdrawItem(undefined);
           }}
-          refresh={refetch}
+          refresh={() => {
+            refetch();
+            setWithdrawItem(undefined);
+          }}
         />
       )}
 

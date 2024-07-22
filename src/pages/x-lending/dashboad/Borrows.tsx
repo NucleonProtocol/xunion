@@ -7,6 +7,7 @@ import { formatCurrency } from '@/utils';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useState } from 'react';
 import LendingModal from '@/pages/x-lending/dashboad/LendingModal.tsx';
+import RepayModal from '@/pages/x-lending/dashboad/RepayModal.tsx';
 
 const Borrows = ({
   assets,
@@ -27,6 +28,7 @@ const Borrows = ({
 }) => {
   const { address } = useAccount();
   const [lendingItem, setLendingItem] = useState<LendingAsset>();
+  const [repayItem, setRepayItem] = useState<LendingAsset>();
 
   const columns: ColumnType<LendingAsset>[] = [
     {
@@ -91,7 +93,10 @@ const Borrows = ({
           <Button
             size="small"
             className="rounded-[8px] text-[12px]"
-            onClick={() => {}}
+            disabled={!record.lendingAmount}
+            onClick={() => {
+              setRepayItem(record);
+            }}
           >
             Repay
           </Button>
@@ -120,10 +125,26 @@ const Borrows = ({
       {lendingItem && (
         <LendingModal
           asset={lendingItem}
-          refresh={refetch}
+          refresh={() => {
+            refetch();
+            setRepayItem(undefined);
+          }}
           userHealthFactor={health}
           onClose={() => {
             setLendingItem(undefined);
+          }}
+        />
+      )}
+      {repayItem && (
+        <RepayModal
+          asset={repayItem}
+          refresh={() => {
+            refetch();
+            setRepayItem(undefined);
+          }}
+          userHealthFactor={health}
+          onClose={() => {
+            setRepayItem(undefined);
           }}
         />
       )}

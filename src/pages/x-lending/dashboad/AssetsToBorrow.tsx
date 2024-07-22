@@ -90,7 +90,10 @@ const Borrows = ({
       {lendingItem && (
         <LendingModal
           asset={lendingItem}
-          refresh={refetch}
+          refresh={() => {
+            refetch();
+            setLendingItem(undefined);
+          }}
           userHealthFactor={health}
           onClose={() => {
             setLendingItem(undefined);

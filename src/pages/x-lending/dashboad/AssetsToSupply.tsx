@@ -137,7 +137,10 @@ const AssetsToSupply = ({
           onClose={() => {
             setDepositItem(undefined);
           }}
-          refresh={refetch}
+          refresh={() => {
+            refetch();
+            setDepositItem(undefined);
+          }}
           userHealthFactor={health}
         />
       )}

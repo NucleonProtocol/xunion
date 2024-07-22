@@ -108,7 +108,7 @@ const RepaySLCModal = ({
             amountLabel="Available"
             showDropArrow={false}
             onMax={() => {
-              setPayAmount(String(availableAmount));
+              setPayAmount(formatNumber(availableAmount || 0, 6).toString());
             }}
           />
         </div>

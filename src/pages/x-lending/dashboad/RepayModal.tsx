@@ -3,25 +3,24 @@ import TokenInput from '@/components/TokenInput.tsx';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
-import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import Warning from '@/components/Warning.tsx';
 import { formatCurrency } from '@/utils';
-import useRepaySLC from '@/pages/x-super-libra-coin/hooks/useRepaySLC.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { isNumeric } from '@/utils/isNumeric.ts';
+import useRepay from '@/pages/x-lending/hooks/useRepay.ts';
+import { LendingAsset } from '@/types/Lending.ts';
+import { XUNION_LENDING_CONTRACT } from '@/contracts';
 
-const RepaySLCModal = ({
-  open,
+const RepayModal = ({
+  asset,
   onClose,
-  availableAmount,
   refresh,
   userHealthFactor,
 }: {
-  open: boolean;
+  asset: LendingAsset;
   onClose: () => void;
-  availableAmount: number;
   refresh: () => void;
   userHealthFactor: number;
 }) => {
@@ -36,7 +35,8 @@ const RepaySLCModal = ({
     onConfirm,
     healthFactor,
     loading,
-  } = useRepaySLC({ availableAmount, refresh });
+    availableAmount,
+  } = useRepay({ asset, refresh });
 
   const {
     isApproved: isTokenAApproved,
@@ -45,7 +45,7 @@ const RepaySLCModal = ({
   } = useApprove({
     token: inputToken!,
     amount: payAmount,
-    spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
+    spenderAddress: XUNION_LENDING_CONTRACT.interface.address as Address,
   });
 
   const renderSwapText = () => {
@@ -67,7 +67,7 @@ const RepaySLCModal = ({
           loading={isTokenAApproving}
           onClick={approveTokenA}
         >
-          Give permission to use SLC
+          {`Give permission to use ${inputToken?.symbol}`}
         </Button>
       );
     }
@@ -80,15 +80,15 @@ const RepaySLCModal = ({
         onClick={onConfirm}
         loading={isSubmittedLoading || loading}
       >
-        Repay SLC
+        {`Repay ${inputToken?.symbol}`}
       </Button>
     );
   };
   return (
     <Modal
-      open={open}
+      open={!!asset}
       onCancel={onClose}
-      title="Repay SLC"
+      title={`Repay ${inputToken?.symbol}`}
       footer={null}
       centered
       maskClosable={false}
@@ -108,7 +108,7 @@ const RepaySLCModal = ({
             amountLabel="Available"
             showDropArrow={false}
             onMax={() => {
-              setPayAmount(String(availableAmount));
+              setPayAmount(formatNumber(availableAmount || 0, 6).toString());
             }}
           />
         </div>
@@ -116,15 +116,18 @@ const RepaySLCModal = ({
           <div className="flex-center-between">
             <span className="text-tc-secondary">Remaining debt</span>
             <div className="flex-center flex gap-[10px]">
-              <span>{formatCurrency(availableAmount, false)} SLC</span>
+              <span>
+                {formatCurrency(availableAmount || 0, false)} $
+                {inputToken?.symbol}
+              </span>
               <span>{`->`}</span>
               <span>
                 {formatCurrency(
-                  availableAmount -
+                  (availableAmount || 0) -
                     Number(isNumeric(payAmount) ? payAmount : 0),
                   false
                 )}{' '}
-                SLC
+                ${inputToken?.symbol}
               </span>
             </div>
           </div>
@@ -159,4 +162,4 @@ const RepaySLCModal = ({
   );
 };
 
-export default RepaySLCModal;
+export default RepayModal;
