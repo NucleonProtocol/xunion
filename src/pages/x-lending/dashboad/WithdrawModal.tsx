@@ -6,7 +6,7 @@ import Warning from '@/components/Warning.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
-const BorrowSLCModal = ({
+const WithdrawModal = ({
   open,
   onClose,
   availableAmount,
@@ -111,4 +111,4 @@ const BorrowSLCModal = ({
   );
 };
 
-export default BorrowSLCModal;
+export default WithdrawModal;

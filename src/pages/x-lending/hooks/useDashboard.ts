@@ -59,7 +59,11 @@ const useDashboard = () => {
       enabled: !!address,
     },
   });
-  const { data: userAssets, isLoading } = useReadContract({
+  const {
+    data: userAssets,
+    isLoading,
+    refetch: refetchAssets,
+  } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
     functionName: 'userAssetDetail',
@@ -257,6 +261,7 @@ const useDashboard = () => {
     lendingTotalAPY,
     lendingPowerUsed,
     refetch,
+    refetchAssets,
   };
 };
 

@@ -7,17 +7,23 @@ import { formatCurrency } from '@/utils';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useEffect, useState } from 'react';
+import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
 
 const AssetsToSupply = ({
   assets,
   loading,
+  health,
+  refetch,
 }: {
   assets: LendingAsset[];
   loading: boolean;
+  health: number;
+  refetch: () => void;
 }) => {
   const [filteredAssets, setFilteredAssets] = useState<LendingAsset[]>([]);
   const [checked, setChecked] = useState(false);
   const { address } = useAccount();
+  const [depositItem, setDepositItem] = useState<LendingAsset>();
 
   useEffect(() => {
     if (!checked) {
@@ -93,8 +99,10 @@ const AssetsToSupply = ({
             type="primary"
             className="rounded-[8px] text-[12px]"
             size="small"
-            onClick={() => {}}
-            disabled={!record.canCollateral}
+            onClick={() => {
+              setDepositItem(record);
+            }}
+            disabled={!record.canCollateral || !record.erc20Balance}
           >
             Supply
           </Button>
@@ -123,6 +131,17 @@ const AssetsToSupply = ({
         </div>
       }
     >
+      {depositItem && (
+        <DepositModal
+          asset={depositItem}
+          onClose={() => {
+            setDepositItem(undefined);
+          }}
+          refresh={refetch}
+          userHealthFactor={health}
+        />
+      )}
+
       <Table
         columns={address ? [...columns, actionColumn] : columns}
         dataSource={filteredAssets}

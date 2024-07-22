@@ -10,6 +10,8 @@ import {
 } from '@ant-design/icons';
 import { useAccount } from 'wagmi';
 import { LendingAsset } from '@/types/Lending.ts';
+import { useState } from 'react';
+import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
 
 const Supplies = ({
   assets,
@@ -17,14 +19,20 @@ const Supplies = ({
   depositTotalCollateralBalance,
   depositTotalAPY,
   depositTotalBalance,
+  health,
+  refetch,
 }: {
   assets: LendingAsset[];
   loading: boolean;
   depositTotalCollateralBalance: number;
   depositTotalAPY: number;
   depositTotalBalance: number;
+  health: number;
+  refetch: () => void;
 }) => {
   const { address } = useAccount();
+  const [depositItem, setDepositItem] = useState<LendingAsset>();
+
   const columns: ColumnType<LendingAsset>[] = [
     {
       key: 'Asset',
@@ -93,8 +101,10 @@ const Supplies = ({
                 type="text"
                 ghost
                 className="text-primary text-left"
-                disabled={!record.canCollateral}
-                onClick={() => {}}
+                onClick={() => {
+                  setDepositItem(record);
+                }}
+                disabled={!record.canCollateral || !record.erc20Balance}
               >
                 Supply
               </Button>
@@ -103,6 +113,7 @@ const Supplies = ({
                 ghost
                 className="text-primary text-left "
                 onClick={() => {}}
+                disabled={!record.depositAmount}
               >
                 Withdraw
               </Button>
@@ -132,6 +143,17 @@ const Supplies = ({
         </div>
       }
     >
+      {depositItem && (
+        <DepositModal
+          asset={depositItem}
+          onClose={() => {
+            setDepositItem(undefined);
+          }}
+          refresh={refetch}
+          userHealthFactor={health}
+        />
+      )}
+
       <Table
         columns={address ? [...columns, actionColumn] : columns}
         dataSource={assets}

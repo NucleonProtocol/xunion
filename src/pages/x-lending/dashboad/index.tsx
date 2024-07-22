@@ -40,6 +40,7 @@ function Dashboard() {
     lendingTotalAPY,
     lendingPowerUsed,
     refetch,
+    refetchAssets,
   } = useDashboard();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
@@ -70,8 +71,21 @@ function Dashboard() {
               depositTotalBalance={depositTotalBalance}
               depositTotalCollateralBalance={depositTotalCollateralBalance}
               depositTotalAPY={depositTotalAPY}
+              health={health}
+              refetch={() => {
+                refetchAssets();
+                refetch();
+              }}
             />
-            <AssetsToSupply assets={lendingAssets} loading={loading} />
+            <AssetsToSupply
+              assets={lendingAssets}
+              loading={loading}
+              health={health}
+              refetch={() => {
+                refetchAssets();
+                refetch();
+              }}
+            />
           </div>
           <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
             <Borrows

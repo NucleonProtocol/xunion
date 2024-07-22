@@ -4,6 +4,7 @@ import { useState } from 'react';
 import RiskModal from '@/components/Borrow/RiskModal.tsx';
 import { Button } from 'antd';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
+import { formatUnits } from 'ethers';
 
 const MarketInfo = ({
   netWorth,
@@ -28,7 +29,7 @@ const MarketInfo = ({
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px]">
         <span className="text-[16px] text-tc-secondary">Net worth</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(Number(netWorth.toString()), true)}
+          {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
         </span>
       </div>
 
