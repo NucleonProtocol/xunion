@@ -176,6 +176,7 @@ const useMintSLC = () => {
           abi,
           functionName: 'buySlcByCFX',
           value: `${amountIn}` as unknown as bigint,
+          args: [],
         });
       } else {
         writeContractAsync({

@@ -12,6 +12,7 @@ import { useAccount } from 'wagmi';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useState } from 'react';
 import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
+import WithdrawModal from '@/pages/x-lending/dashboad/WithdrawModal.tsx';
 
 const Supplies = ({
   assets,
@@ -32,6 +33,7 @@ const Supplies = ({
 }) => {
   const { address } = useAccount();
   const [depositItem, setDepositItem] = useState<LendingAsset>();
+  const [withdrawItem, setWithdrawItem] = useState<LendingAsset>();
 
   const columns: ColumnType<LendingAsset>[] = [
     {
@@ -112,8 +114,10 @@ const Supplies = ({
                 type="text"
                 ghost
                 className="text-primary text-left "
-                onClick={() => {}}
                 disabled={!record.depositAmount}
+                onClick={() => {
+                  setWithdrawItem(record);
+                }}
               >
                 Withdraw
               </Button>
@@ -151,6 +155,16 @@ const Supplies = ({
           }}
           refresh={refetch}
           userHealthFactor={health}
+        />
+      )}
+
+      {withdrawItem && (
+        <WithdrawModal
+          asset={withdrawItem}
+          onClose={() => {
+            setWithdrawItem(undefined);
+          }}
+          refresh={refetch}
         />
       )}
 

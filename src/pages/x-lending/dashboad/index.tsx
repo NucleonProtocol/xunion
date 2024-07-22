@@ -40,7 +40,6 @@ function Dashboard() {
     lendingTotalAPY,
     lendingPowerUsed,
     refetch,
-    refetchAssets,
   } = useDashboard();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
@@ -73,7 +72,6 @@ function Dashboard() {
               depositTotalAPY={depositTotalAPY}
               health={health}
               refetch={() => {
-                refetchAssets();
                 refetch();
               }}
             />
@@ -82,7 +80,6 @@ function Dashboard() {
               loading={loading}
               health={health}
               refetch={() => {
-                refetchAssets();
                 refetch();
               }}
             />

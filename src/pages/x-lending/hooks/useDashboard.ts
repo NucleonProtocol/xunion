@@ -32,7 +32,7 @@ const useDashboard = () => {
     getAssets({ pageSize: 20, pageNum: 1 });
   }, []);
 
-  const { data: userMode, refetch } = useReadContract({
+  const { data: userMode, refetch: refetchUserMode } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
     functionName: 'userMode',
@@ -41,7 +41,7 @@ const useDashboard = () => {
       enabled: !!address,
     },
   });
-  const { data: userProfile } = useReadContract({
+  const { data: userProfile, refetch: refetchUserProfile } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
     functionName: 'userProfile',
@@ -248,6 +248,12 @@ const useDashboard = () => {
     );
   }, [userDepositAndLendingValue]);
 
+  const refetch = () => {
+    refetchUserMode();
+    refetchAssets();
+    refetchUserProfile();
+  };
+
   return {
     netWorth,
     netApy,
@@ -261,7 +267,6 @@ const useDashboard = () => {
     lendingTotalAPY,
     lendingPowerUsed,
     refetch,
-    refetchAssets,
   };
 };
 

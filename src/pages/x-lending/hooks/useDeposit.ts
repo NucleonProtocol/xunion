@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Token } from '@/types/swap.ts';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
 import { isNumeric } from '@/utils/isNumeric.ts';
@@ -10,6 +9,7 @@ import useTokenPrice from '@/hooks/useTokenPrice.ts';
 import { parseUnits } from 'ethers';
 import { LendingAsset } from '@/types/Lending.ts';
 import useHealthFactor from '@/pages/x-lending/hooks/useHealthFactor.ts';
+import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useDeposit = ({
   asset,
@@ -19,7 +19,7 @@ const useDeposit = ({
   asset: LendingAsset;
 }) => {
   const { getBalance } = useErc20Balance();
-  const [inputToken] = useState<Token | undefined>(asset.token);
+  const inputToken = asset.token;
   const [payAmount, setPayAmount] = useState<string>('');
   const [healthFactor, setHealthFactor] = useState<string>();
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
@@ -29,7 +29,7 @@ const useDeposit = ({
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
   });
-
+  const { isNativeToken } = useNativeToken();
   const { getDepositHealth } = useHealthFactor(asset);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const useDeposit = ({
     functionName: 'decimals',
   });
 
-  const onConfirm = () => {
+  const depositNormal = async () => {
     if (decimals) {
       const amountIn = parseUnits(payAmount, decimals);
 
@@ -71,9 +71,29 @@ const useDeposit = ({
       writeContractAsync({
         address: address as Address,
         abi,
-        functionName: 'assetsDeposit2',
+        functionName: 'assetsDeposit',
         args: [inputToken?.address as Address, amountIn],
       });
+    }
+  };
+
+  const depositCFX = async () => {
+    if (decimals) {
+      const { address, abi } = XUNION_LENDING_CONTRACT.interface;
+      writeContractAsync({
+        address: address as Address,
+        abi,
+        functionName: 'assetsDeposit2',
+        value: parseUnits(payAmount, decimals),
+        args: [],
+      });
+    }
+  };
+  const onConfirm = () => {
+    if (isNativeToken(inputToken!)) {
+      depositCFX();
+    } else {
+      depositNormal();
     }
   };
 

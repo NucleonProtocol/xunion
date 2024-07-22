@@ -92,7 +92,7 @@ const useWithdraw = ({
         address: address as Address,
         abi,
         functionName: 'redeemPledgedAssets',
-        args: [inputToken?.address, amountIn],
+        args: [inputToken?.address as Address, amountIn],
       });
     }
   };
@@ -105,6 +105,7 @@ const useWithdraw = ({
         abi,
         functionName: 'redeemCFX',
         value: parseUnits(payAmount, decimals),
+        args: [],
       });
     }
   };

@@ -56,7 +56,7 @@ const useProvide = ({
         address: address as Address,
         abi,
         functionName: 'licensedAssetsPledge',
-        args: [inputToken?.address, amountIn],
+        args: [inputToken?.address as Address, amountIn],
       });
     }
   };
@@ -69,6 +69,7 @@ const useProvide = ({
         abi,
         functionName: 'CFXPledge',
         value: parseUnits(payAmount, decimals),
+        args: [],
       });
     }
   };

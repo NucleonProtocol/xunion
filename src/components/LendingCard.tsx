@@ -31,7 +31,8 @@ const LendingCard = ({
             <div className="flex-center-between">
               <span className="text-[24px] font-[500]">{title}</span>
               <Button
-                className="rounded-[20px]"
+                className="w-[60px] rounded-[20px]"
+                size="small"
                 onClick={() => {
                   setHide(!hide);
                 }}
