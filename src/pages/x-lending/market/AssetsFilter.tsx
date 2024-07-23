@@ -1,13 +1,7 @@
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-const PoolFilter = ({
-  onSearch,
-}: {
-  poolType: string;
-  onPoolChange: (value: string) => void;
-  onSearch: (value: string) => void;
-}) => {
+const AssetsFilter = () => {
   return (
     <div className="flex-center-between mb-[20px] mt-[32px]">
       <div className="flex-center gap-[40px]">Assets</div>
@@ -25,4 +19,4 @@ const PoolFilter = ({
   );
 };
 
-export default PoolFilter;
+export default AssetsFilter;

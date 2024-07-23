@@ -3,33 +3,35 @@ import { ColumnType } from 'antd/es/table';
 import { TokenIcon } from '@/components/icons';
 import { formatCurrency } from '@/utils';
 import { Button, Skeleton, Table } from 'antd';
-import PoolFilter from './PoolFilter.tsx';
-import usePool from '@/pages/x-dex/hooks/usePool.ts';
-import { PoolType } from '@/types/pool.ts';
-import { formatUnits } from 'ethers';
+import AssetsFilter from './AssetsFilter.tsx';
 import { useNavigate } from 'react-router-dom';
 import { EyeOutlined } from '@ant-design/icons';
+import { LendingAsset } from '@/types/Lending.ts';
 
-const PoolList = () => {
+const AssetsList = ({
+  assets,
+  loading,
+}: {
+  assets: LendingAsset[];
+  loading: boolean;
+}) => {
   const { address } = useAccount();
-
-  const { pools, poolType, onPoolChange, onSearch, isPending } = usePool();
 
   const navigate = useNavigate();
 
-  const columns: ColumnType<PoolType>[] = [
+  const columns: ColumnType<LendingAsset>[] = [
     {
       key: 'name',
       title: 'Asset',
       dataIndex: 'name',
       width: 240,
-      render: (_: string, record: PoolType) => {
+      render: (_: string, record) => {
         return (
           <div className="flex  gap-[10px]">
             <span>
-              <TokenIcon src={record.tokenA.icon} width={20} height={20} />
+              <TokenIcon src={record.token.icon} width={20} height={20} />
             </span>
-            <span>{`${record.tokenA.symbol}`}</span>
+            <span>{`${record.token.symbol}`}</span>
           </div>
         );
       },
@@ -39,10 +41,10 @@ const PoolList = () => {
       title: 'Total supplied',
       dataIndex: 'tvl',
       width: 240,
-      render: (_: string, record: PoolType) => {
+      render: (_: string, record) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.tvl || 0n)), true)}
+            {formatCurrency(Number(record.availableAmount || 0n), true)}
           </div>
         );
       },
@@ -52,10 +54,10 @@ const PoolList = () => {
       title: 'Supply APY',
       dataIndex: 'volume24h',
       width: 240,
-      render: (_: string, record: PoolType) => {
+      render: (_: string, record) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.volume24h || 0n)), true)}
+            {formatCurrency(Number(record?.availableAmount || 0n), true)}
           </div>
         );
       },
@@ -65,9 +67,9 @@ const PoolList = () => {
       title: 'Total borrowed',
       dataIndex: 'fees',
       align: 'center',
-      render: (value: string) => (
+      render: (_: string, record) => (
         <div className="flex flex-col gap-[5px]">
-          {formatCurrency(Number(formatUnits(value || 0n)), true)}
+          {formatCurrency(Number(record.availableAmount || 0n), true)}
         </div>
       ),
     },
@@ -79,18 +81,16 @@ const PoolList = () => {
       render: (value: string) => value || '-',
     },
   ];
-  const actionColumn = {
+  const actionColumn: ColumnType<LendingAsset> = {
     key: 'action',
     title: 'Action',
-    render: (_: string, record: PoolType) => {
+    render: (_: string) => {
       return (
         <Button
           type="text"
           className="text-primary text-left "
           onClick={() => {
-            navigate(
-              `/x-dex/swap?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
-            );
+            navigate(`/x-dex/swap`);
           }}
           icon={<EyeOutlined />}
         />
@@ -99,20 +99,16 @@ const PoolList = () => {
   };
   return (
     <div className="flex w-full flex-col">
-      <PoolFilter
-        poolType={poolType}
-        onPoolChange={onPoolChange}
-        onSearch={onSearch}
-      />
+      <AssetsFilter />
       <div className="bg-fill-niubi">
-        {isPending ? (
+        {loading ? (
           <div className="p-[24px]">
             <Skeleton active />
           </div>
         ) : (
           <Table
             columns={address ? [...columns, actionColumn] : columns}
-            dataSource={pools}
+            dataSource={assets}
             bordered={false}
             rowHoverable={false}
             pagination={false}
@@ -124,4 +120,4 @@ const PoolList = () => {
   );
 };
 
-export default PoolList;
+export default AssetsList;
