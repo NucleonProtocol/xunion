@@ -4,6 +4,9 @@ import { LeftOutlined } from '@ant-design/icons';
 import { CHAINS } from '@/contracts/chains.tsx';
 import { useNavigate } from 'react-router-dom';
 import { Button, Skeleton } from 'antd';
+import TokenBorrowInfo from '@/pages/x-lending/market/TokenBorrowInfo.tsx';
+import TokenSupplyInfo from '@/pages/x-lending/market/TokenSupplyInfo.tsx';
+import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
 
 function MarketDetail() {
   const { netWorth, tokenAsset, loading } = useMarketDetail();
@@ -50,9 +53,14 @@ function MarketDetail() {
             <AssetInfo netWorth={netWorth} asset={tokenAsset} />
           )}
         </div>
-        <div className="flex justify-between gap-[24px]">
-          <div className="flex w-[600px] flex-shrink-0 flex-col gap-[24px] overflow-hidden"></div>
-          <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden"></div>
+        <div className="flex w-full flex-col gap-[24px]">
+          <div className="flex  flex-shrink-0  gap-[24px] overflow-hidden">
+            <TokenBorrowInfo />
+            <TokenSupplyInfo />
+          </div>
+          <div className="flex w-full flex-shrink-0 flex-col gap-[24px] overflow-hidden">
+            <InterestRateModel />
+          </div>
         </div>
       </div>
     </div>

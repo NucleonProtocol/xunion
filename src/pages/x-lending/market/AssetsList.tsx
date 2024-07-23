@@ -87,7 +87,7 @@ const AssetsList = ({
   ];
   const actionColumn: ColumnType<LendingAsset> = {
     key: 'action',
-    title: 'Action',
+    title: '',
     render: (_: string, record) => {
       return (
         <Button
