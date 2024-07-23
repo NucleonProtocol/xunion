@@ -10,9 +10,6 @@ const AssetsFilter = () => {
           prefix={<SearchOutlined />}
           placeholder="Search name"
           className="rounded-[20px]"
-          onBlur={(e) => {
-            onSearch(e.target.value);
-          }}
         />
       </div>
     </div>
