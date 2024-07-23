@@ -11,7 +11,8 @@ import MintSLC from 'src/pages/x-super-libra-coin/mint';
 import BurnSLC from 'src/pages/x-super-libra-coin/burn';
 import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
 import Dashboard from '@/pages/x-lending/dashboad';
-import Markert from '@/pages/x-lending/market';
+import Market from '@/pages/x-lending/market';
+import MarketDetail from '@/pages/x-lending/market/MarketDetail';
 
 const routes = [
   {
@@ -97,7 +98,11 @@ const routes = [
           },
           {
             path: 'market',
-            element: <Markert />,
+            element: <Market />,
+          },
+          {
+            path: 'market/:address',
+            element: <MarketDetail />,
           },
         ],
       },

@@ -16,7 +16,6 @@ const AssetsList = ({
   loading: boolean;
 }) => {
   const { address } = useAccount();
-
   const navigate = useNavigate();
 
   const columns: ColumnType<LendingAsset>[] = [
@@ -41,10 +40,11 @@ const AssetsList = ({
       title: 'Total supplied',
       dataIndex: 'tvl',
       width: 240,
-      render: (_: string, record) => {
+      render: (_: string, record: LendingAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(record.availableAmount || 0n), true)}
+            <span>{formatCurrency(record?.availableAmount || 0, false)}</span>
+            <span>{formatCurrency(record?.availableTotalPrice || 0)}</span>
           </div>
         );
       },
@@ -54,10 +54,11 @@ const AssetsList = ({
       title: 'Supply APY',
       dataIndex: 'volume24h',
       width: 240,
-      render: (_: string, record) => {
+      render: (_: string, record: LendingAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(record?.availableAmount || 0n), true)}
+            <span>{formatCurrency(record?.availableAmount || 0, false)}</span>
+            <span>{formatCurrency(record?.availableTotalPrice || 0)}</span>
           </div>
         );
       },
@@ -67,30 +68,33 @@ const AssetsList = ({
       title: 'Total borrowed',
       dataIndex: 'fees',
       align: 'center',
-      render: (_: string, record) => (
-        <div className="flex flex-col gap-[5px]">
-          {formatCurrency(Number(record.availableAmount || 0n), true)}
-        </div>
-      ),
+      render: (_: string, record: LendingAsset) => {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            <span>{formatCurrency(record?.availableAmount || 0, false)}</span>
+            <span>{formatCurrency(record?.availableTotalPrice || 0)}</span>
+          </div>
+        );
+      },
     },
     {
       key: 'APR',
       title: 'Borrow APY, variable',
       dataIndex: 'apr',
       align: 'center',
-      render: (value: string) => value || '-',
+      render: (_: string) => '79%' || '-',
     },
   ];
   const actionColumn: ColumnType<LendingAsset> = {
     key: 'action',
     title: 'Action',
-    render: (_: string) => {
+    render: (_: string, record) => {
       return (
         <Button
           type="text"
           className="text-primary text-left "
           onClick={() => {
-            navigate(`/x-dex/swap`);
+            navigate(`/x-lending/market/${record.token.address}?chainId=71`);
           }}
           icon={<EyeOutlined />}
         />
@@ -112,7 +116,7 @@ const AssetsList = ({
             bordered={false}
             rowHoverable={false}
             pagination={false}
-            rowKey="name"
+            rowKey="id"
           />
         )}
       </div>

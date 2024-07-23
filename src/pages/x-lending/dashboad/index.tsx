@@ -62,8 +62,8 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="flex gap-[24px]">
-          <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
+        <div className="flex justify-between gap-[24px]">
+          <div className="flex w-[600px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
             <Supplies
               assets={lendingAssets}
               loading={loading}
