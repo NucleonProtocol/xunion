@@ -64,7 +64,7 @@ const TokenGroupSelector = ({
                     onOpen(false);
                   }}
                 >
-                  <span className="text-tc-secondary">Group {index}</span>
+                  <span className="text-tc-secondary">Group {index + 1}</span>
                   {renderGroupAsset(item)}
                 </div>
               ))}

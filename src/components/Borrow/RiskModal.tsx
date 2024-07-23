@@ -37,10 +37,10 @@ const HealthFactorInfo = ({
             <span
               className="absolute top-[-15px] line-clamp-1 flex w-[100px] whitespace-nowrap text-center text-[12px]  "
               style={{
-                transform: 'translateX(10%)',
+                transform: 'translateX(15%)',
               }}
             >
-              {`Your value: `}
+              <span className="pr-[3px]">{`Your:`}</span>
               <HealthFactor
                 value={formatNumber(userHealthFactor || 0, 2).toString()}
               />
@@ -118,10 +118,10 @@ const CurrentLTV = ({
               <span
                 className="absolute top-[-15px] line-clamp-1  flex w-[150px] flex-col text-left text-[12px]  "
                 style={{
-                  transform: 'translateX(-5%)',
+                  transform: 'translateX(-10%)',
                 }}
               >
-                Your value: {formatNumber(userValueUsedRatio || 0, 2)}
+                {`Your: ${formatNumber(userValueUsedRatio || 0, 2)}`}
               </span>
               <span className="text-tc-secondary">
                 <CaretDownOutlined />
@@ -148,10 +148,10 @@ const CurrentLTV = ({
               <span
                 className="absolute top-[22px] line-clamp-1 flex w-[100px] text-[12px]"
                 style={{
-                  transform: 'translateX(-50%)',
+                  transform: 'translateX(-20%)',
                 }}
               >
-                Max Value: {formatNumber(userMaxUsedRatio || 0, 2) || 'Fine'}
+                {`Max: ${formatNumber(userMaxUsedRatio || 0, 2) || 'Fine'}`}
               </span>
             </div>
           </div>
