@@ -55,8 +55,8 @@ function MarketDetail() {
         </div>
         <div className="flex w-full flex-col gap-[24px]">
           <div className="flex  flex-shrink-0  gap-[24px] overflow-hidden">
-            <TokenBorrowInfo />
             <TokenSupplyInfo />
+            <TokenBorrowInfo />
           </div>
           <div className="flex w-full flex-shrink-0 flex-col gap-[24px] overflow-hidden">
             <InterestRateModel />
