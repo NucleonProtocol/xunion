@@ -29,7 +29,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px]">
           <span className="text-[16px] text-tc-secondary">Reserve size</span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(formatNumber(asset?.lendingAmount || 0, 6), true)}
+            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
           </span>
         </div>
 
@@ -38,7 +38,13 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
             Available liquidity
           </span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
+            {formatCurrency(
+              formatNumber(
+                (asset?.depositAmount || 0) - (asset?.lendingAmount || 0),
+                6
+              ),
+              true
+            )}
           </span>
         </div>
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
@@ -46,7 +52,10 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
             Utilization rate
           </span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
+            {formatNumber(
+              (asset?.lendingAmount || 0) / (asset?.depositAmount || 1),
+              4
+            )}
           </span>
         </div>
       </div>
@@ -55,7 +64,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
           Oracle price
         </span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(formatNumber(asset?.availableAmount || 0, 6), true)}
+          {formatCurrency(formatNumber(asset?.oraclePrice || 0, 6), true)}
         </span>
       </div>
     </div>

@@ -54,7 +54,7 @@ const useMarketDetail = () => {
 
       const lendingInterests = (userAssets as bigint[][])[4];
 
-      const totalAvailableAmounts = (userAssets as bigint[][])[5];
+      const oracleAmounts = (userAssets as bigint[][])[5];
 
       const calls: ContractCall[] = tokens.map((tokenAddress) => ({
         name: 'getPrice',
@@ -90,13 +90,7 @@ const useMarketDetail = () => {
                 Number(lendingInterests[index].toString()) / 100;
               const depositInterest =
                 Number(depositInterests[index].toString()) / 100;
-              const availableAmount = Number(
-                formatUnits(totalAvailableAmounts[index])
-              );
-              const availableTotalPrice = formatNumber(
-                availableAmount * unitPrice,
-                6
-              );
+              const oraclePrice = Number(formatUnits(oracleAmounts[index]));
               newData.push({
                 ...asset,
                 depositAmount,
@@ -105,8 +99,7 @@ const useMarketDetail = () => {
                 lendingInterest,
                 depositTotalPrice,
                 lendingTotalPrice,
-                availableTotalPrice,
-                availableAmount,
+                oraclePrice,
               });
             }
           }
