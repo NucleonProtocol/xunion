@@ -101,7 +101,7 @@ const PoolList = () => {
               <Button
                 type="text"
                 ghost
-                className="text-primary text-left"
+                className="text-left text-primary"
                 onClick={() => {
                   navigate(
                     `/x-dex/liquidity?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
@@ -114,7 +114,7 @@ const PoolList = () => {
               <Button
                 type="text"
                 ghost
-                className="text-primary text-left "
+                className="text-left text-primary "
                 onClick={() => {
                   navigate(
                     `/x-dex/swap?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
@@ -175,7 +175,7 @@ const PoolList = () => {
             bordered={false}
             rowHoverable={false}
             pagination={false}
-            rowKey="name"
+            rowKey="id"
           />
         )}
       </div>

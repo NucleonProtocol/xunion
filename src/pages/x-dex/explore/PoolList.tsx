@@ -88,18 +88,16 @@ const PoolList = () => {
       render: (value: string) => value || '-',
     },
   ];
-  const actionColumn = {
+  const actionColumn: ColumnType<PoolType> = {
     key: 'action',
     title: '',
-    render: (_: string, record: PoolType) => {
+    render: (_: string, record) => {
       return (
         <Button
           type="text"
           className="text-left text-primary"
           onClick={() => {
-            navigate(
-              `/x-dex/liquidity?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
-            );
+            navigate(`/x-dex/explore/token/${record.tokenA.address}`);
           }}
           icon={<EyeOutlined />}
         />
@@ -119,7 +117,7 @@ const PoolList = () => {
           bordered={false}
           rowHoverable={false}
           pagination={false}
-          rowKey="name"
+          rowKey="id"
         />
       )}
     </div>
