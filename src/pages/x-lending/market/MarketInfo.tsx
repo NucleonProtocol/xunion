@@ -1,26 +1,34 @@
 import { formatCurrency } from '@/utils';
-import { formatUnits } from 'ethers';
+import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
-const MarketInfo = ({ netWorth }: { netWorth: bigint }) => {
+const MarketInfo = ({
+  totalLendingSize,
+  totalDepositSize,
+  totalMarketSize,
+}: {
+  totalLendingSize: number;
+  totalDepositSize: number;
+  totalMarketSize: number;
+}) => {
   return (
     <div className="flex items-center justify-start">
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px]">
         <span className="text-[16px] text-tc-secondary">Total market size</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+          {formatCurrency(formatNumber(totalMarketSize, 6), true)}
         </span>
       </div>
 
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
         <span className="text-[16px] text-tc-secondary">Total available</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+          {formatCurrency(formatNumber(totalLendingSize, 6), true)}
         </span>
       </div>
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
         <span className="text-[16px] text-tc-secondary">Total borrows</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+          {formatCurrency(formatNumber(totalDepositSize, 6), true)}
         </span>
       </div>
     </div>

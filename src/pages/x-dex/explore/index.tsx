@@ -1,5 +1,11 @@
-function Home() {
-  return <div>123123</div>;
+function Explore() {
+  return (
+    <div>
+      <div></div>
+
+      <div></div>
+    </div>
+  );
 }
 
-export default Home;
+export default Explore;

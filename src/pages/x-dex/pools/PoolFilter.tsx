@@ -24,7 +24,7 @@ const PoolFilter = ({
 }) => {
   return (
     <div className="flex-center-between mb-[20px] mt-[32px]">
-      <div className="flex-center gap-[40px]">
+      <div className="flex-center gap-[20px]">
         {(tabs || []).map((tab) => (
           <div
             key={tab.value}

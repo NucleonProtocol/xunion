@@ -6,7 +6,7 @@ import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Popover, Skeleton, Table } from 'antd';
 import PoolFilter from '@/pages/x-dex/pools/PoolFilter.tsx';
 import usePool from '@/pages/x-dex/hooks/usePool.ts';
-import TimePicker from '@/pages/x-dex/pools/TimePicker.tsx';
+import TimePicker from '@/components/TimePicker.tsx';
 import { PoolType } from '@/types/pool.ts';
 import { formatUnits } from 'ethers';
 import { useNavigate } from 'react-router-dom';
@@ -145,7 +145,24 @@ const PoolList = () => {
             <span className="text-[18px] font-bold">Pools</span>
             <span className="text-tc-secondary">{`(${total})`}</span>
           </div>
-          <TimePicker time={time} onTimeChange={onTimeChange} />
+          <TimePicker
+            time={time}
+            onTimeChange={onTimeChange}
+            options={[
+              {
+                label: '24H',
+                value: '24H',
+              },
+              {
+                label: '7D',
+                value: '7D',
+              },
+              {
+                label: '30D',
+                value: '30D',
+              },
+            ]}
+          />
         </div>
         {isPending ? (
           <div className="p-[24px]">

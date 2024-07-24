@@ -168,6 +168,33 @@
   },
   {
     "inputs": [],
+    "name": "generalParametersOfAllAssets",
+    "outputs": [
+      { "internalType": "address[]", "name": "tokens", "type": "address[]" },
+      {
+        "internalType": "uint256[]",
+        "name": "totalSupplied",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "totalBorrowed",
+        "type": "uint256[]"
+      },
+      { "internalType": "uint256[]", "name": "supplyApy", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "borrowApy", "type": "uint256[]" },
+      {
+        "internalType": "uint256[]",
+        "name": "assetsPrice",
+        "type": "uint256[]"
+      },
+      { "internalType": "uint8[]", "name": "tokenMode", "type": "uint8[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "homogeneousFloorOfHealthFactor",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
