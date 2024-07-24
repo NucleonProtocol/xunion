@@ -1,31 +1,35 @@
 import { formatCurrency } from '@/utils';
-import { formatUnits } from 'ethers';
 import { LendingAsset } from '@/types/Lending.ts';
 import { TokenIcon } from '@/components/icons';
+import { Tag } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
-const AssetInfo = ({
-  netWorth,
-  asset,
-}: {
-  netWorth: bigint;
-  asset?: LendingAsset;
-}) => {
+const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
   return (
     <div className="flex w-full items-center justify-around">
       <div className="mr-[40px] flex h-[76px] min-w-[225px] items-center gap-[20px] border-[2px] border-transparent border-r-line-primary">
-        <TokenIcon src={asset?.token.icon} width={50} height={50} />
-        <div className="flex flex-col items-center gap-[10px]">
-          <span className="text-[16px] text-tc-secondary">
-            {asset?.token.name || asset?.token.symbol}
-          </span>
-          <span className="text-[24px]">{asset?.token.symbol}</span>
+        <div className="flex  items-center gap-[10px]">
+          <TokenIcon src={asset?.token.icon} width={50} height={50} />
+          <div className="flex flex-col items-start gap-[10px]">
+            <span className="text-[16px] font-[500]">{`Wrapped ${asset?.token.name}`}</span>
+            <div className="flex gap-[5px]">
+              <span className="text-[14px] text-tc-secondary">{`${asset?.token.symbol}`}</span>
+              {asset?.lending_mode_num === '1' && (
+                <Tag color="error" className="flex gap-[3px]">
+                  <span> Isolated</span>
+                  <ExclamationCircleOutlined />
+                </Tag>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-1">
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px]">
           <span className="text-[16px] text-tc-secondary">Reserve size</span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+            {formatCurrency(formatNumber(asset?.lendingAmount || 0, 6), true)}
           </span>
         </div>
 
@@ -34,7 +38,7 @@ const AssetInfo = ({
             Available liquidity
           </span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
           </span>
         </div>
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
@@ -42,7 +46,7 @@ const AssetInfo = ({
             Utilization rate
           </span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
           </span>
         </div>
       </div>
@@ -51,7 +55,7 @@ const AssetInfo = ({
           Oracle price
         </span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
+          {formatCurrency(formatNumber(asset?.availableAmount || 0, 6), true)}
         </span>
       </div>
     </div>

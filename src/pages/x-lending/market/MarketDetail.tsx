@@ -9,7 +9,7 @@ import TokenSupplyInfo from '@/pages/x-lending/market/TokenSupplyInfo.tsx';
 import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
 
 function MarketDetail() {
-  const { netWorth, tokenAsset, loading } = useMarketDetail();
+  const { tokenAsset, loading } = useMarketDetail();
   const navigate = useNavigate();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
@@ -50,7 +50,7 @@ function MarketDetail() {
           {loading || !tokenAsset ? (
             <Skeleton active avatar={false} />
           ) : (
-            <AssetInfo netWorth={netWorth} asset={tokenAsset} />
+            <AssetInfo asset={tokenAsset} />
           )}
         </div>
         <div className="flex w-full flex-col gap-[24px]">

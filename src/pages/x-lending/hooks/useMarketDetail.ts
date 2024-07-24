@@ -1,7 +1,7 @@
 import { useAccount, useReadContract } from 'wagmi';
 import { XUNION_LENDING_CONTRACT, XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getLendingAssets } from '@/services/lending.ts';
 import useMulticall, { ContractCall } from '@/hooks/useMulticall.ts';
@@ -33,40 +33,29 @@ const useMarketDetail = () => {
     getAssets({ pageSize: 20, pageNum: 1 });
   }, []);
 
-  const { data: userMode } = useReadContract({
-    address: XUNION_LENDING_CONTRACT.interface.address as Address,
-    abi: XUNION_LENDING_CONTRACT.interface.abi,
-    functionName: 'userMode',
-    args: [address!],
-    query: {
-      enabled: !!address,
-    },
-  });
-  const { data: userProfile } = useReadContract({
-    address: XUNION_LENDING_CONTRACT.interface.address as Address,
-    abi: XUNION_LENDING_CONTRACT.interface.abi,
-    functionName: 'userProfile',
-    args: [address!],
-    query: {
-      enabled: !!address,
-    },
-  });
-
   const { data: userAssets, isLoading } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
-    functionName: 'userAssetDetail',
-    args: [address!],
+    functionName: 'generalParametersOfAllAssets',
+    args: [],
     query: {
       enabled: !!address,
     },
   });
 
   useEffect(() => {
-    if (userAssets && data?.items?.length && address && userMode) {
+    if (userAssets && data?.items?.length && address) {
       setLoading(true);
       const tokens = (userAssets as string[][])[0];
+      const depositAmounts = (userAssets as bigint[][])[1];
+      const lendingAmounts = (userAssets as bigint[][])[2];
+
+      const depositInterests = (userAssets as bigint[][])[3];
+
+      const lendingInterests = (userAssets as bigint[][])[4];
+
       const totalAvailableAmounts = (userAssets as bigint[][])[5];
+
       const calls: ContractCall[] = tokens.map((tokenAddress) => ({
         name: 'getPrice',
         abi: XUNION_SLC_CONTRACT.oracle.abi,
@@ -87,7 +76,20 @@ const useMarketDetail = () => {
               const unitPrice = Number(
                 formatUnits(allUnitPrice.returnData[index])
               );
-
+              const depositAmount = Number(formatUnits(depositAmounts[index]));
+              const lendingAmount = Number(formatUnits(lendingAmounts[index]));
+              const depositTotalPrice = formatNumber(
+                depositAmount * unitPrice,
+                6
+              );
+              const lendingTotalPrice = formatNumber(
+                lendingAmount * unitPrice,
+                6
+              );
+              const lendingInterest =
+                Number(lendingInterests[index].toString()) / 100;
+              const depositInterest =
+                Number(depositInterests[index].toString()) / 100;
               const availableAmount = Number(
                 formatUnits(totalAvailableAmounts[index])
               );
@@ -95,21 +97,17 @@ const useMarketDetail = () => {
                 availableAmount * unitPrice,
                 6
               );
-              const mode = String((userMode as number[])[0]);
-              const canCollateral =
-                (mode === '0' && asset.lending_mode_num !== '1') ||
-                (mode === '1' && asset.lending_mode_num === '1') ||
-                (mode !== '0' &&
-                  mode !== '1' &&
-                  asset.lending_mode_num === mode);
-
-              const data = {
+              newData.push({
                 ...asset,
+                depositAmount,
+                depositInterest,
+                lendingAmount,
+                lendingInterest,
+                depositTotalPrice,
+                lendingTotalPrice,
                 availableTotalPrice,
                 availableAmount,
-                canCollateral,
-              };
-              newData.push(data);
+              });
             }
           }
           setLendingAssets(newData);
@@ -118,21 +116,16 @@ const useMarketDetail = () => {
           setLoading(false);
         });
     }
-  }, [userAssets, address, data, userMode]);
-
-  const netWorth = useMemo(() => {
-    return userProfile ? (userProfile as bigint[])[0] : 0n;
-  }, [userProfile]);
+  }, [userAssets, address, data]);
 
   const tokenAsset = (lendingAssets || []).find(
     (item) => item.token.address.toLowerCase() === tokenAddress?.toLowerCase()
   );
 
   return {
-    netWorth,
-    loading: isLoading || isPending || loading,
+    loading: loading || isLoading || isPending,
+    setLendingAssets,
     tokenAsset,
-    lendingAssets,
   };
 };
 
