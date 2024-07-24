@@ -9,7 +9,7 @@ import {
 import { ChartContainer, type ChartConfig } from '@/components/Charts';
 
 const chartData = [
-  { browser: 'safari', visitors: 1260, fill: 'var(--xunion-color-theme)' },
+  { browser: 'safari', visitors: 3000, fill: 'var(--xunion-color-theme)' },
 ];
 const chartConfig = {
   visitors: {
@@ -22,52 +22,47 @@ const chartConfig = {
 
 const TotalSupplyPie = () => {
   return (
-    <div>
-      <ChartContainer
-        config={chartConfig}
-        className="mx-auto aspect-square max-h-[250px]"
+    <ChartContainer config={chartConfig} className="h-[85px] w-[100px]">
+      <RadialBarChart
+        data={chartData}
+        endAngle={200}
+        innerRadius={35}
+        outerRadius={50}
       >
-        <RadialBarChart
-          data={chartData}
-          endAngle={100}
-          innerRadius={80}
-          outerRadius={140}
-        >
-          <PolarGrid
-            gridType="circle"
-            radialLines={false}
-            stroke="none"
-            className="first:fill-fill-niubi3 last:fill-fill-niubi"
-            polarRadius={[86, 74]}
-          />
-          <RadialBar dataKey="visitors" background />
-          <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-            <Label
-              content={({ viewBox }) => {
-                if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                  return (
-                    <text
+        <PolarGrid
+          gridType="circle"
+          radialLines={false}
+          stroke="none"
+          className="first:fill-fill-niubi3 last:fill-fill-niubi"
+          polarRadius={[38, 32]}
+        />
+        <RadialBar dataKey="visitors" background />
+        <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+          <Label
+            content={({ viewBox }) => {
+              if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
+                return (
+                  <text
+                    x={viewBox.cx}
+                    y={viewBox.cy}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                  >
+                    <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
+                      className="fill-theme text-[12px]"
                     >
-                      <tspan
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        className="fill-theme text-[20px]"
-                      >
-                        25%
-                      </tspan>
-                    </text>
-                  );
-                }
-              }}
-            />
-          </PolarRadiusAxis>
-        </RadialBarChart>
-      </ChartContainer>
-    </div>
+                      7.25%
+                    </tspan>
+                  </text>
+                );
+              }
+            }}
+          />
+        </PolarRadiusAxis>
+      </RadialBarChart>
+    </ChartContainer>
   );
 };
 

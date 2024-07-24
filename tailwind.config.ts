@@ -68,6 +68,7 @@ const config: Config = {
           niubi: 'var(--xunion-fill-niubi)',
           niubi2: 'var(--xunion-fill-niubi2)',
           niubi3: 'var(--xunion-fill-niubi3)',
+          niubi4: 'var(--xunion-fill-niubi4)',
         },
         status: {
           info: 'var(--xunion-color-info)',

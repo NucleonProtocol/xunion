@@ -1,4 +1,4 @@
-import { CartesianGrid, Dot, Line, LineChart } from 'recharts';
+import { Dot, Line, LineChart, XAxis } from 'recharts';
 
 import {
   ChartConfig,
@@ -8,16 +8,31 @@ import {
 } from '@/components/Charts';
 
 const chartData = [
-  { browser: 'chrome', visitors: 275, fill: 'var(--color-chrome)' },
-  { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
-  { browser: 'firefox', visitors: 187, fill: 'var(--color-firefox)' },
-  { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
-  { browser: 'other', visitors: 90, fill: 'var(--color-other)' },
+  {
+    browser: 'chrome',
+    APY: 275,
+    fill: 'var(--color-chrome)',
+    percent: 11,
+  },
+  {
+    browser: 'safari',
+    APY: 200,
+    fill: 'var(--color-safari)',
+    percent: 34,
+  },
+  {
+    browser: 'firefox',
+    APY: 187,
+    fill: 'var(--color-firefox)',
+    percent: 62,
+  },
+  { browser: 'edge', APY: 173, fill: 'var(--color-edge)', percent: 77 },
+  { browser: 'other', APY: 90, fill: 'var(--color-other)', percent: 87 },
 ];
 
 const chartConfig = {
-  visitors: {
-    label: 'Visitors',
+  APY: {
+    label: 'APY',
     color: 'hsl(var(--chart-2))',
   },
   chrome: {
@@ -43,49 +58,52 @@ const chartConfig = {
 } satisfies ChartConfig;
 const InterestRateLine = () => {
   return (
-    <div>
-      <ChartContainer config={chartConfig}>
-        <LineChart
-          accessibilityLayer
-          data={chartData}
-          margin={{
-            top: 24,
-            left: 24,
-            right: 24,
+    <ChartContainer config={chartConfig} className="h-[200px] w-full pt-[20px]">
+      <LineChart
+        accessibilityLayer
+        data={chartData}
+        margin={{
+          top: 24,
+          left: 24,
+          right: 24,
+        }}
+      >
+        <XAxis
+          dataKey="percent"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          minTickGap={32}
+          tickFormatter={(value) => {
+            return `${value}%`;
           }}
-        >
-          <CartesianGrid vertical={false} />
-          <ChartTooltip
-            cursor={false}
-            content={
-              <ChartTooltipContent
-                indicator="line"
-                nameKey="visitors"
-                hideLabel
+        />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent indicator="line" nameKey="APY" hideLabel />
+          }
+        />
+        <Line
+          dataKey="APY"
+          type="natural"
+          stroke="#E65D5D"
+          strokeWidth={2}
+          dot={({ payload, ...props }) => {
+            return (
+              <Dot
+                key={payload.browser}
+                r={5}
+                cx={props.cx}
+                cy={props.cy}
+                fill={payload.fill}
+                stroke={payload.fill}
               />
-            }
-          />
-          <Line
-            dataKey="visitors"
-            type="natural"
-            stroke="var(--color-visitors)"
-            strokeWidth={2}
-            dot={({ payload, ...props }) => {
-              return (
-                <Dot
-                  key={payload.browser}
-                  r={5}
-                  cx={props.cx}
-                  cy={props.cy}
-                  fill={payload.fill}
-                  stroke={payload.fill}
-                />
-              );
-            }}
-          />
-        </LineChart>
-      </ChartContainer>
-    </div>
+            );
+          }}
+        />
+      </LineChart>
+    </ChartContainer>
   );
 };
 

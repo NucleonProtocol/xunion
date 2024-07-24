@@ -112,7 +112,7 @@ const AssetsList = ({
       return (
         <Button
           type="text"
-          className="text-primary text-left "
+          className="text-left text-primary "
           onClick={() => {
             navigate(`/x-lending/market/${record.token.address}?chainId=71`);
           }}
