@@ -18,10 +18,10 @@ const TimePicker = ({
             onTimeChange(tab.value);
           }}
           className={cn(
-            'flex-center h-[32px] rounded-[12px] border border-transparent px-[12px] text-tc-secondary',
+            'flex-center h-[24px] rounded-[8px]  px-[8px] text-[14px] text-tc-secondary',
             time === tab.value
-              ? 'pointer-events-none border-line-primary  bg-fill-niubi3 text-tc-primary'
-              : 'cursor-pointer  hover:border-line-primary  hover:bg-fill-niubi3 hover:text-tc-primary '
+              ? 'pointer-events-none   bg-fill-niubi3 text-tc-primary'
+              : 'cursor-pointer hover:bg-fill-niubi3 hover:text-tc-primary '
           )}
         >
           <span>{tab.label}</span>
