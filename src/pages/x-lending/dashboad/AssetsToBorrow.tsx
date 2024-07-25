@@ -39,7 +39,7 @@ const Borrows = ({
     },
     {
       key: 'balance',
-      title: 'Balance',
+      title: 'Available',
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
