@@ -6,28 +6,24 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/Charts';
-import useBestLendingRate from '@/pages/x-lending/hooks/useBestLendingRate.ts';
+import useLendingRate from '@/pages/x-lending/hooks/useLendingRate.ts';
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
+  DIR: {
+    label: '',
     color: 'hsl(var(--chart-1))',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig;
 
 const InterestRateLine = () => {
-  const { depositInterestRates, lendingInterestRates } = useBestLendingRate();
+  const { depositInterestRates, lendingInterestRates } = useLendingRate();
   console.log('depositInterestRates', depositInterestRates);
   console.log('lendingInterestRates', lendingInterestRates);
 
   const chartData = depositInterestRates.slice(0, 95).map((item, index) => ({
     index: index + 1,
-    dir: item,
-    lir: lendingInterestRates[index],
+    DIR: item,
+    LIR: lendingInterestRates[index],
   }));
 
   return (
@@ -49,16 +45,16 @@ const InterestRateLine = () => {
         />
         <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
         <Line
-          dataKey="dir"
+          dataKey="DIR"
           type="monotone"
-          stroke="var(--color-desktop)"
+          stroke={`var(--xunion-color-theme`}
           strokeWidth={2}
           dot={false}
         />
         <Line
-          dataKey="lir"
+          dataKey="LIR"
           type="monotone"
-          stroke="var(--color-mobile)"
+          stroke="#E65D5D"
           strokeWidth={2}
           dot={false}
         />

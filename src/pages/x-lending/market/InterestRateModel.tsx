@@ -14,7 +14,7 @@ const InterestRateModel = () => {
         <div className="flex gap-[40px]">
           <div className="flex items-center gap-[10px]">
             <div className="h-[10px] w-[10px] rounded-full bg-theme" />
-            <span className="text-[16px] font-[500]">Borrow APY, variable</span>
+            <span className="text-[16px] font-[500]">Supply APY, variable</span>
           </div>
           <div className="flex items-center gap-[10px]">
             <div className="h-[10px] w-[10px] rounded-full bg-[#E65D5D]" />

@@ -86,12 +86,12 @@ const useWithdraw = ({
   const withdrawCFX = async () => {
     if (decimals) {
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
+      const amountIn = parseUnits(payAmount, decimals);
       writeContractAsync({
         address: address as Address,
         abi,
         functionName: 'withdrawDeposit2',
-        value: parseUnits(payAmount, decimals),
-        args: [],
+        args: [inputToken?.address, amountIn],
       });
     }
   };

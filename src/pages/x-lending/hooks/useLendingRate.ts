@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-const useBestLendingRate = () => {
+const useLendingRate = () => {
   const assetsBaseInfo = () => {
     return {
       maximumLTV: 9600,
@@ -98,4 +98,4 @@ const useBestLendingRate = () => {
   };
 };
 
-export default useBestLendingRate;
+export default useLendingRate;

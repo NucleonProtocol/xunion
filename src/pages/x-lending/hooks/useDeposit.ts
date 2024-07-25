@@ -80,12 +80,13 @@ const useDeposit = ({
   const depositCFX = async () => {
     if (decimals) {
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
+      const amountIn = parseUnits(payAmount, decimals);
       writeContractAsync({
         address: address as Address,
         abi,
         functionName: 'assetsDeposit2',
+        args: [inputToken?.address as Address, amountIn],
         value: parseUnits(payAmount, decimals),
-        args: [],
       });
     }
   };
