@@ -11,6 +11,7 @@ import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
 function MarketDetail() {
   const { tokenAsset, loading } = useMarketDetail();
   const navigate = useNavigate();
+
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
       <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
