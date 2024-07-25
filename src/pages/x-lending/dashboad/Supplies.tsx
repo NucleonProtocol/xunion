@@ -102,7 +102,7 @@ const Supplies = ({
               <Button
                 type="text"
                 ghost
-                className="text-primary text-left"
+                className="text-left text-primary"
                 onClick={() => {
                   setDepositItem(record);
                 }}
@@ -113,7 +113,7 @@ const Supplies = ({
               <Button
                 type="text"
                 ghost
-                className="text-primary text-left "
+                className="text-left text-primary "
                 disabled={!record.depositAmount}
                 onClick={() => {
                   setWithdrawItem(record);
