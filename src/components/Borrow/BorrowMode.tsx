@@ -10,6 +10,7 @@ const BorrowMode = ({
   onSuccess,
   contact,
   options,
+  description,
 }: {
   onSuccess: () => void;
   contact: {
@@ -17,6 +18,7 @@ const BorrowMode = ({
     address: Address;
   };
   options: { label: string; description: string; value: BorrowModeType }[];
+  description?: string;
 }) => {
   const { mode, effectiveMode, setMode } = useBorrowMode(contact);
   return (
@@ -45,6 +47,7 @@ const BorrowMode = ({
         onChange={(mode) => {
           setMode(mode);
         }}
+        description={description}
       />
     </div>
   );

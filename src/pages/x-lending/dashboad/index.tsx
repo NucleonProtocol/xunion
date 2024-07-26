@@ -58,6 +58,7 @@ function Dashboard() {
                 onSuccess={refetch}
                 contact={{ ...XUNION_LENDING_CONTRACT.interface }}
                 options={options}
+                description="The mode can only be changed when there are no deposits or loans."
               />
             </div>
           </div>

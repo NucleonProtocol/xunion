@@ -21,7 +21,8 @@ const useProvide = ({
   const [payAmount, setPayAmount] = useState<string>('');
   const { getBalance } = useErc20Balance();
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
-  const { isNativeToken, getRealAddress } = useNativeToken();
+  const { isNativeToken, getRealAddress, getNativeTokenBalance } =
+    useNativeToken();
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
     address: token?.address,
@@ -44,7 +45,11 @@ const useProvide = ({
 
   useEffect(() => {
     if (inputToken?.address) {
-      getBalance(inputToken.address).then(setInputOwnerAmount);
+      if (isNativeToken(inputToken)) {
+        getNativeTokenBalance().then(setInputOwnerAmount);
+      } else {
+        getBalance(inputToken.address).then(setInputOwnerAmount);
+      }
     }
   }, [inputToken]);
 

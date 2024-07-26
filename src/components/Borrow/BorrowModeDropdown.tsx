@@ -8,19 +8,19 @@ const BorrowModeDropdown = ({
   value,
   onChange,
   options,
+  description = 'Select the borrow mode when you don’t have any loan.',
 }: {
   value: BorrowModeType;
   onChange: (v: BorrowModeType) => void;
   options: { label: string; description: string; value: BorrowModeType }[];
+  description?: string;
 }) => {
   const selected = options.find((item) => item.value === value);
   return (
     <Popover
       content={
         <div className="min-h-[160px] max-md:w-[290px] md:w-[300px]">
-          <div className="px-[10px] text-tc-secondary">
-            Select the borrow mode when you don’t have any loan.
-          </div>
+          <div className="px-[10px] text-tc-secondary">{description}</div>
           {options.map((item) => (
             <div
               onClick={() => {
