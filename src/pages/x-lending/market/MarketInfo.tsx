@@ -22,13 +22,13 @@ const MarketInfo = ({
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
         <span className="text-[16px] text-tc-secondary">Total available</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(formatNumber(totalLendingSize, 6), true)}
+          {formatCurrency(formatNumber(totalDepositSize, 6), true)}
         </span>
       </div>
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
         <span className="text-[16px] text-tc-secondary">Total borrows</span>
         <span className="text-[20px] font-bold">
-          {formatCurrency(formatNumber(totalDepositSize, 6), true)}
+          {formatCurrency(formatNumber(totalLendingSize, 6), true)}
         </span>
       </div>
     </div>
