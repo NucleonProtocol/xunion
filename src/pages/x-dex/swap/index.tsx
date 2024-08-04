@@ -5,6 +5,7 @@ import ConfirmPanel from '@/pages/x-dex/swap/ConfirmPanel.tsx';
 import RouteTabs from '@/components/RouteTabs.tsx';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { WriteContractMutateAsync } from '@wagmi/core/query';
+import { useTranslate } from '@/i18n';
 
 function Swap() {
   const { swapStep, onFillSwap, ...rest } = useSwap();
@@ -13,13 +14,14 @@ function Swap() {
       onFillSwap?.();
     },
   });
+  const { t } = useTranslate();
   return (
     <div className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:pt-[40px] ">
       <RouteTabs
         tabs={[
-          { name: 'Swap', path: '/', icon: <SwapIcon /> },
+          { name: t('x-dex.swap.title'), path: '/', icon: <SwapIcon /> },
           {
-            name: 'Liquidity',
+            name: t('x-dex.liquidity.title'),
             path: '/x-dex/liquidity',
             icon: <LiquidityIcon />,
           },

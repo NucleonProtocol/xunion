@@ -6,13 +6,13 @@ const SecondTabs = ({ active }: { active: 'Swap' | 'Limit' | 'Send' }) => {
   const { t } = useTranslate();
 
   const tabs = [
-    { name: t('swap.title'), path: '/x-dex/swap' },
+    { name: t('x-dex.swap.title'), path: '/x-dex/swap' },
     {
-      name: 'Limit',
+      name: t('x-dex.limit.title'),
       path: '/x-dex/limit',
     },
     {
-      name: 'Send',
+      name: t('x-dex.send.title'),
       path: '/x-dex/send',
     },
   ];

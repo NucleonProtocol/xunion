@@ -10,6 +10,7 @@ import { Address } from 'viem';
 import useSwapConfirm from '@/pages/x-dex/hooks/useSwapConfirm.ts';
 import { TokenIcon } from '@/components/icons';
 import { WriteContractMutateAsync } from '@wagmi/core/query';
+import { useTranslate } from '@/i18n';
 
 const TokenItem = ({
   token,
@@ -74,6 +75,7 @@ const ConfirmPanel = ({
     writeContractAsync,
   });
 
+  const { t } = useTranslate();
   return (
     <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
       <a
@@ -81,14 +83,18 @@ const ConfirmPanel = ({
         onClick={onFillSwap}
       >
         <LeftOutlined />
-        <span className="pl-[10px]">Confirm Swap</span>
+        <span className="pl-[10px]">{t('x-dex.swap.confirm')}</span>
       </a>
       <div className="mt-[20px]">
-        <TokenItem token={inputToken} amount={payAmount} title="You pay" />
+        <TokenItem
+          token={inputToken}
+          amount={payAmount}
+          title={t('x-dex.swap.input.pay')}
+        />
         <TokenItem
           token={outputToken}
           amount={receiveAmount}
-          title="You receive"
+          title={t('x-dex.swap.input.receive')}
         />
       </div>
       <div className="px-[10px] py-[20px] text-[14px]">
@@ -106,11 +112,9 @@ const ConfirmPanel = ({
       </div>
       <div className="rounded-[8px] bg-status-warning-non-opaque p-[10px]">
         <span className="text-[14px]">
-          Output is estimated. You will receive at least
-          <span className="px-[5px] text-status-error">
-            {receiveAmount} {outputToken?.symbol}
-          </span>
-          or the transaction will revert.
+          {t('x-dex.swap.confirm.tip', {
+            amount: `${receiveAmount} ${outputToken?.symbol}`,
+          })}
         </span>
       </div>
       <div className="mt-[20px] w-full">
@@ -131,8 +135,10 @@ const ConfirmPanel = ({
             loading={loading || isSubmittedLoading}
           >
             {!isApproved
-              ? `Give permission to use ${inputToken?.symbol}`
-              : 'Swap'}
+              ? t('x-dex.swap.give.permission', {
+                  name: `${inputToken?.symbol}`,
+                })
+              : t('x-dex.swap.title')}
           </Button>
         </WithAuthButton>
       </div>

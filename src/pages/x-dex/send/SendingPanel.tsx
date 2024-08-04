@@ -7,6 +7,7 @@ import { Address, isAddress } from 'viem';
 import useSendToken from '@/pages/x-dex/hooks/useSendToken.ts';
 import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
+import { useTranslate } from '@/i18n';
 
 const SendingPanel = () => {
   const {
@@ -24,7 +25,7 @@ const SendingPanel = () => {
     confirm,
     isSubmittedLoading,
   } = useSendToken();
-
+  const { t } = useTranslate();
   const { isApproved, loading, approve } = useApprove({
     token: inputToken!,
     amount: payAmount,
@@ -33,12 +34,12 @@ const SendingPanel = () => {
 
   const renderSwapText = () => {
     if (isInsufficient) {
-      return `Insufficient ${inputToken?.symbol} Balance`;
+      return t('common.error.insufficient', { name: `${inputToken?.symbol}` });
     }
     if (!isApproved && inputToken?.symbol) {
-      return `Approve ${inputToken?.symbol}`;
+      return t('common.approve.to', { name: `${inputToken?.symbol}` });
     }
-    return 'Send';
+    return t('x-dex.send.title');
   };
   return (
     <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
@@ -47,7 +48,7 @@ const SendingPanel = () => {
       </div>
       <div className="mt-[20px]">
         <TokenInput
-          title="You're sending"
+          title={t('x-dex.send.input.pay')}
           editable
           token={inputToken}
           onTokenChange={setInputToken}
@@ -69,7 +70,9 @@ const SendingPanel = () => {
                     if (!isAddress(value)) {
                       const addr = await getAddrByCISId(value);
                       if (!addr) {
-                        return Promise.reject('No record address.');
+                        return Promise.reject(
+                          t('common.error.no.record.address.')
+                        );
                       }
                     }
                   }
@@ -80,8 +83,8 @@ const SendingPanel = () => {
             name="address"
           >
             <AddressInput
-              title="To address"
-              placeholder="An address e.g. 0x... or a CIS name"
+              title={t('x-dex.send.to')}
+              placeholder={t('x-dex.send.to.placeholder')}
               cisAddress={cisAddress}
             />
           </Form.Item>

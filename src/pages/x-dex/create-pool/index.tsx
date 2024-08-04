@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import { isSLCToken } from '@/contracts';
 import Warning from '@/components/Warning.tsx';
 import UploadInfo from '@/pages/x-dex/create-pool/UploadInfo.tsx';
+import { useTranslate } from '@/i18n';
 
 function CreatPool() {
   const {
@@ -23,16 +24,13 @@ function CreatPool() {
     loading,
   } = useCreatePool();
 
+  const { t } = useTranslate();
   const renderAction = () => {
     if (tokenA?.address && tokenB?.address) {
       if (!tokenASLCPairAddress && !isSLCToken(tokenB?.address)) {
         return (
           <div className="flex flex-col gap-[10px]">
-            <Warning>
-              Initial pool not found. You need to first set up an initial pool
-              using the SLC. Swap SLC Initial pool not found. You need to first
-              set up an initial pool using the SLC.
-            </Warning>
+            <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
             <WithAuthButton>
               <Button
                 className="w-full"
@@ -42,7 +40,9 @@ function CreatPool() {
                   onTokenAChange(tokenA);
                 }}
               >
-                {`Initialize ${tokenA?.symbol} pool`}
+                {t('x-dex.pools.initialize.pool', {
+                  name: `${tokenA?.symbol}`,
+                })}
               </Button>
             </WithAuthButton>
           </div>
@@ -51,11 +51,7 @@ function CreatPool() {
       if (!tokenBSLCPairAddress) {
         return (
           <div className="flex flex-col gap-[10px]">
-            <Warning>
-              Initial pool not found. You need to first set up an initial pool
-              using the SLC. Swap SLC Initial pool not found. You need to first
-              set up an initial pool using the SLC.
-            </Warning>
+            <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
             <WithAuthButton>
               <Button
                 className="w-full"
@@ -65,7 +61,9 @@ function CreatPool() {
                   onTokenAChange(tokenB);
                 }}
               >
-                {`Initialize ${tokenB?.symbol} pool`}
+                {t('x-dex.pools.initialize.pool', {
+                  name: `${tokenB?.symbol}`,
+                })}
               </Button>
             </WithAuthButton>
           </div>
@@ -76,7 +74,7 @@ function CreatPool() {
           <Link to="/x-dex/liquidity">
             <WithAuthButton>
               <Button className="mt-[20px] w-full" type="primary" size="large">
-                Add Liquidity
+                {t('x-dex.liquidity.add')}
               </Button>
             </WithAuthButton>
           </Link>
@@ -86,10 +84,7 @@ function CreatPool() {
 
     return (
       <div className="mt-[20px] flex flex-col gap-[10px]">
-        <Warning>
-          Initial liquidity of the pool will be locked in the LP vault, it can
-          be unlocked only if there is the only LP.
-        </Warning>
+        <Warning>{t('x-dex.pools.create.tip')}</Warning>
         <WithAuthButton>
           <Button
             className="w-full"
@@ -99,7 +94,7 @@ function CreatPool() {
             loading={loading}
             onClick={onCreate}
           >
-            Create pool
+            {t('x-dex.pools.create')}
           </Button>
         </WithAuthButton>
       </div>
@@ -114,11 +109,11 @@ function CreatPool() {
           className="inline-block w-auto cursor-pointer  hover:text-theme"
         >
           <LeftOutlined />
-          <span className="pl-[10px]">Add Liquidity</span>
+          <span className="pl-[10px]">{t('x-dex.liquidity.add')}</span>
         </Link>
         <div className="mt-[20px]">
           <TokenInput
-            title="Token A"
+            title={t('x-dex.liquidity.input.tokenA')}
             token={tokenA}
             onTokenChange={onTokenAChange}
             placeholder=" "
@@ -134,7 +129,7 @@ function CreatPool() {
             </div>
           </div>
           <TokenInput
-            title="Token B"
+            title={t('x-dex.liquidity.input.tokenB')}
             token={tokenB}
             placeholder=" "
             disabledToken={tokenA}

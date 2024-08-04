@@ -1,9 +1,8 @@
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useEffect, useState } from 'react';
-import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import useTxStore from '@/store/pending.ts';
 import { WriteContractErrorType } from 'viem';
-import { writeTxErrorNotification } from '@/components/notices/writeTxErrorNotification.tsx';
+import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
 
 const useXWriteContract = ({
   showSubmittedModal = true,
@@ -19,6 +18,7 @@ const useXWriteContract = ({
   onWriteSuccess?: (e: any) => void;
   onError?: (e: WriteContractErrorType) => void;
 }) => {
+  const { writeTxErrorNotification, writeTxNotification } = usePendingNotice();
   const updateSubmitted = useTxStore((state) => state.updateSubmitted);
   const [loading, setLoading] = useState(false);
   const {

@@ -8,22 +8,24 @@ import { useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import { Button, Skeleton } from 'antd';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
+import { useTranslate } from '@/i18n';
 
 const PoolList = () => {
   const { pools, isPending } = usePool();
 
+  const { t } = useTranslate();
   const navigate = useNavigate();
 
   const columns: ColumnType<PoolType>[] = [
     {
-      title: 'Name',
+      title: t('common.name'),
       dataIndex: 'name',
       render: (_: string, record: PoolType) => {
         return <TokenWithIcon token={record.tokenA} />;
       },
     },
     {
-      title: 'Price',
+      title: t('common.price'),
       dataIndex: 'tvl',
       render: (_: string, record: PoolType) => {
         return (
@@ -34,7 +36,7 @@ const PoolList = () => {
       },
     },
     {
-      title: 'Change(24H)',
+      title: t('common.change24H'),
       align: 'center',
       dataIndex: 'volume24h',
       render: (_: string) => {
@@ -44,7 +46,7 @@ const PoolList = () => {
       },
     },
     {
-      title: 'TVL',
+      title: t('common.tvl'),
       dataIndex: 'fees',
       align: 'center',
       render: (value: string) => (
@@ -54,7 +56,7 @@ const PoolList = () => {
       ),
     },
     {
-      title: 'FDV',
+      title: t('common.FDV'),
       dataIndex: 'fees',
       align: 'center',
       render: (value: string) => (
@@ -64,7 +66,7 @@ const PoolList = () => {
       ),
     },
     {
-      title: 'Volume(24H)',
+      title: t('common.volume24h'),
       dataIndex: 'volume24h',
       render: (_: string, record: PoolType) => {
         return (
@@ -75,7 +77,7 @@ const PoolList = () => {
       },
     },
     {
-      title: 'Volume(1W)',
+      title: t('common.volume1W'),
       dataIndex: 'volume24h',
       render: (_: string, record: PoolType) => {
         return (

@@ -3,10 +3,10 @@ import useLP from '@/pages/x-dex/hooks/useLP.ts';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
 import { Token } from '@/types/swap.ts';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { writeTxNotification } from '@/components/notices/writeTxNotification.tsx';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
 
 const useAddLP = () => {
   const { getBalance } = useErc20Balance();
@@ -23,6 +23,7 @@ const useAddLP = () => {
   const [lpPairAddress, setLpPairAddress] = useState<string>();
   const [loading, setLoading] = useState(false);
 
+  const { writeTxNotification } = usePendingNotice();
   const { getSLCPairAddress, getPairAddress } = useLP();
 
   const { isNativeToken, getNativeTokenERC20Address } = useNativeToken();

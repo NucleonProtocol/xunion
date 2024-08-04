@@ -4,19 +4,20 @@ import { cn } from '@/utils/classnames.ts';
 import { useState } from 'react';
 import PoolList from '@/pages/x-dex/explore/PoolList.tsx';
 import TokenList from '@/pages/x-dex/explore/TokenList.tsx';
-
-const tabs = [
-  {
-    label: 'Token',
-    value: '0',
-  },
-  {
-    label: 'Pool',
-    value: '1',
-  },
-];
+import { useTranslate } from '@/i18n';
 
 function Explore() {
+  const { t } = useTranslate();
+  const tabs = [
+    {
+      label: t('x-dex.swap.token'),
+      value: '0',
+    },
+    {
+      label: t('x-dex.swap.pool'),
+      value: '1',
+    },
+  ];
   const [poolType, onPoolChange] = useState('0');
   return (
     <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">

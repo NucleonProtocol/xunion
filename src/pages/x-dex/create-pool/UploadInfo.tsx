@@ -3,6 +3,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useReadContract } from 'wagmi';
 import { Address, erc20Abi } from 'viem';
+import { useTranslate } from '@/i18n';
 
 const { Dragger } = Upload;
 
@@ -12,6 +13,7 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
 
+  const { t } = useTranslate();
   const { data } = useReadContract({
     abi: erc20Abi,
     address: lpPairAddress as Address,
@@ -68,7 +70,7 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
   };
   return (
     <div className="mt-[20px] flex flex-col gap-[10px]">
-      <div className="font-normal">Pool Info</div>
+      <div className="font-normal">{t('x-dex.pools.info')}</div>
       <div className="flex-center-between text-tc-secondary">
         <div className="flex-center ">
           <span className="text-red-600">*</span>
@@ -90,9 +92,11 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
             <p className="">
               <UploadOutlined />
             </p>
-            <p className="ant-upload-hint">Max size of 20KB</p>
             <p className="ant-upload-hint">
-              The supported image formats are jpg, jpeg, png, svg
+              {t('common.upload.limit', { size: '20KB' })}
+            </p>
+            <p className="ant-upload-hint">
+              {t('common.upload.accept', { accept: 'jpg, jpeg, png, svg' })}
             </p>
           </div>
         </Dragger>
@@ -108,7 +112,7 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
             handleUpload();
           }}
         >
-          Submit
+          {t('common.submit')}
         </Button>
       </div>
     </div>

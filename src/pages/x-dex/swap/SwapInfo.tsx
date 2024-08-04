@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
 import RouteInfo from '@/pages/x-dex/swap/RouteInfo.tsx';
 import { ExchangeIcon } from '@/components/icons';
+import { useTranslate } from '@/i18n';
 
 interface SwapInfoProps {
   slippage: string;
@@ -29,32 +30,43 @@ export const ConfirmContent = ({
   minReceived,
   router,
 }: SwapInfoProps) => {
+  const { t } = useTranslate();
   return (
     <div className="mt-[10px] flex flex-col gap-[6px]">
       <div className="flex-center-between">
-        <span className="text-tc-secondary">Price impact</span>
+        <span className="text-tc-secondary">
+          {t('x-dex.swap.price.impact')}
+        </span>
         <span className={cn({ 'text-red-600': Math.abs(priceImpact) > 3 })}>
           ≈ {priceImpact}%
         </span>
       </div>
       <div className="flex-center-between">
-        <span className="text-tc-secondary">Slippage tolerance</span>
+        <span className="text-tc-secondary">
+          {t('x-dex.swap.slippage.tolerance')}
+        </span>
         <SlippageValue value={Number(slippage || 0)} />
       </div>
       <div className="flex-center-between">
-        <span className="text-tc-secondary">Fee({fee}%)</span>
+        <span className="text-tc-secondary">
+          {`${t('x-dex.swap.fee')}(${fee}%)`}
+        </span>
         <span>${feeAmount}</span>
       </div>
       <div className="flex-center-between">
-        <span className="text-tc-secondary">Est.received</span>
+        <span className="text-tc-secondary">
+          {t('x-dex.swap.est.received')}
+        </span>
         <span>{estReceived} USDT</span>
       </div>
       <div className="flex-center-between">
-        <span className="text-tc-secondary">Min.received</span>
+        <span className="text-tc-secondary">
+          {t('x-dex.swap.min.received')}
+        </span>
         <span>{minReceived} USDT</span>
       </div>
       <div className="flex-center-between">
-        <span className="text-tc-secondary">Route</span>
+        <span className="text-tc-secondary">{t('x-dex.swap.route')}</span>
         <RouteInfo router={router} />
       </div>
     </div>

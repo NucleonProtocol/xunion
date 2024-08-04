@@ -1,17 +1,7 @@
 import { cn } from '@/utils/classnames.ts';
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-
-const tabs = [
-  {
-    label: 'All Pools',
-    value: '0',
-  },
-  {
-    label: 'My Pools',
-    value: '1',
-  },
-];
+import { useTranslate } from '@/i18n';
 
 const PoolFilter = ({
   poolType,
@@ -22,6 +12,18 @@ const PoolFilter = ({
   onPoolChange: (value: string) => void;
   onSearch: (value: string) => void;
 }) => {
+  const { t } = useTranslate();
+  const tabs = [
+    {
+      label: t('x-dex.pools.tab.all'),
+      value: '0',
+    },
+    {
+      label: t('x-dex.pools.tab.my'),
+      value: '1',
+    },
+  ];
+
   return (
     <div className="flex-center-between mb-[20px] mt-[32px]">
       <div className="flex-center gap-[20px] max-md:gap-[10px]">
@@ -45,7 +47,7 @@ const PoolFilter = ({
       <div className="w-[300px] pl-[20px] max-md:w-auto max-md:flex-1">
         <Input
           prefix={<SearchOutlined />}
-          placeholder="Search name"
+          placeholder={t('x-dex.swap.token.modal.search.placeholder')}
           className="rounded-[20px]"
           onBlur={(e) => {
             onSearch(e.target.value);

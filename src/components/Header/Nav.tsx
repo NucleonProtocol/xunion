@@ -4,56 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
 import { LogoIcon } from '@/components/icons';
-const menus = [
-  {
-    name: 'X-Dex',
-    description: 'The most user-friendly dex to trade',
-    path: '/x-dex',
-    mather: (pathname: string) => pathname.includes('/x-dex'),
-    children: [
-      {
-        name: 'Swap',
-        path: '/x-dex/swap',
-        mather: (pathname: string) => pathname.includes('/x-dex/swap'),
-      },
-      {
-        name: 'Pools',
-        path: '/x-dex/pools',
-        mather: (pathname: string) => pathname.includes('/x-dex/pools'),
-      },
-      {
-        name: 'Explore',
-        path: '/x-dex/explore',
-        mather: (pathname: string) => pathname.includes('/x-dex/explore'),
-      },
-    ],
-  },
-  {
-    name: 'X-Super Libra Coin',
-    description: 'A decentralized super stable coin',
-    path: '/x-super-libra-coin',
-    mather: (pathname: string) => pathname.includes('/x-super-libra-coin'),
-    children: [],
-  },
-  {
-    name: 'X-Lending',
-    description: 'Borrow, lend and earn',
-    path: '/x-lending',
-    mather: (pathname: string) => pathname.includes('/x-lending'),
-    children: [
-      {
-        name: 'Dashboard',
-        path: '/x-lending/dashboard',
-        mather: (pathname: string) => pathname.includes('/x-lending/dashboard'),
-      },
-      {
-        name: 'Market',
-        path: '/x-lending/market',
-        mather: (pathname: string) => pathname.includes('/x-lending/market'),
-      },
-    ],
-  },
-];
+import { useTranslate } from '@/i18n';
 
 const MenuItem = ({
   item,
@@ -74,6 +25,61 @@ const MenuItem = ({
 
 const Nav = () => {
   const [open, setOpen] = useState(false);
+
+  const { t } = useTranslate();
+
+  const menus = [
+    {
+      name: t('common.nav.x-dex'),
+      description: t('common.nav.x-dex.description'),
+      path: '/x-dex',
+      mather: (pathname: string) => pathname.includes('/x-dex'),
+      children: [
+        {
+          name: t('x-dex.swap.title'),
+          path: '/x-dex/swap',
+          mather: (pathname: string) => pathname.includes('/x-dex/swap'),
+        },
+        {
+          name: t('x-dex.pools.label'),
+          path: '/x-dex/pools',
+          mather: (pathname: string) => pathname.includes('/x-dex/pools'),
+        },
+        {
+          name: t('common.nav.x-dex.explore'),
+          path: '/x-dex/explore',
+          mather: (pathname: string) => pathname.includes('/x-dex/explore'),
+        },
+      ],
+    },
+    {
+      name: t('common.nav.x-super-libra-coin'),
+      description: t('common.nav.x-super-libra-coin.description'),
+      path: '/x-super-libra-coin',
+      mather: (pathname: string) => pathname.includes('/x-super-libra-coin'),
+      children: [],
+    },
+    {
+      name: t('common.nav.x-lending'),
+      description: t('common.nav.x-lending.description'),
+      path: '/x-lending',
+      mather: (pathname: string) => pathname.includes('/x-lending'),
+      children: [
+        {
+          name: t('common.nav.x-lending.dashboard'),
+          path: '/x-lending/dashboard',
+          mather: (pathname: string) =>
+            pathname.includes('/x-lending/dashboard'),
+        },
+        {
+          name: t('common.nav.x-lending.market'),
+          path: '/x-lending/market',
+          mather: (pathname: string) => pathname.includes('/x-lending/market'),
+        },
+      ],
+    },
+  ];
+
   const items: MenuProps['items'] = menus.map((item) => ({
     label: <MenuItem item={item} />,
     key: item.name,

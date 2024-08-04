@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import { SwapReturnType } from '@/pages/x-dex/hooks/useSwap.ts';
 import SecondTabs from '@/pages/x-dex/swap/SecondTabs.tsx';
+import { useTranslate } from '@/i18n';
 
 const SwapPanel = ({
   slippage,
@@ -41,14 +42,16 @@ const SwapPanel = ({
 }: SwapReturnType) => {
   const { disabled } = useWalletAuth();
 
+  const { t } = useTranslate();
+
   const renderSwapText = () => {
     if (isInsufficient) {
-      return `Insufficient ${inputToken?.symbol} Balance`;
+      return t('common.error.insufficient', { name: `${inputToken?.symbol}` });
     }
     if (isInsufficientLiquidity) {
-      return 'Insufficient liquidity for this trade.';
+      return t('common.error.insufficient.liquidity');
     }
-    return 'Swap';
+    return t('x-dex.swap.title');
   };
   return (
     <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
@@ -64,7 +67,7 @@ const SwapPanel = ({
       </div>
       <div className="mt-[20px]">
         <TokenInput
-          title="You pay"
+          title={t('x-dex.swap.input.pay')}
           editable
           token={inputToken}
           onTokenChange={setInputToken}
@@ -87,7 +90,7 @@ const SwapPanel = ({
           </div>
         </div>
         <TokenInput
-          title="You receive"
+          title={t('x-dex.swap.input.receive')}
           editable
           token={outputToken}
           onTokenChange={setOutputToken}

@@ -11,6 +11,7 @@ import { getAddress } from 'ethers';
 import { useMemo } from 'react';
 import { TokenIcon } from '@/components/icons';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import { useTranslate } from '@/i18n';
 
 const LPTokenItem = ({
   tokenB,
@@ -65,6 +66,7 @@ const ConfirmPanel = ({
   lpPairInfo,
   shareOfPool,
 }: LiquidityReturnType) => {
+  const { t } = useTranslate();
   const {
     isApproved: isTokenAApproved,
     loading: isTokenAApproving,
@@ -103,12 +105,12 @@ const ConfirmPanel = ({
         onClick={() => setStep('FILL')}
       >
         <LeftOutlined />
-        <span className="pl-[10px]">Confirm liquidity</span>
+        <span className="pl-[10px]">{t('x-dex.liquidity.confirm')}</span>
       </a>
       <div className="mt-[20px]">
         <div className="flex-center-between text-tc-secondary">
-          <span>You receive</span>
-          <span>LP tokens</span>
+          <span>{t('x-dex.liquidity.receive')}</span>
+          <span>{t('x-dex.liquidity.tokens')}</span>
         </div>
         <div>
           <LPTokenItem
@@ -121,19 +123,27 @@ const ConfirmPanel = ({
       </div>
       <div className="flex flex-col gap-[6px]  px-[10px] py-[20px] text-[14px]">
         <div className="flex-center-between">
-          <span className="text-tc-secondary">{tokenA?.symbol} deposit</span>
+          <span className="text-tc-secondary">
+            {t('x-dex.liquidity.token.deposit', { name: `${tokenA?.symbol}` })}
+          </span>
           <span>{tokenAAmount || 0}</span>
         </div>
         <div className="flex-center-between">
-          <span className="text-tc-secondary">{tokenB?.symbol} deposit</span>
+          <span className="text-tc-secondary">
+            {t('x-dex.liquidity.token.deposit', { name: `${tokenB?.symbol}` })}
+          </span>
           <span>{tokenBAmount || 0}</span>
         </div>
         <div className="flex-center-between">
-          <span className="text-tc-secondary">Share of pool</span>
+          <span className="text-tc-secondary">
+            {t('x-dex.liquidity.share.of.pool')}
+          </span>
           <span>{shareOfPool || 0}%</span>
         </div>
         <div className="flex items-start justify-between">
-          <span className="text-tc-secondary">Rates</span>
+          <span className="text-tc-secondary">
+            {t('x-dex.liquidity.rates')}
+          </span>
           <div className="flex flex-col items-end justify-end">
             <span>
               {`1 ${tokenA?.symbol} = ${getPerAmount(tokenAAmount, tokenBAmount)} ${tokenB?.symbol}`}
@@ -159,8 +169,8 @@ const ConfirmPanel = ({
                   onClick={approveTokenA}
                 >
                   {isTokenAApproved
-                    ? `${tokenA?.symbol} Approved`
-                    : `Approve ${tokenA?.symbol}`}
+                    ? t('common.approved', { name: `${tokenA?.symbol}` })
+                    : t('common.approve.to', { name: `${tokenA?.symbol}` })}
                 </Button>
               )}
               {tokenB && !isNativeToken(tokenB) && (
@@ -174,8 +184,8 @@ const ConfirmPanel = ({
                   onClick={approveTokenB}
                 >
                   {isTokenBApproved
-                    ? `${tokenB?.symbol} Approved`
-                    : `Approve ${tokenB?.symbol}`}
+                    ? t('common.approved', { name: `${tokenB?.symbol}` })
+                    : t('common.approve.to', { name: `${tokenB?.symbol}` })}
                 </Button>
               )}
             </div>
@@ -187,7 +197,7 @@ const ConfirmPanel = ({
               disabled={!isTokenBApproved || !isTokenAApproved}
               onClick={confirm}
             >
-              Confirm
+              {t('common.confirm')}
             </Button>
           </div>
         </WithAuthButton>

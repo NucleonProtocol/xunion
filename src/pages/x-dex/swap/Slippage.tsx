@@ -2,8 +2,10 @@ import { Input, Popover, Tooltip } from 'antd';
 import { SettingIcon } from '@/components/icons';
 import { QuestionCircleOutlined, WarningOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
+import { useTranslate } from '@/i18n';
 
 export const SlippageValue = ({ value }: { value: number }) => {
+  const { t } = useTranslate();
   if (value === -1) {
     return <span className="text-tc-secondary">0.5%</span>;
   }
@@ -13,27 +15,12 @@ export const SlippageValue = ({ value }: { value: number }) => {
         <WarningOutlined />
         <span>{value}%</span>
         <span>·</span>
-        <span>Custom</span>
+        <span>{t('x-dex.swap.custom')}</span>
       </div>
     );
   }
   return <span className="text-tc-secondary">{value}%</span>;
 };
-
-const presets = [
-  {
-    label: 'Auto',
-    value: -1,
-  },
-  {
-    label: '0.1%',
-    value: 0.1,
-  },
-  {
-    label: '1%',
-    value: 1,
-  },
-];
 
 const SlippageSelector = ({
   value,
@@ -42,13 +29,28 @@ const SlippageSelector = ({
   value: string;
   onChange: (v: string) => void;
 }) => {
+  const { t } = useTranslate();
+  const presets = [
+    {
+      label: t('x-dex.swap.auto'),
+      value: -1,
+    },
+    {
+      label: '0.1%',
+      value: 0.1,
+    },
+    {
+      label: '1%',
+      value: 1,
+    },
+  ];
   return (
     <div className="flex flex-col gap-[10px]">
       <div className="flex-center-between">
         <div className="flex items-center gap-[10px]">
-          <span>Slippage tolerance</span>
+          <span>{t('x-dex.swap.slippage.tolerance')}</span>
           <Tooltip
-            title="Your transaction will revert if the price changes unfavorably by more than this percentage."
+            title={t('x-dex.swap.slippage.tolerance.tip')}
             placement="top"
           >
             <QuestionCircleOutlined className="cursor-pointer text-tc-secondary" />
@@ -112,6 +114,7 @@ const Slippage = ({
   onChange: (v: string) => void;
   disabled: boolean;
 }) => {
+  const { t } = useTranslate();
   return (
     <Popover
       content={
@@ -119,9 +122,9 @@ const Slippage = ({
           <div className="mt-[20px] flex flex-col gap-[10px]">
             <SlippageSelector value={value} onChange={onChange} />
             <div className="flex items-center gap-[10px]">
-              <span>Transaction deadline</span>
+              <span>{t('x-dex.swap.transaction.deadline')}</span>
               <Tooltip
-                title="Your transaction will revert if it is pending for more than this period of time."
+                title={t('x-dex.swap.transaction.deadline.tip')}
                 placement="top"
               >
                 <QuestionCircleOutlined className="cursor-pointer text-tc-secondary" />
@@ -138,7 +141,7 @@ const Slippage = ({
                   }
                   onDeadlineChange(value);
                 }}
-                suffix="Minutes"
+                suffix={t('x-dex.swap.minutes')}
               />
             </div>
           </div>

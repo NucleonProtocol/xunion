@@ -11,6 +11,7 @@ import { formatUnits } from 'ethers';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import ResponsiveButton from '@/components/ResponsiveButton.tsx';
+import { useTranslate } from '@/i18n';
 
 const PoolList = () => {
   const {
@@ -26,9 +27,11 @@ const PoolList = () => {
 
   const navigate = useNavigate();
 
+  const { t } = useTranslate();
+
   const columns: ColumnType<PoolType>[] = [
     {
-      title: 'Name',
+      title: t('common.name'),
       dataIndex: 'name',
       width: 240,
       render: (_: string, record: PoolType) => {
@@ -44,7 +47,7 @@ const PoolList = () => {
       },
     },
     {
-      title: 'TVL',
+      title: t('common.tvl'),
       dataIndex: 'tvl',
       width: 240,
       render: (_: string, record: PoolType) => {
@@ -56,7 +59,7 @@ const PoolList = () => {
       },
     },
     {
-      title: 'Volume(24h)',
+      title: t('common.volume24h'),
       dataIndex: 'volume24h',
       width: 240,
       render: (_: string, record: PoolType) => {
@@ -68,7 +71,7 @@ const PoolList = () => {
       },
     },
     {
-      title: 'Fees(24h)',
+      title: t('common.fees24h'),
       dataIndex: 'fees',
       align: 'center',
       render: (value: string) => (
@@ -78,7 +81,7 @@ const PoolList = () => {
       ),
     },
     {
-      title: 'APR(24h)',
+      title: t('common.APR24h'),
       dataIndex: 'apr',
       align: 'center',
       render: (value: string) => value || '-',
@@ -97,7 +100,7 @@ const PoolList = () => {
               }}
               icon={<PlusOutlined />}
             >
-              Add liquidity
+              {t('x-dex.liquidity.add')}
             </ResponsiveButton>
             <ResponsiveButton
               className="md:text-left md:text-primary"
@@ -108,7 +111,7 @@ const PoolList = () => {
               }}
               icon={<SwapIcon />}
             >
-              Swap
+              {t('x-dex.swap.title')}
             </ResponsiveButton>
           </div>
         );
@@ -136,7 +139,9 @@ const PoolList = () => {
       <div className="bg-fill-niubi">
         <div className="flex-center-between p-[15px]">
           <div className="flex-center gap-[5px]">
-            <span className="text-[18px] font-bold">Pools</span>
+            <span className="text-[18px] font-bold">
+              {t('x-dex.pools.label')}
+            </span>
             <span className="text-tc-secondary">{`(${total})`}</span>
           </div>
           <TimePicker
