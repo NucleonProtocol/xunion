@@ -1,4 +1,6 @@
 {
   "title": "Xunion cn",
-  "swap": "交换"
+  "swap.title": {
+    "title1":"123123"
+  }
 }

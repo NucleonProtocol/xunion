@@ -23,49 +23,51 @@ const Header = () => {
       >
         <Nav />
       </div>
-      <div className="flex-center gap-[20px]">
+      <div className="flex-center justify-between gap-[20px] max-md:flex-1">
         <LogoIcon className="text-[40px] max-md:text-[30px] md:hidden" />
-        {pendingTransactions.length > 100 && <PendingTransactions />}
-        <ConnectButton />
-        <Popover
-          content={
-            <div className="flex w-[200px] flex-col gap-[20px]">
-              <div className="flex-center-between">
-                <span>Theme</span>
-                <div className="flex-center gap-[20px]">
-                  <Button
-                    className="border-0"
-                    onClick={() => {
-                      setTheme('light');
-                    }}
-                    icon={<SunOutlined />}
-                    type={theme === 'light' ? 'primary' : 'default'}
-                  />
-                  <Button
-                    className="border-0"
-                    onClick={() => {
-                      setTheme('dark');
-                    }}
-                    type={theme === 'dark' ? 'primary' : 'default'}
-                    icon={<MoonOutlined />}
-                  />
+        <div className="flex flex-1 items-center justify-end">
+          {pendingTransactions.length > 100 && <PendingTransactions />}
+          <ConnectButton />
+          <Popover
+            content={
+              <div className="flex w-[200px] flex-col gap-[20px]">
+                <div className="flex-center-between">
+                  <span>Theme</span>
+                  <div className="flex-center gap-[20px]">
+                    <Button
+                      className="border-0"
+                      onClick={() => {
+                        setTheme('light');
+                      }}
+                      icon={<SunOutlined />}
+                      type={theme === 'light' ? 'primary' : 'default'}
+                    />
+                    <Button
+                      className="border-0"
+                      onClick={() => {
+                        setTheme('dark');
+                      }}
+                      type={theme === 'dark' ? 'primary' : 'default'}
+                      icon={<MoonOutlined />}
+                    />
+                  </div>
+                </div>
+                <div className="flex-center-between">
+                  <span>Language</span>
+                  <Lang />
                 </div>
               </div>
-              <div className="flex-center-between">
-                <span>Language</span>
-                <Lang />
-              </div>
-            </div>
-          }
-          trigger={['click']}
-          placement="bottomLeft"
-          showArrow={false}
-        >
-          <Button
-            icon={<SettingIcon className="cursor-pointer hover:text-theme" />}
-            className="border-0"
-          />
-        </Popover>
+            }
+            trigger={['click']}
+            placement="bottomLeft"
+            showArrow={false}
+          >
+            <Button
+              icon={<SettingIcon className="cursor-pointer hover:text-theme" />}
+              className="border-0"
+            />
+          </Popover>
+        </div>
       </div>
     </div>
   );

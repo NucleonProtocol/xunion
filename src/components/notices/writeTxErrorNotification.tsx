@@ -26,7 +26,7 @@ export const writeTxErrorNotification = (
             </a>
           ) : (
             <span className="flex flex-1 flex-wrap text-tc-secondary">
-              {message}{' '}
+              {message}
             </span>
           )}
         </div>
