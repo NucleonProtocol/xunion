@@ -5,6 +5,7 @@ import { SpinIcon, TokenIcon } from '@/components/icons';
 import { useState } from 'react';
 import useTokenGroupAssets from '@/components/Borrow/useTokenGroupAssets.ts';
 import { LendingAsset } from '@/types/Lending.ts';
+import { useTranslate } from '@/i18n';
 
 const TokenGroupSelector = ({
   value,
@@ -17,6 +18,7 @@ const TokenGroupSelector = ({
 
   const [open, onOpen] = useState(false);
 
+  const { t } = useTranslate();
   const renderGroupAsset = (assets: LendingAsset[]) => {
     return (
       <div className="flex">
@@ -64,7 +66,9 @@ const TokenGroupSelector = ({
                     onOpen(false);
                   }}
                 >
-                  <span className="text-tc-secondary">Group {index + 1}</span>
+                  <span className="text-tc-secondary">
+                    {t('x-lending.borrow.mode.homogenous.group')} {index + 1}
+                  </span>
                   {renderGroupAsset(item)}
                 </div>
               ))}
@@ -82,7 +86,7 @@ const TokenGroupSelector = ({
         }}
       >
         <div className="flex items-center text-[14px] text-tc-secondary">
-          Select isolation asset
+          {t('x-lending.borrow.mode.homogenous.input.label')}
         </div>
         <div className="flex-center gap-[5px]">
           {value?.length ? (
@@ -90,7 +94,9 @@ const TokenGroupSelector = ({
               {renderGroupAsset(value)}
             </div>
           ) : (
-            <span className="text-[16px]">Select a token</span>
+            <span className="text-[16px]">
+              {t('x-lending.borrow.mode.homogenous.input.select')}
+            </span>
           )}
           <DownOutlined className="text-[14px]" />
         </div>

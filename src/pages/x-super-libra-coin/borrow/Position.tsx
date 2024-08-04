@@ -10,6 +10,7 @@ import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { BorrowModeType } from '@/types/slc.ts';
 import { cn } from '@/utils/classnames.ts';
+import { useTranslate } from '@/i18n';
 
 const options = [
   {
@@ -40,6 +41,7 @@ const Position = ({
     availableTotalPrice,
     healthFactor,
   } = usePosition({ health });
+  const { t } = useTranslate();
   const [borrowOpen, setBorrowOpen] = useState(false);
   const [repayOpen, setRepayOpen] = useState(false);
   const [riskOpen, setRiskOpen] = useState(false);
@@ -163,6 +165,7 @@ const Position = ({
                   onSuccess={refresh}
                   contact={{ ...XUNION_SLC_CONTRACT.interface }}
                   options={options}
+                  description={t('x-lending.borrow.mode.slc.description')}
                 />
               </div>
             </div>

@@ -12,6 +12,7 @@ import { isNumeric } from '@/utils/isNumeric.ts';
 import useRepay from '@/pages/x-lending/hooks/useRepay.ts';
 import { LendingAsset } from '@/types/Lending.ts';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
+import { useTranslate } from '@/i18n';
 
 const RepayModal = ({
   asset,
@@ -37,7 +38,7 @@ const RepayModal = ({
     loading,
     availableAmount,
   } = useRepay({ asset, refresh });
-
+  const { t } = useTranslate();
   const {
     isApproved: isTokenAApproved,
     loading: isTokenAApproving,
@@ -52,7 +53,9 @@ const RepayModal = ({
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Available Amount ${availableAmount}`}
+          {t('x-lending.supply.available.amount', {
+            amount: `${availableAmount}`,
+          })}
         </Button>
       );
     }
@@ -67,7 +70,7 @@ const RepayModal = ({
           loading={isTokenAApproving}
           onClick={approveTokenA}
         >
-          {`Give permission to use ${inputToken?.symbol}`}
+          {t('x-dex.swap.give.permission', { name: `${inputToken.symbol}` })}
         </Button>
       );
     }
@@ -80,7 +83,7 @@ const RepayModal = ({
         onClick={onConfirm}
         loading={isSubmittedLoading || loading}
       >
-        {`Repay ${inputToken?.symbol}`}
+        {t('x-lending.repay.to', { name: `${inputToken?.symbol}` })}
       </Button>
     );
   };
@@ -88,7 +91,7 @@ const RepayModal = ({
     <Modal
       open={!!asset}
       onCancel={onClose}
-      title={`Repay ${inputToken?.symbol}`}
+      title={t('x-lending.repay.to', { name: `${inputToken?.symbol}` })}
       footer={null}
       centered
       maskClosable={false}
@@ -97,7 +100,7 @@ const RepayModal = ({
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="amount"
+            title={t('x-lending.borrow.input.amount')}
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}
@@ -105,7 +108,7 @@ const RepayModal = ({
             disabled
             ownerAmount={formatNumber(availableAmount || 0, 6)}
             totalPrice={inputTokenTotalPrice}
-            amountLabel="Available"
+            amountLabel={t('x-lending.available')}
             showDropArrow={false}
             onMax={() => {
               setPayAmount(formatNumber(availableAmount || 0, 6).toString());
@@ -114,7 +117,9 @@ const RepayModal = ({
         </div>
         <div className="flex flex-col gap-[5px] p-[16px]">
           <div className="flex-center-between">
-            <span className="text-tc-secondary">Remaining debt</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.repay.remaining.debt')}
+            </span>
             <div className="flex-center flex gap-[10px]">
               <span>
                 {formatCurrency(availableAmount || 0, false)} $
@@ -132,7 +137,9 @@ const RepayModal = ({
             </div>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={`${userHealthFactor}` || '0'} />
@@ -142,17 +149,13 @@ const RepayModal = ({
                 />
               </div>
               <div className="text-[12px] text-tc-secondary">
-                <span>{`Liquidation at < 1.0`}</span>
+                <span>{`${t('x-lending.borrow.mode.high.health')} < 1.0`}</span>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <Warning>
-            You don’t have enough funds in your wallet to repay the full amount.
-            If you proceed to repay with your current amount of funds, you will
-            still have a small borrowing position in your dashboard.
-          </Warning>
+          <Warning>{t('x-lending.repay.detail')}</Warning>
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
           <WithAuthButton>{renderSwapText()}</WithAuthButton>

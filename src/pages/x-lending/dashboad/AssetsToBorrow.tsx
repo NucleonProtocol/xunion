@@ -7,6 +7,7 @@ import LendingModal from '@/pages/x-lending/dashboad/LendingModal.tsx';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
+import { useTranslate } from '@/i18n';
 
 const Borrows = ({
   assets,
@@ -19,17 +20,18 @@ const Borrows = ({
   health: number;
   refetch: () => void;
 }) => {
+  const { t } = useTranslate();
   const [lendingItem, setLendingItem] = useState<LendingAsset>();
   const columns: ColumnType<LendingAsset>[] = [
     {
-      title: 'Asset',
+      title: t('x-lending.asset'),
       dataIndex: 'asset',
       render: (_: string, record: LendingAsset) => {
         return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      title: 'Available',
+      title: t('x-lending.available'),
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -41,7 +43,7 @@ const Borrows = ({
       },
     },
     {
-      title: 'APY, borrow rate',
+      title: t('x-lending.rate'),
       dataIndex: 'apy',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -66,7 +68,7 @@ const Borrows = ({
                 setLendingItem(record);
               }}
             >
-              Borrow
+              {t('x-lending.borrow')}
             </Button>
           </div>
         );
@@ -75,7 +77,7 @@ const Borrows = ({
   ];
 
   return (
-    <LendingCard title="Assets to borrow" loading={loading}>
+    <LendingCard title={t('x-lending.assets.borrow')} loading={loading}>
       {lendingItem && (
         <LendingModal
           asset={lendingItem}

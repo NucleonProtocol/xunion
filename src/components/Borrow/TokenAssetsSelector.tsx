@@ -5,6 +5,7 @@ import { cn } from '@/utils/classnames.ts';
 import { SpinIcon, TokenIcon } from '@/components/icons';
 import { SLCAsset } from '@/types/slc.ts';
 import { useState } from 'react';
+import { useTranslate } from '@/i18n';
 
 const TokenAssetsSelector = ({
   value,
@@ -13,6 +14,7 @@ const TokenAssetsSelector = ({
   value?: SLCAsset;
   onChange: (token: SLCAsset) => void;
 }) => {
+  const { t } = useTranslate();
   const { assets, isAssetsLoading } = useCollateral();
   const [open, onOpen] = useState(false);
   return (
@@ -80,7 +82,7 @@ const TokenAssetsSelector = ({
         }}
       >
         <div className="flex items-center text-[14px] text-tc-secondary">
-          Select isolation asset
+          {t('x-lending.borrow.mode.risk.input.label')}
         </div>
         <div className="flex-center gap-[5px]">
           {value?.symbol ? (
@@ -91,7 +93,9 @@ const TokenAssetsSelector = ({
               <span className="text-[14px]">{value?.symbol}</span>
             </div>
           ) : (
-            <span className="text-[16px]">Select a token</span>
+            <span className="text-[16px]">
+              {t('x-lending.borrow.mode.risk.input.select')}
+            </span>
           )}
           <DownOutlined className="text-[14px]" />
         </div>

@@ -6,6 +6,7 @@ import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { ZERO_ADDRESS } from '@/contracts';
 import { Abi, Address } from 'viem';
 import { BorrowModeType } from '@/types/slc.ts';
+import { useTranslate } from '@/i18n';
 
 const HighLiquidityModal = ({
   open,
@@ -37,11 +38,13 @@ const HighLiquidityModal = ({
     });
   };
 
+  const { t } = useTranslate();
+
   return (
     <Modal
       open={open}
       onCancel={onClose}
-      title="Enable borrow mode"
+      title={t('x-lending.borrow.mode.enable')}
       footer={null}
       centered
       maskClosable={false}
@@ -49,15 +52,21 @@ const HighLiquidityModal = ({
       <div>
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Mode category</span>
-            <span>High liquidity collateral</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.category')}
+            </span>
+            <span>{t('x-lending.borrow.mode.high.title')}</span>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Available asset</span>
-            <span>{`All assets > All assets`}</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.high.all')}
+            </span>
+            <span>{`${t('x-lending.borrow.mode.high.all.assets')} > ${t('x-lending.borrow.mode.high.all.assets')}`}</span>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={'1000'} />
@@ -65,16 +74,13 @@ const HighLiquidityModal = ({
                 <HealthFactor value={'1000'} />
               </div>
               <div className="text-[12px] text-tc-secondary">
-                <span>{`Liquidation at < 1.0`}</span>
+                <span>{`${t('x-lending.borrow.mode.high.health')} < 1.0`}</span>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <Warning>
-            To enable borrow mode, all borrow positions outside must be closed
-            and only allows you to borrow assets belonging the selected mode.
-          </Warning>
+          <Warning>{t('x-lending.borrow.mode.high.detail')}</Warning>
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
           <WithAuthButton>
@@ -85,7 +91,7 @@ const HighLiquidityModal = ({
               onClick={enableMode}
               loading={isSubmittedLoading || loading}
             >
-              Enable Mode
+              {t('x-lending.borrow.mode.enable')}
             </Button>
           </WithAuthButton>
         </div>

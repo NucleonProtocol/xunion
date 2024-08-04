@@ -8,6 +8,7 @@ import { Abi, Address } from 'viem';
 import TokenGroupSelector from '@/components/Borrow/TokenGroupSelector.tsx';
 import { LendingAsset } from '@/types/Lending.ts';
 import { ZERO_ADDRESS } from '@/contracts';
+import { useTranslate } from '@/i18n';
 
 const HomogenousModal = ({
   open,
@@ -44,11 +45,13 @@ const HomogenousModal = ({
     }
   };
 
+  const { t } = useTranslate();
+
   return (
     <Modal
       open={open}
       onCancel={onClose}
-      title="Enable borrow mode"
+      title={t('x-lending.borrow.mode.enable')}
       footer={null}
       centered
       maskClosable={false}
@@ -57,11 +60,15 @@ const HomogenousModal = ({
         <TokenGroupSelector value={assets} onChange={setAssets} />
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Mode category</span>
-            <span>Risk isolation</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.category')}
+            </span>
+            <span>{t('x-lending.borrow.mode.homogenous.title')}</span>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Available asset</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.high.all')}
+            </span>
             <div className="text-[12px]">
               {assets?.map((asset, index) => (
                 <span key={asset.id}>
@@ -74,7 +81,9 @@ const HomogenousModal = ({
             </div>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={'1000'} />
@@ -92,10 +101,7 @@ const HomogenousModal = ({
           </div>
         </div>
         <div>
-          <Warning>
-            To enable borrow mode, all borrow positions outside must be closed
-            and only allows you to borrow assets belonging the selected mode.
-          </Warning>
+          <Warning>{t('x-lending.borrow.mode.homogenous.detail')}</Warning>
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
           <WithAuthButton>
@@ -107,7 +113,7 @@ const HomogenousModal = ({
               onClick={enableMode}
               loading={isSubmittedLoading || loading}
             >
-              Enable Mode
+              {t('x-lending.borrow.mode.enable')}
             </Button>
           </WithAuthButton>
         </div>

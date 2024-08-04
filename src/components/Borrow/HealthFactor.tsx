@@ -1,9 +1,15 @@
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
+import { useTranslate } from '@/i18n';
 
 const HealthFactor = ({ value }: { value: string }) => {
+  const { t } = useTranslate();
   if (value) {
     if (Number(value) >= 10) {
-      return <span className="text-status-success">Fine</span>;
+      return (
+        <span className="text-status-success">
+          {t('x-lending.health.fine')}
+        </span>
+      );
     }
     if (Number(value) >= 2) {
       return (

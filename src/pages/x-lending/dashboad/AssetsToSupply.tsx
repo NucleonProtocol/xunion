@@ -8,6 +8,7 @@ import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
+import { useTranslate } from '@/i18n';
 
 const AssetsToSupply = ({
   assets,
@@ -32,16 +33,18 @@ const AssetsToSupply = ({
     }
   }, [checked, assets]);
 
+  const { t } = useTranslate();
+
   const columns: ColumnType<LendingAsset>[] = [
     {
-      title: 'Asset',
+      title: t('x-lending.asset'),
       dataIndex: 'asset',
       render: (_: string, record: LendingAsset) => {
         return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      title: 'Wallet Balance',
+      title: t('x-lending.wallet.balance'),
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -53,7 +56,7 @@ const AssetsToSupply = ({
       },
     },
     {
-      title: 'APY',
+      title: t('x-lending.apy'),
       dataIndex: 'apy',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -64,7 +67,7 @@ const AssetsToSupply = ({
       },
     },
     {
-      title: 'Collateral',
+      title: t('x-lending.collateral'),
       dataIndex: 'canCollateral',
       align: 'center',
       render: (canCollateral: boolean) => {
@@ -90,7 +93,7 @@ const AssetsToSupply = ({
               }}
               disabled={!record.canCollateral || !record.erc20Balance}
             >
-              Supply
+              {t('x-lending.supply')}
             </Button>
           </div>
         );
@@ -101,7 +104,7 @@ const AssetsToSupply = ({
   return (
     <LendingCard
       loading={loading}
-      title="Assets to supply"
+      title={t('x-lending.assets.supply')}
       description={
         <div className="flex items-center gap-[5px]">
           <label htmlFor="chckbox" className="flex items-center">
@@ -113,7 +116,7 @@ const AssetsToSupply = ({
               }}
             />
             <span className="cursor-pointer select-none pl-[10px]">
-              Show 0 balance assets
+              {t('x-lending.show.zero.balance')}
             </span>
           </label>
         </div>

@@ -7,6 +7,7 @@ import { XUNION_LENDING_CONTRACT } from '@/contracts';
 import { formatUnits } from 'ethers';
 import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import { BorrowModeType } from '@/types/slc.ts';
+import { useTranslate } from '@/i18n';
 
 const options = [
   {
@@ -37,6 +38,7 @@ const MarketInfo = ({
   health: number;
   refetch: () => void;
 }) => {
+  const { t } = useTranslate();
   const [riskOpen, setRiskOpen] = useState(false);
   return (
     <div className="flex w-full items-center justify-start max-md:flex-row max-md:flex-wrap">
@@ -49,19 +51,25 @@ const MarketInfo = ({
         }}
       />
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
-        <span className="text-[16px] text-tc-secondary">Net worth</span>
+        <span className="text-[16px] text-tc-secondary">
+          {t('x-lending.net.worth')}
+        </span>
         <span className="text-[20px] font-bold">
           {formatCurrency(Number(formatUnits(netWorth.toString())), true)}
         </span>
       </div>
 
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
-        <span className="text-[16px] text-tc-secondary">Net APY</span>
+        <span className="text-[16px] text-tc-secondary">
+          {t('x-lending.net.apy')}
+        </span>
         <span className="text-[20px] font-bold">{`${Number(netApy.toString()) / 10000}%`}</span>
       </div>
       <div className="flex flex-1 justify-between">
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
-          <span className="text-[16px] text-tc-secondary">Health factor</span>
+          <span className="text-[16px] text-tc-secondary">
+            {t('x-lending.health.factor')}
+          </span>
           <div className="flex items-end gap-[10px] text-[16px] ">
             <HealthFactor value={`${health}`} />
             <Button
@@ -71,20 +79,20 @@ const MarketInfo = ({
               size="small"
               onClick={() => setRiskOpen(true)}
             >
-              Rist detail
+              {t('x-lending.health.risk.detail')}
             </Button>
           </div>
         </div>
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
           <span className="flex  items-center justify-end text-tc-secondary max-md:justify-start">
-            Borrow mode
+            {t('x-lending.borrow.mode')}
           </span>
           <div className="flex items-center justify-end gap-[10px] text-[16px] max-md:justify-start">
             <BorrowMode
               onSuccess={refetch}
               contact={{ ...XUNION_LENDING_CONTRACT.interface }}
               options={options}
-              description="The mode can only be changed when there are no deposits or loans."
+              description={t('x-lending.borrow.mode.description')}
             />
           </div>
         </div>

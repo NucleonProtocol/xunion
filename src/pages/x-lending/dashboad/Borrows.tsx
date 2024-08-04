@@ -9,6 +9,7 @@ import RepayModal from '@/pages/x-lending/dashboad/RepayModal.tsx';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
+import { useTranslate } from '@/i18n';
 
 const Borrows = ({
   assets,
@@ -30,16 +31,17 @@ const Borrows = ({
   const [lendingItem, setLendingItem] = useState<LendingAsset>();
   const [repayItem, setRepayItem] = useState<LendingAsset>();
 
+  const { t } = useTranslate();
   const columns: ColumnType<LendingAsset>[] = [
     {
-      title: 'Asset',
+      title: t('x-lending.asset'),
       dataIndex: 'asset',
       render: (_: string, record: LendingAsset) => {
         return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      title: 'Balance',
+      title: t('x-dex.swap.token.balance'),
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -51,7 +53,7 @@ const Borrows = ({
       },
     },
     {
-      title: 'APY',
+      title: t('x-lending.apy'),
       dataIndex: 'apy',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -76,7 +78,7 @@ const Borrows = ({
                 setLendingItem(record);
               }}
             >
-              Borrow
+              {t('x-lending.borrow')}
             </Button>
             <Button
               size="small"
@@ -86,7 +88,7 @@ const Borrows = ({
                 setRepayItem(record);
               }}
             >
-              Repay
+              {t('x-lending.repay')}
             </Button>
           </div>
         );
@@ -96,18 +98,18 @@ const Borrows = ({
 
   return (
     <LendingCard
-      title="Your borrows"
+      title={t('x-lending.your.borrow')}
       loading={loading}
       description={
         <div className="flex items-center gap-[10px] max-md:flex-wrap">
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`Balance: ${formatCurrency(lendingTotalBalance)}`}
+            {`${t('x-dex.swap.token.balance')}: ${formatCurrency(lendingTotalBalance)}`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`APY: < ${lendingTotalAPY}%`}
+            {`${t('x-lending.apy')}: < ${lendingTotalAPY}%`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`Borrow power used: ${formatCurrency(lendingPowerUsed)}`}
+            {`${t('x-lending.apy')}: ${formatCurrency(lendingPowerUsed)}`}
           </Button>
         </div>
       }

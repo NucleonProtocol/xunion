@@ -8,7 +8,7 @@ const BorrowModeDropdown = ({
   value,
   onChange,
   options,
-  description = 'Select the borrow mode when you don’t have any loan.',
+  description,
 }: {
   value: BorrowModeType;
   onChange: (v: BorrowModeType) => void;

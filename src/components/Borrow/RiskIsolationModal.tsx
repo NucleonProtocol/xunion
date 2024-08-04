@@ -7,6 +7,7 @@ import TokenAssetsSelector from '@/components/Borrow/TokenAssetsSelector.tsx';
 import { useState } from 'react';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Abi, Address } from 'viem';
+import { useTranslate } from '@/i18n';
 
 const RiskIsolationModal = ({
   open,
@@ -42,11 +43,13 @@ const RiskIsolationModal = ({
     }
   };
 
+  const { t } = useTranslate();
+
   return (
     <Modal
       open={open}
       onCancel={onClose}
-      title="Enable borrow mode"
+      title={t('x-lending.borrow.mode.enable')}
       footer={null}
       centered
       maskClosable={false}
@@ -55,15 +58,21 @@ const RiskIsolationModal = ({
         <TokenAssetsSelector value={token} onChange={setToken} />
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Mode category</span>
-            <span>Risk isolation</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.category')}
+            </span>
+            <span>{t('x-lending.borrow.mode.risk.title')}</span>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Available asset</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.high.all')}
+            </span>
             <span>{`${token?.symbol || '--'} > SLC`}</span>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={'1000'} />
@@ -76,15 +85,14 @@ const RiskIsolationModal = ({
             </div>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Maximum loan to value</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.borrow.mode.risk.max.loan')}
+            </span>
             <span>{`-- > ${token ? (token?.max_ltv ? Number(token?.max_ltv) / 100 : 0) : '--'}%`}</span>
           </div>
         </div>
         <div>
-          <Warning>
-            To enable borrow mode, all borrow positions outside must be closed
-            and only allows you to borrow assets belonging the selected mode.
-          </Warning>
+          <Warning>{t('x-lending.borrow.mode.risk.detail')}</Warning>
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
           <WithAuthButton>
@@ -96,7 +104,7 @@ const RiskIsolationModal = ({
               onClick={enableMode}
               loading={isSubmittedLoading || loading}
             >
-              Enable Mode
+              {t('x-lending.borrow.mode.enable')}
             </Button>
           </WithAuthButton>
         </div>

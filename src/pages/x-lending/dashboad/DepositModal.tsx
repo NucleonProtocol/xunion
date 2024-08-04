@@ -9,6 +9,7 @@ import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import { useTranslate } from '@/i18n';
 
 const DepositModal = ({
   asset,
@@ -45,11 +46,15 @@ const DepositModal = ({
     spenderAddress: XUNION_LENDING_CONTRACT.interface.address as Address,
   });
 
+  const { t } = useTranslate();
+
   const renderSwapText = () => {
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Available Amount ${availableAmount}`}
+          {t('x-lending.supply.available.amount', {
+            amount: `${availableAmount}`,
+          })}
         </Button>
       );
     }
@@ -65,7 +70,7 @@ const DepositModal = ({
           loading={isTokenAApproving}
           onClick={approveTokenA}
         >
-          {`Give permission to use ${asset.token.symbol}`}
+          {t('x-dex.swap.give.permission', { name: `${asset.token.symbol}` })}
         </Button>
       );
     }
@@ -79,7 +84,7 @@ const DepositModal = ({
         onClick={onConfirm}
         loading={isSubmittedLoading || loading}
       >
-        {`Supply ${asset.token.symbol}`}
+        {t('x-lending.supply.to', { name: `${asset.token.symbol}` })}
       </Button>
     );
   };
@@ -88,7 +93,7 @@ const DepositModal = ({
     <Modal
       open={!!asset}
       onCancel={onClose}
-      title={`Supply ${asset.token.symbol}`}
+      title={t('x-lending.supply.to', { name: `${asset.token.symbol}` })}
       footer={null}
       centered
       maskClosable={false}
@@ -97,7 +102,7 @@ const DepositModal = ({
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="amount"
+            title={t('x-lending.borrow.input.amount')}
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}
@@ -105,7 +110,7 @@ const DepositModal = ({
             disabled
             ownerAmount={formatNumber(availableAmount || 0, 6)}
             totalPrice={inputTokenTotalPrice}
-            amountLabel="Balance"
+            amountLabel={t('x-dex.swap.token.balance')}
             showDropArrow={false}
             onMax={() => {
               setPayAmount(formatNumber(availableAmount || 0, 6).toString());
@@ -114,13 +119,17 @@ const DepositModal = ({
         </div>
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex-center-between">
-            <span className="text-tc-secondary">Supply APY</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.market.supply.variable')}
+            </span>
             <div className="flex-center flex gap-[10px]">
               <span>{asset?.depositInterest}%</span>
             </div>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={`${userHealthFactor || 0}`} />
@@ -130,7 +139,7 @@ const DepositModal = ({
                 />
               </div>
               <div className="text-[12px] text-tc-secondary">
-                <span>{`Liquidation at < 1.0`}</span>
+                <span>{`${t('x-lending.borrow.mode.high.health')} < 1.0`}</span>
               </div>
             </div>
           </div>

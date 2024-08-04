@@ -8,6 +8,7 @@ import { useAccount, useReadContract } from 'wagmi';
 import { Abi, Address } from 'viem';
 import { useMemo } from 'react';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
+import { useTranslate } from '@/i18n';
 const HealthFactorInfo = ({
   segments,
   userPercent,
@@ -17,14 +18,13 @@ const HealthFactorInfo = ({
   segments: ProgressSegment[];
   userHealthFactor: number;
 }) => {
+  const { t } = useTranslate();
   return (
     <div className="flex  flex-col gap-[8px] rounded-[8px] border border-line-primary p-[12px]">
-      <div className="text-[16px]">Health factor</div>
+      <div className="text-[16px]">{t('x-lending.health.factor')}</div>
       <div className="flex flex-col">
         <div className="text-[14px] text-tc-secondary">
-          Safety of your deposited collateral against the borrowed assets and
-          its underlying value. If the health factor goes below 1.5, the
-          liquidation of your collateral might be triggered.
+          {t('x-lending.health.factor.detail')}
         </div>
 
         <div className="relative mt-[20px] h-[70px] py-[10px]">
@@ -40,7 +40,7 @@ const HealthFactorInfo = ({
                 transform: 'translateX(15%)',
               }}
             >
-              <span className="pr-[3px]">{`Your:`}</span>
+              <span className="pr-[3px]">{`${t('x-lending.health.your')}:`}</span>
               <HealthFactor
                 value={formatNumber(userHealthFactor || 0, 2).toString()}
               />
@@ -82,7 +82,9 @@ const HealthFactorInfo = ({
             </div>
           ))}
         </div>
-        <p className="text-left  text-status-error">Liquidation value: 1.0</p>
+        <p className="text-left  text-status-error">
+          {t('x-lending.health.liquidation.value')}: 1.0
+        </p>
       </div>
     </div>
   );
@@ -97,14 +99,13 @@ const CurrentLTV = ({
   userMaxUsedRatio: number;
   tokenLiquidateRatio: number;
 }) => {
+  const { t } = useTranslate();
   return (
     <div className="flex  flex-col gap-[8px] rounded-[8px] border border-line-primary p-[12px]">
-      <div className="text-[16px]">Current LTV</div>
+      <div className="text-[16px]">{t('x-lending.health.LTV')}</div>
       <div className="flex flex-col">
         <div className="text-[14px] text-tc-secondary">
-          Your current SLC loan to value based on your collateral supplied. If
-          your loan to value goes above the liquidation threshold your
-          collateral supplied may be liquidated.
+          {t('x-lending.health.LTV.detail')}
         </div>
 
         <div className="relative mt-[30px] h-[70px] py-[10px]">
@@ -121,7 +122,7 @@ const CurrentLTV = ({
                   transform: 'translateX(-10%)',
                 }}
               >
-                {`Your: ${formatNumber(userValueUsedRatio || 0, 2)}`}
+                {`${t('x-lending.health.your')}: ${formatNumber(userValueUsedRatio || 0, 2)}`}
               </span>
               <span className="text-tc-secondary">
                 <CaretDownOutlined />
@@ -151,7 +152,7 @@ const CurrentLTV = ({
                   transform: 'translateX(-20%)',
                 }}
               >
-                {`Max: ${formatNumber(userMaxUsedRatio || 0, 2) || 'Fine'}`}
+                {`${t('x-dex.swap.token.select.max')}: ${formatNumber(userMaxUsedRatio || 0, 2) || t('x-lending.health.fine')}`}
               </span>
             </div>
           </div>
@@ -175,7 +176,8 @@ const CurrentLTV = ({
           </div>
         </div>
         <p className="text-left  text-status-error">
-          Liquidation threshold: {`${tokenLiquidateRatio}`}
+          {t('x-lending.health.liquidation.threshold')}:
+          {` ${tokenLiquidateRatio}`}
         </p>
       </div>
     </div>
@@ -196,6 +198,7 @@ const RiskModal = ({
     address: Address;
   };
 }) => {
+  const { t } = useTranslate();
   const { userPercent, segments } = useRiskProgress({
     userHealthFactor: userHealthFactor || 0,
   });
@@ -236,17 +239,13 @@ const RiskModal = ({
     <Modal
       open={open}
       onCancel={onClose}
-      title={`Liquidation risk parameter`}
+      title={t('x-lending.health.risk.title')}
       footer={null}
       centered
     >
       <div className="flex flex-col gap-[20px]">
         <div className="mt-[20px]">
-          <p>
-            Your health factor and SLC loan to value determine the assurance of
-            your collateral. To avoid liquidations you can supply more
-            collaterals or repay borrow positions.
-          </p>
+          <p>{t('x-lending.health.risk.description')}</p>
         </div>
         <HealthFactorInfo
           segments={segments}

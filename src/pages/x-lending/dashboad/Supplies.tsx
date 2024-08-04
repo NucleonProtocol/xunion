@@ -15,6 +15,7 @@ import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
 import ResponsiveButton from '@/components/ResponsiveButton.tsx';
+import { useTranslate } from '@/i18n';
 
 const Supplies = ({
   assets,
@@ -36,16 +37,17 @@ const Supplies = ({
   const [depositItem, setDepositItem] = useState<LendingAsset>();
   const [withdrawItem, setWithdrawItem] = useState<LendingAsset>();
 
+  const { t } = useTranslate();
   const columns: ColumnType<LendingAsset>[] = [
     {
-      title: 'Asset',
+      title: t('x-lending.asset'),
       dataIndex: 'asset',
       render: (_: string, record: LendingAsset) => {
         return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      title: 'Balance',
+      title: t('x-dex.swap.token.balance'),
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
@@ -57,7 +59,7 @@ const Supplies = ({
       },
     },
     {
-      title: 'APY',
+      title: t('x-lending.apy'),
       dataIndex: 'apy',
       render: (_: string, record) => {
         return (
@@ -68,7 +70,7 @@ const Supplies = ({
       },
     },
     {
-      title: 'Collateral',
+      title: t('x-lending.collateral'),
       dataIndex: 'canCollateral',
       align: 'center',
       render: (canCollateral: boolean) => {
@@ -92,7 +94,7 @@ const Supplies = ({
               }}
               disabled={!record.canCollateral || !record.erc20Balance}
             >
-              Supply
+              {t('x-lending.supply')}
             </ResponsiveButton>
             <ResponsiveButton
               className="md:text-left md:text-primary"
@@ -101,7 +103,7 @@ const Supplies = ({
                 setWithdrawItem(record);
               }}
             >
-              Withdraw
+              {t('x-lending.withdraw')}
             </ResponsiveButton>
           </div>
         );
@@ -126,13 +128,13 @@ const Supplies = ({
       description={
         <div className="flex items-center gap-[10px] max-md:flex-wrap">
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`Balance: ${formatCurrency(depositTotalBalance)}`}
+            {`${t('x-dex.swap.token.balance')}: ${formatCurrency(depositTotalBalance)}`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`APY: ${depositTotalAPY}%`}
+            {`${t('x-lending.apy')}: ${depositTotalAPY}%`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`Balance: ${formatCurrency(depositTotalCollateralBalance)}`}
+            {`${t('x-dex.swap.token.balance')}: ${formatCurrency(depositTotalCollateralBalance)}`}
           </Button>
         </div>
       }
