@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 function Pools() {
   const navigate = useNavigate();
   return (
-    <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] ">
-      <div className="max-md:mx-[20px] max-md:w-[calc(100%-40px)] md:min-w-[1200px]">
+    <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
+      <div className="max-md:mx-0 max-md:w-[calc(100%)] md:min-w-[1200px]">
         <div className="flex-center-between pb-[32px]">
           <span className="text-[24px] font-bold">Liquidity pools</span>
           <Button
@@ -22,7 +22,7 @@ function Pools() {
             Create Pool
           </Button>
         </div>
-        <div className=" flex w-full items-center gap-[30px]">
+        <div className=" flex w-full flex-wrap items-center gap-[30px] max-md:flex-col">
           <AmountCard
             title="TVL"
             amount={27812312}

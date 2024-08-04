@@ -7,11 +7,11 @@ import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
   return (
-    <div className="flex w-full items-center justify-around">
-      <div className="mr-[40px] flex h-[76px] min-w-[225px] items-center gap-[20px] border-[2px] border-transparent border-r-line-primary">
-        <div className="flex  items-center gap-[10px]">
+    <div className="flex w-full items-center justify-around max-md:flex-wrap max-md:items-start">
+      <div className="mr-[40px] flex h-[76px] min-w-[225px] items-center gap-[20px] border-[2px] border-transparent border-r-line-primary max-md:w-full max-md:items-start max-md:border-0">
+        <div className="flex  items-center gap-[10px] max-md:items-start">
           <TokenIcon src={asset?.token.icon} width={50} height={50} />
-          <div className="flex flex-col items-start gap-[10px]">
+          <div className="flex flex-col items-start gap-[10px] max-md:items-start">
             <span className="text-[16px] font-[500]">{`Wrapped ${asset?.token.name}`}</span>
             <div className="flex gap-[5px]">
               <span className="text-[14px] text-tc-secondary">{`${asset?.token.symbol}`}</span>
@@ -25,15 +25,15 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-1">
-        <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px]">
+      <div className="flex flex-1 max-md:flex-wrap">
+        <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px] max-md:min-w-[100px] max-md:flex-1">
           <span className="text-[16px] text-tc-secondary">Reserve size</span>
           <span className="text-[20px] font-bold">
             {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
           </span>
         </div>
 
-        <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
+        <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[100px] max-md:flex-1">
           <span className="text-[16px] text-tc-secondary">
             Available liquidity
           </span>
@@ -47,25 +47,27 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
             )}
           </span>
         </div>
-        <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  ">
-          <span className="text-[16px] text-tc-secondary">
-            Utilization rate
-          </span>
-          <span className="text-[20px] font-bold">
-            {formatNumber(
-              (asset?.lendingAmount || 0) / (asset?.depositAmount || 1),
-              4
-            )}
-          </span>
+        <div className="flex flex-1 justify-between max-md:justify-start">
+          <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  max-md:min-w-[100px] max-md:flex-1">
+            <span className="text-[16px] text-tc-secondary">
+              Utilization rate
+            </span>
+            <span className="text-[20px] font-bold">
+              {formatNumber(
+                (asset?.lendingAmount || 0) / (asset?.depositAmount || 1),
+                4
+              )}
+            </span>
+          </div>
+          <div className="flex h-[84px] flex-col items-end max-md:min-w-[100px] max-md:flex-1 max-md:items-start">
+            <span className="flex h-[52px] items-center justify-end text-tc-secondary">
+              Oracle price
+            </span>
+            <span className="text-[20px] font-bold">
+              {formatCurrency(formatNumber(asset?.oraclePrice || 0, 6), true)}
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="flex h-[84px] flex-col items-end">
-        <span className="flex h-[52px] items-center justify-end text-tc-secondary">
-          Oracle price
-        </span>
-        <span className="text-[20px] font-bold">
-          {formatCurrency(formatNumber(asset?.oraclePrice || 0, 6), true)}
-        </span>
       </div>
     </div>
   );

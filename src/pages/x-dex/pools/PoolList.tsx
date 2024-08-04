@@ -1,19 +1,18 @@
-import { useAccount } from 'wagmi';
 import { ColumnType } from 'antd/es/table';
 import { SwapIcon, TokenIcon } from '@/components/icons';
 import { formatCurrency } from '@/utils';
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Popover, Skeleton, Table } from 'antd';
+import { Popover, Skeleton } from 'antd';
 import PoolFilter from '@/pages/x-dex/pools/PoolFilter.tsx';
 import usePool from '@/pages/x-dex/hooks/usePool.ts';
 import TimePicker from '@/components/TimePicker.tsx';
 import { PoolType } from '@/types/pool.ts';
 import { formatUnits } from 'ethers';
 import { useNavigate } from 'react-router-dom';
+import ResponsiveTable from '@/components/ResponsiveTable.tsx';
+import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 
 const PoolList = () => {
-  const { address } = useAccount();
-
   const {
     pools,
     total,
@@ -29,7 +28,6 @@ const PoolList = () => {
 
   const columns: ColumnType<PoolType>[] = [
     {
-      key: 'name',
       title: 'Name',
       dataIndex: 'name',
       width: 240,
@@ -46,7 +44,6 @@ const PoolList = () => {
       },
     },
     {
-      key: 'TVL',
       title: 'TVL',
       dataIndex: 'tvl',
       width: 240,
@@ -59,7 +56,6 @@ const PoolList = () => {
       },
     },
     {
-      key: 'volume24h',
       title: 'Volume(24h)',
       dataIndex: 'volume24h',
       width: 240,
@@ -72,7 +68,6 @@ const PoolList = () => {
       },
     },
     {
-      key: 'fees',
       title: 'Fees(24h)',
       dataIndex: 'fees',
       align: 'center',
@@ -83,55 +78,54 @@ const PoolList = () => {
       ),
     },
     {
-      key: 'APR',
       title: 'APR(24h)',
       dataIndex: 'apr',
       align: 'center',
       render: (value: string) => value || '-',
     },
-  ];
-  const actionColumn = {
-    key: 'action',
-    title: '',
-    render: (_: string, record: PoolType) => {
-      return (
-        <Popover
-          title={
-            <div className="flex  flex-col gap-[5px]">
-              <Button
-                type="text"
-                ghost
-                className="text-left text-primary"
-                onClick={() => {
-                  navigate(
-                    `/x-dex/liquidity?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
-                  );
-                }}
-                icon={<PlusOutlined />}
-              >
-                Add liquidity
-              </Button>
-              <Button
-                type="text"
-                ghost
-                className="text-left text-primary "
-                onClick={() => {
-                  navigate(
-                    `/x-dex/swap?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
-                  );
-                }}
-                icon={<SwapIcon />}
-              >
-                Swap
-              </Button>
+    {
+      dataIndex: 'action',
+      render: (_: string, record: PoolType) => {
+        const Buttons = (
+          <div className="flex  flex-col gap-[5px] max-md:flex-row">
+            <ResponsiveButton
+              className="md:text-left md:text-primary"
+              onClick={() => {
+                navigate(
+                  `/x-dex/liquidity?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
+                );
+              }}
+              icon={<PlusOutlined />}
+            >
+              Add liquidity
+            </ResponsiveButton>
+            <ResponsiveButton
+              className="md:text-left md:text-primary"
+              onClick={() => {
+                navigate(
+                  `/x-dex/swap?tokena=${record.tokenA.address}&tokenb=${record.tokenB.address}`
+                );
+              }}
+              icon={<SwapIcon />}
+            >
+              Swap
+            </ResponsiveButton>
+          </div>
+        );
+        return (
+          <>
+            <div className="md:hidden">{Buttons}</div>
+            <div className="max-md:hidden">
+              <Popover title={Buttons} trigger={['click']}>
+                <EllipsisOutlined className="cursor-pointer text-[20px]" />
+              </Popover>
             </div>
-          }
-        >
-          <EllipsisOutlined className="cursor-pointer text-[20px]" />
-        </Popover>
-      );
+          </>
+        );
+      },
     },
-  };
+  ];
+
   return (
     <div className="flex flex-col">
       <PoolFilter
@@ -169,14 +163,7 @@ const PoolList = () => {
             <Skeleton active />
           </div>
         ) : (
-          <Table
-            columns={address ? [...columns, actionColumn] : columns}
-            dataSource={pools}
-            bordered={false}
-            rowHoverable={false}
-            pagination={false}
-            rowKey="id"
-          />
+          <ResponsiveTable columns={columns} dataSource={pools} rowKey="id" />
         )}
       </div>
     </div>

@@ -31,7 +31,7 @@ function LendingMarket() {
     setData(filtered);
   };
   return (
-    <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
+    <div className="mt-[30px] flex  flex-col items-center p-[20px]  max-md:mt-[0px] max-md:p-[16px] max-md:pb-[80px]">
       <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
         <div className="flex-center-between pb-[20px]">
           <ChainSelector />

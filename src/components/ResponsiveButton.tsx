@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { cn } from '@/utils/classnames.ts';
 
 const ResponsiveButton = ({
@@ -7,10 +7,12 @@ const ResponsiveButton = ({
   onClick,
   children,
   className,
+  icon,
 }: PropsWithChildren<{
   disabled?: boolean;
   onClick?: () => void;
   className?: string;
+  icon?: ReactNode;
 }>) => {
   return (
     <>
@@ -21,6 +23,7 @@ const ResponsiveButton = ({
         size="small"
         disabled={disabled}
         onClick={onClick}
+        icon={icon}
       >
         {children}
       </Button>
@@ -29,6 +32,7 @@ const ResponsiveButton = ({
         className={cn('flex-1 rounded-[16px] md:hidden', className)}
         disabled={disabled}
         onClick={onClick}
+        icon={icon}
       >
         {children}
       </Button>

@@ -22,8 +22,8 @@ function Dashboard() {
     refetch,
   } = useDashboard();
   return (
-    <div className="mt-[30px] flex  flex-col items-center p-[20px] max-md:mt-[10px] max-md:pb-[80px] max-md:pt-[10px]">
-      <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
+    <div className="max-md:mt-0px mt-[30px]  flex flex-col items-center p-[20px] max-md:px-[16px] max-md:pb-[80px]">
+      <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-0">
         <div className="flex-center-between pb-[20px] max-md:pb-[5px]">
           <ChainSelector />
         </div>

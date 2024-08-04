@@ -24,7 +24,7 @@ const PoolFilter = ({
 }) => {
   return (
     <div className="flex-center-between mb-[20px] mt-[32px]">
-      <div className="flex-center gap-[20px]">
+      <div className="flex-center gap-[20px] max-md:gap-[10px]">
         {(tabs || []).map((tab) => (
           <div
             key={tab.value}
@@ -32,17 +32,17 @@ const PoolFilter = ({
               onPoolChange(tab.value);
             }}
             className={cn(
-              'flex-center h-[40px] gap-[12px] rounded-[20px] px-[16px] ',
+              'flex-center h-[40px] gap-[12px] rounded-[20px] px-[16px] max-md:gap-[6px] ',
               poolType === tab.value
                 ? 'pointer-events-none bg-theme-non-opaque text-theme'
                 : 'cursor-pointer hover:bg-theme-non-opaque hover:text-theme '
             )}
           >
-            <span>{tab.label}</span>
+            <span className="max-md:text-[14px]">{tab.label}</span>
           </div>
         ))}
       </div>
-      <div className="w-[300px]">
+      <div className="w-[300px] pl-[20px] max-md:w-auto max-md:flex-1">
         <Input
           prefix={<SearchOutlined />}
           placeholder="Search name"

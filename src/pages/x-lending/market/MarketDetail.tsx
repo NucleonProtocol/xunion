@@ -13,9 +13,9 @@ function MarketDetail() {
   const navigate = useNavigate();
 
   return (
-    <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
+    <div className="mt-[30px] flex  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
       <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
-        <div className="flex h-[50px] items-start justify-between">
+        <div className="relative flex h-[50px] items-start justify-between">
           <div
             className="flex cursor-pointer items-center gap-[5px] hover:opacity-75"
             onClick={() => {
@@ -30,7 +30,7 @@ function MarketDetail() {
               {CHAINS.eSpaceTest.name}
             </span>
           </div>
-          <div className="flex  items-center justify-end gap-[10px]">
+          <div className="max-md: right-[20px] flex items-center justify-end gap-[10px] max-md:absolute max-md:top-[50px]">
             <Button
               type="primary"
               className="rounded-[8px] text-[12px]"
@@ -47,7 +47,7 @@ function MarketDetail() {
             </Button>
           </div>
         </div>
-        <div className="flex-center-between h-[140px] pb-[20px]">
+        <div className="flex-center-between h-[140px] pb-[20px] max-md:h-[auto]">
           {loading || !tokenAsset ? (
             <Skeleton active avatar={false} />
           ) : (
@@ -55,7 +55,7 @@ function MarketDetail() {
           )}
         </div>
         <div className="flex w-full flex-col gap-[24px]">
-          <div className="flex  flex-shrink-0  gap-[24px] overflow-hidden">
+          <div className="flex  flex-shrink-0  gap-[24px] overflow-hidden max-md:flex-col">
             <TokenSupplyInfo asset={tokenAsset} />
             <TokenBorrowInfo asset={tokenAsset} />
           </div>

@@ -19,9 +19,9 @@ const tabs = [
 function Explore() {
   const [poolType, onPoolChange] = useState('0');
   return (
-    <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] ">
-      <div className="max-md:mx-[20px] max-md:w-[calc(100%-40px)] md:min-w-[1200px]">
-        <div className="flex w-full gap-[20px]">
+    <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
+      <div className="max-md:mx-0 max-md:w-[calc(100%)] md:min-w-[1200px]">
+        <div className="flex w-full gap-[20px] max-md:flex-col">
           <SwapTVL />
           <SwapVolume />
         </div>
@@ -40,7 +40,7 @@ function Explore() {
                     : 'cursor-pointer hover:bg-theme-non-opaque hover:text-theme '
                 )}
               >
-                <span>{tab.label}</span>
+                <span className="max-md:text-[14px]">{tab.label}</span>
               </div>
             ))}
           </div>
