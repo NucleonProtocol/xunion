@@ -181,8 +181,6 @@
   "x-lending.repay.detail": "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard.t",
   "x-lending.withdraw.remaining.provided": "Remaining provided",
   "x-lending.withdraw.detail": "Withdraw this amount will reduce your health factor and increase risk of liquidation.",
-
-
   "x-lending.market.select": "Select X-Lending market",
   "x-lending.market.size": "Total market size",
   "x-lending.market.assets": "Assets",
