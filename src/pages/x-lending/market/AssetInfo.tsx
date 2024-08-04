@@ -4,8 +4,10 @@ import { TokenIcon } from '@/components/icons';
 import { Tag } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
+import { useTranslate } from '@/i18n';
 
 const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
+  const { t } = useTranslate();
   return (
     <div className="flex w-full items-center justify-around max-md:flex-wrap max-md:items-start">
       <div className="mr-[40px] flex h-[76px] min-w-[225px] items-center gap-[20px] border-[2px] border-transparent border-r-line-primary max-md:w-full max-md:items-start max-md:border-0">
@@ -17,7 +19,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
               <span className="text-[14px] text-tc-secondary">{`${asset?.token.symbol}`}</span>
               {asset?.lending_mode_num === '1' && (
                 <Tag color="error" className="flex gap-[3px]">
-                  <span> Isolated</span>
+                  <span> {t('x-lending.market.risk.tip')}</span>
                   <ExclamationCircleOutlined />
                 </Tag>
               )}
@@ -27,7 +29,9 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
       </div>
       <div className="flex flex-1 max-md:flex-wrap">
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px] py-[12px] pr-[16px] max-md:min-w-[100px] max-md:flex-1">
-          <span className="text-[16px] text-tc-secondary">Reserve size</span>
+          <span className="text-[16px] text-tc-secondary">
+            {t('x-lending.market.detail.size')}
+          </span>
           <span className="text-[20px] font-bold">
             {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
           </span>
@@ -35,7 +39,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
 
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[100px] max-md:flex-1">
           <span className="text-[16px] text-tc-secondary">
-            Available liquidity
+            {t('x-lending.market.detail.available')}
           </span>
           <span className="text-[20px] font-bold">
             {formatCurrency(
@@ -50,7 +54,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
         <div className="flex flex-1 justify-between max-md:justify-start">
           <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px]  max-md:min-w-[100px] max-md:flex-1">
             <span className="text-[16px] text-tc-secondary">
-              Utilization rate
+              {t('x-lending.market.detail.utilization')}
             </span>
             <span className="text-[20px] font-bold">
               {formatNumber(
@@ -61,7 +65,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
           </div>
           <div className="flex h-[84px] flex-col items-end max-md:min-w-[100px] max-md:flex-1 max-md:items-start">
             <span className="flex h-[52px] items-center justify-end text-tc-secondary">
-              Oracle price
+              {t('x-lending.market.detail.oracle')}
             </span>
             <span className="text-[20px] font-bold">
               {formatCurrency(formatNumber(asset?.oraclePrice || 0, 6), true)}

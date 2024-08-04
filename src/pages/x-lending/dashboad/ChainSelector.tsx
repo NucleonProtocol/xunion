@@ -4,6 +4,7 @@ import { Dropdown, MenuProps } from 'antd';
 import { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
+import { useTranslate } from '@/i18n';
 
 const chains: ChainType[] = [CHAINS.eSpaceTest, CHAINS.scrollTest];
 
@@ -11,6 +12,7 @@ const ChainSelector = () => {
   const chainId = 71;
   const [open, setOpen] = useState(false);
 
+  const { t } = useTranslate();
   const chain = chains.find((item) => item.chainId === chainId);
 
   const items: MenuProps['items'] = chains.map((item) => ({
@@ -29,7 +31,9 @@ const ChainSelector = () => {
           {
             key: 'title',
             label: (
-              <div className="hover:cursor-auto">Select X-Lending market</div>
+              <div className="hover:cursor-auto">
+                {t('x-lending.market.select')}
+              </div>
             ),
             disabled: true,
           },

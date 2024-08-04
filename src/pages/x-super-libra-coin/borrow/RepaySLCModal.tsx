@@ -11,6 +11,7 @@ import useRepaySLC from '@/pages/x-super-libra-coin/hooks/useRepaySLC.ts';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { isNumeric } from '@/utils/isNumeric.ts';
+import { useTranslate } from '@/i18n';
 
 const RepaySLCModal = ({
   open,
@@ -48,11 +49,14 @@ const RepaySLCModal = ({
     spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
   });
 
+  const { t } = useTranslate();
   const renderSwapText = () => {
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Available Amount ${availableAmount}`}
+          {t('x-lending.supply.available.amount', {
+            amount: `${availableAmount}`,
+          })}
         </Button>
       );
     }
@@ -67,7 +71,7 @@ const RepaySLCModal = ({
           loading={isTokenAApproving}
           onClick={approveTokenA}
         >
-          Give permission to use SLC
+          {t('x-dex.swap.give.permission', { name: 'SLC' })}
         </Button>
       );
     }
@@ -80,7 +84,7 @@ const RepaySLCModal = ({
         onClick={onConfirm}
         loading={isSubmittedLoading || loading}
       >
-        Repay SLC
+        {t('x-lending.repay.to', { name: 'SLC' })}
       </Button>
     );
   };
@@ -88,7 +92,7 @@ const RepaySLCModal = ({
     <Modal
       open={open}
       onCancel={onClose}
-      title="Repay SLC"
+      title={t('x-lending.repay.to', { name: 'SLC' })}
       footer={null}
       centered
       maskClosable={false}
@@ -97,7 +101,7 @@ const RepaySLCModal = ({
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="amount"
+            title={t('x-lending.borrow.input.amount')}
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}
@@ -105,7 +109,7 @@ const RepaySLCModal = ({
             disabled
             ownerAmount={formatNumber(availableAmount || 0, 6)}
             totalPrice={inputTokenTotalPrice}
-            amountLabel="Available"
+            amountLabel={t('x-lending.available')}
             showDropArrow={false}
             onMax={() => {
               setPayAmount(formatNumber(availableAmount || 0, 6).toString());
@@ -114,7 +118,9 @@ const RepaySLCModal = ({
         </div>
         <div className="flex flex-col gap-[5px] p-[16px]">
           <div className="flex-center-between">
-            <span className="text-tc-secondary">Remaining debt</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.repay.remaining.debt')}
+            </span>
             <div className="flex-center flex gap-[10px]">
               <span>{formatCurrency(availableAmount, false)} SLC</span>
               <span>{`->`}</span>
@@ -129,7 +135,9 @@ const RepaySLCModal = ({
             </div>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={`${userHealthFactor}` || '0'} />
@@ -139,17 +147,13 @@ const RepaySLCModal = ({
                 />
               </div>
               <div className="text-[12px] text-tc-secondary">
-                <span>{`Liquidation at < 1.0`}</span>
+                <span>{`${t('x-lending.borrow.mode.high.health')} < 1.0`}</span>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <Warning>
-            You don’t have enough funds in your wallet to repay the full amount.
-            If you proceed to repay with your current amount of funds, you will
-            still have a small borrowing position in your dashboard.
-          </Warning>
+          <Warning>{t('x-lending.repay.detail')}</Warning>
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
           <WithAuthButton>{renderSwapText()}</WithAuthButton>

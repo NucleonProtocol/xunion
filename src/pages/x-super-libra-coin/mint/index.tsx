@@ -13,6 +13,7 @@ import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import Tip from '@/pages/x-super-libra-coin/burn/Tip.tsx';
+import { useTranslate } from '@/i18n';
 
 function MintSLC() {
   const {
@@ -45,6 +46,8 @@ function MintSLC() {
     spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
   });
 
+  const { t } = useTranslate();
+
   const { isNativeToken } = useNativeToken();
 
   const { disabled } = useWalletAuth();
@@ -53,21 +56,21 @@ function MintSLC() {
     if (!inputToken?.address) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          Select a token
+          {t('x-dex.swap.token.modal.title')}
         </Button>
       );
     }
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Insufficient ${inputToken?.symbol} Balance`}
+          {t('common.error.insufficient', { name: `${inputToken?.symbol} ` })}
         </Button>
       );
     }
     if (isInsufficientLiquidity) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          Insufficient liquidity for this trade.
+          {t('common.error.insufficient.liquidity')}
         </Button>
       );
     }
@@ -83,8 +86,8 @@ function MintSLC() {
           onClick={approveTokenA}
         >
           {isTokenAApproved
-            ? `${inputToken?.symbol} Approved`
-            : `Approve ${inputToken?.symbol}`}
+            ? t('common.approved', { name: `${inputToken?.symbol}` })
+            : t('common.approve.to', { name: `${inputToken?.symbol}` })}
         </Button>
       );
     }
@@ -97,7 +100,7 @@ function MintSLC() {
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
-        Mint
+        {t('common.mint')}
       </Button>
     );
   };
@@ -109,12 +112,13 @@ function MintSLC() {
             name: 'Buy',
             path: '/x-super-libra-coin/mint',
             icon: <BuySellIcon />,
-            label: 'Mint & Burn',
+            label: t('x-super-libra-coin.title'),
           },
           {
             name: 'Borrow',
             path: '/x-super-libra-coin/borrow',
             icon: <BorrowIcon />,
+            label: t('x-lending.borrow'),
           },
         ]}
         active="Buy"
@@ -127,7 +131,7 @@ function MintSLC() {
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="You pay"
+            title={t('x-dex.swap.input.pay')}
             token={inputToken}
             onTokenChange={setInputToken}
             amount={payAmount}
@@ -146,7 +150,7 @@ function MintSLC() {
             </div>
           </div>
           <TokenInput
-            title="You receive"
+            title={t('x-dex.swap.input.receive')}
             editable
             token={outputToken}
             onTokenChange={() => {}}

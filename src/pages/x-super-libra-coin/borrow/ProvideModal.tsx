@@ -8,6 +8,7 @@ import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import { useTranslate } from '@/i18n';
 
 const ProvideModal = ({
   open,
@@ -31,7 +32,7 @@ const ProvideModal = ({
     loading,
     inputTokenTotalPrice,
   } = useProvide({ token: asset, refresh });
-
+  const { t } = useTranslate();
   const {
     isApproved: isTokenAApproved,
     loading: isTokenAApproving,
@@ -43,12 +44,11 @@ const ProvideModal = ({
   });
 
   const { isNativeToken } = useNativeToken();
-
   const renderSwapText = () => {
     if (isInsufficient && payAmount) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Insufficient ${asset?.symbol} Balance`}
+          {t('common.error.insufficient', { name: `${asset?.symbol}` })}
         </Button>
       );
     }
@@ -64,7 +64,7 @@ const ProvideModal = ({
           loading={isTokenAApproving}
           onClick={approveTokenA}
         >
-          {`Approve ${inputToken?.symbol}`}
+          {t('x-dex.swap.give.permission', { name: `${inputToken?.symbol}` })}
         </Button>
       );
     }
@@ -77,7 +77,7 @@ const ProvideModal = ({
         onClick={provide}
         loading={isSubmittedLoading || loading}
       >
-        {`Provide ${asset?.symbol}`}
+        {t('x-super-libra-coin.provide.to', { name: `${asset?.symbol}` })}
       </Button>
     );
   };
@@ -85,7 +85,7 @@ const ProvideModal = ({
     <Modal
       open={open}
       onCancel={onClose}
-      title={`Provide ${asset?.symbol}`}
+      title={t('x-super-libra-coin.provide.to', { name: `${asset?.symbol}` })}
       footer={null}
       centered
       maskClosable={false}
@@ -94,7 +94,7 @@ const ProvideModal = ({
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="amount"
+            title={t('x-lending.borrow.input.amount')}
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}
@@ -102,7 +102,7 @@ const ProvideModal = ({
             disabled
             ownerAmount={inputOwnerAmount}
             totalPrice={inputTokenTotalPrice}
-            amountLabel="Provided"
+            amountLabel={t('x-super-libra-coin.provided')}
             showDropArrow={false}
           />
         </div>

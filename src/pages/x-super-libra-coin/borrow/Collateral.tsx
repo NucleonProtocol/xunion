@@ -10,17 +10,17 @@ import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
 import ResponsiveButton from '@/components/ResponsiveButton.tsx';
+import { useTranslate } from '@/i18n';
 
 const Collateral = ({ refresh }: { refresh: () => void }) => {
   const [withdrawItem, setWithdrawItem] = useState<SLCAsset>();
   const [providedItem, setProvidedItem] = useState<SLCAsset>();
-
+  const { t } = useTranslate();
   const { assets, loading } = useCollateral();
 
   const columns: ColumnType<SLCAsset>[] = [
     {
-      key: 'name',
-      title: 'Name',
+      title: t('common.name'),
       dataIndex: 'name',
       width: 240,
       align: 'right',
@@ -29,8 +29,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       },
     },
     {
-      key: 'balance',
-      title: 'Wallet balance',
+      title: t('x-lending.wallet.balance'),
       dataIndex: 'balance',
       width: 240,
       render: (_: string, record: SLCAsset) => {
@@ -43,8 +42,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       },
     },
     {
-      key: 'provided',
-      title: 'Provided',
+      title: t('x-super-libra-coin.provided'),
       dataIndex: 'provided',
       width: 240,
       render: (_: string, record: SLCAsset) => {
@@ -57,8 +55,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       },
     },
     {
-      key: 'canBeProvided',
-      title: 'Can be provided',
+      title: t('x-super-libra-coin.can.be.provided'),
       dataIndex: 'canBeProvided',
       align: 'center',
       render: (value: string) => {
@@ -70,7 +67,6 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       },
     },
     {
-      key: 'action',
       title: '',
       dataIndex: 'action',
       align: 'right',
@@ -83,7 +79,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
                 setWithdrawItem(record);
               }}
             >
-              Withdraw
+              {t('x-lending.withdraw')}
             </ResponsiveButton>
             <ResponsiveButton
               disabled={!record.canBeProvided}
@@ -91,7 +87,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
                 setProvidedItem(record);
               }}
             >
-              Provide
+              {t('x-super-libra-coin.provide')}
             </ResponsiveButton>
           </div>
         );
@@ -108,7 +104,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
         <div className="flex flex-col">
           <div className="flex h-[64px] items-center justify-between border-2 border-solid  border-transparent border-b-line-primary px-[24px]">
             <div className="flex-center gap-[30px]">
-              <span className="font-[500]">Collateral</span>
+              <span className="font-[500]">{t('x-lending.collateral')}</span>
             </div>
           </div>
           <WithdrawModal

@@ -83,7 +83,9 @@ const Position = ({
             )}
           >
             <div className="flex-center gap-[30px]">
-              <span className="font-[500]">Position Management</span>
+              <span className="font-[500]">
+                {t('x-super-libra-coin.position')}
+              </span>
             </div>
             <div className="flex-center gap-[10px]">
               <Button
@@ -94,7 +96,7 @@ const Position = ({
                   setBorrowOpen(true);
                 }}
               >
-                Borrow
+                {t('x-lending.borrow')}
               </Button>
               <Button
                 type="primary"
@@ -103,14 +105,14 @@ const Position = ({
                 disabled={!userBorrowedAmount}
                 onClick={() => setRepayOpen(true)}
               >
-                Repay
+                {t('x-lending.repay')}
               </Button>
             </div>
           </div>
           <div className="flex flex-wrap justify-between p-[24px] max-md:px-[16px] ">
             <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
               <span className="flex h-[52px] justify-center text-tc-secondary max-md:h-[auto] max-md:items-start">
-                Collateral value
+                {t('x-super-libra-coin.collateral.value')}
               </span>
               <div className="text-[16px]">
                 {formatCurrency(userAssetsValue, false)}
@@ -119,7 +121,7 @@ const Position = ({
 
             <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px] ">
               <span className="flex h-[52px] items-center text-tc-secondary max-md:h-[auto] max-md:items-start">
-                Borrowed value
+                {t('x-super-libra-coin.borrow.value')}
               </span>
               <div className="flex flex-col text-[16px]">
                 <span> {formatCurrency(userBorrowedAmount, false)} SLC</span>
@@ -130,7 +132,7 @@ const Position = ({
             </div>
             <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
               <span className="flex h-[52px] items-center text-tc-secondary max-md:h-[auto] max-md:items-start">
-                Available to borrow
+                {t('x-super-libra-coin.available.borrow')}
               </span>
               <div className="flex flex-col text-[16px]">
                 <span> {formatCurrency(userAvailableAmount, false)} SLC</span>
@@ -141,7 +143,7 @@ const Position = ({
             </div>
             <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
               <span className="flex h-[52px] items-center text-tc-secondary max-md:h-[auto] max-md:items-start">
-                Health Factor
+                {t('x-lending.health.factor')}
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
                 <HealthFactor value={`${healthFactor}`} />
@@ -152,13 +154,13 @@ const Position = ({
                   size="small"
                   onClick={() => setRiskOpen(true)}
                 >
-                  Rist detail
+                  {t('x-lending.health.risk.detail')}
                 </Button>
               </div>
             </div>
             <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
               <span className="flex h-[52px] items-center justify-end text-tc-secondary max-md:h-[auto] max-md:justify-start">
-                Borrow mode
+                {t('x-lending.borrow.mode')}
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
                 <BorrowMode

@@ -4,6 +4,7 @@ import AmountCard from '@/components/AmountCard.tsx';
 import useBorrow from '@/pages/x-super-libra-coin/hooks/useBorrow.ts';
 import Position from '@/pages/x-super-libra-coin/borrow/Position.tsx';
 import Collateral from '@/pages/x-super-libra-coin/borrow/Collateral.tsx';
+import { useTranslate } from '@/i18n';
 
 const Borrow = () => {
   const {
@@ -16,6 +17,7 @@ const Borrow = () => {
     refresh,
     sentinel,
   } = useBorrow();
+  const { t } = useTranslate();
   return (
     <div
       className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:pt-[40px] "
@@ -27,12 +29,13 @@ const Borrow = () => {
             name: 'Buy',
             path: '/x-super-libra-coin/mint',
             icon: <BuySellIcon />,
-            label: 'Mint & Burn',
+            label: t('x-super-libra-coin.title'),
           },
           {
             name: 'Borrow',
             path: '/x-super-libra-coin/borrow',
             icon: <BorrowIcon />,
+            label: t('x-lending.borrow'),
           },
         ]}
         active="Borrow"
@@ -40,12 +43,12 @@ const Borrow = () => {
       <div className="max-md:w-[calc(100% - 32px)] mt-[30px]  min-h-[420px] p-[20px] max-md:mx-0 max-md:p-[16px] max-md:pb-[80px] md:min-w-[1200px]">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-[10px]">
           <AmountCard
-            title="TVL"
+            title={t('common.tvl')}
             amount={tvlAmount}
             loading={isOverviewLoading}
           />
           <AmountCard
-            title="SLC Supply"
+            title={t('x-super-libra-coin.slc.supply')}
             amount={totalSupply}
             loading={isOverviewLoading}
           />

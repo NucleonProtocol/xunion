@@ -7,6 +7,7 @@ import { EyeOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { LendingAsset } from '@/types/Lending.ts';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
+import { useTranslate } from '@/i18n';
 
 const AssetsList = ({
   assets,
@@ -18,10 +19,11 @@ const AssetsList = ({
   onFilterChange: (value: string) => void;
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslate();
 
   const columns: ColumnType<LendingAsset>[] = [
     {
-      title: 'Asset',
+      title: t('x-lending.asset'),
       dataIndex: 'name',
       width: 240,
       render: (_: string, record) => {
@@ -36,7 +38,7 @@ const AssetsList = ({
                 <span className="text-[12px] text-tc-secondary">{`${record.token.symbol}`}</span>
                 {record.lending_mode_num === '1' && (
                   <Tag color="error" className="flex gap-[3px]">
-                    <span> Isolated</span>
+                    <span> {t('x-lending.market.risk.tip')}</span>
                     <ExclamationCircleOutlined />
                   </Tag>
                 )}

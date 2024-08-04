@@ -13,6 +13,7 @@ import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import useBurnSLC from '@/pages/x-super-libra-coin/hooks/useBurnSLC.ts';
 import Tip from '@/pages/x-super-libra-coin/burn/Tip.tsx';
+import { useTranslate } from '@/i18n';
 
 function BurnSLC() {
   const {
@@ -47,28 +48,28 @@ function BurnSLC() {
   });
 
   const { isNativeToken } = useNativeToken();
-
+  const { t } = useTranslate();
   const { disabled } = useWalletAuth();
 
   const renderSwapText = () => {
     if (!inputToken?.address) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          Select a token
+          {t('x-dex.swap.token.modal.title')}
         </Button>
       );
     }
     if (isInsufficient) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Insufficient ${inputToken?.symbol} Balance`}
+          {t('common.error.insufficient', { name: `${inputToken?.symbol} ` })}
         </Button>
       );
     }
     if (isInsufficientLiquidity) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          Insufficient liquidity for this trade.
+          {t('common.error.insufficient.liquidity')}
         </Button>
       );
     }
@@ -84,8 +85,8 @@ function BurnSLC() {
           onClick={approveTokenA}
         >
           {isTokenAApproved
-            ? `${inputToken?.symbol} Approved`
-            : `Approve ${inputToken?.symbol}`}
+            ? t('common.approved', { name: `${inputToken?.symbol}` })
+            : t('common.approve.to', { name: `${inputToken?.symbol}` })}
         </Button>
       );
     }
@@ -100,7 +101,7 @@ function BurnSLC() {
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
-        Burn
+        {t('common.burn')}
       </Button>
     );
   };
@@ -112,12 +113,13 @@ function BurnSLC() {
             name: 'Buy',
             path: '/x-super-libra-coin/mint',
             icon: <BuySellIcon />,
-            label: 'Mint & Burn',
+            label: t('x-super-libra-coin.title'),
           },
           {
             name: 'Borrow',
             path: '/x-super-libra-coin/borrow',
             icon: <BorrowIcon />,
+            label: t('x-lending.borrow'),
           },
         ]}
         active="Buy"
@@ -130,7 +132,7 @@ function BurnSLC() {
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="You pay"
+            title={t('x-dex.swap.input.pay')}
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}
@@ -146,7 +148,7 @@ function BurnSLC() {
             </div>
           </div>
           <TokenInput
-            title="You receive"
+            title={t('x-dex.swap.input.receive')}
             editable
             token={outputToken}
             onTokenChange={setOutputToken}

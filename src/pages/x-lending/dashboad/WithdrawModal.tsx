@@ -90,7 +90,6 @@ const WithdrawModal = ({
           </div>
           <div className="flex items-start justify-between">
             <span className="text-tc-secondary">
-              {' '}
               {t('x-lending.health.factor')}
             </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">

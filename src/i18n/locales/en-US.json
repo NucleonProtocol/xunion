@@ -46,6 +46,7 @@
   "common.error.insufficient": "Insufficient {name} Balance",
   "common.error.insufficient.provided": "Insufficient {name} Provided",
   "common.error.insufficient.liquidity": "Insufficient liquidity for this trade.",
+  "common.placeholder.search.name": "Search name",
   "x-dex.swap.token": "Token",
   "x-dex.swap.pool": "Pool",
   "x-dex.swap.title": "Swap",
@@ -113,6 +114,7 @@
   "x-super-libra-coin.available.borrow": "Available to borrow",
   "x-super-libra-coin.provided": "Provided",
   "x-super-libra-coin.provide": "Provide",
+  "x-super-libra-coin.provide.to": "Provide {name}",
   "x-super-libra-coin.can.be.provided": "Can be provided",
   "x-lending.collateral": "Collateral",
   "x-lending.net.worth": "Net worth",
@@ -179,7 +181,11 @@
   "x-lending.repay.detail": "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard.t",
   "x-lending.withdraw.remaining.provided": "Remaining provided",
   "x-lending.withdraw.detail": "Withdraw this amount will reduce your health factor and increase risk of liquidation.",
+
+
+  "x-lending.market.select": "Select X-Lending market",
   "x-lending.market.size": "Total market size",
+  "x-lending.market.assets": "Assets",
   "x-lending.market.available": "Total available",
   "x-lending.market.borrow": "Total borrows",
   "x-lending.market.supplied": "Total supplied",

@@ -7,11 +7,13 @@ import { Button, Skeleton } from 'antd';
 import TokenBorrowInfo from '@/pages/x-lending/market/TokenBorrowInfo.tsx';
 import TokenSupplyInfo from '@/pages/x-lending/market/TokenSupplyInfo.tsx';
 import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
+import { useTranslate } from '@/i18n';
 
 function MarketDetail() {
   const { tokenAsset, loading } = useMarketDetail();
   const navigate = useNavigate();
 
+  const { t } = useTranslate();
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
       <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
@@ -36,14 +38,14 @@ function MarketDetail() {
               className="rounded-[8px] text-[12px]"
               onClick={() => {}}
             >
-              Supply
+              {t('x-lending.supply')}
             </Button>
             <Button
               type="primary"
               className="rounded-[8px] text-[12px]"
               onClick={() => {}}
             >
-              Borrow
+              {t('x-lending.borrow')}
             </Button>
           </div>
         </div>

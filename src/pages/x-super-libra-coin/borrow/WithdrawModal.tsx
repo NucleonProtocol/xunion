@@ -5,6 +5,7 @@ import Warning from '@/components/Warning.tsx';
 import { SLCAsset } from '@/types/slc.ts';
 import useWithdraw from '@/pages/x-super-libra-coin/hooks/useWithdraw.ts';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
+import { useTranslate } from '@/i18n';
 
 const WithdrawModal = ({
   open,
@@ -30,12 +31,14 @@ const WithdrawModal = ({
     estimatedHealthFactor,
     remainingProvided,
   } = useWithdraw({ token: asset, refresh });
-
+  const { t } = useTranslate();
   const renderSwapText = () => {
     if (isInsufficient && payAmount) {
       return (
         <Button className="w-full" type="primary" size="large" disabled>
-          {`Insufficient ${asset?.symbol} Provided`}
+          {t('common.error.insufficient.provided', {
+            name: `${asset?.symbol}`,
+          })}
         </Button>
       );
     }
@@ -48,7 +51,7 @@ const WithdrawModal = ({
         onClick={withdraw}
         loading={isSubmittedLoading || loading}
       >
-        {`Withdraw ${asset?.symbol}`}
+        {t('x-lending.withdraw.to', { name: `${asset?.symbol}` })}
       </Button>
     );
   };
@@ -56,7 +59,7 @@ const WithdrawModal = ({
     <Modal
       open={open}
       onCancel={onClose}
-      title={`Withdraw ${asset?.symbol}`}
+      title={t('x-lending.withdraw.to', { name: `${asset?.symbol}` })}
       footer={null}
       centered
       maskClosable={false}
@@ -65,7 +68,7 @@ const WithdrawModal = ({
         <div className="mt-[20px]">
           <TokenInput
             editable
-            title="amount"
+            title={t('x-lending.borrow.input.amount')}
             token={inputToken}
             onTokenChange={() => {}}
             amount={payAmount}
@@ -73,19 +76,23 @@ const WithdrawModal = ({
             disabled
             ownerAmount={asset?.provided || 0}
             totalPrice={inputTokenTotalPrice}
-            amountLabel="Provided"
+            amountLabel={t('x-super-libra-coin.provided')}
             showDropArrow={false}
           />
         </div>
         <div className="flex flex-col gap-[10px] p-[16px]">
           <div className="flex-center-between">
-            <span className="text-tc-secondary">Remaining provided</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.withdraw.remaining.provided')}
+            </span>
             <span>
               {remainingProvided} {asset?.symbol}
             </span>
           </div>
           <div className="flex items-start justify-between">
-            <span className="text-tc-secondary">Health factor</span>
+            <span className="text-tc-secondary">
+              {t('x-lending.health.factor')}
+            </span>
             <div className="flex flex-col items-end justify-end gap-[10px]">
               <div className="flex-center gap-[10px]">
                 <HealthFactor value={`${userHealthFactor}`} />
@@ -95,16 +102,13 @@ const WithdrawModal = ({
                 />
               </div>
               <div className="text-[12px] text-tc-secondary">
-                <span>{`Liquidation at < 1.0`}</span>
+                <span>{`${t('x-lending.borrow.mode.high.health')} < 1.0`}</span>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <Warning>
-            Withdraw this amount will reduce your health factor and increase
-            risk of liquidation.
-          </Warning>
+          <Warning>{t('x-lending.withdraw.detail')}</Warning>
         </div>
         <div className="mt-[20px] h-[56px]  w-full">
           <WithAuthButton>{renderSwapText()}</WithAuthButton>

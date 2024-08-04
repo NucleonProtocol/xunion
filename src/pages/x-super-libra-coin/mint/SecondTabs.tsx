@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
 import { cn } from '@/utils/classnames.ts';
+import { useTranslate } from '@/i18n';
 
 const SecondTabs = ({ active }: { active: 'Mint' | 'Burn' }) => {
+  const { t } = useTranslate();
   const tabs = [
     {
-      name: 'Mint',
+      name: t('common.mint'),
       path: '/x-super-libra-coin/mint',
     },
     {
-      name: 'Burn',
+      name: t('common.burn'),
       path: '/x-super-libra-coin/burn',
     },
   ];
