@@ -16,7 +16,7 @@ const AmountCard = ({
   return (
     <div
       className={cn(
-        'flex h-[120px] w-[364px] flex-col justify-center gap-[5px] rounded-[16px]  bg-fill-niubi p-[24px]',
+        'flex h-[120px] w-[364px] flex-col justify-center gap-[5px] rounded-[16px]  bg-fill-niubi p-[24px] max-md:h-[100px] max-md:w-full max-md:p-[16px]',
         className
       )}
     >

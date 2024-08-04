@@ -1,23 +1,21 @@
-import { Button, Skeleton, Table } from 'antd';
-
-import { TokenIcon } from '@/components/icons';
-import { formatCurrency } from '@/utils';
+import { Skeleton } from 'antd';
 import WithdrawModal from '@/pages/x-super-libra-coin/borrow/WithdrawModal.tsx';
 import ProvideModal from '@/pages/x-super-libra-coin/borrow/ProvideModal.tsx';
 import { useState } from 'react';
 import useCollateral from '@/pages/x-super-libra-coin/hooks/useCollateral.ts';
 import { SLCAsset } from '@/types/slc.ts';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { useAccount } from 'wagmi';
 import { ColumnType } from 'antd/es/table';
+import ResponsiveTable from '@/components/ResponsiveTable.tsx';
+import TokenWithIcon from '@/components/TokenWithIcon.tsx';
+import AmountWithPrice from '@/components/AmountWithPrice.tsx';
+import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 
 const Collateral = ({ refresh }: { refresh: () => void }) => {
   const [withdrawItem, setWithdrawItem] = useState<SLCAsset>();
   const [providedItem, setProvidedItem] = useState<SLCAsset>();
 
   const { assets, loading } = useCollateral();
-
-  const { address } = useAccount();
 
   const columns: ColumnType<SLCAsset>[] = [
     {
@@ -27,14 +25,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       width: 240,
       align: 'right',
       render: (_: string, record: SLCAsset) => {
-        return (
-          <div className="flex  gap-[5px]">
-            <span>
-              <TokenIcon src={record.icon} />
-            </span>
-            <span>{record?.symbol}</span>
-          </div>
-        );
+        return <TokenWithIcon token={record} />;
       },
     },
     {
@@ -44,10 +35,10 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       width: 240,
       render: (_: string, record: SLCAsset) => {
         return (
-          <div className="flex flex-col gap-[5px]">
-            <span>{record?.balance || 0}</span>
-            <span>{formatCurrency(record?.balancePrice || 0)}</span>
-          </div>
+          <AmountWithPrice
+            amount={record?.balance}
+            price={record?.balancePrice}
+          />
         );
       },
     },
@@ -58,10 +49,10 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       width: 240,
       render: (_: string, record: SLCAsset) => {
         return (
-          <div className="flex flex-col gap-[5px]">
-            <span>{record?.provided || 0}</span>
-            <span>{formatCurrency(record?.providedPrice || 0)}</span>
-          </div>
+          <AmountWithPrice
+            amount={record?.provided}
+            price={record?.providedPrice}
+          />
         );
       },
     },
@@ -78,40 +69,30 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
         );
       },
     },
-  ];
-  const actionColumn: ColumnType<SLCAsset>[] = [
     {
       key: 'action',
       title: '',
-      dataIndex: '',
+      dataIndex: 'action',
       align: 'right',
       render: (_: string, record: SLCAsset) => {
         return (
-          <div className="flex  gap-[5px]">
-            <Button
-              type="text"
-              ghost
-              className="text-theme"
-              size="small"
+          <div className="flex gap-[5px]">
+            <ResponsiveButton
               disabled={!record.canBeWithdraw}
               onClick={() => {
                 setWithdrawItem(record);
               }}
             >
               Withdraw
-            </Button>
-            <Button
-              type="text"
-              ghost
-              className="text-theme"
-              size="small"
+            </ResponsiveButton>
+            <ResponsiveButton
               disabled={!record.canBeProvided}
               onClick={() => {
                 setProvidedItem(record);
               }}
             >
               Provide
-            </Button>
+            </ResponsiveButton>
           </div>
         );
       },
@@ -120,7 +101,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
   return (
     <div className="w-full rounded-[16px] bg-fill-niubi">
       {loading ? (
-        <div className="p-[24px]">
+        <div className="p-[24px] max-md:p-[16px]">
           <Skeleton active />
         </div>
       ) : (
@@ -142,12 +123,9 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
             asset={providedItem}
             refresh={refresh}
           />
-          <Table
-            columns={address ? [...columns, ...actionColumn] : columns}
+          <ResponsiveTable
+            columns={columns}
             dataSource={assets}
-            bordered={false}
-            rowHoverable={false}
-            pagination={false}
             rowKey="name"
           />
         </div>

@@ -1,13 +1,13 @@
 import LendingCard from '@/components/LendingCard.tsx';
-import { Button, Checkbox, Table } from 'antd';
-import { useAccount } from 'wagmi';
+import { Button, Checkbox } from 'antd';
 import { ColumnType } from 'antd/es/table';
-import { TokenIcon } from '@/components/icons';
-import { formatCurrency } from '@/utils';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useEffect, useState } from 'react';
 import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
+import ResponsiveTable from '@/components/ResponsiveTable.tsx';
+import TokenWithIcon from '@/components/TokenWithIcon.tsx';
+import AmountWithPrice from '@/components/AmountWithPrice.tsx';
 
 const AssetsToSupply = ({
   assets,
@@ -22,7 +22,6 @@ const AssetsToSupply = ({
 }) => {
   const [filteredAssets, setFilteredAssets] = useState<LendingAsset[]>([]);
   const [checked, setChecked] = useState(false);
-  const { address } = useAccount();
   const [depositItem, setDepositItem] = useState<LendingAsset>();
 
   useEffect(() => {
@@ -35,35 +34,25 @@ const AssetsToSupply = ({
 
   const columns: ColumnType<LendingAsset>[] = [
     {
-      key: 'Asset',
       title: 'Asset',
       dataIndex: 'asset',
       render: (_: string, record: LendingAsset) => {
-        return (
-          <div className="flex  gap-[5px]">
-            <span>
-              <TokenIcon src={record.token?.icon} />
-            </span>
-            <span>{record?.token.symbol}</span>
-          </div>
-        );
+        return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      key: 'balance',
       title: 'Wallet Balance',
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
-          <div className="flex flex-col gap-[5px]">
-            <span>{formatCurrency(record?.erc20Balance || 0, false)}</span>
-            <span>{formatCurrency(record?.erc20TotalPrice || 0)}</span>
-          </div>
+          <AmountWithPrice
+            amount={record?.erc20Balance}
+            price={record?.erc20TotalPrice}
+          />
         );
       },
     },
     {
-      key: 'apy',
       title: 'APY',
       dataIndex: 'apy',
       render: (_: string, record: LendingAsset) => {
@@ -75,7 +64,6 @@ const AssetsToSupply = ({
       },
     },
     {
-      key: 'Collateral',
       title: 'Collateral',
       dataIndex: 'canCollateral',
       align: 'center',
@@ -87,29 +75,29 @@ const AssetsToSupply = ({
         );
       },
     },
-  ];
-  const actionColumn: ColumnType<LendingAsset> = {
-    key: 'action',
-    title: '',
-    align: 'right',
-    render: (_: string, record: LendingAsset) => {
-      return (
-        <div className="flex  items-center justify-end gap-[5px]">
-          <Button
-            type="primary"
-            className="rounded-[8px] text-[12px]"
-            size="small"
-            onClick={() => {
-              setDepositItem(record);
-            }}
-            disabled={!record.canCollateral || !record.erc20Balance}
-          >
-            Supply
-          </Button>
-        </div>
-      );
+    {
+      dataIndex: 'action',
+      align: 'right',
+      render: (_: string, record: LendingAsset) => {
+        return (
+          <div className="flex  items-center justify-end gap-[5px] max-md:justify-start">
+            <Button
+              type="primary"
+              className="rounded-[8px] text-[12px] max-md:h-[32px] max-md:flex-1 max-md:rounded-[16px]"
+              size="small"
+              onClick={() => {
+                setDepositItem(record);
+              }}
+              disabled={!record.canCollateral || !record.erc20Balance}
+            >
+              Supply
+            </Button>
+          </div>
+        );
+      },
     },
-  };
+  ];
+
   return (
     <LendingCard
       loading={loading}
@@ -145,14 +133,11 @@ const AssetsToSupply = ({
         />
       )}
 
-      <Table
-        columns={address ? [...columns, actionColumn] : columns}
+      <ResponsiveTable
+        columns={columns}
         dataSource={filteredAssets}
-        bordered={false}
-        rowHoverable={false}
-        pagination={false}
-        rowKey="id"
         size="middle"
+        rowKey="id"
       />
     </LendingCard>
   );

@@ -1,18 +1,20 @@
 import LendingCard from '@/components/LendingCard.tsx';
-import { Button, Popover, Table } from 'antd';
+import { Button, Popover } from 'antd';
 import { ColumnType } from 'antd/es/table';
-import { TokenIcon } from '@/components/icons';
 import { formatCurrency } from '@/utils';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons';
-import { useAccount } from 'wagmi';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useState } from 'react';
 import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
 import WithdrawModal from '@/pages/x-lending/dashboad/WithdrawModal.tsx';
+import ResponsiveTable from '@/components/ResponsiveTable.tsx';
+import TokenWithIcon from '@/components/TokenWithIcon.tsx';
+import AmountWithPrice from '@/components/AmountWithPrice.tsx';
+import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 
 const Supplies = ({
   assets,
@@ -31,41 +33,30 @@ const Supplies = ({
   health: number;
   refetch: () => void;
 }) => {
-  const { address } = useAccount();
   const [depositItem, setDepositItem] = useState<LendingAsset>();
   const [withdrawItem, setWithdrawItem] = useState<LendingAsset>();
 
   const columns: ColumnType<LendingAsset>[] = [
     {
-      key: 'Asset',
       title: 'Asset',
       dataIndex: 'asset',
-      render: (_: string, record) => {
-        return (
-          <div className="flex  gap-[5px]">
-            <span>
-              <TokenIcon src={record.token.icon} />
-            </span>
-            <span>{record?.token.symbol}</span>
-          </div>
-        );
+      render: (_: string, record: LendingAsset) => {
+        return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      key: 'balance',
       title: 'Balance',
       dataIndex: 'balance',
-      render: (_: string, record) => {
+      render: (_: string, record: LendingAsset) => {
         return (
-          <div className="flex flex-col gap-[5px]">
-            <span>{formatCurrency(record?.depositAmount || 0, false)}</span>
-            <span>{formatCurrency(record?.depositTotalPrice || 0)}</span>
-          </div>
+          <AmountWithPrice
+            amount={record?.depositAmount}
+            price={record?.depositTotalPrice}
+          />
         );
       },
     },
     {
-      key: 'apy',
       title: 'APY',
       dataIndex: 'apy',
       render: (_: string, record) => {
@@ -77,7 +68,6 @@ const Supplies = ({
       },
     },
     {
-      key: 'Collateral',
       title: 'Collateral',
       dataIndex: 'canCollateral',
       align: 'center',
@@ -89,52 +79,52 @@ const Supplies = ({
         );
       },
     },
-  ];
-  const actionColumn: ColumnType<LendingAsset> = {
-    key: 'action',
-    title: '',
-    align: 'right',
-    render: (_: string, record) => {
-      return (
-        <Popover
-          title={
-            <div className="flex  flex-col gap-[5px]">
-              <Button
-                type="text"
-                ghost
-                className="text-left text-primary"
-                onClick={() => {
-                  setDepositItem(record);
-                }}
-                disabled={!record.canCollateral || !record.erc20Balance}
-              >
-                Supply
-              </Button>
-              <Button
-                type="text"
-                ghost
-                className="text-left text-primary "
-                disabled={!record.depositAmount}
-                onClick={() => {
-                  setWithdrawItem(record);
-                }}
-              >
-                Withdraw
-              </Button>
+    {
+      dataIndex: 'action',
+      align: 'right',
+      render: (_: string, record) => {
+        const Buttons = (
+          <div className="flex  flex-col gap-[5px] max-md:w-full max-md:flex-row max-md:gap-[20px]">
+            <ResponsiveButton
+              className="max-md:flex-1 md:text-left md:text-primary"
+              onClick={() => {
+                setDepositItem(record);
+              }}
+              disabled={!record.canCollateral || !record.erc20Balance}
+            >
+              Supply
+            </ResponsiveButton>
+            <ResponsiveButton
+              className="md:text-left md:text-primary"
+              disabled={!record.depositAmount}
+              onClick={() => {
+                setWithdrawItem(record);
+              }}
+            >
+              Withdraw
+            </ResponsiveButton>
+          </div>
+        );
+        return (
+          <>
+            <div className="max-md:w-full md:hidden">{Buttons}</div>
+            <div className="max-md:hidden">
+              <Popover title={Buttons} trigger="click">
+                <EllipsisOutlined className="cursor-pointer text-[20px]" />
+              </Popover>
             </div>
-          }
-        >
-          <EllipsisOutlined className="cursor-pointer text-[20px]" />
-        </Popover>
-      );
+          </>
+        );
+      },
     },
-  };
+  ];
+
   return (
     <LendingCard
       title="Your supplies"
       loading={loading}
       description={
-        <div className="flex items-center gap-[10px]">
+        <div className="flex items-center gap-[10px] max-md:flex-wrap">
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
             {`Balance: ${formatCurrency(depositTotalBalance)}`}
           </Button>
@@ -174,14 +164,11 @@ const Supplies = ({
         />
       )}
 
-      <Table
-        columns={address ? [...columns, actionColumn] : columns}
+      <ResponsiveTable
+        columns={columns}
         dataSource={assets}
-        bordered={false}
-        rowHoverable={false}
-        pagination={false}
-        rowKey="id"
         size="middle"
+        rowKey="id"
       />
     </LendingCard>
   );

@@ -23,13 +23,13 @@ const LendingCard = ({
       )}
     >
       {loading ? (
-        <div className="flex flex-col gap-[24px] p-[24px]">
+        <div className="flex flex-col gap-[24px] p-[24px] max-md:p-[16px]">
           <Skeleton active />
           <Skeleton active />
         </div>
       ) : (
         <>
-          <div className="border border-transparent border-b-line-primary px-[24px] py-[14px]">
+          <div className="border border-transparent border-b-line-primary px-[24px] py-[14px] max-md:px-[16px]">
             <div className="flex-center-between">
               <span className="text-[18px] font-[500]">{title}</span>
               {collapsible && (
@@ -47,7 +47,9 @@ const LendingCard = ({
             {description && <div className="pt-[10px]">{description}</div>}
           </div>
           {!hide && (
-            <div className="flex flex-col px-[18px] py-[5px]">{children}</div>
+            <div className="flex flex-col px-[18px] py-[5px] max-md:px-0">
+              {children}
+            </div>
           )}
         </>
       )}

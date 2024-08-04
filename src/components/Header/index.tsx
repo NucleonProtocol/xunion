@@ -18,7 +18,7 @@ const Header = () => {
         className={cn(
           'flex  flex-1 items-center',
           'max-md:fixed max-md:bottom-[20px] max-md:left-[20px] max-md:right-[20px]',
-          'max-md:h-[48px] max-md:rounded-[10px] max-md:bg-fill-niubi max-md:px-[20px]'
+          'max-md:z-[2] max-md:h-[48px] max-md:rounded-[10px] max-md:bg-fill-niubi4 max-md:px-[20px]'
         )}
       >
         <Nav />

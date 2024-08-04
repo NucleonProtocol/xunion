@@ -1,13 +1,14 @@
 import LendingCard from '@/components/LendingCard.tsx';
-import { Button, Table } from 'antd';
-import { useAccount } from 'wagmi';
+import { Button } from 'antd';
 import { ColumnType } from 'antd/es/table';
-import { TokenIcon } from '@/components/icons';
 import { formatCurrency } from '@/utils';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useState } from 'react';
 import LendingModal from '@/pages/x-lending/dashboad/LendingModal.tsx';
 import RepayModal from '@/pages/x-lending/dashboad/RepayModal.tsx';
+import ResponsiveTable from '@/components/ResponsiveTable.tsx';
+import AmountWithPrice from '@/components/AmountWithPrice.tsx';
+import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 
 const Borrows = ({
   assets,
@@ -26,41 +27,30 @@ const Borrows = ({
   health: number;
   refetch: () => void;
 }) => {
-  const { address } = useAccount();
   const [lendingItem, setLendingItem] = useState<LendingAsset>();
   const [repayItem, setRepayItem] = useState<LendingAsset>();
 
   const columns: ColumnType<LendingAsset>[] = [
     {
-      key: 'Asset',
       title: 'Asset',
       dataIndex: 'asset',
       render: (_: string, record: LendingAsset) => {
-        return (
-          <div className="flex  gap-[5px]">
-            <span>
-              <TokenIcon src={record.token.icon} />
-            </span>
-            <span>{record?.token.symbol}</span>
-          </div>
-        );
+        return <TokenWithIcon token={record.token} />;
       },
     },
     {
-      key: 'balance',
       title: 'Balance',
       dataIndex: 'balance',
       render: (_: string, record: LendingAsset) => {
         return (
-          <div className="flex flex-col gap-[5px]">
-            <span>{formatCurrency(record?.lendingAmount || 0, false)}</span>
-            <span>{formatCurrency(record?.lendingTotalPrice || 0)}</span>
-          </div>
+          <AmountWithPrice
+            amount={record?.lendingAmount}
+            price={record?.lendingTotalPrice}
+          />
         );
       },
     },
     {
-      key: 'apy',
       title: 'APY',
       dataIndex: 'apy',
       render: (_: string, record: LendingAsset) => {
@@ -71,45 +61,45 @@ const Borrows = ({
         );
       },
     },
-  ];
-  const actionColumn: ColumnType<LendingAsset> = {
-    key: 'action',
-    title: '',
-    align: 'right',
-    render: (_: string, record) => {
-      return (
-        <div className="flex  items-center justify-end gap-[10px]">
-          <Button
-            type="primary"
-            className="rounded-[8px] text-[12px]"
-            size="small"
-            disabled={!record.availableAmount}
-            onClick={() => {
-              setLendingItem(record);
-            }}
-          >
-            Borrow
-          </Button>
-          <Button
-            size="small"
-            className="rounded-[8px] text-[12px]"
-            disabled={!record.lendingAmount}
-            onClick={() => {
-              setRepayItem(record);
-            }}
-          >
-            Repay
-          </Button>
-        </div>
-      );
+    {
+      dataIndex: 'action',
+      align: 'right',
+      render: (_: string, record) => {
+        return (
+          <div className="flex  items-center justify-end gap-[10px]">
+            <Button
+              type="primary"
+              className="rounded-[8px] text-[12px] max-md:h-[32px] max-md:flex-1 max-md:rounded-[16px]"
+              size="small"
+              disabled={!record.availableAmount}
+              onClick={() => {
+                setLendingItem(record);
+              }}
+            >
+              Borrow
+            </Button>
+            <Button
+              size="small"
+              className="rounded-[8px] text-[12px] max-md:h-[32px] max-md:flex-1 max-md:rounded-[16px]"
+              disabled={!record.lendingAmount}
+              onClick={() => {
+                setRepayItem(record);
+              }}
+            >
+              Repay
+            </Button>
+          </div>
+        );
+      },
     },
-  };
+  ];
+
   return (
     <LendingCard
       title="Your borrows"
       loading={loading}
       description={
-        <div className="flex items-center gap-[10px]">
+        <div className="flex items-center gap-[10px] max-md:flex-wrap">
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
             {`Balance: ${formatCurrency(lendingTotalBalance)}`}
           </Button>
@@ -148,14 +138,11 @@ const Borrows = ({
           }}
         />
       )}
-      <Table
-        columns={address ? [...columns, actionColumn] : columns}
+      <ResponsiveTable
+        columns={columns}
         dataSource={assets}
-        bordered={false}
-        rowHoverable={false}
-        pagination={false}
-        rowKey="id"
         size="middle"
+        rowKey="id"
       />
     </LendingCard>
   );

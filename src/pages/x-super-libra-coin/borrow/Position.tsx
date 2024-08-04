@@ -9,6 +9,7 @@ import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { BorrowModeType } from '@/types/slc.ts';
+import { cn } from '@/utils/classnames.ts';
 
 const options = [
   {
@@ -73,7 +74,12 @@ const Position = ({
             refresh={refresh}
             userHealthFactor={healthFactor}
           />
-          <div className="flex h-[64px] items-center justify-between border-2 border-solid  border-transparent border-b-line-primary px-[24px]">
+          <div
+            className={cn(
+              'flex h-[64px] items-center justify-between border-2 border-solid  border-transparent border-b-line-primary px-[24px]',
+              'max-md:h-auto max-md:flex-col max-md:items-start max-md:justify-start max-md:gap-[16px] max-md:px-[16px] max-md:py-[16px]'
+            )}
+          >
             <div className="flex-center gap-[30px]">
               <span className="font-[500]">Position Management</span>
             </div>
@@ -99,9 +105,9 @@ const Position = ({
               </Button>
             </div>
           </div>
-          <div className="flex justify-between p-[24px]">
-            <div className="flex flex-col">
-              <span className="flex h-[52px] justify-center text-tc-secondary">
+          <div className="flex flex-wrap justify-between p-[24px] max-md:px-[16px] ">
+            <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
+              <span className="flex h-[52px] justify-center text-tc-secondary max-md:h-[auto] max-md:items-start">
                 Collateral value
               </span>
               <div className="text-[16px]">
@@ -109,8 +115,8 @@ const Position = ({
               </div>
             </div>
 
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center text-tc-secondary">
+            <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px] ">
+              <span className="flex h-[52px] items-center text-tc-secondary max-md:h-[auto] max-md:items-start">
                 Borrowed value
               </span>
               <div className="flex flex-col text-[16px]">
@@ -120,8 +126,8 @@ const Position = ({
                 </span>
               </div>
             </div>
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center text-tc-secondary">
+            <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
+              <span className="flex h-[52px] items-center text-tc-secondary max-md:h-[auto] max-md:items-start">
                 Available to borrow
               </span>
               <div className="flex flex-col text-[16px]">
@@ -131,8 +137,8 @@ const Position = ({
                 </span>
               </div>
             </div>
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center text-tc-secondary">
+            <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
+              <span className="flex h-[52px] items-center text-tc-secondary max-md:h-[auto] max-md:items-start">
                 Health Factor
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">
@@ -148,8 +154,8 @@ const Position = ({
                 </Button>
               </div>
             </div>
-            <div className="flex flex-col">
-              <span className="flex h-[52px] items-center justify-end text-tc-secondary">
+            <div className="flex flex-col max-md:gap-[10px] max-md:py-[16px]">
+              <span className="flex h-[52px] items-center justify-end text-tc-secondary max-md:h-[auto] max-md:justify-start">
                 Borrow mode
               </span>
               <div className="flex items-center gap-[10px] text-[16px]">

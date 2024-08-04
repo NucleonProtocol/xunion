@@ -5,27 +5,7 @@ import AssetsToSupply from '@/pages/x-lending/dashboad/AssetsToSupply.tsx';
 import Borrows from '@/pages/x-lending/dashboad/Borrows.tsx';
 import AssetsToBorrow from '@/pages/x-lending/dashboad/AssetsToBorrow.tsx';
 import useDashboard from '@/pages/x-lending/hooks/useDashboard.ts';
-import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
-import { XUNION_LENDING_CONTRACT } from '@/contracts';
-import { BorrowModeType } from '@/types/slc.ts';
 
-const options = [
-  {
-    label: 'High liquidity mode',
-    description: 'Use high liquidity collateral for borrowing',
-    value: BorrowModeType.HighLiquidity,
-  },
-  {
-    label: 'Risk isolation mode',
-    description: 'Only use one high-risk asset to borrow SLC',
-    value: BorrowModeType.RiskIsolation,
-  },
-  {
-    label: 'Homogenous mode',
-    description: 'Only use homogenous asset for borrowing',
-    value: BorrowModeType.Homogenous,
-  },
-];
 function Dashboard() {
   const {
     netWorth,
@@ -42,29 +22,21 @@ function Dashboard() {
     refetch,
   } = useDashboard();
   return (
-    <div className="mt-[30px] flex  flex-col items-center p-[20px] ">
+    <div className="mt-[30px] flex  flex-col items-center p-[20px] max-md:mt-[10px] max-md:pb-[80px] max-md:pt-[10px]">
       <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
-        <div className="flex-center-between pb-[20px]">
+        <div className="flex-center-between pb-[20px] max-md:pb-[5px]">
           <ChainSelector />
         </div>
-        <div className="flex-center-between pb-[20px]">
-          <MarketInfo netWorth={netWorth} netApy={netApy} health={health} />
-          <div className="flex h-[84px] flex-col">
-            <span className="flex h-[52px] items-center justify-end text-tc-secondary">
-              Borrow mode
-            </span>
-            <div className="flex items-center gap-[10px] text-[16px]">
-              <BorrowMode
-                onSuccess={refetch}
-                contact={{ ...XUNION_LENDING_CONTRACT.interface }}
-                options={options}
-                description="The mode can only be changed when there are no deposits or loans."
-              />
-            </div>
-          </div>
+        <div className="flex-center-between pb-[20px] max-md:flex-col max-md:justify-start">
+          <MarketInfo
+            netWorth={netWorth}
+            netApy={netApy}
+            health={health}
+            refetch={refetch}
+          />
         </div>
-        <div className="flex justify-between gap-[24px]">
-          <div className="flex w-[600px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
+        <div className="flex justify-between gap-[24px] max-md:flex-col">
+          <div className="flex w-[600px] flex-shrink-0 flex-col gap-[24px] overflow-hidden max-md:w-full ">
             <Supplies
               assets={lendingAssets}
               loading={loading}
@@ -85,7 +57,7 @@ function Dashboard() {
               }}
             />
           </div>
-          <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden">
+          <div className="flex w-[580px] flex-shrink-0 flex-col gap-[24px] overflow-hidden max-md:w-full">
             <Borrows
               assets={lendingAssets}
               loading={loading}
