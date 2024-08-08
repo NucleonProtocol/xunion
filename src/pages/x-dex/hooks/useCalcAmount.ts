@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { SwapRoute, Token } from '@/types/swap.ts';
 import { parseEther } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
@@ -8,6 +8,7 @@ import useNativeToken from '@/hooks/useNativeToken.ts';
 import { useMutation } from '@tanstack/react-query';
 import { getSwapRouter } from '@/services/token.ts';
 import useBestRoute from '@/pages/x-dex/hooks/useBestRoute.ts';
+import { debounce } from 'lodash';
 
 const useCalcAmount = ({
   setIsInsufficientLiquidity,
@@ -46,7 +47,7 @@ const useCalcAmount = ({
     const routes = await getRoute({ tokena: tokens[0], tokenb: tokens[1] });
     return getBestOutputAmount(routes, amount);
   };
-  const autoGetPayAmount = useCallback(
+  const autoGetPayAmount = debounce(
     ({
       outputToken,
       inputToken,
@@ -91,10 +92,10 @@ const useCalcAmount = ({
           });
       }
     },
-    []
+    500
   );
 
-  const autoGetReceiveAmount = useCallback(
+  const autoGetReceiveAmount = debounce(
     ({
       outputToken,
       inputToken,
@@ -134,7 +135,7 @@ const useCalcAmount = ({
           });
       }
     },
-    []
+    500
   );
 
   return {
