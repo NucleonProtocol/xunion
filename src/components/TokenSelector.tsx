@@ -7,6 +7,7 @@ import { getTokenList } from '@/services/token.ts';
 import { SpinIcon, TokenIcon } from '@/components/icons';
 import useAddToken from '@/hooks/useAddToken.ts';
 import useTokensWithPrice from '@/hooks/useTokensWithPrice.ts';
+import { useTranslate } from '@/i18n';
 
 const ModalContent = ({
   value,
@@ -27,15 +28,16 @@ const ModalContent = ({
   } = useTokensWithPrice();
   const { addToken } = useAddToken();
 
+  const { t } = useTranslate();
+
   return (
     <div className="h-[600px] overflow-y-auto">
       <div className="mb-[20px] text-[14px] text-tc-secondary">
-        Select a token from our default list or search for a token by symbol or
-        address.
+        {t('x-dex.swap.token.modal.description')}
       </div>
       <Input
         prefix={<SearchOutlined />}
-        placeholder="Search name or paste address"
+        placeholder={t('x-dex.swap.token.modal.search.placeholder')}
         className="rounded-[20px]"
         onBlur={(e) => {
           getTokenList({
@@ -144,6 +146,7 @@ const TokenSelector = ({
 }) => {
   const [open, setOpen] = useState(false);
 
+  const { t } = useTranslate();
   return (
     <div className="flex-center flex-shrink-0">
       <Modal
@@ -153,7 +156,7 @@ const TokenSelector = ({
           setOpen(false);
         }}
         width={500}
-        title="Select a token"
+        title={t('x-dex.swap.token.modal.title')}
         footer={null}
       >
         <ModalContent
@@ -184,7 +187,7 @@ const TokenSelector = ({
             <span className="text-[14px]">{value?.symbol}</span>
           </div>
         ) : (
-          <span className="">Select Token</span>
+          <span className="">{t('x-dex.swap.token.select')}</span>
         )}
 
         {showDropArrow && <DownOutlined className="text-[14px]" />}

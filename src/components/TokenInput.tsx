@@ -2,6 +2,7 @@ import TokenSelector from '@/components/TokenSelector.tsx';
 import { Token } from '@/types/swap.ts';
 import { cn } from '@/utils/classnames.ts';
 import { ChangeEvent } from 'react';
+import { useTranslate } from '@/i18n';
 
 const TokenInput = ({
   title,
@@ -16,7 +17,7 @@ const TokenInput = ({
   ownerAmount,
   totalPrice,
   placeholder = '0',
-  amountLabel = 'Balance',
+  amountLabel,
   showDropArrow = true,
 }: {
   title: string;
@@ -34,6 +35,8 @@ const TokenInput = ({
   amountLabel?: string;
   showDropArrow?: boolean;
 }) => {
+  const { t } = useTranslate();
+  const label = amountLabel || t('x-dex.swap.token.balance');
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     let value = event.target.value;
     value = value.replace(/[^0-9.]/g, '');
@@ -79,7 +82,7 @@ const TokenInput = ({
           {token?.address && (
             <>
               <span className="text-tc-secondary">
-                {amountLabel}: {ownerAmount}
+                {label}: {ownerAmount}
               </span>
               {onMax && ownerAmount > 0 && (
                 <div
@@ -88,7 +91,7 @@ const TokenInput = ({
                     onMax(ownerAmount);
                   }}
                 >
-                  MAX
+                  {t('x-dex.swap.token.select.max')}
                 </div>
               )}
             </>

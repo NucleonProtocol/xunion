@@ -49,7 +49,7 @@ const AssetsList = ({
       },
     },
     {
-      title: 'Total supplied',
+      title: t('x-lending.market.supplied'),
       dataIndex: 'tvl',
       width: 240,
       align: 'center',
@@ -63,7 +63,7 @@ const AssetsList = ({
       },
     },
     {
-      title: 'Supply APY',
+      title: t('x-lending.market.supply.variable'),
       dataIndex: 'volume24h',
       width: 240,
       align: 'center',
@@ -76,7 +76,7 @@ const AssetsList = ({
       },
     },
     {
-      title: 'Total borrowed',
+      title: t('x-lending.market.borrow'),
       dataIndex: 'fees',
       align: 'center',
       render: (_: string, record: LendingAsset) => {
@@ -89,7 +89,7 @@ const AssetsList = ({
       },
     },
     {
-      title: 'Borrow APY, variable',
+      title: t('x-lending.market.borrow.variable'),
       dataIndex: 'apr',
       align: 'center',
       render: (_: string, record: LendingAsset) => {

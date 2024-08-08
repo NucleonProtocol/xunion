@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import { Button, Skeleton } from 'antd';
 import { cn } from '@/utils/classnames.ts';
+import { useTranslate } from '@/i18n';
 
 const LendingCard = ({
   children,
@@ -15,6 +16,7 @@ const LendingCard = ({
   collapsible?: boolean;
 }>) => {
   const [hide, setHide] = useState(false);
+  const { t } = useTranslate();
   return (
     <div
       className={cn(
@@ -40,7 +42,7 @@ const LendingCard = ({
                     setHide(!hide);
                   }}
                 >
-                  {hide ? 'Show' : 'Hide'}
+                  {hide ? t('common.show') : t('common.hide')}
                 </Button>
               )}
             </div>

@@ -9,24 +9,6 @@ import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import { BorrowModeType } from '@/types/slc.ts';
 import { useTranslate } from '@/i18n';
 
-const options = [
-  {
-    label: 'High liquidity mode',
-    description: 'Use high liquidity collateral for borrowing',
-    value: BorrowModeType.HighLiquidity,
-  },
-  {
-    label: 'Risk isolation mode',
-    description: 'Only use one high-risk asset to borrow SLC',
-    value: BorrowModeType.RiskIsolation,
-  },
-  {
-    label: 'Homogenous mode',
-    description: 'Only use homogenous asset for borrowing',
-    value: BorrowModeType.Homogenous,
-  },
-];
-
 const MarketInfo = ({
   netWorth,
   netApy,
@@ -39,6 +21,24 @@ const MarketInfo = ({
   refetch: () => void;
 }) => {
   const { t } = useTranslate();
+
+  const options = [
+    {
+      label: t('x-lending.borrow.mode.high.title'),
+      description: t('x-lending.borrow.mode.high.description'),
+      value: BorrowModeType.HighLiquidity,
+    },
+    {
+      label: t('x-lending.borrow.mode.risk.title'),
+      description: t('x-lending.borrow.mode.risk.description'),
+      value: BorrowModeType.RiskIsolation,
+    },
+    {
+      label: t('x-lending.borrow.mode.homogenous.title'),
+      description: t('x-lending.borrow.mode.homogenous.description'),
+      value: BorrowModeType.Homogenous,
+    },
+  ];
   const [riskOpen, setRiskOpen] = useState(false);
   return (
     <div className="flex w-full items-center justify-start max-md:flex-row max-md:flex-wrap">

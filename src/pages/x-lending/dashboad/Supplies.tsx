@@ -123,7 +123,7 @@ const Supplies = ({
 
   return (
     <LendingCard
-      title="Your supplies"
+      title={t('x-lending.your.supply')}
       loading={loading}
       description={
         <div className="flex items-center gap-[10px] max-md:flex-wrap">

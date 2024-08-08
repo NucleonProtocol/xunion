@@ -23,7 +23,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       title: t('common.name'),
       dataIndex: 'name',
       width: 240,
-      align: 'right',
+      align: 'left',
       render: (_: string, record: SLCAsset) => {
         return <TokenWithIcon token={record} />;
       },

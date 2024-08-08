@@ -12,18 +12,6 @@ import { BorrowModeType } from '@/types/slc.ts';
 import { cn } from '@/utils/classnames.ts';
 import { useTranslate } from '@/i18n';
 
-const options = [
-  {
-    label: 'High liquidity mode',
-    description: 'Use high liquidity collateral for borrowing',
-    value: BorrowModeType.HighLiquidity,
-  },
-  {
-    label: 'Risk isolation mode',
-    description: 'Only use one high-risk asset to borrow SLC',
-    value: BorrowModeType.RiskIsolation,
-  },
-];
 const Position = ({
   health,
   loading,
@@ -42,6 +30,18 @@ const Position = ({
     healthFactor,
   } = usePosition({ health });
   const { t } = useTranslate();
+  const options = [
+    {
+      label: t('x-lending.borrow.mode.high.title'),
+      description: t('x-lending.borrow.mode.high.description'),
+      value: BorrowModeType.HighLiquidity,
+    },
+    {
+      label: t('x-lending.borrow.mode.risk.title'),
+      description: t('x-lending.borrow.mode.risk.description'),
+      value: BorrowModeType.RiskIsolation,
+    },
+  ];
   const [borrowOpen, setBorrowOpen] = useState(false);
   const [repayOpen, setRepayOpen] = useState(false);
   const [riskOpen, setRiskOpen] = useState(false);

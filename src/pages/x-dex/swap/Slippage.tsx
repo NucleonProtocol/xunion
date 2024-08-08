@@ -63,7 +63,7 @@ const SlippageSelector = ({
           <div
             key={item.label}
             className={cn(
-              'flex h-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-line-primary px-[12px]',
+              'flex h-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-line-primary px-[12px] text-[12px]',
               {
                 'border-transparent bg-theme text-white':
                   Number(value || 0) === item.value,
@@ -73,11 +73,13 @@ const SlippageSelector = ({
               onChange(String(item.value));
             }}
           >
-            {item.label}
+            <span style={{ minWidth: 30, textAlign: 'center' }}>
+              {item.label}
+            </span>
           </div>
         ))}
         <Input
-          suffix="Custom"
+          suffix={t('x-dex.swap.custom')}
           value={Number(value || 0) > 1 ? value : undefined}
           placeholder="0.5"
           onChange={(e) => {
@@ -152,7 +154,9 @@ const Slippage = ({
     >
       <div className={cn('flex-center gap-[5px] ')}>
         <span className="text-[14px] text-tc-secondary">
-          {Number(value || 0) > 0 ? `${value}%` : 'Auto(0.5%)'}
+          {Number(value || 0) > 0
+            ? `${value}%`
+            : `${t('x-dex.swap.auto')}(0.5%)`}
         </span>
         <SettingIcon className="cursor-pointer hover:text-theme" />
       </div>
