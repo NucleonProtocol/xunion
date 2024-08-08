@@ -39,6 +39,8 @@ const SwapPanel = ({
   isInsufficientLiquidity,
   onConfirm,
   router,
+  isTokenBLoading,
+  isTokenALoading,
 }: SwapReturnType) => {
   const { disabled } = useWalletAuth();
 
@@ -80,6 +82,7 @@ const SwapPanel = ({
           }}
           ownerAmount={inputOwnerAmount}
           totalPrice={inputTokenTotalPrice}
+          loading={isTokenALoading}
         />
         <div
           className="relative h-[20px] cursor-pointer hover:opacity-75"
@@ -100,25 +103,29 @@ const SwapPanel = ({
           disabled={disabled}
           ownerAmount={outputOwnerAmount}
           totalPrice={outputTokenTotalPrice}
+          loading={isTokenBLoading}
         />
       </div>
-      {isReady && !!toPairUnit && (
-        <div className="px-[10px] py-[20px] text-[14px]">
-          <SwapInfo
-            slippage={slippage}
-            priceImpact={priceImpact}
-            fee={fee}
-            feeAmount={feeAmount}
-            estReceived={estReceived}
-            minReceived={minReceived}
-            inputToken={inputToken}
-            outputToken={outputToken}
-            toPairUnit={toPairUnit}
-            fromPairUnit={fromPairUnit}
-            router={router}
-          />
-        </div>
-      )}
+      {isReady &&
+        !!toPairUnit &&
+        !isInsufficient &&
+        !isInsufficientLiquidity && (
+          <div className="px-[10px] py-[20px] text-[14px]">
+            <SwapInfo
+              slippage={slippage}
+              priceImpact={priceImpact}
+              fee={fee}
+              feeAmount={feeAmount}
+              estReceived={estReceived}
+              minReceived={minReceived}
+              inputToken={inputToken}
+              outputToken={outputToken}
+              toPairUnit={toPairUnit}
+              fromPairUnit={fromPairUnit}
+              router={router}
+            />
+          </div>
+        )}
 
       <div className="mt-[20px] h-[56px]  w-full">
         <WithAuthButton>

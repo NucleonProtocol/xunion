@@ -187,7 +187,7 @@ const TokenSelector = ({
             <span className="text-[14px]">{value?.symbol}</span>
           </div>
         ) : (
-          <span className="">{t('x-dex.swap.token.select')}</span>
+          <span className="text-[14px]">{t('x-dex.swap.token.select')}</span>
         )}
 
         {showDropArrow && <DownOutlined className="text-[14px]" />}

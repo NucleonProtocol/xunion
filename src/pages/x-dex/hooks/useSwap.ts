@@ -42,6 +42,8 @@ export interface SwapReturnType {
   onConfirm?: () => void;
   onFillSwap?: () => void;
   router?: SwapRoute;
+  isTokenBLoading?: boolean;
+  isTokenALoading?: boolean;
 }
 
 const useSwap = (): SwapReturnType => {
@@ -64,7 +66,13 @@ const useSwap = (): SwapReturnType => {
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
 
-  const { autoGetPayAmount, autoGetReceiveAmount, router } = useCalcAmount({
+  const {
+    autoGetPayAmount,
+    autoGetReceiveAmount,
+    router,
+    isTokenBLoading,
+    isTokenALoading,
+  } = useCalcAmount({
     setIsInsufficientLiquidity,
     setPayAmount,
     setFee,
@@ -302,6 +310,8 @@ const useSwap = (): SwapReturnType => {
     onFillSwap,
     swapStep,
     router,
+    isTokenBLoading,
+    isTokenALoading,
   };
 };
 

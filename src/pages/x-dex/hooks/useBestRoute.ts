@@ -2,7 +2,7 @@ import useMulticall, { ContractCall } from '@/hooks/useMulticall.ts';
 import { SwapRoute } from '@/types/swap.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
-import { findIndex, maxBy } from 'lodash';
+import { findIndex, maxBy, minBy } from 'lodash';
 import { formatUnits } from 'ethers';
 
 const useBestRoute = () => {
@@ -46,20 +46,20 @@ const useBestRoute = () => {
       const parsedAmountsInfo = (allAmounts.returnData as string[]).map(
         decodeData
       );
-      const maxAmount = maxBy(parsedAmountsInfo, (amount) =>
+      const minAmount = minBy(parsedAmountsInfo, (amount) =>
         Number(amount[0])
       ) as string[];
-      const maxIndex = findIndex(
+      const minIndex = findIndex(
         parsedAmountsInfo,
-        (amount) => amount[0] === maxAmount?.[0]
+        (amount) => amount[0] === minAmount?.[0]
       );
-      const route = routes[maxIndex];
+      const route = routes[minIndex];
       return {
         route,
         amount: [
-          maxAmount[0],
-          [maxAmount[1], maxAmount[2], maxAmount[3]],
-          maxAmount[4],
+          minAmount[0],
+          [minAmount[1], minAmount[2], minAmount[3]],
+          minAmount[4],
         ],
       };
     });

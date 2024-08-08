@@ -3,6 +3,7 @@ import { Token } from '@/types/swap.ts';
 import { cn } from '@/utils/classnames.ts';
 import { ChangeEvent } from 'react';
 import { useTranslate } from '@/i18n';
+import { Skeleton } from 'antd';
 
 const TokenInput = ({
   title,
@@ -19,6 +20,7 @@ const TokenInput = ({
   placeholder = '0',
   amountLabel,
   showDropArrow = true,
+  loading,
 }: {
   title: string;
   editable?: boolean;
@@ -34,6 +36,7 @@ const TokenInput = ({
   placeholder?: string;
   amountLabel?: string;
   showDropArrow?: boolean;
+  loading?: boolean;
 }) => {
   const { t } = useTranslate();
   const label = amountLabel || t('x-dex.swap.token.balance');
@@ -56,13 +59,17 @@ const TokenInput = ({
 
       <div className="flex h-[48px] justify-around py-[5px]">
         <div className="flex-1">
-          <input
-            className="w-full border-0 bg-transparent text-[30px] font-bold outline-0 focus:border-0 focus:bg-transparent "
-            placeholder={placeholder}
-            disabled={!editable}
-            value={amount}
-            onChange={handleChange}
-          />
+          {loading ? (
+            <Skeleton.Input active size="small" />
+          ) : (
+            <input
+              className="w-full border-0 bg-transparent text-[30px] font-bold outline-0 focus:border-0 focus:bg-transparent "
+              placeholder={placeholder}
+              disabled={!editable}
+              value={amount}
+              onChange={handleChange}
+            />
+          )}
         </div>
         <div className="flex-shrink-0">
           <TokenSelector

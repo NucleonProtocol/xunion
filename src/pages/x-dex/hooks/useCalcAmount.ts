@@ -30,6 +30,8 @@ const useCalcAmount = ({
   const { mutateAsync: getRoute } = useMutation({
     mutationFn: getSwapRouter,
   });
+  const [isTokenALoading, setTokenALoading] = useState(false);
+  const [isTokenBLoading, setTokenBLoading] = useState(false);
 
   const { getBestOutputAmount, getBestInputAmount } = useBestRoute();
 
@@ -60,6 +62,7 @@ const useCalcAmount = ({
         outputToken?.address &&
         isNumeric(receiveAmount)
       ) {
+        setTokenALoading(true);
         getInputAmount(
           [getRealAddress(inputToken!), getRealAddress(outputToken!)],
           parseEther(receiveAmount).toString()
@@ -82,6 +85,9 @@ const useCalcAmount = ({
             setIsInsufficientLiquidity(true);
             setPayAmount('');
             setInputTokenTotalPrice(0);
+          })
+          .finally(() => {
+            setTokenALoading(false);
           });
       }
     },
@@ -100,6 +106,7 @@ const useCalcAmount = ({
     }) => {
       setIsInsufficientLiquidity(false);
       if (inputToken?.address && outputToken?.address && isNumeric(payAmount)) {
+        setTokenBLoading(true);
         getOutputAmount(
           [getRealAddress(inputToken!), getRealAddress(outputToken!)],
           parseEther(payAmount).toString()
@@ -121,6 +128,9 @@ const useCalcAmount = ({
             setIsInsufficientLiquidity(true);
             setReceiveAmount('');
             setOutputTokenTotalPrice(0);
+          })
+          .finally(() => {
+            setTokenBLoading(false);
           });
       }
     },
@@ -131,6 +141,8 @@ const useCalcAmount = ({
     autoGetPayAmount,
     autoGetReceiveAmount,
     router,
+    isTokenBLoading,
+    isTokenALoading,
   };
 };
 

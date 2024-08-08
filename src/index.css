@@ -6,7 +6,7 @@
 body {
   font-family: 'Lexend', 'SF Pro Text', 'Helvetica Neue', 'Helvetica', 'Arial',
   'SF Pro SC', 'PingFang SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   background: var(--xunion-bg-primary);
   color: var(--xunion-tc-primary);
 }
