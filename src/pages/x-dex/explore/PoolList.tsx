@@ -55,16 +55,16 @@ const PoolList = () => {
         </div>
       ),
     },
-    {
-      title: t('common.FDV'),
-      dataIndex: 'fees',
-      align: 'center',
-      render: (value: string) => (
-        <div className="flex flex-col gap-[5px]">
-          {formatCurrency(Number(formatUnits(value || 0n)), true)}
-        </div>
-      ),
-    },
+    // {
+    //   title: t('common.FDV'),
+    //   dataIndex: 'fees',
+    //   align: 'center',
+    //   render: (value: string) => (
+    //     <div className="flex flex-col gap-[5px]">
+    //       {formatCurrency(Number(formatUnits(value || 0n)), true)}
+    //     </div>
+    //   ),
+    // },
     {
       title: t('common.volume24h'),
       dataIndex: 'volume24h',
@@ -104,7 +104,7 @@ const PoolList = () => {
     },
   ];
   return (
-    <div className="bg-fill-niubi">
+    <div className="bg-fill-niubi p-[10px]">
       {isPending ? (
         <div className="p-[24px]">
           <Skeleton active />
