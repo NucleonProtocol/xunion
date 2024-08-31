@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { DownOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { Token } from '@/types/swap.ts';
-import { getTokenList } from '@/services/token.ts';
 import { SpinIcon, TokenIcon } from '@/components/icons';
 import useAddToken from '@/hooks/useAddToken.ts';
 import useTokensWithPrice from '@/hooks/useTokensWithPrice.ts';
@@ -25,6 +24,7 @@ const ModalContent = ({
     tokens: recommends,
     loading,
     isTokenLoading: isPending,
+    getTokens,
   } = useTokensWithPrice();
   const { addToken } = useAddToken();
 
@@ -40,7 +40,7 @@ const ModalContent = ({
         placeholder={t('x-dex.swap.token.modal.search.placeholder')}
         className="rounded-[20px]"
         onBlur={(e) => {
-          getTokenList({
+          getTokens({
             pageNum: 1,
             pageSize: 50,
             nameOrAddress: e.target.value,

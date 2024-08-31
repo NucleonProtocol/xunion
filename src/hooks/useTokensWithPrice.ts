@@ -2,13 +2,14 @@ import { Token } from '@/types/swap.ts';
 import { useEffect, useState } from 'react';
 import useMulticall, { ContractCall } from '@/hooks/useMulticall.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address, erc20Abi } from 'viem';
+import { Address, erc20Abi, isAddress } from 'viem';
 import { formatUnits } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { useAccount } from 'wagmi';
 import { useMutation } from '@tanstack/react-query';
 import { getTokenList } from '@/services/token.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import useErc20Info from '@/hooks/useERC20TokenInfo';
 
 const useTokensWithPrice = () => {
   const { getRealAddress, isNativeToken, getNativeTokenBalance } =
@@ -18,21 +19,23 @@ const useTokensWithPrice = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const { fetchTokenInfo } = useErc20Info();
+
   const {
     isPending: isTokenLoading,
-    mutate: getTokens,
+    mutateAsync: getTokens,
     data: tokenData,
   } = useMutation({
     mutationFn: getTokenList,
-    onSuccess: (res) => {
-      setTokens(res.items || []);
-    },
   });
+
   useEffect(() => {
     if (address) {
       getTokens({
         pageNum: 1,
         pageSize: 50,
+      }).then((res) => {
+        setTokens(res.items || []);
       });
     }
   }, [address]);
@@ -86,10 +89,28 @@ const useTokensWithPrice = () => {
     }
   }, [tokenData, address]);
 
+  const getTokensList = (params: any) => {
+    getTokens(params).then(async (res) => {
+      if (!res.items.length) {
+        const { nameOrAddress } = params;
+        if (isAddress(nameOrAddress)) {
+          const info = await fetchTokenInfo(nameOrAddress);
+          setTokens(info ? [info] : []);
+        } else {
+          setTokens(res.items || []);
+        }
+        //
+      } else {
+        setTokens(res.items || []);
+      }
+    });
+  };
+
   return {
     tokens,
     loading,
     isTokenLoading,
+    getTokens: getTokensList,
   };
 };
 
