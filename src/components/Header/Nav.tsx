@@ -1,10 +1,12 @@
-import { Dropdown, MenuProps } from 'antd';
+import { Dropdown, MenuProps, theme } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { cn } from '@/utils/classnames.ts';
 import { LogoIcon } from '@/components/icons';
 import { useTranslate } from '@/i18n';
+import React from 'react';
+import Audited from '@/components/Header/Audited';
 
 const MenuItem = ({
   item,
@@ -38,7 +40,11 @@ const Nav = () => {
         {
           name: t('x-dex.swap.title'),
           path: '/x-dex/swap',
-          mather: (pathname: string) => pathname.includes('/x-dex/swap'),
+          mather: (pathname: string) =>
+            pathname.includes('/x-dex/swap') ||
+            pathname.includes('/x-dex/liquidity') ||
+            pathname.includes('/x-dex/send') ||
+            pathname.includes('/x-dex/limit'),
         },
         {
           name: t('x-dex.pools.label'),
@@ -88,12 +94,38 @@ const Nav = () => {
   const { pathname } = useLocation();
 
   const menu = menus.find((item) => item.mather(pathname));
+  const { token } = theme.useToken();
+  const contentStyle: React.CSSProperties = {
+    backgroundColor: token.colorBgElevated,
+    borderRadius: token.borderRadiusLG,
+    boxShadow: token.boxShadowSecondary,
+  };
+
+  const menuStyle: React.CSSProperties = {
+    boxShadow: 'none',
+  };
 
   return (
     <div className="flex items-center gap-[40px] text-[16px] max-md:flex-1 max-md:justify-start max-md:gap-[10px]">
       <div className="flex-center">
         <LogoIcon className="text-[40px] max-md:hidden" />
-        <Dropdown menu={{ items }} trigger={['click']} onOpenChange={setOpen}>
+        <Dropdown
+          menu={{
+            items: [...items, { type: 'divider' }],
+          }}
+          trigger={['click']}
+          onOpenChange={setOpen}
+          dropdownRender={(menu) => (
+            <div style={contentStyle}>
+              {React.cloneElement(menu as React.ReactElement, {
+                style: menuStyle,
+              })}
+              <div>
+                <Audited />
+              </div>
+            </div>
+          )}
+        >
           <div className="flex cursor-pointer items-center gap-[10px] px-[12px]">
             <span className="font-bold">{menu?.name}</span>
             <DownOutlined

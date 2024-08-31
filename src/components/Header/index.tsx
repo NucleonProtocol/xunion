@@ -25,7 +25,7 @@ const Header = () => {
       </div>
       <div className="flex-center justify-between gap-[20px] max-md:flex-1">
         <LogoIcon className="text-[40px] max-md:text-[30px] md:hidden" />
-        <div className="flex flex-1 items-center justify-end">
+        <div className="flex flex-1 items-center justify-end gap-[10px]">
           {pendingTransactions.length > 100 && <PendingTransactions />}
           <ConnectButton />
           <Popover
