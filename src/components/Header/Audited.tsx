@@ -11,10 +11,10 @@ const Audited = () => {
       <span className="py-[10px] text-tc-secondary">Audited by</span>
       <div className="my-[10px] flex  items-center justify-start gap-[20px]">
         <Link to="/">
-          <img src={beosin} alt="" width={100} />
+          <img src={beosin} alt="" width={70} />
         </Link>
         <Link to="/">
-          <img src={salus} alt="" width={100} />
+          <img src={salus} alt="" width={70} />
         </Link>
       </div>
       <div className="mt-[20px] flex gap-[10px] pb-[20px]">
