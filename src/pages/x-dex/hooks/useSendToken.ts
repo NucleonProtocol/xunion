@@ -13,6 +13,7 @@ import { parseUnits } from 'ethers';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import useXSendTransaction from '@/hooks/useXSendTransaction.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
+import useSetDefaultToken from '@/hooks/useSetDefaultToken';
 
 const useSendToken = () => {
   const { getBalance } = useErc20Balance();
@@ -39,6 +40,8 @@ const useSendToken = () => {
     abi: erc20Abi,
     functionName: 'decimals',
   });
+
+  useSetDefaultToken('token', setInputToken);
 
   useEffect(() => {
     setCisAddress('');

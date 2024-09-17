@@ -13,6 +13,7 @@ import useNativeToken from '@/hooks/useNativeToken.ts';
 import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
 import useWalletAuth from '@/components/Wallet/useWalletAuth';
 import { parseUnits } from 'ethers';
+import useSetDefaultToken from '@/hooks/useSetDefaultToken';
 
 const useListing = () => {
   const tokenB = SLCToken;
@@ -46,6 +47,8 @@ const useListing = () => {
     }
     return token?.address;
   };
+
+  useSetDefaultToken('tokenA', setTokenA);
 
   useEffect(() => {
     if (tokenA?.address) {
@@ -158,11 +161,9 @@ const useListing = () => {
 
   const disabled = useMemo(() => {
     if (!tokenAAmount || Number(tokenAAmount) < 0.0000001) {
-      console.log(Number(tokenAAmount) < 0.0000001, '124124');
       return true;
     }
     if (!tokenBAmount || Number(tokenBAmount) < 1000) {
-      console.log(Number(tokenBAmount) < 1000, '123132');
       return true;
     }
     return invalidWallet || !tokenA?.address;

@@ -7,6 +7,7 @@ import useLP from '@/pages/x-dex/hooks/useLP.ts';
 import useCalcAmount from '@/pages/x-dex/hooks/useCalcAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import useSetDefaultToken from '@/hooks/useSetDefaultToken';
 
 type SwapStep = 'FILL' | 'CONFIRM';
 
@@ -65,6 +66,9 @@ const useSwap = (): SwapReturnType => {
   const [swapStep, setStep] = useState<SwapStep>('FILL');
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
+
+  useSetDefaultToken('pay', setInputToken);
+  useSetDefaultToken('receive', setOutputToken);
 
   const {
     autoGetPayAmount,

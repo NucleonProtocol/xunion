@@ -6,10 +6,9 @@ import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import { isSLCToken } from '@/contracts';
 import Warning from '@/components/Warning.tsx';
-import UploadInfo from '@/pages/x-dex/create-pool/UploadInfo.tsx';
 import { useTranslate } from '@/i18n';
 
-function CreatPool() {
+function CreatePool() {
   const {
     tokenA,
     onTokenAChange,
@@ -22,6 +21,12 @@ function CreatPool() {
     lpPairAddress,
     onCreate,
     loading,
+    tokenAAmount,
+    onTokenAAmountChange,
+    onTokenBAmountChange,
+    tokenBAmount,
+    invalidWallet,
+    disabled,
   } = useCreatePool();
 
   const { t } = useTranslate();
@@ -31,20 +36,15 @@ function CreatPool() {
         return (
           <div className="flex flex-col gap-[10px]">
             <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
-            <WithAuthButton>
-              <Button
-                className="w-full"
-                type="primary"
-                size="large"
-                onClick={() => {
-                  onTokenAChange(tokenA);
-                }}
-              >
-                {t('x-dex.pools.initialize.pool', {
-                  name: `${tokenA?.symbol}`,
-                })}
-              </Button>
-            </WithAuthButton>
+            <Link to={`/x-dex/listing?tokenA=${tokenA?.address}`}>
+              <WithAuthButton>
+                <Button className="w-full" type="primary" size="large">
+                  {t('x-dex.pools.initialize.pool', {
+                    name: `${tokenA?.symbol}`,
+                  })}
+                </Button>
+              </WithAuthButton>
+            </Link>
           </div>
         );
       }
@@ -52,26 +52,23 @@ function CreatPool() {
         return (
           <div className="flex flex-col gap-[10px]">
             <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
-            <WithAuthButton>
-              <Button
-                className="w-full"
-                type="primary"
-                size="large"
-                onClick={() => {
-                  onTokenAChange(tokenB);
-                }}
-              >
-                {t('x-dex.pools.initialize.pool', {
-                  name: `${tokenB?.symbol}`,
-                })}
-              </Button>
-            </WithAuthButton>
+            <Link to={`/x-dex/listing?tokenA=${tokenB?.address}`}>
+              <WithAuthButton>
+                <Button className="w-full" type="primary" size="large">
+                  {t('x-dex.pools.initialize.pool', {
+                    name: `${tokenB?.symbol}`,
+                  })}
+                </Button>
+              </WithAuthButton>
+            </Link>
           </div>
         );
       }
       if (lpPairAddress) {
         return (
-          <Link to="/x-dex/liquidity">
+          <Link
+            to={`/x-dex/liquidity?tokenA=${tokenA?.address}&tokenB=${tokenB?.address}`}
+          >
             <WithAuthButton>
               <Button className="mt-[20px] w-full" type="primary" size="large">
                 {t('x-dex.liquidity.add')}
@@ -90,7 +87,7 @@ function CreatPool() {
             className="w-full"
             type="primary"
             size="large"
-            disabled={!tokenA?.address || !tokenB?.address}
+            disabled={disabled}
             loading={loading}
             onClick={onCreate}
           >
@@ -109,17 +106,21 @@ function CreatPool() {
           className="inline-block w-auto cursor-pointer  hover:text-theme"
         >
           <LeftOutlined />
-          <span className="pl-[10px]">{t('x-dex.liquidity.add')}</span>
+          <span className="pl-[10px]">{t('x-dex.pools.create')}</span>
         </Link>
         <div className="mt-[20px]">
           <TokenInput
             title={t('x-dex.liquidity.input.tokenA')}
+            editable
             token={tokenA}
             onTokenChange={onTokenAChange}
-            placeholder=" "
-            amount={undefined}
+            amount={tokenAAmount}
+            onAmountChange={onTokenAAmountChange}
             disabledToken={tokenB}
-            onAmountChange={() => {}}
+            disabled={invalidWallet}
+            onMax={(ownerAmount) => {
+              onTokenAAmountChange(ownerAmount.toString());
+            }}
             ownerAmount={tokenAOwnerAmount}
             totalPrice={0}
           />
@@ -130,23 +131,24 @@ function CreatPool() {
           </div>
           <TokenInput
             title={t('x-dex.liquidity.input.tokenB')}
+            editable
             token={tokenB}
-            placeholder=" "
-            disabledToken={tokenA}
             onTokenChange={onTokenBChange}
-            amount={undefined}
-            onAmountChange={() => {}}
+            amount={tokenBAmount}
+            onAmountChange={onTokenBAmountChange}
+            disabledToken={tokenA}
+            disabled={invalidWallet}
+            onMax={(ownerAmount) => {
+              onTokenBAmountChange(ownerAmount.toString());
+            }}
             ownerAmount={tokenBOwnerAmount}
             totalPrice={0}
           />
         </div>
         <div>{renderAction()}</div>
-        {isSLCToken(tokenB?.address || '') && !lpPairAddress && (
-          <UploadInfo lpPairAddress={lpPairAddress} />
-        )}
       </div>
     </div>
   );
 }
 
-export default CreatPool;
+export default CreatePool;

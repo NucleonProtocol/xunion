@@ -6,6 +6,7 @@ import { formatEther, getAddress } from 'ethers';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import useSetDefaultToken from '@/hooks/useSetDefaultToken';
 
 type Step = 'FILL' | 'CONFIRM';
 
@@ -55,6 +56,9 @@ const useAddLP = (): LiquidityReturnType => {
   const [tokenAUnitPrice, setTokenAUnitPrice] = useState(0);
   const [tokenBUnitPrice, setTokenBUnitPrice] = useState(0);
   const [SLCUnitPrice, setSLCUnitPrice] = useState(0);
+
+  useSetDefaultToken('tokenA', setTokenA);
+  useSetDefaultToken('tokenB', setTokenB);
 
   const [tokenASLCPairAddress, setTokenAPairAddress] = useState<
     string | undefined

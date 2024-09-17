@@ -104,7 +104,7 @@
   "x-dex.pools.create.tip": "Initial liquidity of the pool will be locked in the LP vault, it can be unlocked only if there is the only LP.",
   "x-dex.pools.info": "Pool Info",
   "x-dex.pools.lp.address": "LP Address",
-  "x-dex.pools.initialize.pool": "Initialize {name} pool",
+  "x-dex.pools.initialize.pool": "Listing {name}",
   "x-super-libra-coin.title": "Mint & Burn",
   "x-super-libra-coin.description": "Direct SLC minting: Each currency can be directly minted at 96% to 99% of the SLC value, and the currency used for minting can be redeemed as specified currency at 95% value.",
   "x-super-libra-coin.slc.supply": "SLC Supply",

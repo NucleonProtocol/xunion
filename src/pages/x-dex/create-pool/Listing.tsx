@@ -10,7 +10,7 @@ import { useTranslate } from '@/i18n';
 import SLCTokenInput from '@/components/SLCTokenInput';
 import Info from '@/components/Info';
 
-function CreatPool() {
+function CreatePool() {
   const {
     tokenA,
     onTokenAChange,
@@ -97,4 +97,4 @@ function CreatPool() {
   );
 }
 
-export default CreatPool;
+export default CreatePool;

@@ -54,9 +54,11 @@ const SwapPanel = ({
         return (
           <div className="flex flex-col gap-[10px]">
             <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
-            <Link to="/x-dex/create-pool?tokenA=0x123123&tokenB=0x881233">
+            <Link to={`/x-dex/listing?tokenA=${tokenA?.address}`}>
               <Button className="w-full" type="primary" size="large">
-                {`Initialize ${tokenA?.symbol} pool`}
+                {t('x-dex.pools.initialize.pool', {
+                  name: `${tokenA?.symbol}`,
+                })}
               </Button>
             </Link>
           </div>
@@ -66,9 +68,11 @@ const SwapPanel = ({
         return (
           <div className="flex flex-col gap-[10px]">
             <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
-            <Link to="/x-dex/create-pool?tokenA=0x123123&tokenB=0x881233">
+            <Link to={`/x-dex/listing?tokenA=${tokenB?.address}`}>
               <Button className="w-full" type="primary" size="large">
-                {`Initialize ${tokenB?.symbol} pool`}
+                {t('x-dex.pools.initialize.pool', {
+                  name: `${tokenB?.symbol}`,
+                })}
               </Button>
             </Link>
           </div>
@@ -78,7 +82,9 @@ const SwapPanel = ({
         return (
           <div className="flex flex-col gap-[10px]">
             <Warning>{t('x-dex.liquidity.no.pair.address.tip')}</Warning>
-            <Link to="/x-dex/create-pool?tokenA=0x123123&tokenB=0x881233">
+            <Link
+              to={`/x-dex/create-pool?tokenA=${tokenA?.address}&tokenB=${tokenB?.address}`}
+            >
               <Button className="w-full" type="primary" size="large">
                 {t('x-dex.pools.create')}
               </Button>

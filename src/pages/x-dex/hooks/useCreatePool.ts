@@ -1,17 +1,27 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useLP from '@/pages/x-dex/hooks/useLP.ts';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
 import { Token } from '@/types/swap.ts';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import {
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
+import { Address, erc20Abi } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
+import useWalletAuth from '@/components/Wallet/useWalletAuth';
+import useSetDefaultToken from '@/hooks/useSetDefaultToken';
+import { parseUnits } from 'ethers';
 
-const useAddLP = () => {
+const useCreatePool = () => {
+  const { disabled: invalidWallet } = useWalletAuth();
   const { getBalance } = useErc20Balance();
   const [tokenA, setTokenA] = useState<Token | undefined>();
   const [tokenB, setTokenB] = useState<Token | undefined>();
+  const [tokenAAmount, setTokenAAmount] = useState('');
+  const [tokenBAmount, setTokenBAmount] = useState('');
   const [tokenAOwnerAmount, setTokenAOwnerAmount] = useState(0);
   const [tokenBOwnerAmount, setTokenBOwnerAmount] = useState(0);
   const [tokenASLCPairAddress, setTokenAPairAddress] = useState<
@@ -27,6 +37,9 @@ const useAddLP = () => {
   const { getSLCPairAddress, getPairAddress } = useLP();
 
   const { isNativeToken, getNativeTokenERC20Address } = useNativeToken();
+
+  useSetDefaultToken('tokenA', setTokenA);
+  useSetDefaultToken('tokenB', setTokenB);
 
   const getRealAddress = (token: Token) => {
     if (isNativeToken(token)) {
@@ -93,6 +106,40 @@ const useAddLP = () => {
     [tokenA?.address]
   );
 
+  const { data: tokenADecimals } = useReadContract({
+    address: getRealAddress(tokenA!) as Address,
+    abi: erc20Abi,
+    functionName: 'decimals',
+  });
+
+  const { data: tokenBDecimals } = useReadContract({
+    address: getRealAddress(tokenB!) as Address,
+    abi: erc20Abi,
+    functionName: 'decimals',
+  });
+
+  const sortedAmounts = useMemo(() => {
+    if (!tokenADecimals || !tokenBDecimals) return [];
+
+    if (tokenAAmount && tokenBAmount) {
+      const amountIn = parseUnits(tokenAAmount, tokenADecimals);
+      const amountOut = parseUnits(tokenBAmount, tokenBDecimals);
+
+      return [amountIn, amountOut];
+    }
+    return [];
+  }, [tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
+
+  const txValue = useMemo(() => {
+    if (isNativeToken(tokenA!) && tokenADecimals) {
+      return Number(tokenAAmount) * 10 ** tokenADecimals;
+    }
+    if (isNativeToken(tokenB!) && tokenBDecimals) {
+      return Number(tokenBAmount) * 10 ** tokenBDecimals;
+    }
+    return 0;
+  }, [tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
+
   const onCreate = () => {
     setLoading(true);
     if (tokenB && tokenA) {
@@ -101,13 +148,32 @@ const useAddLP = () => {
       writeContractAsync({
         address: address as Address,
         abi,
-        functionName: 'createPair',
-        args: [getRealAddress(tokenA), getRealAddress(tokenB)],
+        functionName: 'createLpAndSubscribeInitLiq',
+        args: [getRealAddress(tokenA), getRealAddress(tokenB), sortedAmounts],
+        value: `${txValue}` as unknown as bigint,
       }).catch(() => {
         setLoading(false);
       });
     }
   };
+
+  const disabled = useMemo(() => {
+    if (!tokenAAmount || Number(tokenAAmount) < 0.0000001) {
+      return true;
+    }
+    if (!tokenBAmount || Number(tokenBAmount) < 0.0000001) {
+      return true;
+    }
+    return invalidWallet || !tokenA?.address || !tokenB?.address;
+  }, [tokenA, tokenAAmount, tokenBAmount, invalidWallet]);
+
+  const onTokenAAmountChange = useCallback((value: string) => {
+    setTokenAAmount(value);
+  }, []);
+
+  const onTokenBAmountChange = useCallback((value: string) => {
+    setTokenBAmount(value);
+  }, []);
 
   return {
     tokenA,
@@ -121,7 +187,13 @@ const useAddLP = () => {
     onTokenAChange,
     onCreate,
     loading,
+    onTokenAAmountChange,
+    onTokenBAmountChange,
+    tokenAAmount,
+    tokenBAmount,
+    invalidWallet,
+    disabled,
   };
 };
 
-export default useAddLP;
+export default useCreatePool;
