@@ -83,6 +83,7 @@
   "x-dex.liquidity.input.tokenA": "币种A",
   "x-dex.liquidity.input.tokenB": "币种B",
   "x-dex.liquidity.add": "添加流动性",
+  "x-dex.liquidity.listing": "Listing",
   "x-dex.liquidity.per": "每",
   "x-dex.liquidity.receive": "您收到",
   "x-dex.liquidity.tokens": "LP 代币",

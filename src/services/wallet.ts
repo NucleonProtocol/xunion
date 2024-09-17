@@ -10,6 +10,6 @@ export const getActivity = async (params: {
   return request
     .get<
       ResponseType<ListType<ActivityRecord>>
-    >('/v1/wallet/portfolio/activity', { params })
+    >('/wallet/portfolio/activity', { params })
     .then((res) => res.data?.data);
 };

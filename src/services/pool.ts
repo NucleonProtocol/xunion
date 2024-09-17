@@ -8,6 +8,6 @@ export const getAllPools = async (params: {
   nameOrAddress?: string;
 }) => {
   return request
-    .get<ResponseType<ListType<PoolType>>>('/v1/pairs', { params })
+    .get<ResponseType<ListType<PoolType>>>('/pairs', { params })
     .then((res) => res.data?.data);
 };

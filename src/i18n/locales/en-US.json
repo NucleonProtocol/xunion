@@ -83,6 +83,7 @@
   "x-dex.liquidity.input.tokenA": "TokenA",
   "x-dex.liquidity.input.tokenB": "TokenB",
   "x-dex.liquidity.add": "Add liquidity",
+  "x-dex.liquidity.listing": "Listing",
   "x-dex.liquidity.per": "per",
   "x-dex.liquidity.receive": "You receive",
   "x-dex.liquidity.tokens": "LP tokens",

@@ -4,6 +4,6 @@ import { SLCAsset } from '@/types/slc.ts';
 
 export const getTokenList = async () => {
   return request
-    .get<ResponseType<ListType<SLCAsset>>>('/v1/tokens/licensed')
+    .get<ResponseType<ListType<SLCAsset>>>('/tokens/licensed')
     .then((res) => res.data?.data);
 };

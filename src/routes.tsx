@@ -16,6 +16,7 @@ import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
 import Dashboard from '@/pages/x-lending/dashboad';
 import Market from '@/pages/x-lending/market';
 import MarketDetail from '@/pages/x-lending/market/MarketDetail';
+import Listing from '@/pages/x-dex/create-pool/Listing';
 
 const routes = [
   {
@@ -72,6 +73,10 @@ const routes = [
           {
             path: 'create-pool',
             element: <CreatePool />,
+          },
+          {
+            path: 'listing',
+            element: <Listing />,
           },
         ],
       },

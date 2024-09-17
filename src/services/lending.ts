@@ -7,12 +7,12 @@ export const getLendingAssets = async (params: {
   pageNum: number;
 }) => {
   return request
-    .get<ResponseType<ListType<LendingAsset>>>('/v1/lending', { params })
+    .get<ResponseType<ListType<LendingAsset>>>('/lending', { params })
     .then((res) => res.data?.data);
 };
 
 export const getLendingTokenGroup = async () => {
   return request
-    .get<ResponseType<ListType<LendingAsset[]>>>('/v1/lending/group')
+    .get<ResponseType<ListType<LendingAsset[]>>>('/lending/group')
     .then((res) => res.data?.data);
 };

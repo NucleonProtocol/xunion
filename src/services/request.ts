@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = '/api';
+const baseUrl = '/api/v3';
 
 export const request = axios.create({
   baseURL: baseUrl,

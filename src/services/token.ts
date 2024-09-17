@@ -8,7 +8,7 @@ export const getTokenList = async (params: {
   nameOrAddress?: string;
 }) => {
   return request
-    .get<ResponseType<ListType<Token>>>('/v1/tokens', { params })
+    .get<ResponseType<ListType<Token>>>('/tokens', { params })
     .then((res) => res.data?.data);
 };
 
@@ -18,7 +18,7 @@ export const getTokenListCollect = async (params: {
   ownerAddress: string;
 }) => {
   return request
-    .get<ResponseType<ListType<Token>>>('/v1/tokens/collect', { params })
+    .get<ResponseType<ListType<Token>>>('/tokens/collect', { params })
     .then((res) => res.data?.data);
 };
 
@@ -27,6 +27,6 @@ export const getSwapRouter = async (params: {
   tokenb: string;
 }) => {
   return request
-    .get<ResponseType<ListType<SwapRoute>>>('/v1/tokens/router', { params })
+    .get<ResponseType<ListType<SwapRoute>>>('/tokens/router', { params })
     .then((res) => res.data?.data?.items || []);
 };
