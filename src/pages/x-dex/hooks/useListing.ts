@@ -166,8 +166,8 @@ const useListing = () => {
     if (!tokenBAmount || Number(tokenBAmount) < 1000) {
       return true;
     }
-    return invalidWallet || !tokenA?.address;
-  }, [tokenA, tokenAAmount, tokenBAmount, invalidWallet]);
+    return invalidWallet || !tokenA?.address || !!lpPairAddress;
+  }, [tokenA, tokenAAmount, tokenBAmount, invalidWallet, lpPairAddress]);
 
   return {
     tokenA,

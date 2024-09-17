@@ -1,12 +1,20 @@
 import { Link } from 'react-router-dom';
-import { LeftOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  LeftOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import TokenInput from '@/components/TokenInput.tsx';
 import useCreatePool from '@/pages/x-dex/hooks/useCreatePool.ts';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
-import { isSLCToken } from '@/contracts';
+import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
 import Warning from '@/components/Warning.tsx';
 import { useTranslate } from '@/i18n';
+import { isNumeric } from '@/utils/isNumeric';
+import useNativeToken from '@/hooks/useNativeToken';
+import useApprove from '../hooks/useApprove';
+import { Address } from 'viem';
 
 function CreatePool() {
   const {
@@ -30,6 +38,32 @@ function CreatePool() {
   } = useCreatePool();
 
   const { t } = useTranslate();
+  const {
+    isApproved: isTokenAApproved,
+    loading: isTokenAApproving,
+    approve: approveTokenA,
+  } = useApprove({
+    token: tokenA!,
+    amount: tokenAAmount,
+    spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
+  });
+
+  const { isNativeToken } = useNativeToken();
+
+  const {
+    isApproved: isTokenBApproved,
+    loading: isTokenBApproving,
+    approve: approveTokenB,
+  } = useApprove({
+    token: tokenB!,
+    amount: tokenBAmount,
+    spenderAddress: XUNION_SWAP_CONTRACT.interface.address as Address,
+  });
+
+  const approvedAll =
+    (isNativeToken(tokenA!) || isTokenAApproved) &&
+    (isNativeToken(tokenB!) || isTokenBApproved);
+
   const renderAction = () => {
     if (tokenA?.address && tokenB?.address) {
       if (!tokenASLCPairAddress && !isSLCToken(tokenB?.address)) {
@@ -77,24 +111,73 @@ function CreatePool() {
           </Link>
         );
       }
+
+      if (isNumeric(tokenAAmount) && Number(tokenAAmount) > tokenAOwnerAmount) {
+        return (
+          <Button className="w-full" type="primary" size="large" disabled>
+            {t('common.error.insufficient', { name: `${tokenA?.symbol}` })}
+          </Button>
+        );
+      }
+      if (isNumeric(tokenBAmount) && Number(tokenBAmount) > tokenBOwnerAmount) {
+        return (
+          <Button className="w-full" type="primary" size="large" disabled>
+            {t('common.error.insufficient', { name: `${tokenB?.symbol}` })}
+          </Button>
+        );
+      }
     }
 
     return (
-      <div className="mt-[20px] flex flex-col gap-[10px]">
+      <>
         <Warning>{t('x-dex.pools.create.tip')}</Warning>
+        {!disabled && (
+          <div className="flex-center mb-[10px] gap-[20px]">
+            {tokenA && !isNativeToken(tokenA) && (
+              <Button
+                className="flex-1"
+                type="primary"
+                size="large"
+                disabled={isTokenAApproved}
+                icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
+                loading={isTokenAApproving}
+                onClick={approveTokenA}
+              >
+                {isTokenAApproved
+                  ? t('common.approved', { name: `${tokenA?.symbol}` })
+                  : t('common.approve.to', { name: `${tokenA?.symbol}` })}
+              </Button>
+            )}
+            {tokenB && !isNativeToken(tokenB) && (
+              <Button
+                className="flex-1"
+                type="primary"
+                size="large"
+                disabled={isTokenBApproved}
+                loading={isTokenBApproving}
+                icon={isTokenBApproved ? <CheckCircleOutlined /> : null}
+                onClick={approveTokenB}
+              >
+                {isTokenBApproved
+                  ? t('common.approved', { name: `${tokenB?.symbol}` })
+                  : t('common.approve.to', { name: `${tokenB?.symbol}` })}
+              </Button>
+            )}
+          </div>
+        )}
         <WithAuthButton>
           <Button
             className="w-full"
             type="primary"
             size="large"
-            disabled={disabled}
+            disabled={disabled || !approvedAll}
             loading={loading}
             onClick={onCreate}
           >
             {t('x-dex.pools.create')}
           </Button>
         </WithAuthButton>
-      </div>
+      </>
     );
   };
 
@@ -145,7 +228,9 @@ function CreatePool() {
             totalPrice={0}
           />
         </div>
-        <div>{renderAction()}</div>
+        <div className="mt-[20px] flex flex-col gap-[10px]">
+          {renderAction()}
+        </div>
       </div>
     </div>
   );

@@ -57,9 +57,6 @@ const useAddLP = (): LiquidityReturnType => {
   const [tokenBUnitPrice, setTokenBUnitPrice] = useState(0);
   const [SLCUnitPrice, setSLCUnitPrice] = useState(0);
 
-  useSetDefaultToken('tokenA', setTokenA);
-  useSetDefaultToken('tokenB', setTokenB);
-
   const [tokenASLCPairAddress, setTokenAPairAddress] = useState<
     string | undefined
   >();
@@ -89,6 +86,19 @@ const useAddLP = (): LiquidityReturnType => {
       getLpPrice(tokenBSLCPairAddress).then(setTokenBUnitPrice);
     }
   }, [tokenBSLCPairAddress]);
+
+  useEffect(() => {
+    if (tokenA?.address) {
+      getBalance(tokenA.address).then(setTokenAOwnerAmount);
+      getSLCPairAddress(tokenA).then(setTokenAPairAddress);
+    }
+  }, [tokenA]);
+  useEffect(() => {
+    if (tokenB?.address) {
+      getBalance(tokenB.address).then(setTokenBOwnerAmount);
+      getSLCPairAddress(tokenB).then(setTokenBPairAddress);
+    }
+  }, [tokenB]);
 
   useEffect(() => {
     getSLCPairAddress({ address: XUNION_SWAP_CONTRACT.slc.address }).then(
@@ -203,8 +213,6 @@ const useAddLP = (): LiquidityReturnType => {
       setTokenA(token);
       setLpPairInfo(undefined);
       try {
-        await getBalance(token.address).then(setTokenAOwnerAmount);
-        await getSLCPairAddress(token).then(setTokenAPairAddress);
         if (tokenB) {
           const lp = await getLpTotal({
             tokenA: token,
@@ -230,8 +238,6 @@ const useAddLP = (): LiquidityReturnType => {
       setTokenB(token);
       setLpPairInfo(undefined);
       try {
-        await getBalance(token.address).then(setTokenBOwnerAmount);
-        await getSLCPairAddress(token).then(setTokenBPairAddress);
         if (tokenA) {
           const res = await getLpTotal({
             tokenA,
@@ -250,6 +256,10 @@ const useAddLP = (): LiquidityReturnType => {
     },
     [tokenBAmount, tokenAAmount, tokenA?.address]
   );
+
+  useSetDefaultToken('tokenA', onTokenAChange);
+
+  useSetDefaultToken('tokenB', onTokenBChange);
 
   const onTokenAAmountChange = useCallback(
     (value: string) => {
