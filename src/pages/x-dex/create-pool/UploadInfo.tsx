@@ -2,7 +2,7 @@ import { Button, Input, message, Upload, UploadFile, UploadProps } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useTranslate } from '@/i18n';
-import { uploadIcon } from '@/services/token';
+import { getCSRF, uploadIcon } from '@/services/token';
 import { useAccount } from 'wagmi';
 
 const { Dragger } = Upload;
@@ -20,25 +20,28 @@ const UploadInfo = ({
 
   const { t } = useTranslate();
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (fileList.length && tokenAddress && address && lpAddress) {
       setUploading(true);
-      uploadIcon({
-        file: fileList[0] as unknown as File,
-        token: tokenAddress,
-        address: address + '',
-      })
-        .then((res) => res.json())
-        .then(() => {
-          setFileList([]);
-          message.success('upload successfully.');
+      const { data: csrf } = await getCSRF();
+      if (csrf) {
+        uploadIcon(csrf, {
+          file: fileList[0] as unknown as File,
+          token: tokenAddress,
+          address: address + '',
         })
-        .catch(() => {
-          message.error('upload failed.');
-        })
-        .finally(() => {
-          setUploading(false);
-        });
+          .then((res) => res.json())
+          .then(() => {
+            setFileList([]);
+            message.success('upload successfully.');
+          })
+          .catch(() => {
+            message.error('upload failed.');
+          })
+          .finally(() => {
+            setUploading(false);
+          });
+      }
     }
   };
 
