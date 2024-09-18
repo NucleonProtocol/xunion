@@ -28,7 +28,7 @@ const useXWriteContract = ({
     isSuccess: isSubmitted,
     error: submittedError,
     isError,
-  } = useWriteContract();
+  } = useWriteContract({});
 
   const {
     isSuccess,

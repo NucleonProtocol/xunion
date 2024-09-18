@@ -1,50 +1,45 @@
-import { Button, GetProp, Input, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Input, message, Upload, UploadFile, UploadProps } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { useReadContract } from 'wagmi';
-import { Address, erc20Abi } from 'viem';
 import { useTranslate } from '@/i18n';
+import { uploadIcon } from '@/services/token';
+import { useAccount } from 'wagmi';
 
 const { Dragger } = Upload;
 
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-
-const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
+const UploadInfo = ({
+  tokenAddress,
+  lpAddress,
+}: {
+  tokenAddress?: string;
+  lpAddress?: string;
+}) => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
+  const { address } = useAccount();
 
   const { t } = useTranslate();
-  const { data } = useReadContract({
-    abi: erc20Abi,
-    address: lpPairAddress as Address,
-    functionName: 'symbol',
-    query: {
-      enabled: !!lpPairAddress,
-    },
-  });
 
   const handleUpload = () => {
-    const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append('files[]', file as FileType);
-    });
-    setUploading(true);
-    // You can use any AJAX library you like
-    fetch('https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setFileList([]);
-        // message.success('upload successfully.');
+    if (fileList.length && tokenAddress && address && lpAddress) {
+      setUploading(true);
+      uploadIcon({
+        file: fileList[0] as unknown as File,
+        token: tokenAddress,
+        address: address + '',
       })
-      .catch(() => {
-        // message.error('upload failed.');
-      })
-      .finally(() => {
-        setUploading(false);
-      });
+        .then((res) => res.json())
+        .then(() => {
+          setFileList([]);
+          message.success('upload successfully.');
+        })
+        .catch(() => {
+          message.error('upload failed.');
+        })
+        .finally(() => {
+          setUploading(false);
+        });
+    }
   };
 
   const props: UploadProps = {
@@ -59,7 +54,7 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
       setFileList(newFileList);
     },
     beforeUpload: (file) => {
-      if (file.size > 1000 * 1024) {
+      if (file.size > 20 * 1024) {
         return;
       }
       setFileList([...fileList, file]);
@@ -74,13 +69,12 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
       <div className="flex-center-between text-tc-secondary">
         <div className="flex-center ">
           <span className="text-red-600">*</span>
-          <span>LP Address</span>
+          <span>Token Address</span>
         </div>
-        <span>{data || ''}</span>
       </div>
       <div>
         <Input
-          value={lpPairAddress || ''}
+          value={tokenAddress || ''}
           disabled
           size="large"
           className="h-[48px]"
@@ -107,7 +101,7 @@ const UploadInfo = ({ lpPairAddress }: { lpPairAddress?: string }) => {
           size="large"
           className="w-full"
           loading={uploading}
-          disabled={!lpPairAddress}
+          disabled={!tokenAddress || !lpAddress}
           onClick={() => {
             handleUpload();
           }}

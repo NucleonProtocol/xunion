@@ -30,3 +30,27 @@ export const getSwapRouter = async (params: {
     .get<ResponseType<ListType<SwapRoute>>>('/tokens/router', { params })
     .then((res) => res.data?.data?.items || []);
 };
+
+export const uploadIcon = async ({
+  file,
+  token,
+  address,
+}: {
+  file: File;
+  token: string;
+  address: string;
+}) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('token', token);
+  formData.append('address', address);
+  return request
+    .post(
+      '/tokens/icon?_csrf=OWY4NmQwODE4ODRjN2Q2NTlhMmZlYWEwYzU1YWQwMTVhM2JmNGYxYjJiMGI4MjJjZDE1ZDZMGYwMGEwOA==',
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    )
+    .then((res) => res.data);
+};

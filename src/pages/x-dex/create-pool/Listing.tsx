@@ -8,7 +8,7 @@ import TokenInput from '@/components/TokenInput.tsx';
 import useListing from '@/pages/x-dex/hooks/useListing';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
-import { isSLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
+import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import UploadInfo from '@/pages/x-dex/create-pool/UploadInfo.tsx';
 import { useTranslate } from '@/i18n';
 import SLCTokenInput from '@/components/SLCTokenInput';
@@ -158,9 +158,7 @@ function CreatePool() {
             </Button>
           </div>
         </WithAuthButton>
-        {isSLCToken(tokenB?.address || '') && !lpPairAddress && (
-          <UploadInfo lpPairAddress={lpPairAddress} />
-        )}
+        <UploadInfo lpAddress={lpPairAddress} tokenAddress={tokenA?.address} />
       </div>
     </div>
   );
