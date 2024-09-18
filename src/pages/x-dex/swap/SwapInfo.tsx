@@ -29,6 +29,7 @@ export const ConfirmContent = ({
   estReceived,
   minReceived,
   router,
+  outputToken,
 }: SwapInfoProps) => {
   const { t } = useTranslate();
   return (
@@ -57,13 +58,17 @@ export const ConfirmContent = ({
         <span className="text-tc-secondary">
           {t('x-dex.swap.est.received')}
         </span>
-        <span>{estReceived} USDT</span>
+        <span>
+          {estReceived} {outputToken?.symbol}
+        </span>
       </div>
       <div className="flex-center-between">
         <span className="text-tc-secondary">
           {t('x-dex.swap.min.received')}
         </span>
-        <span>{minReceived} USDT</span>
+        <span>
+          {minReceived} {outputToken?.symbol}
+        </span>
       </div>
       <div className="flex-center-between">
         <span className="text-tc-secondary">{t('x-dex.swap.route')}</span>

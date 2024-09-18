@@ -16,6 +16,7 @@ const TokenAssetsSelector = ({
 }) => {
   const { t } = useTranslate();
   const { assets, isAssetsLoading } = useCollateral();
+  console.log(assets);
   const [open, onOpen] = useState(false);
   return (
     <Popover
@@ -24,24 +25,23 @@ const TokenAssetsSelector = ({
       onOpenChange={onOpen}
       content={
         <Spin spinning={isAssetsLoading} indicator={<SpinIcon />}>
-          <div className="h-[250px] w-[450px] overflow-y-auto">
+          <div className="h-[250px] overflow-y-auto max-md:w-[300px] md:w-[450px]">
             <div className="my-[10px] flex flex-col gap-[10px] ">
               {(assets || []).map((item) => (
                 <div
                   className={cn(
                     'flex-center cursor-pointer gap-[10px] rounded-[12px] px-[10px] ',
-                    {
-                      'cursor-not-allowed  bg-fill-niubi opacity-45':
-                        item.max_deposit_amount === '0',
-                    },
-                    {
-                      'hover:bg-theme-non-opaque hover:opacity-75':
-                        item.max_deposit_amount !== '0',
-                    }
+                    item.max_deposit_amount &&
+                      Number(item.max_deposit_amount) > 0
+                      ? 'hover:bg-theme-non-opaque hover:opacity-75'
+                      : 'cursor-not-allowed  bg-fill-niubi opacity-45'
                   )}
                   key={item.symbol}
                   onClick={(e) => {
-                    if (item.max_deposit_amount !== '0') {
+                    if (
+                      item.max_deposit_amount &&
+                      Number(item.max_deposit_amount) > 0
+                    ) {
                       e.stopPropagation();
                       e.preventDefault();
                       onChange(item);
