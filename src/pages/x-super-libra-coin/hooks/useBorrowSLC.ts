@@ -25,6 +25,7 @@ const useBorrowSLC = ({
 
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
+    address: inputToken?.address,
   });
 
   const { getBorrowHealth } = useHealthFactor();

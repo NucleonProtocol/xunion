@@ -31,7 +31,6 @@ const useTokenPrice = ({
     }
     return 0;
   }, [amount, unitPrice]);
-
   return {
     slcUnitPrice,
     totalPrice,

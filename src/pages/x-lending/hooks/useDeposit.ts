@@ -28,6 +28,7 @@ const useDeposit = ({
 
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
+    address: inputToken?.address,
   });
   const { isNativeToken } = useNativeToken();
   const { getDepositHealth } = useHealthFactor(asset);

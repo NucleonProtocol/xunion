@@ -27,6 +27,7 @@ const useRepay = ({
   const { isNativeToken } = useNativeToken();
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
+    address: inputToken?.address,
   });
 
   const { getRepayHealth } = useHealthFactor(asset);

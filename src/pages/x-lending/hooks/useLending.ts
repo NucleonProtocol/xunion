@@ -27,6 +27,7 @@ const useLending = ({
   const { isNativeToken } = useNativeToken();
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
+    address: inputToken?.address,
   });
 
   const { getLendingHealth } = useHealthFactor(asset);
