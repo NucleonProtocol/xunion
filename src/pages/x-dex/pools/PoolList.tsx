@@ -32,7 +32,7 @@ const PoolList = () => {
   const columns: ColumnType<PoolType>[] = [
     {
       title: t('common.name'),
-      dataIndex: 'name',
+      dataIndex: 'tokenA',
       width: 240,
       render: (_: string, record: PoolType) => {
         return (
