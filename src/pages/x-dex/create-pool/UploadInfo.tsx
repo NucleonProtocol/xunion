@@ -103,7 +103,7 @@ const UploadInfo = ({
           size="large"
           className="w-full"
           loading={uploading}
-          disabled={!tokenAddress || !lpAddress}
+          disabled={!tokenAddress || !lpAddress || !fileList?.length}
           onClick={() => {
             handleUpload();
           }}
