@@ -56,7 +56,7 @@ const UploadInfo = ({
       setFileList(newFileList);
     },
     beforeUpload: (file) => {
-      if (file.size > 20 * 1024) {
+      if (file.size > 200 * 1024) {
         return;
       }
       setFileList([...fileList, file]);
@@ -89,7 +89,7 @@ const UploadInfo = ({
               <UploadOutlined />
             </p>
             <p className="ant-upload-hint">
-              {t('common.upload.limit', { size: '20KB' })}
+              {t('common.upload.limit', { size: '200KB' })}
             </p>
             <p className="ant-upload-hint">
               {t('common.upload.accept', { accept: 'jpg, jpeg, png, svg' })}
