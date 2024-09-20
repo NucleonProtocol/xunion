@@ -1,7 +1,13 @@
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { useTranslate } from '@/i18n';
 
-const HealthFactor = ({ value }: { value: string }) => {
+const HealthFactor = ({
+  value,
+  decimals = 4,
+}: {
+  value: string;
+  decimals?: number;
+}) => {
   const { t } = useTranslate();
   if (value) {
     if (Number(value) >= 10) {
@@ -14,21 +20,21 @@ const HealthFactor = ({ value }: { value: string }) => {
     if (Number(value) >= 2) {
       return (
         <span className="text-status-success">
-          {formatNumber(Number(value), 4)}
+          {formatNumber(Number(value), decimals)}
         </span>
       );
     }
     if (Number(value) >= 1.5 && Number(value) < 4) {
       return (
         <span className="text-status-warning">
-          {formatNumber(Number(value), 4)}
+          {formatNumber(Number(value), decimals)}
         </span>
       );
     }
     if (Number(value) < 1.5) {
       return (
         <span className="text-status-error">
-          {formatNumber(Number(value), 4)}
+          {formatNumber(Number(value), decimals)}
         </span>
       );
     }
