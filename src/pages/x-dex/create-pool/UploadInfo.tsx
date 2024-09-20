@@ -30,7 +30,6 @@ const UploadInfo = ({
           token: tokenAddress,
           address: address + '',
         })
-          .then((res) => res.json())
           .then(() => {
             setFileList([]);
             message.success('upload successfully.');

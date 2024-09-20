@@ -129,7 +129,12 @@ export const TokenIcon = ({
     />
   ) : (
     <LogoIcon
-      className={cn('h-[20px] w-[20px] text-[20px]', className)}
+      style={{
+        width,
+        height,
+        fontSize: width || 20,
+      }}
+      className={cn('text-[20px]', className)}
       {...rest}
     />
   );

@@ -51,7 +51,7 @@ export const uploadIcon = async (
   formData.append('token', token);
   formData.append('address', address);
   return request
-    .post(`$/tokens/icon?_csrf=${csrf}`, formData, {
+    .post(`/tokens/icon?_csrf=${csrf}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((res) => res.data);
