@@ -1,6 +1,7 @@
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { useTranslate } from '@/i18n';
 
+// 十进制 value
 const HealthFactor = ({
   value,
   decimals = 4,

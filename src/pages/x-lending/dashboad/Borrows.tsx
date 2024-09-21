@@ -109,7 +109,7 @@ const Borrows = ({
             {`${t('x-lending.apy')}: < ${lendingTotalAPY}%`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`${t('x-lending.apy')}: ${formatCurrency(lendingPowerUsed)}`}
+            {`${t('x-lending.borrow.used')}: ${lendingPowerUsed}%`}
           </Button>
         </div>
       }

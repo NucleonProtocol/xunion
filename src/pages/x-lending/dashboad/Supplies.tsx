@@ -134,7 +134,7 @@ const Supplies = ({
             {`${t('x-lending.apy')}: ${depositTotalAPY}%`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`${t('x-dex.swap.token.balance')}: ${formatCurrency(depositTotalCollateralBalance)}`}
+            {`${t('x-lending.collateral')}: ${formatCurrency(depositTotalCollateralBalance)}`}
           </Button>
         </div>
       }

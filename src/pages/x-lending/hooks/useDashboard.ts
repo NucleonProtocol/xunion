@@ -246,9 +246,10 @@ const useDashboard = () => {
     const totalDeposit = (userDepositAndLendingValue as bigint[])?.[0];
     const totalLending = (userDepositAndLendingValue as bigint[])?.[1];
     if (!userDepositAndLendingValue || totalDeposit === 0n) return 0;
-    return (
+    return formatNumber(
       (Number(formatUnits(totalLending)) / Number(formatUnits(totalDeposit))) *
-      100
+        100,
+      2
     );
   }, [userDepositAndLendingValue]);
 
@@ -261,7 +262,7 @@ const useDashboard = () => {
   return {
     netWorth,
     netApy,
-    health: Number(String(health || 0n)),
+    health: Number(formatUnits(String(health || 0n), 18)),
     loading: loading || isLoading || isPending,
     lendingAssets,
     depositTotalBalance,
