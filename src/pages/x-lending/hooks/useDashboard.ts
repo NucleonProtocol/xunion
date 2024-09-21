@@ -202,26 +202,27 @@ const useDashboard = () => {
   }, [userProfile]);
 
   const depositTotalBalance = useMemo(() => {
-    return sumBy(lendingAssets || [], (item) => item.lendingAmount || 0);
+    return sumBy(lendingAssets || [], (item) => item.depositTotalPrice || 0);
   }, [lendingAssets]);
 
   const depositTotalCollateralBalance = useMemo(() => {
     const greenAssets = lendingAssets.filter((asset) => asset.canCollateral);
-    return sumBy(greenAssets || [], (item) => item.lendingAmount || 0);
+    return sumBy(greenAssets || [], (item) => item.depositTotalPrice || 0);
   }, [lendingAssets, userMode]);
 
   const lendingTotalBalance = useMemo(() => {
-    return sumBy(lendingAssets || [], (item) => item.lendingAmount || 0);
+    return sumBy(lendingAssets || [], (item) => item.lendingTotalPrice || 0);
   }, [lendingAssets]);
 
   const depositTotalAPY = useMemo(() => {
     const remainingBalance = sumBy(
       lendingAssets || [],
-      (item) => (item.depositAmount || 0) * ((item.depositInterest || 0) / 100)
+      (item) =>
+        (item.depositTotalPrice || 0) * ((item.depositInterest || 0) / 100)
     );
     const totalBalance = sumBy(
       lendingAssets || [],
-      (item) => item.depositAmount || 0
+      (item) => item.depositTotalPrice || 0
     );
     return totalBalance
       ? formatNumber((remainingBalance / totalBalance) * 100, 2)
@@ -231,11 +232,12 @@ const useDashboard = () => {
   const lendingTotalAPY = useMemo(() => {
     const remainingBalance = sumBy(
       lendingAssets || [],
-      (item) => (item.lendingAmount || 0) * ((item.lendingInterest || 0) / 100)
+      (item) =>
+        (item.lendingTotalPrice || 0) * ((item.lendingInterest || 0) / 100)
     );
     const totalBalance = sumBy(
       lendingAssets || [],
-      (item) => item.lendingAmount || 0
+      (item) => item.lendingTotalPrice || 0
     );
     return totalBalance
       ? formatNumber((remainingBalance / totalBalance) * 100, 2)
