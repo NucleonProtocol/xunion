@@ -13,7 +13,7 @@ export const XUNION_LENDING_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0xCFC54AD83E0a3b6b46dA3264b6d89CE03c34FE24',
+    address: '0x4BBBFf4741D9AD20DCD5b27A521a90cB94417156',
     abi: LendingInterfaceABI,
   },
 };
@@ -41,7 +41,7 @@ export const XUNION_SLC_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0xA9BEa8F208188F5bd42Bb5080d359cb2a24c1D51',
+    address: '0x35D62688056D543ADfb78971ebe13250129ab2Cd',
     abi: SLCInterfaceABI,
   },
   oracle: {

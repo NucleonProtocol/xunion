@@ -58,7 +58,7 @@ const Borrows = ({
       render: (_: string, record: LendingAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            <span>{`< ${record.lendingInterest}%`}</span>
+            <span>{` ≈ ${record.lendingInterest}%`}</span>
           </div>
         );
       },
@@ -106,7 +106,7 @@ const Borrows = ({
             {`${t('x-dex.swap.token.balance')}: ${formatCurrency(lendingTotalBalance)}`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
-            {`${t('x-lending.apy')}: < ${lendingTotalAPY}%`}
+            {`${t('x-lending.apy')}: ≈ ${lendingTotalAPY}%`}
           </Button>
           <Button className="pointer-events-none rounded-[10px] text-tc-secondary">
             {`${t('x-lending.borrow.used')}: ${lendingPowerUsed}%`}

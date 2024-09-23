@@ -32,6 +32,24 @@ const useDashboard = () => {
     getAssets({ pageSize: 20, pageNum: 1 });
   }, []);
 
+  // const { data: homogeneousFloorOfHealthFactor } = useReadContract({
+  //   address: XUNION_LENDING_CONTRACT.interface.address as Address,
+  //   abi: XUNION_LENDING_CONTRACT.interface.abi,
+  //   functionName: 'homogeneousFloorOfHealthFactor',
+  //   query: {
+  //     enabled: !!address,
+  //   },
+  // });
+
+  // const { data: nomalFloorOfHealthFactor } = useReadContract({
+  //   address: XUNION_LENDING_CONTRACT.interface.address as Address,
+  //   abi: XUNION_LENDING_CONTRACT.interface.abi,
+  //   functionName: 'nomalFloorOfHealthFactor',
+  //   query: {
+  //     enabled: !!address,
+  //   },
+  // });
+
   const { data: userMode, refetch: refetchUserMode } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
@@ -41,6 +59,7 @@ const useDashboard = () => {
       enabled: !!address,
     },
   });
+
   const { data: userProfile, refetch: refetchUserProfile } = useReadContract({
     address: XUNION_LENDING_CONTRACT.interface.address as Address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
@@ -185,6 +204,7 @@ const useDashboard = () => {
                 }
               }
             }
+            console.log('newData', newData);
             setLendingAssets(newData);
           });
         })

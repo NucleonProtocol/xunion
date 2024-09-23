@@ -95,7 +95,7 @@ const AssetsList = ({
       render: (_: string, record: LendingAsset) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            <span>{`${(record?.lendingInterest || 1) < 1 ? '< ' : ''}${record.lendingInterest}%`}</span>
+            <span>{`${(record?.lendingInterest || 1) < 1 ? '≈ ' : ''}${record.lendingInterest}%`}</span>
           </div>
         );
       },
