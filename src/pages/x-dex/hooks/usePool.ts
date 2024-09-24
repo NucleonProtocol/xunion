@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { getAllPools, getWalletPools } from '@/services/pool.ts';
+import { getAllPools } from '@/services/pool.ts';
 import { useEffect, useState } from 'react';
 
 const usePool = () => {
