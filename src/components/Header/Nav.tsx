@@ -106,7 +106,7 @@ const Nav = () => {
   };
 
   return (
-    <div className="flex items-center gap-[40px] text-[16px] max-md:flex-1 max-md:justify-start max-md:gap-[10px]">
+    <div className="flex items-center gap-[40px] text-[16px] max-md:flex-1 max-md:justify-start max-md:gap-[5px] max-md:text-[14px]">
       <div className="flex-center">
         <LogoIcon className="text-[40px] max-md:hidden" />
         <Dropdown

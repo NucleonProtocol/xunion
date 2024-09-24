@@ -6,11 +6,9 @@ import { useTranslate } from '@/i18n';
 const PoolFilter = ({
   poolType,
   onPoolChange,
-  onSearch,
 }: {
   poolType: string;
   onPoolChange: (value: string) => void;
-  onSearch: (value: string) => void;
 }) => {
   const { t } = useTranslate();
   const tabs = [
@@ -49,9 +47,6 @@ const PoolFilter = ({
           prefix={<SearchOutlined />}
           placeholder={t('x-dex.swap.token.modal.search.placeholder')}
           className="rounded-[20px]"
-          onBlur={(e) => {
-            onSearch(e.target.value);
-          }}
         />
       </div>
     </div>

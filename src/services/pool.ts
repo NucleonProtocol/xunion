@@ -11,3 +11,12 @@ export const getAllPools = async (params: {
     .get<ResponseType<ListType<PoolType>>>('/pairs', { params })
     .then((res) => res.data?.data);
 };
+export const getWalletPools = async (params: {
+  pageSize: number;
+  pageNum: number;
+  address: string;
+}) => {
+  return request
+    .get<ResponseType<ListType<PoolType>>>('/wallet/lp', { params })
+    .then((res) => res.data?.data);
+};

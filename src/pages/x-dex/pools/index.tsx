@@ -4,10 +4,17 @@ import { PlusOutlined } from '@ant-design/icons';
 import PoolList from '@/pages/x-dex/pools/PoolList.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useTranslate } from '@/i18n';
+import PoolFilter from './PoolFilter';
+import { useState } from 'react';
+import MyPoolList from './MyPoolList';
 
 function Pools() {
   const navigate = useNavigate();
   const { t } = useTranslate();
+  const [poolType, setPoolType] = useState('0');
+  const onPoolChange = (type: string) => {
+    setPoolType(type);
+  };
   return (
     <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
       <div className="max-md:mx-0 max-md:w-[calc(100%)] md:min-w-[1200px]">
@@ -41,7 +48,8 @@ function Pools() {
           />
         </div>
         <div>
-          <PoolList />
+          <PoolFilter poolType={poolType} onPoolChange={onPoolChange} />
+          {poolType === '0' ? <PoolList /> : <MyPoolList />}
         </div>
       </div>
     </div>
