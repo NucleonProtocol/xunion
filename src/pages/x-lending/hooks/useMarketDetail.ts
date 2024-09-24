@@ -65,6 +65,14 @@ const useMarketDetail = () => {
       enabled: !!address && !!tokenAddress,
     },
   });
+  const { data: nomalFloorOfHealthFactor } = useReadContract({
+    address: XUNION_LENDING_CONTRACT.interface.address as Address,
+    abi: XUNION_LENDING_CONTRACT.interface.abi,
+    functionName: 'nomalFloorOfHealthFactor',
+    query: {
+      enabled: !!address && !!tokenAddress,
+    },
+  });
 
   const licensed = useMemo(() => {
     if (licensedAssets) {
@@ -81,6 +89,10 @@ const useMarketDetail = () => {
     }
   }, [licensedAssets]);
 
+  const normalFloorOfHealthFactor = useMemo(() => {
+    if (!nomalFloorOfHealthFactor) return 0;
+    return Number(formatUnits(nomalFloorOfHealthFactor as bigint));
+  }, [nomalFloorOfHealthFactor]);
   useEffect(() => {
     if (userAssets && data?.items?.length && address) {
       setLoading(true);
@@ -138,6 +150,7 @@ const useMarketDetail = () => {
                 depositTotalPrice,
                 lendingTotalPrice,
                 oraclePrice,
+                unitPrice,
               });
             }
           }
@@ -160,6 +173,7 @@ const useMarketDetail = () => {
     interests,
     chartLoading,
     licensed,
+    normalFloorOfHealthFactor,
   };
 };
 

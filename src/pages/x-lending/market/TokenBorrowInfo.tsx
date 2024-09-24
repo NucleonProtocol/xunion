@@ -8,17 +8,49 @@ import { ListType } from '@/types/common';
 import { Link } from 'react-router-dom';
 import { confluxScan } from '@/components/notices/usePendingNotice';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
+import { useMemo } from 'react';
+import { formatLargeNumber } from '@/utils';
 
-const TokenSupplyInfo = ({
+const TokenBorrowInfo = ({
   asset,
   loading,
   interests,
+  normalFloorOfHealthFactor,
 }: {
   asset?: LendingAsset;
   loading?: boolean;
   interests?: ListType<LendingAssetInterest>;
+  normalFloorOfHealthFactor?: number;
 }) => {
   const { t } = useTranslate();
+
+  const maxLendingAmount = useMemo(() => {
+    if (!asset) return '-';
+    return formatLargeNumber(Number(asset?.lendingAmount));
+  }, [asset]);
+
+  const maxDepositUsedAmount = useMemo(() => {
+    if (!asset || !normalFloorOfHealthFactor) return '-';
+    return formatLargeNumber(
+      (Number(asset?.depositAmount) * (Number(asset?.max_ltv) / 10000)) /
+        normalFloorOfHealthFactor
+    );
+  }, [asset, normalFloorOfHealthFactor]);
+
+  const maxLendingPrice = useMemo(() => {
+    if (!asset?.unitPrice) return '-';
+    return formatLargeNumber(Number(asset?.lendingAmount) * asset?.unitPrice);
+  }, [asset]);
+
+  const maxDepositPrice = useMemo(() => {
+    if (!asset?.unitPrice || !normalFloorOfHealthFactor) return '-';
+    return formatLargeNumber(
+      ((Number(asset?.depositAmount) * (Number(asset?.max_ltv) / 10000)) /
+        normalFloorOfHealthFactor) *
+        asset?.unitPrice
+    );
+  }, [asset, normalFloorOfHealthFactor]);
+
   return (
     <LendingCard
       title={t('x-lending.market.detail.borrow.info')}
@@ -30,12 +62,14 @@ const TokenSupplyInfo = ({
             <div className="flex h-full flex-1 items-center gap-[10px] rounded-[8px] border border-line-primary p-[10px]">
               <div className="flex flex-col gap-[2px]">
                 <div className="flex gap-[5px] text-[14px] text-tc-secondary">
-                  <span>{t('x-lending.market.supplied')}</span>
+                  <span>{t('x-lending.market.borrow')}</span>
                   <ExclamationCircleOutlined />
                 </div>
-                <span className="text-[16px] font-[500]">33.94K/43.00K</span>
+                <span className="text-[16px] font-[500]">
+                  {maxLendingAmount} / {maxDepositUsedAmount}
+                </span>
                 <span className="text-[12px] text-tc-secondary">
-                  $3.09M/3.56M
+                  ${maxLendingPrice} / ${maxDepositPrice}
                 </span>
               </div>
             </div>
@@ -44,9 +78,11 @@ const TokenSupplyInfo = ({
                 {t('x-lending.market.detail.borrow.cap')}
               </span>
               <span className="text-[14px] font-[500]">
-                {asset?.depositInterest || 0}%
+                {maxDepositUsedAmount}
               </span>
-              <span className="text-[12px] text-tc-secondary">$3.09M</span>
+              <span className="text-[12px] text-tc-secondary">
+                ${maxDepositPrice}
+              </span>
             </div>
             <div className="flex h-full  w-[130px] flex-col items-start justify-center gap-[5px] rounded-[8px] border border-line-primary pl-[10px]">
               <div className="flex gap-[5px] text-[14px] text-tc-secondary">
@@ -54,7 +90,7 @@ const TokenSupplyInfo = ({
                 <ExclamationCircleOutlined />
               </div>
               <span className="text-[14px] font-[500]">
-                {asset?.depositInterest || 0}%
+                {asset?.lendingInterest || 0}%
               </span>
             </div>
           </div>
@@ -114,4 +150,4 @@ const TokenSupplyInfo = ({
   );
 };
 
-export default TokenSupplyInfo;
+export default TokenBorrowInfo;

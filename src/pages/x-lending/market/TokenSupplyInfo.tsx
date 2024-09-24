@@ -9,6 +9,8 @@ import { LendingAsset, LendingAssetInterest } from '@/types/Lending.ts';
 import { useTranslate } from '@/i18n';
 import { ListType } from '@/types/common';
 import { Skeleton } from 'antd';
+import { formatLargeNumber } from '@/utils';
+import { useMemo } from 'react';
 
 const TokenSupplyInfo = ({
   asset,
@@ -22,6 +24,43 @@ const TokenSupplyInfo = ({
   interests?: ListType<LendingAssetInterest>;
 }) => {
   const { t } = useTranslate();
+  const maxLendingAmount = useMemo(() => {
+    if (!asset) return '-';
+    return formatLargeNumber(
+      Number(asset?.lendingAmount) / (Number(asset?.max_ltv) / 10000)
+    );
+  }, [asset]);
+
+  const maxLendingPrice = useMemo(() => {
+    if (!asset?.unitPrice) return '-';
+    return formatLargeNumber(
+      (Number(asset?.lendingAmount) / (Number(asset?.max_ltv) / 10000)) *
+        asset?.unitPrice
+    );
+  }, [asset]);
+
+  const maxDepositPrice = useMemo(() => {
+    if (!asset?.unitPrice) return '-';
+    return formatLargeNumber(Number(asset?.depositAmount) * asset?.unitPrice);
+  }, [asset]);
+
+  const maxDepositAmount = useMemo(() => {
+    if (!asset) return '-';
+    return formatLargeNumber(Number(asset?.depositAmount));
+  }, [asset]);
+
+  const percent = useMemo(() => {
+    if (asset?.lendingAmount) {
+      return Number(
+        (
+          (Number(asset?.lendingAmount) /
+            (Number(asset?.max_ltv) / 10000) /
+            Number(asset?.depositAmount) || 1) * 100
+        ).toFixed(1)
+      );
+    }
+  }, [asset]);
+
   return (
     <LendingCard
       title={t('x-lending.market.detail.supply.info')}
@@ -31,15 +70,17 @@ const TokenSupplyInfo = ({
         <div className="flex w-full justify-between">
           <div className="flex h-[90px] w-full gap-[10px]">
             <div className="flex h-full flex-1 items-center gap-[10px] rounded-[8px] border border-line-primary">
-              <TotalSupplyPie />
+              <TotalSupplyPie percent={percent || 0} />
               <div className="flex flex-col gap-[2px]">
                 <div className="flex gap-[5px] text-[14px] text-tc-secondary">
                   <span>{t('x-lending.market.supplied')}</span>
                   <ExclamationCircleOutlined />
                 </div>
-                <span className="text-[16px] font-[500]">33.94K/43.00K</span>
+                <span className="text-[16px] font-[500]">
+                  {maxLendingAmount} / {maxDepositAmount}
+                </span>
                 <span className="text-[12px] text-tc-secondary">
-                  $3.09M/3.56M
+                  ${maxLendingPrice} / ${maxDepositPrice}
                 </span>
               </div>
             </div>

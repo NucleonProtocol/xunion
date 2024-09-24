@@ -22,6 +22,7 @@ export interface LendingAsset {
   availableTotalPrice?: number;
   canCollateral?: boolean;
   oraclePrice?: number;
+  unitPrice?: number;
 }
 
 export interface LendingAssetInterest {

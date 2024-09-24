@@ -8,24 +8,20 @@ import {
 
 import { ChartContainer, type ChartConfig } from '@/components/Charts';
 
-const chartData = [
-  { browser: 'safari', visitors: 3000, fill: 'var(--xunion-color-theme)' },
-];
+const chartData = [{ rate: 400, fill: 'var(--xunion-color-theme)' }];
 const chartConfig = {
-  visitors: {
-    label: 'Visitors',
-  },
-  safari: {
-    label: 'Safari',
+  rate: {
+    label: 'rate',
   },
 } satisfies ChartConfig;
 
-const TotalSupplyPie = () => {
+const TotalSupplyPie = ({ percent = 99 }: { percent: number }) => {
+  const rate = percent * 3.6;
   return (
     <ChartContainer config={chartConfig} className="h-[85px] w-[100px]">
       <RadialBarChart
         data={chartData}
-        endAngle={200}
+        endAngle={rate}
         innerRadius={35}
         outerRadius={50}
       >
@@ -36,7 +32,7 @@ const TotalSupplyPie = () => {
           className="first:fill-fill-niubi3 last:fill-fill-niubi"
           polarRadius={[38, 32]}
         />
-        <RadialBar dataKey="visitors" background />
+        <RadialBar dataKey="rate" background />
         <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
           <Label
             content={({ viewBox }) => {
@@ -51,9 +47,9 @@ const TotalSupplyPie = () => {
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-theme text-[12px]"
+                      className="text-[12px] text-tc-secondary"
                     >
-                      7.25%
+                      {percent}%
                     </tspan>
                   </text>
                 );

@@ -10,8 +10,14 @@ import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
 import { useTranslate } from '@/i18n';
 
 function MarketDetail() {
-  const { tokenAsset, loading, interests, chartLoading, licensed } =
-    useMarketDetail();
+  const {
+    tokenAsset,
+    loading,
+    interests,
+    chartLoading,
+    licensed,
+    normalFloorOfHealthFactor,
+  } = useMarketDetail();
   const navigate = useNavigate();
 
   const { t } = useTranslate();
@@ -69,6 +75,7 @@ function MarketDetail() {
               asset={tokenAsset}
               loading={chartLoading}
               interests={interests}
+              normalFloorOfHealthFactor={normalFloorOfHealthFactor}
             />
           </div>
           <div className="flex w-full flex-shrink-0 flex-col gap-[24px] overflow-hidden">
