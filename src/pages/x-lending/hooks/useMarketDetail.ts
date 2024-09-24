@@ -1,9 +1,9 @@
 import { useAccount, useReadContract } from 'wagmi';
 import { XUNION_LENDING_CONTRACT, XUNION_SLC_CONTRACT } from '@/contracts';
-import { Address } from 'viem';
-import { useEffect, useState } from 'react';
+import { Address, isAddress } from 'viem';
+import { useEffect, useMemo, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { getLendingAssets } from '@/services/lending.ts';
+import { getLendingAssets, getAssetInterest } from '@/services/lending.ts';
 import useMulticall, { ContractCall } from '@/hooks/useMulticall.ts';
 import { formatUnits } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
@@ -29,8 +29,21 @@ const useMarketDetail = () => {
     mutationFn: getLendingAssets,
   });
 
+  const {
+    mutate: getAssetsInterest,
+    data: interests,
+    isPending: chartLoading,
+  } = useMutation({
+    mutationFn: getAssetInterest,
+  });
+
   useEffect(() => {
-    getAssets({ pageSize: 20, pageNum: 1 });
+    if (isAddress(tokenAddress as Address)) {
+      getAssets({ pageSize: 20, pageNum: 1 });
+      getAssetsInterest({
+        token: getRealAddress({ address: tokenAddress } as Token),
+      });
+    }
   }, []);
 
   const { data: userAssets, isLoading } = useReadContract({
@@ -42,6 +55,31 @@ const useMarketDetail = () => {
       enabled: !!address,
     },
   });
+
+  const { data: licensedAssets } = useReadContract({
+    address: XUNION_LENDING_CONTRACT.interface.address as Address,
+    abi: XUNION_LENDING_CONTRACT.interface.abi,
+    functionName: 'licensedAssets',
+    args: [tokenAddress!],
+    query: {
+      enabled: !!address && !!tokenAddress,
+    },
+  });
+
+  const licensed = useMemo(() => {
+    if (licensedAssets) {
+      const data = licensedAssets as any;
+      return {
+        bestDepositInterestRate: String(data.bestDepositInterestRate / 100n),
+        bestLendingRatio: String(data.bestLendingRatio / 100n),
+        homogeneousModeLTV: String(data.homogeneousModeLTV / 100n),
+        lendingModeNum: 2,
+        liquidationPenalty: String(data.liquidationPenalty / 100n),
+        maxLendingAmountInRIM: 0n,
+        maximumLTV: String(data.maximumLTV / 100n),
+      };
+    }
+  }, [licensedAssets]);
 
   useEffect(() => {
     if (userAssets && data?.items?.length && address) {
@@ -119,6 +157,9 @@ const useMarketDetail = () => {
     loading: loading || isLoading || isPending,
     setLendingAssets,
     tokenAsset,
+    interests,
+    chartLoading,
+    licensed,
   };
 };
 

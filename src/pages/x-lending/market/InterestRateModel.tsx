@@ -1,9 +1,11 @@
 import LendingCard from '@/components/LendingCard.tsx';
 import InterestRateLine from '@/pages/x-lending/market/charts/InterestRateLine.tsx';
 import { useTranslate } from '@/i18n';
+import { useState } from 'react';
 
 const InterestRateModel = () => {
   const { t } = useTranslate();
+  const [UTRate, onUTRateChange] = useState('0');
   return (
     <LendingCard
       title={t('x-lending.market.detail.interest.rate.model')}
@@ -14,7 +16,7 @@ const InterestRateModel = () => {
           <span className="text-[14px] text-tc-secondary">
             {t('x-lending.market.detail.utilization')}
           </span>
-          <span className="text-[16px] font-[500] ">14.39%</span>
+          <span className="text-[16px] font-[500] ">{UTRate}%</span>
         </div>
         <div className="flex gap-[40px]">
           <div className="flex items-center gap-[10px]">
@@ -30,7 +32,7 @@ const InterestRateModel = () => {
             </span>
           </div>
         </div>
-        <InterestRateLine />
+        <InterestRateLine onUTRateChange={onUTRateChange} />
       </div>
     </LendingCard>
   );

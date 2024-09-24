@@ -15,10 +15,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const InterestRateLine = () => {
+const InterestRateLine = ({
+  onUTRateChange,
+}: {
+  onUTRateChange: (value: string) => void;
+}) => {
   const { depositInterestRates, lendingInterestRates } = useLendingRate();
-  console.log('depositInterestRates', depositInterestRates);
-  console.log('lendingInterestRates', lendingInterestRates);
 
   const chartData = depositInterestRates.slice(0, 95).map((item, index) => ({
     index: index + 1,
@@ -34,6 +36,9 @@ const InterestRateLine = () => {
         margin={{
           left: 12,
           right: 12,
+        }}
+        onClick={(e) => {
+          onUTRateChange(e?.activeLabel || '');
         }}
       >
         <XAxis

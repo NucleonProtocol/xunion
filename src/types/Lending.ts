@@ -23,3 +23,10 @@ export interface LendingAsset {
   canCollateral?: boolean;
   oraclePrice?: number;
 }
+
+export interface LendingAssetInterest {
+  date: string;
+  deposit_interest: string;
+  loan_interest: string;
+  token: Token;
+}

@@ -27,7 +27,7 @@ const SubmittedModal = () => {
           {t('common.pending.submitted.title')}
         </span>
         <a
-          href={`${confluxScan}${submittedTx?.hash}`}
+          href={`${confluxScan}tx/${submittedTx?.hash}`}
           className="flex-center gap-[10px] py-[20px] text-theme hover:opacity-75"
           target="_blank"
         >

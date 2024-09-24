@@ -143,7 +143,7 @@
   "x-lending.health.liquidation.value": "Liquidation value",
   "x-lending.health.LTV": "Current LTV",
   "x-lending.health.LTV.detail": "Your current loan to value based on your collateral supplied. If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated.",
-  "x-lending.health.liquidation.threshold": "Liquidation threshold",
+  "x-lending.health.liquidation.threshold": "Best Lending Ratio",
   "x-lending.borrow.mode": "Borrow mode",
   "x-lending.borrow.mode.category": "Mode category",
   "x-lending.borrow.mode.enable": "Enable mode",

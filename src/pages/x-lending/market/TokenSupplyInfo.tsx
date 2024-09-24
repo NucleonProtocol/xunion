@@ -5,10 +5,22 @@ import {
   CheckCircleFilled,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import { LendingAsset } from '@/types/Lending.ts';
+import { LendingAsset, LendingAssetInterest } from '@/types/Lending.ts';
 import { useTranslate } from '@/i18n';
+import { ListType } from '@/types/common';
+import { Skeleton } from 'antd';
 
-const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
+const TokenSupplyInfo = ({
+  asset,
+  interests,
+  loading,
+  licensed,
+}: {
+  licensed?: any;
+  asset?: LendingAsset;
+  loading?: boolean;
+  interests?: ListType<LendingAssetInterest>;
+}) => {
   const { t } = useTranslate();
   return (
     <LendingCard
@@ -41,11 +53,17 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
             </div>
           </div>
         </div>
-        <div className="h-[180px] py-[20px]">
+        <div className="relative h-[180px] py-[20px]">
           <span className="text-[14px] font-[500]">
             {t('x-lending.market.detail.supply.apr')}
           </span>
-          <DepositAPYLine />
+          {loading ? (
+            <div>
+              <Skeleton />
+            </div>
+          ) : (
+            <DepositAPYLine data={interests?.items || []} />
+          )}
         </div>
         <div className="mt-[40px]">
           <div className="flex-center-between">
@@ -66,7 +84,7 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
                 <ExclamationCircleOutlined />
               </div>
               <span className="text-[14px] font-[500]">
-                {asset?.depositInterest || 0}%
+                {licensed?.maximumLTV || 0}%
               </span>
             </div>
             <div className="flex h-full  flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
@@ -75,7 +93,7 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
                 <ExclamationCircleOutlined />
               </div>
               <span className="text-[14px] font-[500]">
-                {asset?.depositInterest || 0}%
+                {licensed?.bestLendingRatio || 0}%
               </span>
             </div>
             <div className="flex h-full  flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
@@ -86,7 +104,7 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
                 <ExclamationCircleOutlined />
               </div>
               <span className="text-[14px] font-[500]">
-                {asset?.depositInterest || 0}%
+                {licensed?.liquidationPenalty || 0}%
               </span>
             </div>
           </div>

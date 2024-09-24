@@ -1,11 +1,23 @@
 import LendingCard from '@/components/LendingCard.tsx';
 import BorrowAPYLine from '@/pages/x-lending/market/charts/BorrowAPYLine';
 import { ExclamationCircleOutlined, FundViewOutlined } from '@ant-design/icons';
-import { LendingAsset } from '@/types/Lending.ts';
-import { Button } from 'antd';
+import { LendingAsset, LendingAssetInterest } from '@/types/Lending.ts';
+import { Button, Skeleton } from 'antd';
 import { useTranslate } from '@/i18n';
+import { ListType } from '@/types/common';
+import { Link } from 'react-router-dom';
+import { confluxScan } from '@/components/notices/usePendingNotice';
+import { XUNION_LENDING_CONTRACT } from '@/contracts';
 
-const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
+const TokenSupplyInfo = ({
+  asset,
+  loading,
+  interests,
+}: {
+  asset?: LendingAsset;
+  loading?: boolean;
+  interests?: ListType<LendingAssetInterest>;
+}) => {
   const { t } = useTranslate();
   return (
     <LendingCard
@@ -51,7 +63,13 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
           <span className="text-[14px] font-[500]">
             {t('x-lending.market.borrow.variable')}
           </span>
-          <BorrowAPYLine />
+          {loading ? (
+            <div>
+              <Skeleton />
+            </div>
+          ) : (
+            <BorrowAPYLine data={interests?.items || []} />
+          )}
         </div>
         <div className="mt-[40px]">
           <div className="flex-center-between">
@@ -67,9 +85,7 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
                 </span>
                 <ExclamationCircleOutlined />
               </div>
-              <span className="text-[14px] font-[500]">
-                {asset?.depositInterest || 0}%
-              </span>
+              <span className="text-[14px] font-[500]">{5}%</span>
             </div>
             <div className="flex h-full  flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
               <div className="flex gap-[5px] text-[14px] text-tc-secondary">
@@ -77,14 +93,19 @@ const TokenSupplyInfo = ({ asset }: { asset?: LendingAsset }) => {
                   {t('x-lending.market.detail.borrow.collector.contract')}
                 </span>
               </div>
-              <Button
-                size="small"
-                type="text"
-                className="text-[14px] text-tc-secondary"
+              <Link
+                to={`${confluxScan}address/${XUNION_LENDING_CONTRACT.interface.address}`}
+                target="_blank"
               >
-                <span> {t('common.view')}</span>
-                <FundViewOutlined />
-              </Button>
+                <Button
+                  size="small"
+                  type="text"
+                  className="text-[14px] text-tc-secondary"
+                >
+                  <span> {t('common.view')}</span>
+                  <FundViewOutlined />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

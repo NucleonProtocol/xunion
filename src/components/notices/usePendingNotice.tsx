@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 import { useTranslate } from '@/i18n';
 
-export const confluxScan = 'https://evmtestnet.confluxscan.io/tx/';
+export const confluxScan = 'https://evmtestnet.confluxscan.io/';
 
 const usePendingNotice = () => {
   const { t } = useTranslate();
@@ -24,7 +24,7 @@ const usePendingNotice = () => {
 
             {hash ? (
               <a
-                href={`${confluxScan}${hash}`}
+                href={`${confluxScan}tx/${hash}`}
                 className="text-tc-secondary hover:opacity-75"
                 target="_blank"
               >
@@ -52,7 +52,7 @@ const usePendingNotice = () => {
           <div className="flex flex-1 flex-col gap-[10px]">
             <span className="font-bold">{t('common.pending.write.title')}</span>
             <a
-              href={`${confluxScan}${hash}`}
+              href={`${confluxScan}tx/${hash}`}
               className="text-theme hover:opacity-75"
               target="_blank"
             >
