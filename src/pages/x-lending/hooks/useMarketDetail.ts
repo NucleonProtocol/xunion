@@ -89,6 +89,16 @@ const useMarketDetail = () => {
     }
   }, [licensedAssets]);
 
+  const { data: health } = useReadContract({
+    address: XUNION_LENDING_CONTRACT.interface.address as Address,
+    abi: XUNION_LENDING_CONTRACT.interface.abi,
+    functionName: 'viewUsersHealthFactor',
+    args: [address!],
+    query: {
+      enabled: !!address,
+    },
+  });
+
   const normalFloorOfHealthFactor = useMemo(() => {
     if (!nomalFloorOfHealthFactor) return 0;
     return Number(formatUnits(nomalFloorOfHealthFactor as bigint));
@@ -166,6 +176,14 @@ const useMarketDetail = () => {
     (item) => item.token.address.toLowerCase() === tokenAddress?.toLowerCase()
   );
 
+  const refresh = () => {
+    if (isAddress(tokenAddress as Address)) {
+      getAssets({ pageSize: 20, pageNum: 1 });
+      getAssetsInterest({
+        token: getRealAddress({ address: tokenAddress } as Token),
+      });
+    }
+  };
   return {
     loading: loading || isLoading || isPending,
     setLendingAssets,
@@ -174,6 +192,8 @@ const useMarketDetail = () => {
     chartLoading,
     licensed,
     normalFloorOfHealthFactor,
+    health: health ? Number(formatUnits(String(health || 0n), 18)) : 0,
+    refresh,
   };
 };
 

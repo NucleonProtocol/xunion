@@ -8,6 +8,9 @@ import TokenBorrowInfo from '@/pages/x-lending/market/TokenBorrowInfo.tsx';
 import TokenSupplyInfo from '@/pages/x-lending/market/TokenSupplyInfo.tsx';
 import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
 import { useTranslate } from '@/i18n';
+import DepositModal from '../dashboad/DepositModal';
+import LendingModal from '../dashboad/LendingModal';
+import { useState } from 'react';
 
 function MarketDetail() {
   const {
@@ -17,12 +20,39 @@ function MarketDetail() {
     chartLoading,
     licensed,
     normalFloorOfHealthFactor,
+    health,
+    refresh,
   } = useMarketDetail();
   const navigate = useNavigate();
 
   const { t } = useTranslate();
+
+  const [openDeposit, onOpenDeposit] = useState(false);
+  const [openLending, onOpenLending] = useState(false);
+
   return (
     <div className="mt-[30px] flex  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
+      {openDeposit && tokenAsset && (
+        <DepositModal
+          asset={tokenAsset}
+          onClose={() => {
+            onOpenDeposit(false);
+          }}
+          refresh={refresh}
+          userHealthFactor={health}
+        />
+      )}
+      {openLending && tokenAsset && (
+        <LendingModal
+          asset={tokenAsset}
+          onClose={() => {
+            onOpenLending(false);
+          }}
+          refresh={refresh}
+          userHealthFactor={health}
+        />
+      )}
+
       <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
         <div className="relative flex h-[50px] items-start justify-between">
           <div
@@ -43,14 +73,18 @@ function MarketDetail() {
             <Button
               type="primary"
               className="rounded-[8px] text-[12px]"
-              onClick={() => {}}
+              onClick={() => {
+                onOpenDeposit(true);
+              }}
             >
               {t('x-lending.supply')}
             </Button>
             <Button
               type="primary"
               className="rounded-[8px] text-[12px]"
-              onClick={() => {}}
+              onClick={() => {
+                onOpenLending(true);
+              }}
             >
               {t('x-lending.borrow')}
             </Button>

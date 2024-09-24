@@ -284,7 +284,7 @@ const useDashboard = () => {
   return {
     netWorth,
     netApy,
-    health: Number(formatUnits(String(health || 0n), 18)),
+    health: health ? Number(formatUnits(String(health || 0n), 18)) : 0,
     loading: loading || isLoading || isPending,
     lendingAssets,
     depositTotalBalance,
