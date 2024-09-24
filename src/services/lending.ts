@@ -13,7 +13,7 @@ export const getLendingAssets = async (params: {
 
 export const getLendingTokenGroup = async () => {
   return request
-    .get<ResponseType<ListType<LendingAsset>>>('/lending/group')
+    .get<ResponseType<ListType<LendingAsset[]>>>('/lending/group')
     .then((res) => res.data?.data);
 };
 
