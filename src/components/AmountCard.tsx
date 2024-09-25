@@ -1,4 +1,3 @@
-import { formatCurrency } from '@/utils';
 import { Skeleton } from 'antd';
 import { cn } from '@/utils/classnames.ts';
 
@@ -9,7 +8,7 @@ const AmountCard = ({
   className,
 }: {
   title: string;
-  amount: number;
+  amount: string;
   loading: boolean;
   className?: string;
 }) => {
@@ -25,9 +24,7 @@ const AmountCard = ({
       ) : (
         <>
           <span className="text-tc-secondary">{title}</span>
-          <span className="text-[24px] font-[500]">
-            {formatCurrency(amount)}
-          </span>
+          <span className="text-[24px] font-[500]">{amount}</span>
         </>
       )}
     </div>
