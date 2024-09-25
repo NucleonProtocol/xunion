@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 import { Token } from '@/types/swap';
 import { cn } from '@/utils/classnames';
 
-const TokenList = () => {
+const LiquidityList = () => {
   const {
     data: tokens,
     mutate: getTokens,
@@ -166,4 +166,4 @@ const TokenList = () => {
   );
 };
 
-export default TokenList;
+export default LiquidityList;

@@ -42,7 +42,7 @@ const VolumeBar = ({
     const formatter = getFormatter(recently);
     return (data || []).map((n) => ({
       date: dayjs(n.date).format(formatter),
-      amount: Number(formatUnits(n.amount)),
+      amount: Number(formatUnits(n.amount || 0n)),
     }));
   }, [data]);
   return (

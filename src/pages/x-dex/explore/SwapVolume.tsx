@@ -22,7 +22,7 @@ const SwapVolume = ({
   }, [recently]);
   const total = useMemo(() => {
     const sum = (data || []).reduce(
-      (prev, next) => prev + Number(formatUnits(next.amount)),
+      (prev, next) => prev + Number(formatUnits(next?.amount || 0n)),
       0
     );
     return formatLargeNumber(sum, 4);

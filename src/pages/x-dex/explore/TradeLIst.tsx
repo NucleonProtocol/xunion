@@ -1,10 +1,8 @@
 import { ColumnType } from 'antd/es/table';
 import { formatCurrency } from '@/utils';
-import { EyeOutlined } from '@ant-design/icons';
 import { formatUnits } from 'ethers';
-import { Link, useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import { useTranslate } from '@/i18n';
 import { useMutation } from '@tanstack/react-query';
@@ -27,17 +25,16 @@ const TokenList = () => {
   }, []);
 
   const { t } = useTranslate();
-  const navigate = useNavigate();
   const columns: ColumnType<Token>[] = [
     {
-      title: t('common.name'),
-      dataIndex: 'name',
+      title: t('x-dex.swap.trade.time'),
+      dataIndex: 'time',
       render: (_: string, record: Token) => {
         return <TokenWithIcon token={record} />;
       },
     },
     {
-      title: t('common.price'),
+      title: t('x-dex.swap.trade.amount'),
       dataIndex: 'tvl',
       render: (_: string, record: Token) => {
         return (
@@ -48,7 +45,7 @@ const TokenList = () => {
       },
     },
     {
-      title: t('common.change24H'),
+      title: t('x-dex.swap.trade.side'),
       align: 'center',
       dataIndex: 'volume24h',
       render: (_, record: Token) => {
@@ -75,7 +72,7 @@ const TokenList = () => {
       },
     },
     {
-      title: t('common.tvl'),
+      title: t('x-dex.swap.trade.pair'),
       dataIndex: 'tvl',
       align: 'center',
       render: (value: string) => (
@@ -85,7 +82,7 @@ const TokenList = () => {
       ),
     },
     {
-      title: t('common.volume24h'),
+      title: t('x-dex.swap.trade.total.price'),
       dataIndex: 'volume24h',
       render: (_: string, record: Token) => {
         return (
@@ -96,7 +93,7 @@ const TokenList = () => {
       },
     },
     {
-      title: t('common.volume1W'),
+      title: t('x-dex.swap.trade.wallet.address'),
       dataIndex: 'volume1w',
       render: (_: string, record: Token) => {
         return (
@@ -106,49 +103,9 @@ const TokenList = () => {
         );
       },
     },
-    {
-      dataIndex: 'action',
-      render: (_: string, record) => {
-        return (
-          <Button
-            type="text"
-            ghost
-            onClick={() => {
-              navigate(`/x-dex/explore/token/${record.address}`);
-            }}
-            icon={<EyeOutlined />}
-          />
-        );
-      },
-    },
   ];
   return (
     <div className="flex flex-col gap-[20px]">
-      <div className="flex w-full  justify-between gap-[20px]">
-        <div className="flex items-center gap-[20px]">
-          <Link
-            to={'/x-dex/explore/token'}
-            className={cn(
-              'flex-center pointer-events-none h-[40px] gap-[12px] rounded-[20px] bg-theme-non-opaque px-[16px] text-theme '
-            )}
-          >
-            <span className="max-md:text-[14px]">{t('x-dex.swap.token')}</span>
-          </Link>
-          <Link
-            to={'/x-dex/explore/pool'}
-            className={cn(
-              'flex-center h-[40px] cursor-pointer gap-[12px] rounded-[20px] px-[16px] hover:bg-theme-non-opaque hover:text-theme  '
-            )}
-          >
-            <span className="max-md:text-[14px]">{t('x-dex.swap.pool')}</span>
-          </Link>
-        </div>
-        <div className="">
-          <Link to={'/x-dex/listing'}>
-            <Button type="primary">Listing</Button>
-          </Link>
-        </div>
-      </div>
       <div className="min-h-[600px] bg-fill-niubi p-[10px] ">
         {isPending ? (
           <div className="p-[24px]">

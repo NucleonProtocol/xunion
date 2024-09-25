@@ -17,3 +17,9 @@ export interface TokenVolume {
   amount: string;
   date: string;
 }
+
+export interface TokenTrade {
+  token: Token;
+  amount: string;
+  date: string;
+}

@@ -21,3 +21,11 @@ export const getTokenVOLStatistics = async (params: {
     >('/tokens/all/statistics', { params: { ...params, type: 1, pageNum: 1, pageSize: 100 } })
     .then((res) => res.data?.data);
 };
+
+export const getTokenTradeList = async (params: { address: string }) => {
+  return request
+    .get<
+      ResponseType<ListType<TokenVolume>>
+    >('/tokens/swap/activity', { params })
+    .then((res) => res.data?.data);
+};

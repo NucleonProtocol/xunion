@@ -135,12 +135,7 @@ const PoolList = () => {
             <Skeleton active />
           </div>
         ) : (
-          <ResponsiveTable
-            columns={columns}
-            dataSource={pools}
-            size="middle"
-            rowKey="id"
-          />
+          <ResponsiveTable columns={columns} dataSource={pools} rowKey="id" />
         )}
       </div>
     </div>
