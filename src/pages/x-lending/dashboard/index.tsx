@@ -1,9 +1,9 @@
-import ChainSelector from '@/pages/x-lending/dashboad/ChainSelector.tsx';
-import MarketInfo from '@/pages/x-lending/dashboad/MarketInfo.tsx';
-import Supplies from '@/pages/x-lending/dashboad/Supplies.tsx';
-import AssetsToSupply from '@/pages/x-lending/dashboad/AssetsToSupply.tsx';
-import Borrows from '@/pages/x-lending/dashboad/Borrows.tsx';
-import AssetsToBorrow from '@/pages/x-lending/dashboad/AssetsToBorrow.tsx';
+import ChainSelector from '@/pages/x-lending/dashboard/ChainSelector';
+import MarketInfo from '@/pages/x-lending/dashboard/MarketInfo';
+import Supplies from '@/pages/x-lending/dashboard/Supplies';
+import AssetsToSupply from '@/pages/x-lending/dashboard/AssetsToSupply';
+import Borrows from '@/pages/x-lending/dashboard/Borrows';
+import AssetsToBorrow from '@/pages/x-lending/dashboard/AssetsToBorrow';
 import useDashboard from '@/pages/x-lending/hooks/useDashboard.ts';
 
 function Dashboard() {

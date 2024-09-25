@@ -8,8 +8,8 @@ import TokenBorrowInfo from '@/pages/x-lending/market/TokenBorrowInfo.tsx';
 import TokenSupplyInfo from '@/pages/x-lending/market/TokenSupplyInfo.tsx';
 import InterestRateModel from '@/pages/x-lending/market/InterestRateModel.tsx';
 import { useTranslate } from '@/i18n';
-import DepositModal from '../dashboad/DepositModal';
-import LendingModal from '../dashboad/LendingModal';
+import DepositModal from '../dashboard/DepositModal';
+import LendingModal from '../dashboard/LendingModal';
 import { useState } from 'react';
 
 function MarketDetail() {

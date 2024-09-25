@@ -5,7 +5,7 @@ import Pools from '@/pages/x-dex/pools';
 import Liquidity from '@/pages/x-dex/liquidity';
 import CreatePool from '@/pages/x-dex/create-pool';
 import Explore from '@/pages/x-dex/explore';
-import PoolTokenDetail from '@/pages/x-dex/explore/PoolTokenDetail.tsx';
+import PoolDetail from '@/pages/x-dex/explore/PoolDetail';
 import TokenDetail from '@/pages/x-dex/explore/TokenDetail.tsx';
 import TokenList from '@/pages/x-dex/explore/TokenList';
 import PoolList from '@/pages/x-dex/explore/PoolList';
@@ -13,7 +13,7 @@ import PoolList from '@/pages/x-dex/explore/PoolList';
 import MintSLC from 'src/pages/x-super-libra-coin/mint';
 import BurnSLC from 'src/pages/x-super-libra-coin/burn';
 import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
-import Dashboard from '@/pages/x-lending/dashboad';
+import Dashboard from '@/pages/x-lending/dashboard';
 import Market from '@/pages/x-lending/market';
 import MarketDetail from '@/pages/x-lending/market/MarketDetail';
 import Listing from '@/pages/x-dex/create-pool/Listing';
@@ -74,7 +74,7 @@ const routes = [
           },
           {
             path: 'explore/pool/:address',
-            element: <PoolTokenDetail />,
+            element: <PoolDetail />,
           },
           {
             path: 'create-pool',

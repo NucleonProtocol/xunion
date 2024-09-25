@@ -3,7 +3,7 @@ import { ColumnType } from 'antd/es/table';
 import { Button } from 'antd';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useState } from 'react';
-import LendingModal from '@/pages/x-lending/dashboad/LendingModal.tsx';
+import LendingModal from '@/pages/x-lending/dashboard/LendingModal';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';

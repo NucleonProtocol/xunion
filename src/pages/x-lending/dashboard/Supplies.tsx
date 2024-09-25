@@ -9,8 +9,8 @@ import {
 } from '@ant-design/icons';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useState } from 'react';
-import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
-import WithdrawModal from '@/pages/x-lending/dashboad/WithdrawModal.tsx';
+import DepositModal from '@/pages/x-lending/dashboard/DepositModal';
+import WithdrawModal from '@/pages/x-lending/dashboard/WithdrawModal';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';

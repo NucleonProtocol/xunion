@@ -4,7 +4,7 @@ import { ColumnType } from 'antd/es/table';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { LendingAsset } from '@/types/Lending.ts';
 import { useEffect, useState } from 'react';
-import DepositModal from '@/pages/x-lending/dashboad/DepositModal.tsx';
+import DepositModal from '@/pages/x-lending/dashboard/DepositModal';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';

@@ -1,4 +1,4 @@
-import ChainSelector from '@/pages/x-lending/dashboad/ChainSelector.tsx';
+import ChainSelector from '@/pages/x-lending/dashboard/ChainSelector.tsx';
 import MarketInfo from './MarketInfo.tsx';
 import AssetsList from './AssetsList.tsx';
 import useMarket from '@/pages/x-lending/hooks/useMarket.ts';
