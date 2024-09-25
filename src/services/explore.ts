@@ -1,6 +1,12 @@
 import { request } from '@/services/request.ts';
 import { ResponseType, ListType } from '@/types/common.ts';
-import { Recently, TokenTrade, TokenTVL, TokenVolume } from '@/types/explore';
+import {
+  Recently,
+  TokenPrice,
+  TokenTrade,
+  TokenTVL,
+  TokenVolume,
+} from '@/types/explore';
 
 export const getTokenTVLStatistics = async (params: {
   recently?: Recently;
@@ -50,10 +56,13 @@ export const getTokenVOL = async (params: {
     .then((res) => res.data?.data);
 };
 
-export const getTokenPrice = async (params: { address: string }) => {
+export const getTokenPrice = async (params: {
+  token: string;
+  recently: Recently;
+}) => {
   return request
     .get<
-      ResponseType<ListType<TokenTVL>>
+      ResponseType<ListType<TokenPrice>>
     >('/tokens/statistics/price', { params })
     .then((res) => res.data?.data);
 };

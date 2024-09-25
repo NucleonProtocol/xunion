@@ -2,14 +2,17 @@ import MagicCard from '@/components/MagicCard';
 import { useTranslate } from '@/i18n';
 import { Recently } from '@/types/explore';
 import { formatLargeNumber } from '@/utils';
-import { Select } from 'antd';
+import { Select, Skeleton } from 'antd';
 import { formatUnits } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 import { times } from './times';
-import { getTokenTVL, getTokenVOL } from '@/services/explore';
+import { getTokenPrice, getTokenTVL, getTokenVOL } from '@/services/explore';
 import { useMutation } from '@tanstack/react-query';
 import VolumeBar from './charts/VolumeBar';
 import TVLLinear from './charts/TVLLinear';
+import PriceArea from './charts/PriceArea';
+import useTokenPrice from '@/hooks/useTokenPrice';
+import { formatNumber } from '@/hooks/useErc20Balance';
 
 const TypeSelector = ({
   onChange,
@@ -74,7 +77,11 @@ const VOL = ({
   const { t } = useTranslate();
   const [recently, setRecently] = useState<Recently>(Recently.day);
 
-  const { data: vols, mutate: getVols } = useMutation({
+  const {
+    data: vols,
+    mutate: getVols,
+    isPending,
+  } = useMutation({
     mutationFn: getTokenVOL,
   });
 
@@ -109,9 +116,15 @@ const VOL = ({
             />
           </div>
         </div>
-        <div className="mt-[10px] flex flex-col">
+        <div className="mt-[10px] flex h-[420px] flex-col">
           <span className="text-[28px] font-[500]">${total}</span>
-          <VolumeBar recently={recently} data={vols?.items || []} />
+          <div className="flex-1 pt-[20px]">
+            {isPending ? (
+              <Skeleton />
+            ) : (
+              <VolumeBar recently={recently} data={vols?.items || []} />
+            )}
+          </div>
         </div>
       </div>
     </MagicCard>
@@ -128,7 +141,11 @@ const TVL = ({
   const { t } = useTranslate();
   const [recently, setRecently] = useState<Recently>(Recently.day);
 
-  const { data: tvls, mutate: getTVL } = useMutation({
+  const {
+    data: tvls,
+    mutate: getTVL,
+    isPending,
+  } = useMutation({
     mutationFn: getTokenTVL,
   });
 
@@ -163,9 +180,15 @@ const TVL = ({
             />
           </div>
         </div>
-        <div className="mt-[10px] flex flex-col">
+        <div className="mt-[10px] flex min-h-[420px] flex-col">
           <span className="text-[28px] font-[500]">${total}</span>
-          <TVLLinear data={tvls?.items || []} recently={recently} />
+          <div className="flex-1 pt-[20px]">
+            {isPending ? (
+              <Skeleton />
+            ) : (
+              <TVLLinear data={tvls?.items || []} recently={recently} />
+            )}
+          </div>
         </div>
       </div>
     </MagicCard>
@@ -181,23 +204,25 @@ const Price = ({
   const { t } = useTranslate();
   const [recently, setRecently] = useState<Recently>(Recently.day);
 
-  const { data: vols, mutate: getVols } = useMutation({
-    mutationFn: getTokenVOL,
+  const { totalPrice } = useTokenPrice({ amount: '1', address });
+
+  const {
+    data: vols,
+    mutate: getPrice,
+    isPending,
+  } = useMutation({
+    mutationFn: getTokenPrice,
   });
 
   useEffect(() => {
     if (recently) {
-      getVols({ recently, token: address });
+      getPrice({ recently, token: address });
     }
   }, [recently]);
 
   const total = useMemo(() => {
-    const sum = (vols?.items || []).reduce(
-      (prev, next) => prev + Number(formatUnits(next?.amount || 0n)),
-      0
-    );
-    return formatLargeNumber(sum, 4);
-  }, [vols]);
+    return formatNumber(totalPrice || 0, 4);
+  }, [totalPrice]);
 
   return (
     <MagicCard>
@@ -216,9 +241,15 @@ const Price = ({
             />
           </div>
         </div>
-        <div className="mt-[10px] flex flex-col">
+        <div className="mt-[10px] flex min-h-[420px] flex-col">
           <span className="text-[28px] font-[500]">${total}</span>
-          <div>{/* <TVLLinear data={data} recently={recently} /> */}</div>
+          <div className="flex-1 pt-[20px]">
+            {isPending ? (
+              <Skeleton />
+            ) : (
+              <PriceArea data={vols?.items || []} recently={recently} />
+            )}
+          </div>
         </div>
       </div>
     </MagicCard>

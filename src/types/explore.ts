@@ -19,6 +19,12 @@ export interface TokenVolume {
   date: string;
 }
 
+export interface TokenPrice {
+  token: Token;
+  amount: string;
+  date: string;
+}
+
 export interface TokenTrade extends SwapTransactionData {
   type: ActivityRecordType.SWAP_TOKEN;
   sender?: string;
