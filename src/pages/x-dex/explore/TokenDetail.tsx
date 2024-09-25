@@ -1,24 +1,39 @@
-import SwapTVL from './SwapTVL';
-import useExplore from '../hooks/useExplore';
 import Swap from '../swap/Swap';
 import { cn } from '@/utils/classnames';
 import { useTranslate } from '@/i18n';
 import TradeLIst from './TradeLIst';
 import LiquidityList from './LiquidityList';
-import { useState } from 'react';
+import useExploreToken from '../hooks/useExploreToken';
+import { Spin } from 'antd';
+import TokenTrade from './TokenTrend';
 
 function TokenDetail() {
-  const { tvls, getTvls } = useExplore();
   const { t } = useTranslate();
-  const [listType, setListType] = useState<'trade' | 'liquidity'>('trade');
+  const {
+    loading,
+    navigate,
+    listType,
+    setListType,
+    receiveToken,
+    tokenAddress,
+  } = useExploreToken();
   return (
     <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
       <div className="max-md:mx-0 max-md:w-[calc(100%)] md:min-w-[1200px]">
         <div className="flex w-full gap-[20px] max-md:flex-col">
           <div className="flex-1">
-            <SwapTVL data={tvls?.items || []} getData={getTvls} />
+            <TokenTrade address={tokenAddress! || ''} />
           </div>
-          <Swap />
+          <Spin spinning={!!loading}>
+            <Swap
+              receiveToken={receiveToken}
+              onReceiveChange={(token) => {
+                if (token) {
+                  navigate(`/x-dex/explore/token/${token.address}`);
+                }
+              }}
+            />
+          </Spin>
         </div>
         <div className="mt-[40px] flex flex-col gap-[20px]">
           <div className="flex items-center gap-[20px]">

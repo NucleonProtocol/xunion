@@ -1,45 +1,68 @@
 import { ColumnType } from 'antd/es/table';
-import { formatCurrency } from '@/utils';
+import { formatCurrency, maskAddress4 } from '@/utils';
 import { formatUnits } from 'ethers';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import { Skeleton } from 'antd';
-import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import { useTranslate } from '@/i18n';
 import { useMutation } from '@tanstack/react-query';
-import { getTokenList } from '@/services/token';
 import { useEffect } from 'react';
-import { Token } from '@/types/swap';
+import { TokenTrade } from '@/types/explore';
 import { cn } from '@/utils/classnames';
+import { useParams } from 'react-router-dom';
+import { getTokenTradeList } from '@/services/explore';
+import TokenWithIcon from '@/components/TokenWithIcon';
+import { formatNumber } from '@/hooks/useErc20Balance';
+import dayjs from 'dayjs';
+
+const getTargetToken = (address: string, record: TokenTrade) => {
+  if (
+    record?.pay?.token?.address.toLowerCase() === address.toLocaleLowerCase()
+  ) {
+    return {
+      ...record?.pay,
+      type: 'sell',
+      pair: record?.received,
+    };
+  }
+  return {
+    ...record?.received,
+    type: 'buy',
+    pair: record?.pay,
+  };
+};
 
 const TokenList = () => {
+  const params = useParams<{ address: string }>();
+  const tokenAddress = params.address;
   const {
-    data: tokens,
-    mutate: getTokens,
+    data: tradeList,
+    mutate: getTradeData,
     isPending,
   } = useMutation({
-    mutationFn: getTokenList,
+    mutationFn: getTokenTradeList,
   });
 
   useEffect(() => {
-    getTokens({ pageNum: 1, pageSize: 1000 });
-  }, []);
+    if (tokenAddress) {
+      getTradeData({ address: tokenAddress });
+    }
+  }, [tokenAddress]);
 
   const { t } = useTranslate();
-  const columns: ColumnType<Token>[] = [
+  const columns: ColumnType<TokenTrade>[] = [
     {
       title: t('x-dex.swap.trade.time'),
       dataIndex: 'time',
-      render: (_: string, record: Token) => {
-        return <TokenWithIcon token={record} />;
-      },
+      render: (v) => dayjs.unix(v).format('MM-DD HH:mm:ss'),
     },
     {
       title: t('x-dex.swap.trade.amount'),
-      dataIndex: 'tvl',
-      render: (_: string, record: Token) => {
+      dataIndex: 'amount',
+      render: (_: string, record: TokenTrade) => {
+        const target = getTargetToken(tokenAddress!, record);
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.price || 0n)), true)}
+            {formatNumber(Number(formatUnits(target.amount || 0n)), 5)}
           </div>
         );
       },
@@ -47,58 +70,64 @@ const TokenList = () => {
     {
       title: t('x-dex.swap.trade.side'),
       align: 'center',
-      dataIndex: 'volume24h',
-      render: (_, record: Token) => {
-        const price = Number(formatUnits(record?.price || 0n));
-        const price24ago = Number(formatUnits(record?.price24ago || 0n));
-        const rate = ((price24ago - price) / price24ago) * 100;
-        if (rate > 0) {
+      dataIndex: 'side',
+      render: (_, record: TokenTrade) => {
+        const target = getTargetToken(tokenAddress!, record);
+        if (target.type === 'sell') {
           return (
-            <div className={cn('flex flex-col gap-[5px] text-status-success')}>
-              +{rate.toFixed(2)}%
-            </div>
-          );
-        }
-        if (rate < 0) {
-          return (
-            <div className={cn('flex flex-col gap-[5px] text-status-error')}>
-              {rate.toFixed(2)}%
+            <div className={cn('text-status-error')}>
+              {t('x-dex.swap.trade.sell')}
             </div>
           );
         }
         return (
-          <div className={cn('gap-[5px flex flex-col')}>{rate.toFixed(2)}%</div>
+          <div className={cn('text-status-success')}>
+            {t('x-dex.swap.trade.buy')}
+          </div>
         );
       },
     },
     {
       title: t('x-dex.swap.trade.pair'),
-      dataIndex: 'tvl',
+      dataIndex: 'pair',
       align: 'center',
-      render: (value: string) => (
-        <div className="flex flex-col gap-[5px]">
-          {formatCurrency(Number(formatUnits(value || 0n)), true)}
-        </div>
-      ),
+      render: (_: string, record: TokenTrade) => {
+        const target = getTargetToken(tokenAddress!, record);
+        return (
+          <div className="flex  items-center justify-center gap-[5px]">
+            <span className="flex">
+              {formatNumber(Number(formatUnits(target.pair.amount || 0n)), 5)}
+            </span>
+            <span className="flex">
+              <TokenWithIcon token={target?.pair?.token} />
+            </span>
+          </div>
+        );
+      },
     },
     {
       title: t('x-dex.swap.trade.total.price'),
-      dataIndex: 'volume24h',
-      render: (_: string, record: Token) => {
+      dataIndex: 'price',
+      align: 'center',
+      render: (_: string, record: TokenTrade) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.volume24h || 0n)), true)}
+            {formatCurrency(
+              Number(formatUnits(record?.totalPrice || 0n)),
+              true
+            )}
           </div>
         );
       },
     },
     {
       title: t('x-dex.swap.trade.wallet.address'),
-      dataIndex: 'volume1w',
-      render: (_: string, record: Token) => {
+      dataIndex: 'sender',
+      align: 'center',
+      render: (_: string, record: TokenTrade) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.volume1w || 0n)), true)}
+            {maskAddress4(record?.sender || '') || '--'}
           </div>
         );
       },
@@ -106,7 +135,7 @@ const TokenList = () => {
   ];
   return (
     <div className="flex flex-col gap-[20px]">
-      <div className="min-h-[600px] bg-fill-niubi p-[10px] ">
+      <div className="min-h-[400px] bg-fill-niubi p-[10px] ">
         {isPending ? (
           <div className="p-[24px]">
             <Skeleton active />
@@ -114,7 +143,7 @@ const TokenList = () => {
         ) : (
           <ResponsiveTable
             columns={columns}
-            dataSource={tokens?.items || []}
+            dataSource={tradeList?.items || []}
             rowKey="id"
           />
         )}

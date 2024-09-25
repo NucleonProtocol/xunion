@@ -11,3 +11,8 @@ export interface PoolType {
   fees: string;
   chain_time: string;
 }
+
+export interface PoolAllInfo {
+  tvl: string;
+  volume24h: string;
+}

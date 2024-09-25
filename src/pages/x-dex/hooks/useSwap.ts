@@ -47,7 +47,13 @@ export interface SwapReturnType {
   isTokenALoading?: boolean;
 }
 
-const useSwap = (): SwapReturnType => {
+const useSwap = ({
+  receiveToken,
+  onReceiveChange,
+}: {
+  receiveToken?: Token;
+  onReceiveChange?: (token?: Token) => void;
+}): SwapReturnType => {
   const { getBalance } = useErc20Balance();
   const { isNativeToken, getNativeTokenBalance } = useNativeToken();
   const [slippage, setSlippage] = useState('-1');
@@ -85,6 +91,12 @@ const useSwap = (): SwapReturnType => {
     setReceiveAmount,
     setOutputTokenTotalPrice,
   });
+
+  useEffect(() => {
+    if (receiveToken) {
+      setOutputToken(receiveToken);
+    }
+  }, [receiveToken]);
 
   const { pairAddress: fromWithSLCPairAddress } = usePair({
     fromToken: inputToken,
@@ -186,6 +198,7 @@ const useSwap = (): SwapReturnType => {
   const onOutputTokenChange = useCallback(
     (token: Token) => {
       setOutputToken(token);
+      onReceiveChange?.(token);
       if (receiveAmount) {
         autoGetPayAmount({ outputToken: token, inputToken, receiveAmount });
       } else {

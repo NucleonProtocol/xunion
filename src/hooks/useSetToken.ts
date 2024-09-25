@@ -1,23 +1,20 @@
 import { Token } from '@/types/swap';
-import { useSearchParams } from 'react-router-dom';
 import useErc20Info from './useERC20TokenInfo';
 import useTokenListStore from '@/store/tokens';
 import { useEffect, useState } from 'react';
-import { Address, isAddress } from 'viem';
+import { isAddress } from 'viem';
 
-const useSetDefaultToken = (name: string, update: (token: Token) => void) => {
+const useSetToken = (address: string, update: (token: Token) => void) => {
   const tokens = useTokenListStore((state) => state.tokens);
 
   const [loading, setLoading] = useState(false);
 
-  const [params] = useSearchParams();
   const { fetchTokenInfo } = useErc20Info();
 
   useEffect(() => {
-    if (name && params?.get(name) && tokens.length) {
+    if (address && tokens.length) {
       try {
         setLoading(true);
-        const address = params?.get(name) as Address;
         if (isAddress(address)) {
           const token = tokens.find(
             (item) => item?.address.toLowerCase() === address.toLowerCase()
@@ -36,9 +33,9 @@ const useSetDefaultToken = (name: string, update: (token: Token) => void) => {
         setLoading(false);
       }
     }
-  }, [name, tokens]);
+  }, [address, tokens]);
 
   return { loading };
 };
 
-export default useSetDefaultToken;
+export default useSetToken;

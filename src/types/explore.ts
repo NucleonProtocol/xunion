@@ -1,3 +1,4 @@
+import { ActivityRecordType, SwapTransactionData } from './activity';
 import { Token } from './swap';
 
 export enum Recently {
@@ -18,8 +19,8 @@ export interface TokenVolume {
   date: string;
 }
 
-export interface TokenTrade {
-  token: Token;
-  amount: string;
-  date: string;
+export interface TokenTrade extends SwapTransactionData {
+  type: ActivityRecordType.SWAP_TOKEN;
+  sender?: string;
+  totalPrice?: string;
 }

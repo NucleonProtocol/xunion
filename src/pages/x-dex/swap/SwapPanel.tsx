@@ -11,6 +11,7 @@ import { useTranslate } from '@/i18n';
 import useXWriteContract from '@/hooks/useXWriteContract';
 import { WriteContractMutateAsync } from '@wagmi/core/query';
 import ConfirmPanel from './ConfirmPanel';
+import { Token } from '@/types/swap';
 
 const Swap = ({
   slippage,
@@ -46,7 +47,9 @@ const Swap = ({
   deadline,
   setDeadline,
   onSwapTypeChange,
-}: SwapReturnType & { onSwapTypeChange: (value: string) => void }) => {
+}: SwapReturnType & {
+  onSwapTypeChange: (value: string) => void;
+}) => {
   const { disabled } = useWalletAuth();
 
   const { t } = useTranslate();
@@ -156,19 +159,30 @@ const Swap = ({
 
 const SwapPanel = ({
   onSwapTypeChange,
+  receiveToken,
+  onReceiveChange,
 }: {
   onSwapTypeChange: (value: string) => void;
+  receiveToken?: Token;
+  onReceiveChange?: (token?: Token) => void;
 }) => {
-  const { swapStep, onFillSwap, ...rest } = useSwap();
+  const { swapStep, onFillSwap, ...rest } = useSwap({
+    receiveToken,
+    onReceiveChange,
+  });
   const { writeContractAsync, isSubmittedLoading } = useXWriteContract({
     onSubmitted: () => {
       onFillSwap?.();
     },
   });
+  const props = {
+    onSwapTypeChange,
+  };
+
   return (
     <div className="min-h-[420px] w-[500px] shrink-0  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
       {swapStep === 'FILL' ? (
-        <Swap onSwapTypeChange={onSwapTypeChange} {...rest} />
+        <Swap {...props} {...rest} />
       ) : (
         <ConfirmPanel
           {...rest}

@@ -1,6 +1,6 @@
 import { request } from '@/services/request.ts';
 import { ResponseType, ListType } from '@/types/common.ts';
-import { Recently, TokenTVL, TokenVolume } from '@/types/explore';
+import { Recently, TokenTrade, TokenTVL, TokenVolume } from '@/types/explore';
 
 export const getTokenTVLStatistics = async (params: {
   recently?: Recently;
@@ -25,7 +25,51 @@ export const getTokenVOLStatistics = async (params: {
 export const getTokenTradeList = async (params: { address: string }) => {
   return request
     .get<
-      ResponseType<ListType<TokenVolume>>
+      ResponseType<ListType<TokenTrade>>
     >('/tokens/swap/activity', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getTokenTVL = async (params: {
+  token: string;
+  recently: Recently;
+}) => {
+  return request
+    .get<ResponseType<ListType<TokenTVL>>>('/tokens/statistics/tvl', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getTokenVOL = async (params: {
+  token: string;
+  recently: Recently;
+}) => {
+  return request
+    .get<
+      ResponseType<ListType<TokenVolume>>
+    >('/tokens/statistics/tvl', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getTokenPrice = async (params: { address: string }) => {
+  return request
+    .get<
+      ResponseType<ListType<TokenTVL>>
+    >('/tokens/statistics/price', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getPairTVL = async (params: { address: string }) => {
+  return request
+    .get<
+      ResponseType<ListType<TokenTrade>>
+    >('/pairs/statistics/tvl', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getPairVOL = async (params: { address: string }) => {
+  return request
+    .get<
+      ResponseType<ListType<TokenTrade>>
+    >('/pairs/statistics/volume', { params })
     .then((res) => res.data?.data);
 };

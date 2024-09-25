@@ -149,7 +149,7 @@ const LiquidityList = () => {
           </Link>
         </div>
       </div>
-      <div className="min-h-[600px] bg-fill-niubi p-[10px] ">
+      <div className="min-h-[400px] bg-fill-niubi p-[10px] ">
         {isPending ? (
           <div className="p-[24px]">
             <Skeleton active />
