@@ -90,11 +90,11 @@ const TokenList = () => {
     {
       title: t('x-dex.swap.trade.pair'),
       dataIndex: 'pair',
-      align: 'center',
+      align: 'right',
       render: (_: string, record: TokenTrade) => {
         const target = getTargetToken(tokenAddress!, record);
         return (
-          <div className="flex  items-center justify-center gap-[5px]">
+          <div className="flex  items-center justify-end gap-[5px]">
             <span className="flex">
               {formatNumber(Number(formatUnits(target.pair.amount || 0n)), 5)}
             </span>

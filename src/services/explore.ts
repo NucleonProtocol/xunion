@@ -7,6 +7,7 @@ import {
   TokenTVL,
   TokenVolume,
 } from '@/types/explore';
+import { PoolType } from '@/types/pool';
 
 export const getTokenTVLStatistics = async (params: {
   recently?: Recently;
@@ -80,5 +81,10 @@ export const getPairVOL = async (params: { address: string }) => {
     .get<
       ResponseType<ListType<TokenTrade>>
     >('/pairs/statistics/volume', { params })
+    .then((res) => res.data?.data);
+};
+export const getTokenPairs = async (params: { token: string }) => {
+  return request
+    .get<ResponseType<ListType<PoolType>>>('/pairs/bytoken', { params })
     .then((res) => res.data?.data);
 };

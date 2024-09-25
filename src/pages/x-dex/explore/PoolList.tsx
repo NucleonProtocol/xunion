@@ -7,9 +7,9 @@ import { formatUnits } from 'ethers';
 import { Link, useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import { Button, Skeleton } from 'antd';
-import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import { useTranslate } from '@/i18n';
 import { cn } from '@/utils/classnames';
+import { TokenIcon } from '@/components/icons';
 
 const PoolList = () => {
   const { pools, isPending } = usePool();
@@ -22,7 +22,20 @@ const PoolList = () => {
       title: t('common.name'),
       dataIndex: 'name',
       render: (_: string, record: PoolType) => {
-        return <TokenWithIcon token={record.tokenA} />;
+        return (
+          <div className="flex  gap-[10px]">
+            <span className="flex">
+              <TokenIcon src={record.tokenA.icon} width={20} height={20} />
+              <TokenIcon
+                src={record.tokenB.icon}
+                width={20}
+                height={20}
+                className="ml-[-5px]"
+              />
+            </span>
+            <span>{`${record.tokenA.symbol} / ${record.tokenB.symbol}`}</span>
+          </div>
+        );
       },
     },
 

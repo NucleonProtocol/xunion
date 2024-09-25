@@ -1,7 +1,7 @@
 import Swap from '../swap/Swap';
 import { cn } from '@/utils/classnames';
 import { useTranslate } from '@/i18n';
-import TradeLIst from './TradeLIst';
+import TokenList from './TradeLists';
 import LiquidityList from './LiquidityList';
 import useExploreToken from '../hooks/useExploreToken';
 import { Spin } from 'antd';
@@ -113,7 +113,7 @@ function TokenDetail() {
             </div>
           </div>
           <div>
-            {listType === 'trade' && <TradeLIst />}
+            {listType === 'trade' && <TokenList />}
             {listType === 'liquidity' && <LiquidityList />}
           </div>
         </div>
