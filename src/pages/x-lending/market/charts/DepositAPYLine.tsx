@@ -25,7 +25,7 @@ const DepositAPYLine = ({ data }: { data: LendingAssetInterest[] }) => {
   const chartData = useMemo(() => {
     return (data || []).map((n) => ({
       date: dayjs.unix(Number(n.date)).format('YYYY-MM-DD'),
-      interest: n.deposit_interest,
+      interest: Number(n.deposit_interest || 0) / 100,
     }));
   }, [data]);
   const { locale } = useLocale();

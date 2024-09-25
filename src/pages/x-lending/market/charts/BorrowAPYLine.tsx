@@ -25,7 +25,7 @@ const BorrowAPYLine = ({ data }: { data: LendingAssetInterest[] }) => {
   const chartData = useMemo(() => {
     return (data || []).map((n) => ({
       date: dayjs.unix(Number(n.date)).format('YYYY-MM-DD'),
-      interest: n.loan_interest,
+      interest: Number(n.loan_interest || 0) / 100,
     }));
   }, [data]);
 

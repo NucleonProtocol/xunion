@@ -7,9 +7,11 @@ import TokenList from '@/pages/x-dex/explore/TokenList.tsx';
 import { useTranslate } from '@/i18n';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
+import useExplore from '../hooks/useExplore';
 
 function Explore() {
   const { t } = useTranslate();
+  const { tvls, vols, getTvls, getVols } = useExplore();
   const tabs = [
     {
       label: t('x-dex.swap.token'),
@@ -25,8 +27,8 @@ function Explore() {
     <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
       <div className="max-md:mx-0 max-md:w-[calc(100%)] md:min-w-[1200px]">
         <div className="flex w-full gap-[20px] max-md:flex-col">
-          <SwapTVL />
-          <SwapVolume />
+          <SwapTVL data={tvls?.items || []} getData={getTvls} />
+          <SwapVolume data={vols?.items || []} getData={getVols} />
         </div>
         <div className="mt-[40px] flex flex-col gap-[20px]">
           <div className="flex w-full  justify-between gap-[20px]">

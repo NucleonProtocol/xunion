@@ -42,10 +42,13 @@ export function formatCurrency(num: number, symbol = true) {
   return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
-export function formatLargeNumber(value: number): string {
+export function formatLargeNumber(
+  value: number,
+  decimalPlaces: number = 2
+): string {
   const units = ['', 'K', 'M', 'B'];
   const tier = value < 1000 ? 0 : Math.floor(Math.log10(value) / 3);
   const scaled = value / Math.pow(1000, tier);
 
-  return scaled.toFixed(1) + units[tier];
+  return scaled.toFixed(decimalPlaces) + units[tier];
 }

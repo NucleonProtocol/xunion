@@ -25,8 +25,8 @@ const PoolList = () => {
     mutate({ pageNum: 1, pageSize: 100 });
   }, []);
 
-  const onTimeChange = (time: string) => {
-    setTime(time);
+  const onTimeChange = (time?: string) => {
+    setTime(time as string);
     mutate({ pageNum: 1, pageSize: 100 });
   };
 

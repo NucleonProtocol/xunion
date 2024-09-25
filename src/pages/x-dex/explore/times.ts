@@ -1,22 +1,20 @@
+import { Recently } from '@/types/explore';
+
 export const times = [
   {
-    value: '1D',
+    value: Recently.day,
     label: '1D',
   },
   {
-    value: '1W',
+    value: Recently.weekly,
     label: '1W',
   },
   {
-    value: '1M',
+    value: Recently.monthly,
     label: '1M',
   },
   {
-    value: '1Y',
+    value: Recently.year,
     label: '1Y',
-  },
-  {
-    value: 'ALL',
-    label: 'ALL',
   },
 ];

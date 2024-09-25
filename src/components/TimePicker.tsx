@@ -6,8 +6,8 @@ const TimePicker = ({
   options,
 }: {
   time: string;
-  onTimeChange: (value: string) => void;
-  options: { label: string; value: string }[];
+  onTimeChange: (value?: string) => void;
+  options: { label: string; value?: string }[];
 }) => {
   return (
     <div className="flex-center gap-[10px]">
