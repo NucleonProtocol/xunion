@@ -1,8 +1,8 @@
 import Swap from '../swap/Swap';
 import { cn } from '@/utils/classnames';
 import { useTranslate } from '@/i18n';
-import TokenList from './TradeLists';
-import LiquidityList from './LiquidityList';
+import TokenList from './TokenTradeList';
+import LiquidityList from './TokenLiquidityList';
 import useExploreToken from '../hooks/useExploreToken';
 import { Spin } from 'antd';
 import TokenTrade from './TokenTrend';
@@ -41,10 +41,10 @@ function TokenDetail() {
               <div className="flex gap-[10px]">
                 <TokenWithIcon
                   token={receiveToken!}
-                  className="text-[20px] font-bold"
+                  className="text-[16px] font-bold"
                 />
                 <span
-                  className="mx-[10px] flex cursor-pointer items-center gap-[5px] hover:text-theme"
+                  className="mx-[5px] flex cursor-pointer items-center gap-[5px] hover:text-theme"
                   onClick={(e) => {
                     e.stopPropagation();
                     copy(receiveToken?.address);

@@ -112,7 +112,7 @@ const PoolList = () => {
             type="text"
             ghost
             onClick={() => {
-              navigate(`/x-dex/explore/token/${record.tokenA.address}`);
+              navigate(`/x-dex/explore/pool/${record.pairToken.address}`);
             }}
             icon={<EyeOutlined />}
           />

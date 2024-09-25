@@ -1,6 +1,9 @@
 import { request } from '@/services/request.ts';
 import { ResponseType, ListType } from '@/types/common.ts';
 import {
+  PairActivity,
+  PairTVL,
+  PairVolume,
   Recently,
   TokenPrice,
   TokenTrade,
@@ -29,11 +32,25 @@ export const getTokenVOLStatistics = async (params: {
     .then((res) => res.data?.data);
 };
 
+export const getPairActivity = async (params: { address: string }) => {
+  return request
+    .get<
+      ResponseType<ListType<PairActivity>>
+    >('/pairs/liquidity/activity', { params })
+    .then((res) => res.data?.data);
+};
+
 export const getTokenTradeList = async (params: { address: string }) => {
   return request
     .get<
       ResponseType<ListType<TokenTrade>>
     >('/tokens/swap/activity', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getPairTradeList = async (params: { address: string }) => {
+  return request
+    .get<ResponseType<ListType<TokenTrade>>>('/pairs/swap/activity', { params })
     .then((res) => res.data?.data);
 };
 
@@ -68,23 +85,33 @@ export const getTokenPrice = async (params: {
     .then((res) => res.data?.data);
 };
 
-export const getPairTVL = async (params: { address: string }) => {
+export const getPairTVL = async (params: {
+  token: string;
+  recently: Recently;
+}) => {
   return request
-    .get<
-      ResponseType<ListType<TokenTrade>>
-    >('/pairs/statistics/tvl', { params })
+    .get<ResponseType<ListType<PairTVL>>>('/pairs/statistics/tvl', { params })
     .then((res) => res.data?.data);
 };
 
-export const getPairVOL = async (params: { address: string }) => {
+export const getPairVOL = async (params: {
+  token: string;
+  recently: Recently;
+}) => {
   return request
     .get<
-      ResponseType<ListType<TokenTrade>>
+      ResponseType<ListType<PairVolume>>
     >('/pairs/statistics/volume', { params })
     .then((res) => res.data?.data);
 };
 export const getTokenPairs = async (params: { token: string }) => {
   return request
     .get<ResponseType<ListType<PoolType>>>('/pairs/bytoken', { params })
+    .then((res) => res.data?.data);
+};
+
+export const getPairTokens = async (params: { pairs: string }) => {
+  return request
+    .get<ResponseType<ListType<PoolType>>>('/tokens/bypair', { params })
     .then((res) => res.data?.data);
 };
