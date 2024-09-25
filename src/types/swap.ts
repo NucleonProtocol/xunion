@@ -7,6 +7,10 @@ export interface Token {
   icon?: string;
   amount?: number;
   chainId?: number;
+  tvl?: string;
+  volume24h?: string;
+  volume1w?: string;
+  price24ago?: string;
 }
 
 export interface SwapRoute {

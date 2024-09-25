@@ -9,6 +9,8 @@ import CreatePool from '@/pages/x-dex/create-pool';
 import Explore from '@/pages/x-dex/explore';
 import PoolTokenDetail from '@/pages/x-dex/explore/PoolTokenDetail.tsx';
 import TokenDetail from '@/pages/x-dex/explore/TokenDetail.tsx';
+import TokenList from '@/pages/x-dex/explore/TokenList';
+import PoolList from '@/pages/x-dex/explore/PoolList';
 
 import MintSLC from 'src/pages/x-super-libra-coin/mint';
 import BurnSLC from 'src/pages/x-super-libra-coin/burn';
@@ -57,14 +59,28 @@ const routes = [
           {
             path: 'explore',
             element: <Explore />,
-          },
-          {
-            path: 'explore/pool/:address',
-            element: <PoolTokenDetail />,
-          },
-          {
-            path: 'explore/token/:address',
-            element: <TokenDetail />,
+            children: [
+              {
+                path: '',
+                element: <Navigate to="token" replace />,
+              },
+              {
+                path: 'pool',
+                element: <PoolList />,
+              },
+              {
+                path: 'pool/:address',
+                element: <PoolTokenDetail />,
+              },
+              {
+                path: 'token',
+                element: <TokenList />,
+              },
+              {
+                path: 'token/:address',
+                element: <TokenDetail />,
+              },
+            ],
           },
           {
             path: 'pools',

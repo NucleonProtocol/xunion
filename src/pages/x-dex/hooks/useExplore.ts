@@ -14,6 +14,7 @@ const useExplore = () => {
   const { data: vols, mutate: getVols } = useMutation({
     mutationFn: getTokenVOLStatistics,
   });
+
   useEffect(() => {
     getTvls({ recently: Recently.day });
     getVols({ recently: Recently.day });

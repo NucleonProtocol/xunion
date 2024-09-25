@@ -4,11 +4,12 @@ import { EyeOutlined } from '@ant-design/icons';
 import usePool from '@/pages/x-dex/hooks/usePool.ts';
 import { PoolType } from '@/types/pool.ts';
 import { formatUnits } from 'ethers';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import { Button, Skeleton } from 'antd';
 import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import { useTranslate } from '@/i18n';
+import { cn } from '@/utils/classnames';
 
 const PoolList = () => {
   const { pools, isPending } = usePool();
@@ -24,30 +25,10 @@ const PoolList = () => {
         return <TokenWithIcon token={record.tokenA} />;
       },
     },
-    {
-      title: t('common.price'),
-      dataIndex: 'tvl',
-      render: (_: string, record: PoolType) => {
-        return (
-          <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.tvl || 0n)), true)}
-          </div>
-        );
-      },
-    },
-    {
-      title: t('common.change24H'),
-      align: 'center',
-      dataIndex: 'volume24h',
-      render: (_: string) => {
-        return (
-          <div className="flex flex-col gap-[5px] text-status-success">3%</div>
-        );
-      },
-    },
+
     {
       title: t('common.tvl'),
-      dataIndex: 'fees',
+      dataIndex: 'tvl',
       align: 'center',
       render: (value: string) => (
         <div className="flex flex-col gap-[5px]">
@@ -55,34 +36,57 @@ const PoolList = () => {
         </div>
       ),
     },
-    // {
-    //   title: t('common.FDV'),
-    //   dataIndex: 'fees',
-    //   align: 'center',
-    //   render: (value: string) => (
-    //     <div className="flex flex-col gap-[5px]">
-    //       {formatCurrency(Number(formatUnits(value || 0n)), true)}
-    //     </div>
-    //   ),
-    // },
     {
       title: t('common.volume24h'),
       dataIndex: 'volume24h',
       render: (_: string, record: PoolType) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.tvl || 0n)), true)}
+            {formatCurrency(Number(formatUnits(record?.volume24h || 0n)), true)}
           </div>
         );
       },
     },
     {
       title: t('common.volume1W'),
+      dataIndex: 'volume1w',
+      render: (_: string, record: PoolType) => {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            {formatCurrency(Number(formatUnits(record?.volume1w || 0n)), true)}
+          </div>
+        );
+      },
+    },
+    {
+      title: t('common.fees24h'),
       dataIndex: 'volume24h',
       render: (_: string, record: PoolType) => {
         return (
           <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.tvl || 0n)), true)}
+            {formatCurrency(
+              Number(formatUnits(record?.volume24h || 0n)) *
+                (Number(record?.fees || 0) / 10000),
+              true
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: t('common.APR24h'),
+      dataIndex: 'volume24h',
+      render: (_: string, record: PoolType) => {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            {(
+              ((365 *
+                Number(formatUnits(record?.volume24h || 0n)) *
+                (Number(record?.fees || 0) / 10000)) /
+                (Number(formatUnits(record?.tvl || 0n)) || 1)) *
+              100
+            ).toFixed(2)}
+            %
           </div>
         );
       },
@@ -104,19 +108,41 @@ const PoolList = () => {
     },
   ];
   return (
-    <div className="bg-fill-niubi p-[10px]">
-      {isPending ? (
-        <div className="p-[24px]">
-          <Skeleton active />
+    <div className="flex flex-col gap-[20px]">
+      <div className="flex w-full  justify-between gap-[20px]">
+        <div className="flex items-center gap-[20px]">
+          <Link
+            to={'/x-dex/explore/token'}
+            className={cn(
+              'flex-center h-[40px] cursor-pointer gap-[12px] rounded-[20px] px-[16px] hover:bg-theme-non-opaque hover:text-theme  '
+            )}
+          >
+            <span className="max-md:text-[14px]">{t('x-dex.swap.token')}</span>
+          </Link>
+          <Link
+            to={'/x-dex/explore/pool'}
+            className={cn(
+              'flex-center pointer-events-none h-[40px] gap-[12px] rounded-[20px] bg-theme-non-opaque px-[16px] text-theme '
+            )}
+          >
+            <span className="max-md:text-[14px]">{t('x-dex.swap.pool')}</span>
+          </Link>
         </div>
-      ) : (
-        <ResponsiveTable
-          columns={columns}
-          dataSource={pools}
-          size="middle"
-          rowKey="id"
-        />
-      )}
+      </div>
+      <div className="min-h-[600px] bg-fill-niubi p-[10px]">
+        {isPending ? (
+          <div className="p-[24px]">
+            <Skeleton active />
+          </div>
+        ) : (
+          <ResponsiveTable
+            columns={columns}
+            dataSource={pools}
+            size="middle"
+            rowKey="id"
+          />
+        )}
+      </div>
     </div>
   );
 };
