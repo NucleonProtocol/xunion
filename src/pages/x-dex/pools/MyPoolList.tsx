@@ -12,22 +12,30 @@ import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 import { useTranslate } from '@/i18n';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { getAllPools } from '@/services/pool';
+import { getWalletPools } from '@/services/pool';
+import { useAccount } from 'wagmi';
 
 const PoolList = () => {
   const navigate = useNavigate();
 
   const { t } = useTranslate();
+  const { address } = useAccount();
 
   const [time, setTime] = useState('24H');
-  const { data, mutate, isPending } = useMutation({ mutationFn: getAllPools });
+  const { data, mutate, isPending } = useMutation({
+    mutationFn: getWalletPools,
+  });
   useEffect(() => {
-    mutate({ pageNum: 1, pageSize: 100 });
-  }, []);
+    if (address) {
+      mutate({ pageNum: 1, pageSize: 100, address });
+    }
+  }, [address]);
 
   const onTimeChange = (time?: string) => {
-    setTime(time as string);
-    mutate({ pageNum: 1, pageSize: 100 });
+    if (address) {
+      setTime(time as string);
+      mutate({ pageNum: 1, pageSize: 100, address });
+    }
   };
 
   const pools = data?.items || [];
@@ -54,13 +62,11 @@ const PoolList = () => {
       title: t('common.tvl'),
       dataIndex: 'tvl',
       width: 240,
-      render: (_: string, record: PoolType) => {
-        return (
-          <div className="flex flex-col gap-[5px]">
-            {formatCurrency(Number(formatUnits(record?.tvl || 0n)), true)}
-          </div>
-        );
-      },
+      render: (value: string) => (
+        <div className="flex flex-col gap-[5px]">
+          {formatCurrency(Number(formatUnits(value || 0n)), true)}
+        </div>
+      ),
     },
     {
       title: t('common.volume24h'),
@@ -75,21 +81,49 @@ const PoolList = () => {
       },
     },
     {
-      title: t('common.fees24h'),
-      dataIndex: 'fees',
-      align: 'center',
-      // render: (value: string) => (
-      //   <div className="flex flex-col gap-[5px]">
-      //     {formatCurrency(Number(formatUnits(value || 0n)), true)}
-      //   </div>
-      // ),
+      title: t('common.volume1W'),
+      dataIndex: 'volume1w',
+      render: (_: string, record: PoolType) => {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            {formatCurrency(Number(formatUnits(record?.volume1w || 0n)), true)}
+          </div>
+        );
+      },
     },
-    // {
-    //   title: t('common.APR24h'),
-    //   dataIndex: 'apr',
-    //   align: 'center',
-    //   render: (value: string) => value || '-',
-    // },
+    {
+      title: t('common.fees24h'),
+      dataIndex: 'volume24h',
+      render: (_: string, record: PoolType) => {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            {formatCurrency(
+              Number(formatUnits(record?.volume24h || 0n)) *
+                (Number(record?.fees || 0) / 10000),
+              true
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: t('common.APR24h'),
+      dataIndex: 'volume24h',
+      render: (_: string, record: PoolType) => {
+        return (
+          <div className="flex flex-col gap-[5px]">
+            {(
+              ((365 *
+                Number(formatUnits(record?.volume24h || 0n)) *
+                (Number(record?.fees || 0) / 10000)) /
+                (Number(formatUnits(record?.tvl || 0n)) || 1)) *
+              100
+            ).toFixed(2)}
+            %
+          </div>
+        );
+      },
+    },
     {
       dataIndex: 'action',
       render: (_: string, record: PoolType) => {
