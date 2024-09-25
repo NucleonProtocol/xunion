@@ -9,7 +9,11 @@ import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
 import { XUNION_SWAP_CONTRACT } from '@/contracts';
 import { useTranslate } from '@/i18n';
 
-const SendingPanel = () => {
+const SendingPanel = ({
+  onSwapTypeChange,
+}: {
+  onSwapTypeChange: (value: string) => void;
+}) => {
   const {
     inputToken,
     setInputToken,
@@ -42,9 +46,9 @@ const SendingPanel = () => {
     return t('x-dex.send.title');
   };
   return (
-    <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
+    <div className="min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
       <div className="flex items-center justify-between ">
-        <SecondTabs active="Send" />
+        <SecondTabs active="send" onChange={onSwapTypeChange} />
       </div>
       <div className="mt-[20px]">
         <TokenInput
