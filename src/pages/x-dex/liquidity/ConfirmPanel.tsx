@@ -105,7 +105,7 @@ const ConfirmPanel = ({
   });
 
   return (
-    <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[10px] max-md:w-[calc(100%-40px)]">
+    <div className="mt-[30px]  min-h-[420px] w-[500px] rounded-[20px]  bg-fill-niubi p-[20px] max-md:w-full max-md:px-[10px]">
       <a
         className="inline-block w-auto cursor-pointer  hover:text-theme"
         onClick={() => setStep('FILL')}

@@ -137,7 +137,7 @@ const Nav = () => {
           </div>
         </Dropdown>
       </div>
-      <div className="flex-center gap-[30px]">
+      <div className="flex-center gap-[30px] max-md:gap-[20px]">
         {menu?.children.map((child) => (
           <Link
             key={child.path}

@@ -40,7 +40,7 @@ const Borrow = () => {
         ]}
         active="Borrow"
       />
-      <div className="max-md:w-[calc(100% - 32px)] mt-[30px]  min-h-[420px] p-[20px] max-md:mx-0 max-md:p-[16px] max-md:pb-[80px] md:min-w-[1200px]">
+      <div className="mt-[30px] min-h-[420px]  w-full p-[20px] max-md:mx-0 max-md:p-[16px] max-md:pb-[80px] md:max-w-[1200px]">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-[10px]">
           <AmountCard
             title={t('common.tvl')}

@@ -124,7 +124,7 @@ function MintSLC() {
         active="Buy"
       />
       <Tip />
-      <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[10px] max-md:w-[calc(100%-40px)]">
+      <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:w-full">
         <div className="flex items-center justify-between ">
           <SecondTabs active="Mint" />
         </div>

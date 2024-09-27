@@ -11,6 +11,8 @@ import TokenWithIcon from '@/components/TokenWithIcon.tsx';
 import AmountWithPrice from '@/components/AmountWithPrice.tsx';
 import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 import { useTranslate } from '@/i18n';
+import { formatNumber } from '@/hooks/useErc20Balance';
+import { formatUnits } from 'ethers';
 
 const Collateral = ({ refresh }: { refresh: () => void }) => {
   const [withdrawItem, setWithdrawItem] = useState<SLCAsset>();
@@ -54,6 +56,31 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
         );
       },
     },
+    {
+      title: t('x-lending.market.detail.supply.max.ltv'),
+      dataIndex: 'max_ltv',
+      width: 240,
+      render: (value: string) => {
+        return `${formatNumber(Number(value || 0) / 100, 2)}%`;
+      },
+    },
+    {
+      title: t('x-lending.market.detail.supply.liquidation.penalty'),
+      dataIndex: 'liq_penalty',
+      width: 240,
+      render: (value: string) => {
+        return `${formatNumber(Number(value || 0) / 100, 2)}%`;
+      },
+    },
+    {
+      title: t('x-dex.swap.trade.amount'),
+      dataIndex: 'max_deposit_amount',
+      align: 'center',
+      render: (value: string) => {
+        return formatNumber(Number(formatUnits(value || 0n)), 4);
+      },
+    },
+
     {
       title: t('x-super-libra-coin.can.be.provided'),
       dataIndex: 'canBeProvided',

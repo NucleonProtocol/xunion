@@ -18,7 +18,7 @@ function SwapPage() {
         ]}
         active="Swap"
       />
-      <div className="mt-[30px] ">
+      <div className="mt-[30px] max-md:px-[10px]">
         <Swap />
       </div>
     </div>

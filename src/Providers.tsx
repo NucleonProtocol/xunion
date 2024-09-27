@@ -97,6 +97,7 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
           <SubmittedModal />
           <WalletDetailModal />
           {children}
+          <div className="w-full max-md:h-[100px] md:h-[50px]" />
         </TXPendingProvider>
       </QueryClientProvider>
     </ConfigProvider>

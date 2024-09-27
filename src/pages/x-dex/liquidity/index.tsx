@@ -9,7 +9,7 @@ function Liquidity() {
   const props = useAddLP();
   const { t } = useTranslate();
   return (
-    <div className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:pt-[40px] ">
+    <div className="flex flex-1 flex-col items-center justify-center pt-[40px] max-md:px-[10px] max-md:pt-[40px] ">
       <RouteTabs
         tabs={[
           { name: t('x-dex.swap.title'), path: '/', icon: <SwapIcon /> },
