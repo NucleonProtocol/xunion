@@ -17,6 +17,7 @@ import Dashboard from '@/pages/x-lending/dashboard';
 import Market from '@/pages/x-lending/market';
 import MarketDetail from '@/pages/x-lending/market/MarketDetail';
 import Listing from '@/pages/x-dex/create-pool/Listing';
+import LiquidityRemove from '@/pages/x-dex/liquidity/RemovePanel';
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
           {
             path: 'liquidity',
             element: <Liquidity />,
+          },
+
+          {
+            path: 'liquidity/remove/:address',
+            element: <LiquidityRemove />,
           },
           {
             path: 'explore',

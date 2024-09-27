@@ -96,6 +96,8 @@
   "x-dex.liquidity.input.tokenA": "TokenA",
   "x-dex.liquidity.input.tokenB": "TokenB",
   "x-dex.liquidity.add": "Add liquidity",
+  "x-dex.liquidity.remove": "Remove liquidity",
+  "x-dex.liquidity.remove.tip": "If you add the first liquidity of this LP, it will be stored in LpVault and the quantity of this LP will not be displayed in your wallet.",
   "x-dex.liquidity.listing": "Listing",
   "x-dex.liquidity.per": "per",
   "x-dex.liquidity.receive": "You receive",

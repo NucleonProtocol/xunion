@@ -3,14 +3,13 @@ import { SwapIcon, TokenIcon } from '@/components/icons';
 import { formatCurrency } from '@/utils';
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { Popover, Skeleton } from 'antd';
-import TimePicker from '@/components/TimePicker.tsx';
 import { PoolType } from '@/types/pool.ts';
 import { formatUnits } from 'ethers';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 import { useTranslate } from '@/i18n';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getAllPools } from '@/services/pool';
 
@@ -19,16 +18,10 @@ const PoolList = () => {
 
   const { t } = useTranslate();
 
-  const [time, setTime] = useState('24H');
   const { data, mutate, isPending } = useMutation({ mutationFn: getAllPools });
   useEffect(() => {
     mutate({ pageNum: 1, pageSize: 100 });
   }, []);
-
-  const onTimeChange = (time?: string) => {
-    setTime(time as string);
-    mutate({ pageNum: 1, pageSize: 100 });
-  };
 
   const pools = data?.items || [];
   const total = data?.total || 0;
@@ -169,24 +162,6 @@ const PoolList = () => {
             </span>
             <span className="text-tc-secondary">{`(${total})`}</span>
           </div>
-          <TimePicker
-            time={time}
-            onTimeChange={onTimeChange}
-            options={[
-              {
-                label: '24H',
-                value: '24H',
-              },
-              {
-                label: '7D',
-                value: '7D',
-              },
-              {
-                label: '30D',
-                value: '30D',
-              },
-            ]}
-          />
         </div>
         {isPending ? (
           <div className="p-[24px]">

@@ -96,6 +96,8 @@
   "x-dex.liquidity.input.tokenA": "幣種A",
   "x-dex.liquidity.input.tokenB": "幣種B",
   "x-dex.liquidity.add": "添加流動性",
+  "x-dex.liquidity.remove": "移除流動性",
+  "x-dex.liquidity.remove.tip": "如果您為此lp添加了第一個流動性，您的這個lp將被存儲到LpVault，這時您的錢包內將不顯示此筆lp的數量。",
   "x-dex.liquidity.listing": "Listing",
   "x-dex.liquidity.per": "每",
   "x-dex.liquidity.receive": "您收到",

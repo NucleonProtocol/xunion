@@ -4,7 +4,7 @@ import { useTranslate } from '@/i18n';
 const Tip = () => {
   const { t } = useTranslate();
   return (
-    <div className="mt-[30px] w-[500px]  rounded-[14px]  border border-theme p-[10px] text-[14px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
+    <div className="mt-[30px] w-[500px]  rounded-[14px]  border border-theme p-[10px] text-[14px] max-md:mx-[10px] max-md:w-[calc(100%-40px)]">
       <span className="pr-[10px] text-theme">
         <NotificationOutlined />
       </span>

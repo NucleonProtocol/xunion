@@ -13,7 +13,7 @@ const usePendingNotice = () => {
   ) => {
     notification.open({
       message: (
-        <div className="flex items-start justify-between gap-[20px]">
+        <div className="flex h-[auto] items-start justify-between gap-[20px]">
           <div className="flex-start">
             <CloseCircleFilled className="text-[24px] text-red-600" />
           </div>
@@ -31,9 +31,9 @@ const usePendingNotice = () => {
                 {t('common.pending.view.scan')}
               </a>
             ) : (
-              <span className="flex flex-1 flex-wrap text-tc-secondary">
+              <div className="flex h-[auto] flex-1 flex-wrap text-tc-secondary">
                 {message}
-              </span>
+              </div>
             )}
           </div>
         </div>

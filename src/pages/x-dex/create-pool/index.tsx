@@ -183,7 +183,7 @@ function CreatePool() {
 
   return (
     <div className="mb-[60px] flex flex-1 flex-col items-center justify-center pt-[20px] max-md:pt-[20px]">
-      <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[20px] max-md:w-[calc(100%-40px)]">
+      <div className="mt-[30px] min-h-[420px] w-[500px]  rounded-[20px] bg-fill-niubi p-[20px] max-md:mx-[10px] max-md:w-[calc(100%-40px)]">
         <Link
           to="/x-dex/liquidity"
           className="inline-block w-auto cursor-pointer  hover:text-theme"

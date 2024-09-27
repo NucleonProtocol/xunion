@@ -53,7 +53,7 @@ function MarketDetail() {
         />
       )}
 
-      <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[20px]">
+      <div className="w-full max-w-[1200px]  overflow-hidden max-md:mx-[10px]">
         <div className="relative flex h-[50px] items-start justify-between">
           <div
             className="flex cursor-pointer items-center gap-[5px] hover:opacity-75"
