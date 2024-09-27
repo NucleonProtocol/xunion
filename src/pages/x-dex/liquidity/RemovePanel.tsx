@@ -30,7 +30,6 @@ const AmountSelector = ({
   onChange: (v: string) => void;
   disabled?: boolean;
 }) => {
-  const { t } = useTranslate();
   const presets = [
     {
       label: '25%',
@@ -41,7 +40,6 @@ const AmountSelector = ({
       label: '50%',
       value: '50',
     },
-
     {
       label: '100%',
       value: '100',
@@ -72,9 +70,9 @@ const AmountSelector = ({
           </div>
         ))}
         <Input
-          suffix={`${t('x-dex.swap.custom')}(%)`}
           value={Number(value || 0) > 1 ? value : undefined}
           placeholder="75"
+          addonAfter={`%`}
           disabled={disabled}
           onChange={(e) => {
             let value = e.target.value;
