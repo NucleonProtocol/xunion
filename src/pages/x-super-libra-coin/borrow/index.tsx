@@ -44,17 +44,17 @@ const Borrow = () => {
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-[10px]">
           <AmountCard
             title={t('common.tvl')}
-            amount={tvlAmount}
+            amount={String(tvlAmount)}
             loading={isOverviewLoading}
           />
           <AmountCard
             title={t('x-super-libra-coin.slc.supply')}
-            amount={totalSupply}
+            amount={String(totalSupply)}
             loading={isOverviewLoading}
           />
           <AmountCard
             title="SLC"
-            amount={unitPrice}
+            amount={String(unitPrice)}
             loading={isOverviewLoading}
           />
         </div>
