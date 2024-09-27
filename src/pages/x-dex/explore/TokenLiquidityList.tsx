@@ -33,12 +33,18 @@ const PoolList = () => {
         return (
           <div className="flex  gap-[10px]">
             <span className="flex">
-              <TokenIcon src={record.tokenA.icon} width={20} height={20} />
+              <TokenIcon
+                src={record.tokenA.icon}
+                width={20}
+                height={20}
+                name={record.tokenA.symbol}
+              />
               <TokenIcon
                 src={record.tokenB.icon}
                 width={20}
                 height={20}
                 className="ml-[-5px]"
+                name={record.tokenB.symbol}
               />
             </span>
             <span>{`${record.tokenA.symbol} / ${record.tokenB.symbol}`}</span>

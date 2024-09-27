@@ -28,7 +28,12 @@ const TokenGroupSelector = ({
             className="flex items-center gap-[4px]"
           >
             <div className="flex h-full w-[20px] items-center">
-              <TokenIcon src={asset?.token.icon} width={20} height={20} />
+              <TokenIcon
+                src={asset?.token.icon}
+                width={20}
+                height={20}
+                name={asset?.token?.symbol}
+              />
             </div>
             <div className="flex  flex-1  items-center">
               <span className="text-[12px] text-tc-secondary">

@@ -155,12 +155,18 @@ function RemoveLiquidity() {
           <div className="mt-[20px]">
             <div className="flex  gap-[10px]">
               <span className="flex">
-                <TokenIcon src={pool?.tokenA.icon} width={20} height={20} />
+                <TokenIcon
+                  src={pool?.tokenA.icon}
+                  width={20}
+                  height={20}
+                  name={pool?.tokenA.symbol}
+                />
                 <TokenIcon
                   src={pool?.tokenB.icon}
                   width={20}
                   height={20}
                   className="ml-[-5px]"
+                  name={pool?.tokenB.symbol}
                 />
               </span>
               <span className="text-[16px] font-bold">

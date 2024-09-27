@@ -40,10 +40,16 @@ const LPTokenItem = ({
       <div className="flex-center gap-[10px] ">
         <div className="flex-center">
           <span className=" text-[24px]">
-            <TokenIcon src={sortedTokens[0]?.icon} />
+            <TokenIcon
+              src={sortedTokens[0]?.icon}
+              name={sortedTokens[0]?.symbol}
+            />
           </span>
           <span className=" ml-[-5px] text-[24px]">
-            <TokenIcon src={sortedTokens[1]?.icon} />
+            <TokenIcon
+              src={sortedTokens[1]?.icon}
+              name={sortedTokens[1]?.symbol}
+            />
           </span>
         </div>
         <div className="flex-center gap-[2px] text-[18px]">

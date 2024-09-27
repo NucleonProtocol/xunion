@@ -28,7 +28,12 @@ const TokenItem = ({
         <span className="flex-1 text-[26px] font-bold">{amount}</span>
         <div className="flex-center gap-[5px]">
           <span className="flex-center text-[20px]">
-            <TokenIcon src={token?.icon} width={20} height={20} />
+            <TokenIcon
+              src={token?.icon}
+              width={20}
+              height={20}
+              name={token?.symbol}
+            />
           </span>
           <span>{token?.symbol}</span>
         </div>

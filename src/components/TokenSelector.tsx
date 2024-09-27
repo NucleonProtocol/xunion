@@ -69,7 +69,7 @@ const ModalContent = ({
                 }
               }}
             >
-              <TokenIcon src={item.icon} />
+              <TokenIcon src={item.icon} name={item?.symbol} />
               {item.symbol}
             </div>
           ))}
@@ -98,7 +98,12 @@ const ModalContent = ({
               }}
             >
               <div className="h-full w-[36px] text-[36px]">
-                <TokenIcon src={item.icon} width={36} height={36} />
+                <TokenIcon
+                  src={item.icon}
+                  width={36}
+                  height={36}
+                  name={item?.symbol}
+                />
               </div>
               <div className="flex flex-1 flex-col">
                 <span className="text-[14px]"> {item.name}</span>
@@ -182,7 +187,7 @@ const TokenSelector = ({
         {value?.symbol ? (
           <div className="flex-center gap-[5px]">
             <span className="flex-center text-[22px]">
-              <TokenIcon src={value.icon} />
+              <TokenIcon src={value.icon} name={value?.symbol} />
             </span>
             <span className="text-[14px]">{value?.symbol}</span>
           </div>

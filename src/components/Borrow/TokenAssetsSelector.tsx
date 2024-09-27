@@ -50,7 +50,12 @@ const TokenAssetsSelector = ({
                   }}
                 >
                   <div className="h-full w-[30px]">
-                    <TokenIcon src={item.icon} width={30} height={30} />
+                    <TokenIcon
+                      src={item.icon}
+                      width={30}
+                      height={30}
+                      name={item?.symbol}
+                    />
                   </div>
                   <div className="flex flex-1 flex-col">
                     <span className="text-[14px]"> {item.name}</span>
@@ -88,7 +93,7 @@ const TokenAssetsSelector = ({
           {value?.symbol ? (
             <div className="flex-center gap-[5px]">
               <span className="flex-center text-[22px]">
-                <TokenIcon src={value.icon} />
+                <TokenIcon src={value.icon} name={value?.symbol} />
               </span>
               <span className="text-[14px]">{value?.symbol}</span>
             </div>

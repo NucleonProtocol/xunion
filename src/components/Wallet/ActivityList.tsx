@@ -12,6 +12,7 @@ export const ActivityNames = {
   [ActivityRecordType.APPROVE_TOKEN]: 'Approved',
   [ActivityRecordType.CREATE_POOL]: 'Create',
   [ActivityRecordType.REDUCE_LIQUIDITY]: 'Reduce',
+  [ActivityRecordType.REMOVE_LIQUIDITY]: 'Remove',
   [ActivityRecordType.SWAP_TOKEN]: 'Swap',
 };
 

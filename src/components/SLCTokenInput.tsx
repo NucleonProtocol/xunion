@@ -82,7 +82,7 @@ const SLCTokenInput = ({
         <div className="flex-shrink-0">
           <div className="flex-center gap-[5px]">
             <span className="flex-center text-[22px]">
-              <TokenIcon src={SLCToken.icon} />
+              <TokenIcon src={SLCToken.icon} name={SLCToken?.symbol} />
             </span>
             <span className="text-[14px]">{SLCToken?.symbol}</span>
           </div>

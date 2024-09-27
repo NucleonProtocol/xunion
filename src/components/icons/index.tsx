@@ -110,12 +110,14 @@ export const TokenIcon = ({
   className,
   width,
   height,
+  name = 'X',
   ...rest
 }: {
   src?: string;
   className?: string;
   width?: number;
   height?: number;
+  name?: string;
 } & IconProps) =>
   src ? (
     <img
@@ -128,15 +130,19 @@ export const TokenIcon = ({
       }}
     />
   ) : (
-    <LogoIcon
+    <span
       style={{
         width,
         height,
-        fontSize: width || 20,
       }}
-      className={cn('text-[20px]', className)}
+      className={cn(
+        'flex h-[25px] w-[25px] items-center justify-center rounded-full border border-theme p-[5px] text-[16px]  font-bold text-theme',
+        className
+      )}
       {...rest}
-    />
+    >
+      {name.charAt(0).toUpperCase()}
+    </span>
   );
 
 export const BuySellIcon = (props: IconProps) => (

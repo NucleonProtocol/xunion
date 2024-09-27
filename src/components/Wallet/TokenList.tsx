@@ -27,7 +27,12 @@ const TokenList = ({
           key={item.symbol}
         >
           <div className="h-full w-[35px]">
-            <TokenIcon src={item.icon} width={35} height={35} />
+            <TokenIcon
+              src={item.icon}
+              width={35}
+              height={35}
+              name={item.symbol}
+            />
           </div>
           <div className="flex flex-1 flex-col">
             <span className="text-[14px]"> {item.name}</span>

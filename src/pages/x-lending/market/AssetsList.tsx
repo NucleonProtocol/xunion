@@ -30,7 +30,12 @@ const AssetsList = ({
         return (
           <div className="flex  items-center gap-[10px] max-md:justify-end">
             <span>
-              <TokenIcon src={record.token.icon} width={30} height={30} />
+              <TokenIcon
+                src={record.token.icon}
+                width={30}
+                height={30}
+                name={record.token.symbol}
+              />
             </span>
             <div className="flex flex-col items-start gap-[2px] max-md:justify-end">
               <span className="max-md:text-right">{`Wrapped ${record.token.name}`}</span>

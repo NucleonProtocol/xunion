@@ -9,7 +9,7 @@ const RoutePath = ({ routes }: { routes: Token[] }) => {
       {routes.map((token, index) => (
         <div className="flex-center gap-[2px]" key={token.symbol}>
           <span className="flex-center gap-[5px]">
-            <TokenIcon src={token?.icon} />
+            <TokenIcon src={token?.icon} name={token.symbol} />
             {token?.symbol}
           </span>
           {index < routes.length - 1 && <RightOutlined />}
@@ -29,7 +29,7 @@ const RouteInfo = ({ router }: { router?: SwapRoute }) => {
         <div className="flex-center cursor-pointer gap-[5px]">
           <div className="flex-center gap-[2px]">
             <span className="flex-center gap-[5px]">
-              <TokenIcon src={fromToken?.icon} />
+              <TokenIcon src={fromToken?.icon} name={fromToken.symbol} />
               {fromToken?.symbol}
             </span>
             <RightOutlined />
@@ -38,7 +38,7 @@ const RouteInfo = ({ router }: { router?: SwapRoute }) => {
           <RightOutlined />
           <div className="flex-center gap-[2px]">
             <span className="flex-center gap-[5px]">
-              <TokenIcon src={toToken?.icon} />
+              <TokenIcon src={toToken?.icon} name={toToken.symbol} />
               {toToken?.symbol}
             </span>
           </div>
