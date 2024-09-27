@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { formatUnits } from 'ethers';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Address, parseUnits } from 'viem';
+import { Address } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
 const useRemoveLP = () => {
@@ -149,7 +149,7 @@ const useRemoveLP = () => {
   const removeAmount = useMemo(() => {
     if (userLpAmount && removePercent) {
       const LPTotal = Number(formatUnits((userLpAmount as bigint) || 0n));
-      return (Number(removePercent) / 100) * LPTotal;
+      return formatNumber((Number(removePercent) / 100) * LPTotal, 6);
     }
     return 0;
   }, [removePercent, userLpAmount]);
