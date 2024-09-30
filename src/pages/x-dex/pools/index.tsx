@@ -10,7 +10,7 @@ import MyPoolList from './MyPoolList';
 import { useMutation } from '@tanstack/react-query';
 import { getAllPoolInfo } from '@/services/pool';
 import { formatUnits } from 'ethers';
-import { formatCurrency } from '@/utils';
+import { formatNumber } from '@/hooks/useErc20Balance';
 
 function Pools() {
   const navigate = useNavigate();
@@ -48,15 +48,16 @@ function Pools() {
         <div className=" flex w-full flex-wrap items-center gap-[30px] max-md:flex-col">
           <AmountCard
             title={t('common.tvl')}
-            amount={formatCurrency(Number(formatUnits(data?.tvl || 0n)), true)}
+            amount={String(
+              formatNumber(Number(formatUnits(data?.tvl || 0n)), 4)
+            )}
             loading={false}
             className="w-auto flex-1"
           />
           <AmountCard
             title={t('x-dex.pools.volume.24H')}
-            amount={formatCurrency(
-              Number(formatUnits(data?.volume24h || 0n)),
-              true
+            amount={String(
+              formatNumber(Number(formatUnits(data?.volume24h || 0n)), 4)
             )}
             loading={false}
             className="w-auto flex-1"
