@@ -22,11 +22,11 @@ const getFormatter = (recently?: Recently) => {
   switch (recently) {
     case Recently.day:
     case Recently.weekly:
-      return 'YYYY-MM-DD';
+      return 'YYYY-MM-DD HH';
     case Recently.monthly:
-      return 'YYYY-MM';
+      return 'YYYY-MM-DD';
     case Recently.year:
-      return 'YYYY';
+      return 'YYYY-MM-DD';
     default:
       return 'YYYY-MM-DD';
   }
@@ -41,7 +41,7 @@ const TVLLinear = ({
   const chartData = useMemo(() => {
     const formatter = getFormatter(recently);
     return (data || []).map((n) => ({
-      date: dayjs(n.date).format(formatter),
+      date: dayjs.unix(n.date).format(formatter),
       amount: Number(formatUnits(n.amount || 0n)),
     }));
   }, [data]);

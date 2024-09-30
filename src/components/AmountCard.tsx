@@ -24,7 +24,7 @@ const AmountCard = ({
       ) : (
         <>
           <span className="text-tc-secondary">{title}</span>
-          <span className="text-[24px] font-[500]">{amount}</span>
+          <span className="text-[24px] font-[500]">$ {amount}</span>
         </>
       )}
     </div>

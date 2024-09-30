@@ -216,6 +216,7 @@
   "x-lending.market.detail.supply.can.be.collateral": "Can be collateral",
   "x-lending.market.detail.supply.max.ltv": "Max LTV",
   "x-lending.market.detail.supply.liquidation.penalty": "Liquidation penalty",
+  "x-lending.market.detail.supply.max.amount": "Max  Amount",
   "x-lending.market.detail.borrow.info": "Borrow info",
   "x-lending.market.detail.borrow.cap": "Borrow cap",
   "x-lending.market.detail.borrow.apy.variable": "APY, variable",

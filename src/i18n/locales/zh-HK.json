@@ -215,6 +215,7 @@
   "x-lending.market.detail.supply.collateral.usage": "抵押品使用",
   "x-lending.market.detail.supply.can.be.collateral": "可以作為抵押品",
   "x-lending.market.detail.supply.max.ltv": "最大貸款價值比",
+  "x-lending.market.detail.supply.max.amount": "最大貸款",
   "x-lending.market.detail.supply.liquidation.penalty": "清算懲罰",
   "x-lending.market.detail.borrow.info": "借貸資訊",
   "x-lending.market.detail.borrow.cap": "借貸容量",

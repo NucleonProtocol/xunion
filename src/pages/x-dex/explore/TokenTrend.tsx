@@ -92,11 +92,13 @@ const VOL = ({
   }, [recently]);
 
   const total = useMemo(() => {
-    const sum = (vols?.items || []).reduce(
-      (prev, next) => prev + Number(formatUnits(next?.amount || 0n)),
-      0
-    );
-    return formatLargeNumber(sum, 4);
+    if (vols?.items.length) {
+      return formatLargeNumber(
+        Number(formatUnits(vols?.items[vols?.items.length - 1]?.amount || 0n)),
+        4
+      );
+    }
+    return 0;
   }, [vols]);
 
   return (
@@ -156,11 +158,13 @@ const TVL = ({
   }, [recently]);
 
   const total = useMemo(() => {
-    const sum = (tvls?.items || []).reduce(
-      (prev, next) => prev + Number(formatUnits(next?.amount || 0n)),
-      0
-    );
-    return formatLargeNumber(sum, 4);
+    if (tvls?.items.length) {
+      return formatLargeNumber(
+        Number(formatUnits(tvls?.items[tvls?.items.length - 1]?.amount || 0n)),
+        4
+      );
+    }
+    return 0;
   }, [tvls]);
 
   return (

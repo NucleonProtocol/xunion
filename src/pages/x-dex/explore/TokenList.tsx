@@ -12,6 +12,7 @@ import { getTokenList } from '@/services/token';
 import { useEffect } from 'react';
 import { Token } from '@/types/swap';
 import { cn } from '@/utils/classnames';
+import { formatNumber } from '@/hooks/useErc20Balance';
 
 const TokenList = () => {
   const {
@@ -54,23 +55,25 @@ const TokenList = () => {
       render: (_, record: Token) => {
         const price = Number(formatUnits(record?.price || 0n));
         const price24ago = Number(formatUnits(record?.price24ago || 0n));
-        const rate = ((price24ago - price) / price24ago) * 100;
+        const rate = ((price - price24ago) / price24ago) * 100;
         if (rate > 0) {
           return (
             <div className={cn('flex flex-col gap-[5px] text-status-success')}>
-              +{rate.toFixed(2)}%
+              +{formatNumber(rate, 5)}%
             </div>
           );
         }
         if (rate < 0) {
           return (
             <div className={cn('flex flex-col gap-[5px] text-status-error')}>
-              {rate.toFixed(2)}%
+              {formatNumber(rate, 5)}%
             </div>
           );
         }
         return (
-          <div className={cn('gap-[5px flex flex-col')}>{rate.toFixed(2)}%</div>
+          <div className={cn('gap-[5px flex flex-col')}>
+            {formatNumber(rate, 5)}%
+          </div>
         );
       },
     },

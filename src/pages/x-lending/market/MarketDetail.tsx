@@ -69,7 +69,7 @@ function MarketDetail() {
               {CHAINS.eSpaceTest.name}
             </span>
           </div>
-          <div className="max-md: right-[20px] flex items-center justify-end gap-[10px] max-md:absolute max-md:top-[50px]">
+          <div className="flex items-center justify-end gap-[10px] max-md:absolute max-md:right-[10px] max-md:top-[0px]">
             <Button
               type="primary"
               className="rounded-[8px] text-[12px]"

@@ -215,6 +215,7 @@
   "x-lending.market.detail.supply.collateral.usage": "抵押品关键参数",
   "x-lending.market.detail.supply.can.be.collateral": "可以作为抵押品",
   "x-lending.market.detail.supply.max.ltv": "最大贷款价值比",
+  "x-lending.market.detail.supply.max.amount": "最大贷款",
   "x-lending.market.detail.supply.liquidation.penalty": "清算惩罚",
   "x-lending.market.detail.borrow.info": "借贷信息",
   "x-lending.market.detail.borrow.cap": "借贷容量",

@@ -18,7 +18,7 @@ export const getTokenTVLStatistics = async (params: {
   return request
     .get<
       ResponseType<ListType<TokenTVL>>
-    >('/tokens/all/statistics', { params: { ...params, type: 0, pageNum: 1, pageSize: 100 } })
+    >('/lp/all/statistics', { params: { ...params, type: 0, pageNum: 1, pageSize: 100 } })
     .then((res) => res.data?.data);
 };
 
@@ -28,7 +28,7 @@ export const getTokenVOLStatistics = async (params: {
   return request
     .get<
       ResponseType<ListType<TokenVolume>>
-    >('/tokens/all/statistics', { params: { ...params, type: 1, pageNum: 1, pageSize: 100 } })
+    >('/lp/all/statistics', { params: { ...params, type: 1, pageNum: 1, pageSize: 100 } })
     .then((res) => res.data?.data);
 };
 

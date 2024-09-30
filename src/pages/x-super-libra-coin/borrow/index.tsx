@@ -5,6 +5,7 @@ import useBorrow from '@/pages/x-super-libra-coin/hooks/useBorrow.ts';
 import Position from '@/pages/x-super-libra-coin/borrow/Position.tsx';
 import Collateral from '@/pages/x-super-libra-coin/borrow/Collateral.tsx';
 import { useTranslate } from '@/i18n';
+import { formatNumber } from '@/hooks/useErc20Balance';
 
 const Borrow = () => {
   const {
@@ -44,17 +45,17 @@ const Borrow = () => {
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-[10px]">
           <AmountCard
             title={t('common.tvl')}
-            amount={String(tvlAmount)}
+            amount={String(formatNumber(tvlAmount, 5))}
             loading={isOverviewLoading}
           />
           <AmountCard
             title={t('x-super-libra-coin.slc.supply')}
-            amount={String(totalSupply)}
+            amount={String(formatNumber(totalSupply, 5))}
             loading={isOverviewLoading}
           />
           <AmountCard
             title="SLC"
-            amount={String(unitPrice)}
+            amount={String(formatNumber(unitPrice, 5))}
             loading={isOverviewLoading}
           />
         </div>

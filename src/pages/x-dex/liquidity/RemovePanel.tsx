@@ -16,7 +16,7 @@ import TokenWithIcon from '@/components/TokenWithIcon';
 import { useCopy } from '@/hooks/useCopy';
 import Warning from '@/components/Warning';
 
-export const getPerAmount = (amountA: string, amountB: string) => {
+const getPerAmount = (amountA: string, amountB: string) => {
   if (!isNumeric(amountA) || !isNumeric(amountB)) return 0;
   return formatNumber(Number(amountB) / Number(amountA), 6);
 };

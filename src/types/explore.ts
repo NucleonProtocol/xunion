@@ -11,19 +11,19 @@ export enum Recently {
 export interface TokenTVL {
   token: Token;
   amount: string;
-  date: string;
+  date: number;
 }
 
 export interface TokenVolume {
   token: Token;
   amount: string;
-  date: string;
+  date: number;
 }
 
 export interface TokenPrice {
   token: Token;
   amount: string;
-  date: string;
+  date: number;
 }
 
 export interface TokenTrade extends SwapTransactionData {
@@ -41,11 +41,11 @@ export interface PairActivity extends PoolType {
 export interface PairTVL {
   token: Token;
   amount: string;
-  date: string;
+  date: number;
 }
 
 export interface PairVolume {
   token: Token;
   amount: string;
-  date: string;
+  date: number;
 }
