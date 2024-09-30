@@ -73,7 +73,7 @@ const Collateral = ({ refresh }: { refresh: () => void }) => {
       },
     },
     {
-      title: t('x-dex.swap.trade.amount'),
+      title: t('x-lending.market.detail.supply.max.amount'),
       dataIndex: 'max_deposit_amount',
       align: 'center',
       render: (value: string) => {
