@@ -27,7 +27,7 @@ const WalletDetailModal = () => {
           onOpen(false);
         }}
       >
-        <div className="h-full">
+        <div className="h-full max-md:h-[60vh] max-md:overflow-y-auto">
           <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center gap-[10px]">
               <div className="relative h-[40px] w-[40px]">

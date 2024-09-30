@@ -20,13 +20,17 @@ const SwapTVL = ({
   useEffect(() => {
     getData({ recently });
   }, [recently]);
+
   const total = useMemo(() => {
-    const sum = (data || []).reduce(
-      (prev, next) => prev + Number(formatUnits(next?.amount || 0n)),
-      0
-    );
-    return formatLargeNumber(sum, 4);
+    if (data?.length) {
+      return formatLargeNumber(
+        Number(formatUnits(data[data.length - 1]?.amount || 0n)),
+        4
+      );
+    }
+    return 0;
   }, [data]);
+
   return (
     <MagicCard>
       <div className="flex flex-col py-[16px]">

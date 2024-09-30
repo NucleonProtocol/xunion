@@ -216,7 +216,7 @@ const ThemeScript = React.memo(
   }
 );
 // Helpers
-const getTheme = (key: string, fallback?: string) => {
+export const getTheme = (key: string, fallback?: string) => {
   if (isServer) return undefined;
   let theme;
   try {
