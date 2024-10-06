@@ -126,15 +126,24 @@ const useCollateral = () => {
         ? Number(formatUnits(AllProvided[index]))
         : 0;
 
+      const userModeAsset = (userMode as string[])?.[1];
+
       const unitPrice =
         allUnitPrice?.find(
           (n) => n[0].toLowerCase() === item.address.toLowerCase()
         )?.[1] || 0;
 
-      const canBeProvided =
-        mode === BorrowModeType?.HighLiquidity
-          ? item.max_deposit_amount === '0'
-          : item.max_deposit_amount !== '0';
+      let canBeProvided = item.max_deposit_amount !== '0';
+
+      if (mode === BorrowModeType?.HighLiquidity) {
+        canBeProvided = item.max_deposit_amount === '0';
+      }
+
+      if (mode === BorrowModeType?.RiskIsolation) {
+        canBeProvided =
+          item.address.toLowerCase() === userModeAsset.toLowerCase();
+      }
+
       return {
         ...item,
         provided: formatNumber(provided, 6),

@@ -169,9 +169,14 @@ const useDashboard = () => {
                   6
                 );
                 const mode = String((userMode as number[])[0]);
+                const userModeAsset = (userMode as string[])?.[1];
+
                 const canCollateral =
                   (mode === '0' && asset.lending_mode_num !== '1') ||
-                  (mode === '1' && asset.lending_mode_num === '1') ||
+                  (mode === '1' &&
+                    asset.lending_mode_num === '1' &&
+                    asset.token?.address?.toLowerCase() ===
+                      userModeAsset.toLowerCase()) ||
                   (mode !== '0' &&
                     mode !== '1' &&
                     asset.lending_mode_num === mode);

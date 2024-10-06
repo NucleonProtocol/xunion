@@ -16,7 +16,6 @@ const TokenAssetsSelector = ({
 }) => {
   const { t } = useTranslate();
   const { assets, isAssetsLoading } = useCollateral();
-  console.log(assets);
   const [open, onOpen] = useState(false);
   return (
     <Popover
