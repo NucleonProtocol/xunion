@@ -43,7 +43,7 @@ const ConnectModal = () => {
             onClick={() => {
               connectAsync({
                 connector: walletConnect({
-                  projectId: '44f05d7b85fbbfb975c0c1273b7804e3',
+                  projectId: '5afb0f536b896853f746fa455a6a70f7',
                 }),
               }).then(() => {
                 onOpen(false);
