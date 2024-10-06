@@ -8,6 +8,10 @@ import Pools from '@/assets/svgs/other/pools.svg?react';
 import Swap from '@/assets/svgs/other/swap.svg?react';
 import Liquidity from '@/assets/svgs/other/liquidity.svg?react';
 import Metamask from '@/assets/svgs/external/Metamask.svg?react';
+import Coinbase from '@/assets/svgs/external/coinbase.svg?react';
+import WalletConnect from '@/assets/svgs/external/wallet-connect.svg?react';
+import BrowserWallet from '@/assets/svgs/external/browser-wallet.svg?react';
+import OKXWallet from '@/assets/svgs/external/okx-wallet.svg?react';
 import Fluent from '@/assets/svgs/external/fluent.svg?react';
 import Avatar from '@/assets/svgs/other/avatar.svg?react';
 import Setting from '@/assets/svgs/menus/setting.svg?react';
@@ -72,9 +76,30 @@ export const MetamaskIcon = (props: IconProps) => (
   </Icon>
 );
 
+export const WalletConnectIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <WalletConnect />
+  </Icon>
+);
+export const CoinbaseIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <Coinbase />
+  </Icon>
+);
+export const BrowserWalletIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <BrowserWallet />
+  </Icon>
+);
+
 export const FluentIcon = (props: IconProps) => (
   <Icon {...props}>
     <Fluent />
+  </Icon>
+);
+export const OKXWalletIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <OKXWallet />
   </Icon>
 );
 

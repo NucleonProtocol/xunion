@@ -1,6 +1,11 @@
 import useWalletStore from '@/store/wallet.ts';
-import { MetamaskIcon, FluentIcon } from '@/components/icons';
-import { injected } from 'wagmi/connectors';
+import {
+  WalletConnectIcon,
+  CoinbaseIcon,
+  BrowserWalletIcon,
+  OKXWalletIcon,
+} from '@/components/icons';
+import { injected, walletConnect, coinbaseWallet } from 'wagmi/connectors';
 import { useConnect } from 'wagmi';
 import { usePersistStore } from '@/store/persist.ts';
 import DrawerContainer from '@/components/DrawerContainer.tsx';
@@ -29,9 +34,44 @@ const ConnectModal = () => {
               });
             }}
           >
-            <MetamaskIcon className="text-[40px]" />
-            <span>Metamask</span>
+            <BrowserWalletIcon className="text-[40px]" />
+            <span>Browser wallet</span>
           </div>
+
+          <div
+            className="flex h-[72px] w-full cursor-pointer items-center gap-[16px] rounded-[8px] bg-fill-e-primary px-[20px]"
+            onClick={() => {
+              connectAsync({
+                connector: walletConnect({
+                  projectId: '44f05d7b85fbbfb975c0c1273b7804e3',
+                }),
+              }).then(() => {
+                onOpen(false);
+                updateWallet('fluent');
+              });
+            }}
+          >
+            <WalletConnectIcon className="text-[40px]" />
+            <span>WalletConnect</span>
+          </div>
+
+          <div
+            className="flex h-[72px] w-full cursor-pointer items-center gap-[16px] rounded-[8px] bg-fill-e-primary px-[20px]"
+            onClick={() => {
+              connectAsync({
+                connector: coinbaseWallet({
+                  appName: 'x-union',
+                }),
+              }).then(() => {
+                onOpen(false);
+                updateWallet('fluent');
+              });
+            }}
+          >
+            <CoinbaseIcon className="text-[40px]" />
+            <span>Coinbase Wallet</span>
+          </div>
+
           <div
             className="flex h-[72px] w-full cursor-pointer items-center gap-[16px] rounded-[8px] bg-fill-e-primary px-[20px]"
             onClick={() => {
@@ -41,8 +81,8 @@ const ConnectModal = () => {
               });
             }}
           >
-            <FluentIcon className="text-[40px]" />
-            <span>Fluent</span>
+            <OKXWalletIcon className="text-[40px]" />
+            <span>OKX Wallet</span>
           </div>
         </div>
       </div>
