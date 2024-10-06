@@ -168,7 +168,7 @@ const Supplies = ({
 
       <ResponsiveTable
         columns={columns}
-        dataSource={assets}
+        dataSource={assets.filter((item) => Number(item.depositAmount) !== 0)}
         size="middle"
         rowKey="id"
       />

@@ -18,7 +18,7 @@ const useMulticall = () => {
 
   const multiCall = async (calls: ContractCall[]) => {
     if (!calls.length) {
-      console.warn('Calls must be definition！');
+      console.warn('Calls must be definition');
       return;
     }
     const promises = [];

@@ -257,9 +257,9 @@ const useAddLP = (): LiquidityReturnType => {
     [tokenBAmount, tokenAAmount, tokenA?.address]
   );
 
-  useSetDefaultToken('tokenA', onTokenAChange);
+  useSetDefaultToken('tokena', onTokenAChange);
 
-  useSetDefaultToken('tokenB', onTokenBChange);
+  useSetDefaultToken('tokenb', onTokenBChange);
 
   const onTokenAAmountChange = useCallback(
     (value: string) => {

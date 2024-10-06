@@ -59,7 +59,7 @@ const TokenBorrowInfo = ({
       <div className="w-full px-[6px] py-[16px]">
         <div className="flex w-full justify-between">
           <div className="flex h-[90px] w-full gap-[10px]">
-            <div className="flex h-full flex-1 items-center gap-[10px] rounded-[8px] border border-line-primary p-[10px]">
+            <div className="flex h-full max-w-[300px] flex-1   items-center gap-[10px] rounded-[8px] border border-line-primary p-[10px]">
               <div className="flex flex-col gap-[2px]">
                 <div className="flex gap-[5px] text-[14px] text-tc-secondary">
                   <span>{t('x-lending.market.borrow')}</span>
@@ -114,7 +114,7 @@ const TokenBorrowInfo = ({
             </span>
           </div>
           <div className="mt-[10px] flex h-[65px] gap-[10px]">
-            <div className="flex h-full  flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
+            <div className="flex h-full   flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
               <div className="flex gap-[5px] text-[14px] text-tc-secondary">
                 <span>
                   {t('x-lending.market.detail.borrow.reserve.factor')}
@@ -122,6 +122,16 @@ const TokenBorrowInfo = ({
                 <ExclamationCircleOutlined />
               </div>
               <span className="text-[14px] font-[500]">{5}%</span>
+            </div>
+            <div className="flex h-full  flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
+              <div className="flex gap-[5px] text-[14px] text-tc-secondary">
+                <span>
+                  {t('x-lending.market.detail.borrow.min.accessible.hf')}
+                </span>
+              </div>
+              <span className="text-[14px] font-[500]">
+                {normalFloorOfHealthFactor}
+              </span>
             </div>
             <div className="flex h-full  flex-1 flex-col items-start justify-center  rounded-[8px] border border-line-primary pl-[10px]">
               <div className="flex gap-[5px] text-[14px] text-tc-secondary">

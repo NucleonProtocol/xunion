@@ -204,7 +204,6 @@ const useDashboard = () => {
                 }
               }
             }
-            console.log('newData', newData);
             setLendingAssets(newData);
           });
         })

@@ -142,7 +142,7 @@ const Borrows = ({
       )}
       <ResponsiveTable
         columns={columns}
-        dataSource={assets}
+        dataSource={assets.filter((item) => Number(item.lendingAmount) !== 0)}
         size="middle"
         rowKey="id"
       />

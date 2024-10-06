@@ -11,6 +11,7 @@ import { useTranslate } from '@/i18n';
 import DepositModal from '../dashboard/DepositModal';
 import LendingModal from '../dashboard/LendingModal';
 import { useState } from 'react';
+import HomogenousInfo from './HomogenousInfo';
 
 function MarketDetail() {
   const {
@@ -20,6 +21,7 @@ function MarketDetail() {
     chartLoading,
     licensed,
     normalFloorOfHealthFactor,
+    homoFloorOfHealthFactor,
     health,
     refresh,
   } = useMarketDetail();
@@ -98,7 +100,7 @@ function MarketDetail() {
           )}
         </div>
         <div className="flex w-full flex-col gap-[24px]">
-          <div className="flex  flex-shrink-0  gap-[24px] overflow-hidden max-md:flex-col">
+          <div className="flex  flex-shrink-0 flex-col  gap-[24px] overflow-hidden max-md:flex-col">
             <TokenSupplyInfo
               asset={tokenAsset}
               loading={chartLoading}
@@ -111,6 +113,12 @@ function MarketDetail() {
               interests={interests}
               normalFloorOfHealthFactor={normalFloorOfHealthFactor}
             />
+            {Number(tokenAsset?.lending_mode_num || 0) > 1 && (
+              <HomogenousInfo
+                homoFloorOfHealthFactor={homoFloorOfHealthFactor}
+                asset={tokenAsset}
+              />
+            )}
           </div>
           <div className="flex w-full flex-shrink-0 flex-col gap-[24px] overflow-hidden">
             <InterestRateModel />

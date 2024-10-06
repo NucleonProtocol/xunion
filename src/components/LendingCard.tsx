@@ -9,11 +9,13 @@ const LendingCard = ({
   description,
   loading,
   collapsible = true,
+  className,
 }: PropsWithChildren<{
   title: string;
   description?: ReactNode;
   loading?: boolean;
   collapsible?: boolean;
+  className?: string;
 }>) => {
   const [hide, setHide] = useState(false);
   const { t } = useTranslate();
@@ -21,7 +23,8 @@ const LendingCard = ({
     <div
       className={cn(
         'w-full  rounded-[20px] bg-fill-niubi',
-        !hide && 'min-h-[420px]'
+        !hide && 'min-h-[420px]',
+        className
       )}
     >
       {loading ? (

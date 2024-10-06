@@ -11,10 +11,12 @@ const useApprove = ({
   token,
   amount,
   spenderAddress,
+  hf = 1.0001,
 }: {
   token: Token;
   amount: string;
   spenderAddress: Address;
+  hf?: number;
 }) => {
   const { isNativeToken } = useNativeToken();
   const [approveLoading, setApproveLoading] = useState(false);
@@ -69,7 +71,7 @@ const useApprove = ({
       functionName: 'approve',
       args: [
         spenderAddress,
-        parseUnits((Number(amount) * 1.0001).toString(), decimals),
+        parseUnits((Number(amount) * hf).toString(), decimals),
       ],
     }).finally(() => {
       setApproveLoading(false);

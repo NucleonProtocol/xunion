@@ -86,7 +86,7 @@
   "x-dex.swap.route": "路徑",
   "x-dex.swap.confirm": "確認交換",
   "x-dex.swap.confirm.tip": "產量已經估算。 您將收到至少 {amount}，否則交易將取消。",
-  "x-dex.swap.give.permission": "給與合約使用 {name} 的許可",
+  "x-dex.swap.give.permission": "給與使用 {name} 的許可",
   "x-dex.limit.title": "限價",
   "x-dex.send.title": "發送代幣",
   "x-dex.send.input.pay": "你將發送",
@@ -222,6 +222,7 @@
   "x-lending.market.detail.borrow.apy.variable": "收益率, 可變的",
   "x-lending.market.detail.borrow.collector.info": "儲備資訊",
   "x-lending.market.detail.borrow.reserve.factor": "儲備係數",
+  "x-lending.market.detail.borrow.min.accessible.hf": "最低可達健康係數",
   "x-lending.market.detail.borrow.collector.contract": "合約地址",
   "x-lending.market.detail.interest.rate.model": "利率模型"
 }

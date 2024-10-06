@@ -222,6 +222,7 @@
   "x-lending.market.detail.borrow.apy.variable": "APY, variable",
   "x-lending.market.detail.borrow.collector.info": "Collector info",
   "x-lending.market.detail.borrow.reserve.factor": "Reserve factor",
+  "x-lending.market.detail.borrow.min.accessible.hf": "Min Accessible HF",
   "x-lending.market.detail.borrow.collector.contract": "Collector contract",
   "x-lending.market.detail.interest.rate.model": "Interest rate model"
 }

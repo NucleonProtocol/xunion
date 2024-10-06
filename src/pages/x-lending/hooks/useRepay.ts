@@ -25,6 +25,8 @@ const useRepay = ({
   const [healthFactor, setHealthFactor] = useState<string>();
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
   const { isNativeToken } = useNativeToken();
+  const [isRepayAll, setRepayAll] = useState(false);
+
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
     address: inputToken?.address,
@@ -67,12 +69,21 @@ const useRepay = ({
     if (decimals) {
       const amountIn = parseUnits(payAmount, decimals);
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
-      writeContractAsync({
-        address: address as Address,
-        abi,
-        functionName: 'repayLoan',
-        args: [inputToken?.address, amountIn],
-      });
+      if (isRepayAll) {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'repayLoanMax',
+          args: [inputToken?.address],
+        });
+      } else {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'repayLoan',
+          args: [inputToken?.address, amountIn],
+        });
+      }
     }
   };
 
@@ -80,13 +91,22 @@ const useRepay = ({
     if (decimals) {
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
       const amountIn = parseUnits(payAmount, decimals);
-      writeContractAsync({
-        address: address as Address,
-        abi,
-        functionName: 'repayLoan2',
-        value: parseUnits(payAmount, decimals),
-        args: [inputToken?.address, amountIn],
-      });
+      if (isRepayAll) {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'repayLoanMax2',
+          args: [inputToken?.address],
+        });
+      } else {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'repayLoan2',
+          value: parseUnits(payAmount, decimals),
+          args: [inputToken?.address, amountIn],
+        });
+      }
     }
   };
 
@@ -98,6 +118,14 @@ const useRepay = ({
     }
   };
 
+  const onRepayAllChange = async (checked: boolean) => {
+    setRepayAll(checked);
+    if (checked) {
+      setPayAmount(String(availableAmount));
+    } else {
+      setPayAmount('');
+    }
+  };
   return {
     inputToken,
     payAmount,
@@ -111,6 +139,8 @@ const useRepay = ({
     onConfirm,
     healthFactor,
     availableAmount,
+    onRepayAllChange,
+    isRepayAll,
   };
 };
 

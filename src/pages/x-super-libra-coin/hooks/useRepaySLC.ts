@@ -22,6 +22,7 @@ const useRepaySLC = ({
   const [payAmount, setPayAmount] = useState<string>('');
   const [healthFactor, setHealthFactor] = useState<string>();
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
+  const [isRepayAll, setRepayAll] = useState(false);
 
   const { totalPrice: inputTokenTotalPrice } = useTokenPrice({
     amount: payAmount,
@@ -64,12 +65,30 @@ const useRepaySLC = ({
     if (decimals) {
       const amountIn = parseUnits(payAmount, decimals);
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
-      writeContractAsync({
-        address: address as Address,
-        abi,
-        functionName: 'returnSLC',
-        args: [amountIn],
-      });
+      if (isRepayAll) {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'returnSLC',
+          args: [amountIn],
+        });
+      } else {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'returnSLC',
+          args: [amountIn],
+        });
+      }
+    }
+  };
+
+  const onRepayAllChange = async (checked: boolean) => {
+    setRepayAll(checked);
+    if (checked) {
+      setPayAmount(String(availableAmount));
+    } else {
+      setPayAmount('');
     }
   };
 
@@ -85,6 +104,8 @@ const useRepaySLC = ({
     loading,
     onConfirm,
     healthFactor,
+    isRepayAll,
+    onRepayAllChange,
   };
 };
 

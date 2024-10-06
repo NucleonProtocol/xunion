@@ -30,6 +30,8 @@ const useWithdraw = ({
   });
   const { address } = useAccount();
 
+  const [isWithdrawAll, setWithdrawAll] = useState(false);
+
   const { getWithdrawHealth } = useHealthFactor(asset);
 
   const { writeContractAsync, isSubmittedLoading, loading } = useXWriteContract(
@@ -74,12 +76,21 @@ const useWithdraw = ({
       const amountIn = parseUnits(payAmount, decimals);
 
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
-      writeContractAsync({
-        address: address as Address,
-        abi,
-        functionName: 'withdrawDeposit',
-        args: [inputToken?.address, amountIn],
-      });
+      if (isWithdrawAll) {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'withdrawDepositMax',
+          args: [inputToken?.address],
+        });
+      } else {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'withdrawDeposit',
+          args: [inputToken?.address, amountIn],
+        });
+      }
     }
   };
 
@@ -87,12 +98,21 @@ const useWithdraw = ({
     if (decimals) {
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
       const amountIn = parseUnits(payAmount, decimals);
-      writeContractAsync({
-        address: address as Address,
-        abi,
-        functionName: 'withdrawDeposit2',
-        args: [inputToken?.address, amountIn],
-      });
+      if (isWithdrawAll) {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'withdrawDepositMax2',
+          args: [inputToken?.address],
+        });
+      } else {
+        writeContractAsync({
+          address: address as Address,
+          abi,
+          functionName: 'withdrawDeposit2',
+          args: [inputToken?.address, amountIn],
+        });
+      }
     }
   };
 
@@ -125,6 +145,15 @@ const useWithdraw = ({
     [payAmount, asset?.depositAmount]
   );
 
+  const onWithdrawAllChange = async (checked: boolean) => {
+    setWithdrawAll(checked);
+    if (checked) {
+      setPayAmount(String(asset?.depositAmount));
+    } else {
+      setPayAmount('');
+    }
+  };
+
   return {
     withdraw,
     inputToken,
@@ -138,6 +167,8 @@ const useWithdraw = ({
     userHealthFactor,
     estimatedHealthFactor,
     remainingProvided,
+    isWithdrawAll,
+    onWithdrawAllChange,
   };
 };
 

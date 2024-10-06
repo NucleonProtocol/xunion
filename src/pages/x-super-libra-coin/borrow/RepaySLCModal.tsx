@@ -1,4 +1,4 @@
-import { Button, Modal } from 'antd';
+import { Button, Checkbox, Modal } from 'antd';
 import TokenInput from '@/components/TokenInput.tsx';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
@@ -12,6 +12,8 @@ import { formatNumber } from '@/hooks/useErc20Balance.ts';
 import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { useTranslate } from '@/i18n';
+import { TokenIcon } from '@/components/icons';
+import { cn } from '@/utils/classnames';
 
 const RepaySLCModal = ({
   open,
@@ -37,6 +39,8 @@ const RepaySLCModal = ({
     onConfirm,
     healthFactor,
     loading,
+    isRepayAll,
+    onRepayAllChange,
   } = useRepaySLC({ availableAmount, refresh });
 
   const {
@@ -47,6 +51,7 @@ const RepaySLCModal = ({
     token: inputToken!,
     amount: payAmount,
     spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
+    hf: isRepayAll ? 1.1 : 1.0001,
   });
 
   const { t } = useTranslate();
@@ -55,7 +60,7 @@ const RepaySLCModal = ({
       return (
         <Button className="w-full" type="primary" size="large" disabled>
           {t('x-lending.supply.available.amount', {
-            amount: `${availableAmount}`,
+            amount: `${formatNumber(Number(availableAmount || 0), 6)}`,
           })}
         </Button>
       );
@@ -99,22 +104,62 @@ const RepaySLCModal = ({
     >
       <div>
         <div className="mt-[20px]">
-          <TokenInput
-            editable
-            title={t('x-lending.borrow.input.amount')}
-            token={inputToken}
-            onTokenChange={() => {}}
-            amount={payAmount}
-            onAmountChange={setPayAmount}
-            disabled
-            ownerAmount={formatNumber(availableAmount || 0, 6)}
-            totalPrice={inputTokenTotalPrice}
-            amountLabel={t('x-lending.available')}
-            showDropArrow={false}
-            onMax={() => {
-              setPayAmount(formatNumber(availableAmount || 0, 6).toString());
-            }}
-          />
+          <div className="mb-[20px] flex justify-end">
+            <Checkbox
+              checked={isRepayAll}
+              onChange={(e) => {
+                onRepayAllChange(e.target.checked);
+              }}
+            >
+              Repay all
+            </Checkbox>
+          </div>
+          {!isRepayAll ? (
+            <TokenInput
+              editable
+              title={t('x-lending.borrow.input.amount')}
+              token={inputToken}
+              onTokenChange={() => {}}
+              amount={payAmount}
+              onAmountChange={setPayAmount}
+              disabled
+              ownerAmount={formatNumber(availableAmount || 0, 6)}
+              totalPrice={inputTokenTotalPrice}
+              amountLabel={t('x-lending.available')}
+              showDropArrow={false}
+            />
+          ) : (
+            <div className="h-[124px] rounded-[8px] bg-background-primary p-[16px]">
+              <div className="text-[14px] text-tc-secondary">
+                {t('x-lending.borrow.input.amount')}
+              </div>
+
+              <div className="flex h-[48px] justify-around py-[5px]">
+                <div className="flex-1">
+                  <span className="w-full border-0 bg-transparent text-[30px] font-bold outline-0 focus:border-0 focus:bg-transparent ">
+                    ≈ {formatNumber(Number(availableAmount), 6)}
+                  </span>
+                </div>
+                <div className="flex-shrink-0">
+                  <div
+                    className={cn(
+                      'flex-center h-[40px] flex-shrink-0  gap-[5px] rounded-[20px] text-tc-secondary'
+                    )}
+                  >
+                    <div className="flex-center gap-[5px]">
+                      <span className="flex-center text-[22px]">
+                        <TokenIcon
+                          src={inputToken?.icon}
+                          name={inputToken?.symbol}
+                        />
+                      </span>
+                      <span className="text-[14px]">{inputToken?.symbol}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-[5px] p-[16px]">
           <div className="flex-center-between">

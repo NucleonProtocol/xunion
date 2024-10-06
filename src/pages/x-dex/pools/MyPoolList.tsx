@@ -13,27 +13,54 @@ import { useNavigate } from 'react-router-dom';
 import ResponsiveTable from '@/components/ResponsiveTable.tsx';
 import ResponsiveButton from '@/components/ResponsiveButton.tsx';
 import { useTranslate } from '@/i18n';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getWalletPools } from '@/services/pool';
 import { useAccount } from 'wagmi';
+import { formatNumber } from '@/hooks/useErc20Balance';
+import useMulticall, { ContractCall } from '@/hooks/useMulticall';
+import { XUNION_SWAP_CONTRACT } from '@/contracts';
 
 const PoolList = () => {
   const navigate = useNavigate();
-
+  const { multiCall } = useMulticall();
   const { t } = useTranslate();
   const { address } = useAccount();
+  const [pools, setPools] = useState<PoolType[]>([]);
 
-  const { data, mutate, isPending } = useMutation({
+  const { data, mutateAsync, isPending } = useMutation({
     mutationFn: getWalletPools,
   });
   useEffect(() => {
     if (address) {
-      mutate({ pageNum: 1, pageSize: 100, address });
+      mutateAsync({ pageNum: 1, pageSize: 100, address }).then(async (res) => {
+        if (res?.items.length) {
+          const calls: ContractCall[] = res?.items.map((pool) => ({
+            name: 'getUserCoinOrLpAmount',
+            abi: XUNION_SWAP_CONTRACT.interface.abi,
+            address: XUNION_SWAP_CONTRACT.interface.address,
+            values: [pool?.pairToken?.address, address],
+          }));
+
+          multiCall(calls).then(async (amounts) => {
+            const newData = [];
+            for (let index = 0; index < res?.items.length; index++) {
+              const pool = res?.items[index];
+              newData.push({
+                ...pool,
+                pairToken: {
+                  ...pool.pairToken,
+                  amount: amounts.returnData[index],
+                },
+              });
+            }
+            setPools(newData);
+          });
+        }
+      });
     }
   }, [address]);
 
-  const pools = data?.items || [];
   const total = data?.total || 0;
 
   const columns: ColumnType<PoolType>[] = [
@@ -70,6 +97,16 @@ const PoolList = () => {
       render: (value: string) => (
         <div className="flex flex-col gap-[5px]">
           {formatCurrency(Number(formatUnits(value || 0n)), true)}
+        </div>
+      ),
+    },
+    {
+      title: t('x-dex.swap.trade.amount'),
+      dataIndex: 'amount',
+      width: 240,
+      render: (_: string, record) => (
+        <div className="flex flex-col gap-[5px]">
+          {formatNumber(Number(formatUnits(record.pairToken?.amount || 0n)), 5)}
         </div>
       ),
     },

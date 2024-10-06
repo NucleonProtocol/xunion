@@ -73,6 +73,14 @@ const useMarketDetail = () => {
       enabled: !!address && !!tokenAddress,
     },
   });
+  const { data: homogeneousFloorOfHealthFactor } = useReadContract({
+    address: XUNION_LENDING_CONTRACT.interface.address as Address,
+    abi: XUNION_LENDING_CONTRACT.interface.abi,
+    functionName: 'homogeneousFloorOfHealthFactor',
+    query: {
+      enabled: !!address && !!tokenAddress,
+    },
+  });
 
   const licensed = useMemo(() => {
     if (licensedAssets) {
@@ -103,6 +111,12 @@ const useMarketDetail = () => {
     if (!nomalFloorOfHealthFactor) return 0;
     return Number(formatUnits(nomalFloorOfHealthFactor as bigint));
   }, [nomalFloorOfHealthFactor]);
+
+  const homoFloorOfHealthFactor = useMemo(() => {
+    if (!homogeneousFloorOfHealthFactor) return 0;
+    return Number(formatUnits(homogeneousFloorOfHealthFactor as bigint));
+  }, [homogeneousFloorOfHealthFactor]);
+
   useEffect(() => {
     if (userAssets && data?.items?.length && address) {
       setLoading(true);
@@ -192,6 +206,7 @@ const useMarketDetail = () => {
     chartLoading,
     licensed,
     normalFloorOfHealthFactor,
+    homoFloorOfHealthFactor,
     health: health ? Number(formatUnits(String(health || 0n), 18)) : 0,
     refresh,
   };
