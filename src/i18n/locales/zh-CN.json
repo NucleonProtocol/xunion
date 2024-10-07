@@ -121,7 +121,7 @@
   "x-dex.pools.lp.address": "LP 地址",
   "x-dex.pools.initialize.pool": "初始化 {name} 池",
   "x-super-libra-coin.title": "铸造 & 销毁",
-  "x-super-libra-coin.description": "直接SLC铸造：每种货币可以以自身价值的96%至99%直接铸造SLC，SLC可以95%的价值赎回为您指定的货币。",
+  "x-super-libra-coin.description": "直接SLC铸造：每种货币可以以自身价值的96%至99%直接铸造SLC，SLC可以96%的价值赎回为您指定的货币。",
   "x-super-libra-coin.slc.supply": "SLC 供应",
   "x-super-libra-coin.slc": "SLC",
   "x-super-libra-coin.position": "资产管理",
