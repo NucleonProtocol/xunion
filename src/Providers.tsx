@@ -35,7 +35,8 @@ const config = createConfig({
       ...confluxESpaceTestnet,
       rpcUrls: {
         default: {
-          http: [CHAINS.eSpace.rpc[0]],
+          http: [CHAINS.eSpaceTest.rpc[0]],
+          webSocket: ['wss://evmtestnet.confluxrpc.org/ws'],
         },
       },
     },
