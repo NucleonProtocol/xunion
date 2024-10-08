@@ -100,12 +100,12 @@ const useWithdraw = ({
   const withdrawCFX = async () => {
     if (decimals) {
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
+      const amountIn = parseUnits(payAmount, decimals);
       writeContractAsync({
         address: address as Address,
         abi,
         functionName: 'redeemCFX',
-        value: parseUnits(payAmount, decimals),
-        args: [],
+        args: [amountIn],
       });
     }
   };

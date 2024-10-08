@@ -18,6 +18,7 @@ const SubmittedModal = () => {
       onCancel={() => {
         updateSubmitted(null);
       }}
+      maskClosable={false}
     >
       <div className="flex flex-col items-center gap-[20px]">
         <div className="flex-center h-[72px] w-[72px] rounded-full bg-theme text-[40px] text-white">
