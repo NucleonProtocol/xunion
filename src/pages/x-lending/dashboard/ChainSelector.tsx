@@ -6,7 +6,8 @@ import { DownOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames.ts';
 import { useTranslate } from '@/i18n';
 
-const chains: ChainType[] = [CHAINS.eSpaceTest, CHAINS.scrollTest];
+const chains: ChainType[] = [CHAINS.eSpace];
+// const chains: ChainType[] = [CHAINS.eSpace, CHAINS.scrollTest];
 
 const ChainSelector = () => {
   const chainId = 1_030;

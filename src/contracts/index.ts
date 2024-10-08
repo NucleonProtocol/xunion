@@ -31,7 +31,7 @@ export const XUNION_SWAP_CONTRACT: Record<
     abi: erc20Abi,
   },
   usdt: {
-    address: '0xfe97e85d13abd9c1c33384e796f10b73905637ce',
+    address: '0xfe97E85d13ABD9c1c33384E796F10B73905637cE',
     abi: erc20Abi,
   },
 };
