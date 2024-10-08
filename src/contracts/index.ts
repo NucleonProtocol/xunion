@@ -85,5 +85,5 @@ export const SLCToken: Token = {
   decimals: 18,
   chainId: CHAIN_ID,
   name: 'X Libra USD',
-  icon: 'https://espacemainnetapi.xunion.io/coin/sLC-logo.png',
+  icon: 'https://espacemainnetapi.xunion.io/coin/xUSD.png',
 };
