@@ -13,7 +13,7 @@ export const XUNION_LENDING_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0x45168c9e8D5d52e36fcbaCD64826f4e549696CA5',
+    address: '0x528F1bca967fc6f850E8f097Cf068Cf766e6268a',
     abi: LendingInterfaceABI,
   },
 };
@@ -23,15 +23,15 @@ export const XUNION_SWAP_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0xD3C5c8B9439E84ad42c20716c335974822BC211a',
+    address: '0x03aB0709C122C07B716AF49Ab5c201de25a70EaD',
     abi: SwapInterfaceABI,
   },
   slc: {
-    address: '0x8c4B892AF3655eAE24cf426c4D242Ab95bc3903D',
+    address: '0xF65050e2AC003569a4b18E612B86CC833afE5960',
     abi: erc20Abi,
   },
   usdt: {
-    address: '0x27Fc32d2AD515c9AFE5e6c8434B32053ce0b042B',
+    address: '0xfe97e85d13abd9c1c33384e796f10b73905637ce',
     abi: erc20Abi,
   },
 };
@@ -41,24 +41,30 @@ export const XUNION_SLC_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0x35D62688056D543ADfb78971ebe13250129ab2Cd',
+    address: '0xE68e282127c555B2b806d9BFD9EC1D4619A40e50',
     abi: SLCInterfaceABI,
   },
   oracle: {
-    address: '0x945dbfdd972B5628AB9235BF28E68Eb59aF98703',
+    address: '0x1C0c5149008f18618425496fd3d84ca6BeDf60fB',
     abi: iSlcOracleABI,
   },
   mutilCall: {
-    address: '0x399b446909DC916C62D741060E709D8FCA785e0A',
+    address: '0xFF8fB8a62B70e025C07B066D34FAb28277260391',
     abi: Multicallespacetestnet,
   },
 };
 
 export const NATIVE_ERC20_TOKEN: Record<string, Token> = {
   71: {
-    address: '0x16C2473A9957d00B832C27cFa34773721f47992e',
+    address: '0x26efcdc7ada14ecaf755557cc62f4fd7757586cc',
     symbol: 'WXCFX',
     name: 'WXCFX',
+    decimals: 18,
+  },
+  1_030: {
+    address: '0x26efcdc7ada14ecaf755557cc62f4fd7757586cc',
+    symbol: 'CFX',
+    name: 'CFX',
     decimals: 18,
   },
 };
@@ -75,9 +81,9 @@ export const isSLCToken = (address: string) => {
 
 export const SLCToken: Token = {
   address: XUNION_SWAP_CONTRACT.slc.address,
-  symbol: 'SLC',
+  symbol: 'xUSD',
   decimals: 18,
   chainId: CHAIN_ID,
-  name: 'SLC',
-  icon: 'http://espacemainnetapi.xunion.io/coin/SLC-logo.png',
+  name: 'X Libra USD',
+  icon: 'https://espacemainnetapi.xunion.io/coin/sLC-logo.png',
 };

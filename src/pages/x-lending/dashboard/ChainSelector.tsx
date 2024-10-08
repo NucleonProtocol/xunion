@@ -9,7 +9,7 @@ import { useTranslate } from '@/i18n';
 const chains: ChainType[] = [CHAINS.eSpaceTest, CHAINS.scrollTest];
 
 const ChainSelector = () => {
-  const chainId = 71;
+  const chainId = 1_030;
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslate();
