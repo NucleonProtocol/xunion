@@ -79,5 +79,5 @@ export const SLCToken: Token = {
   decimals: 18,
   chainId: CHAIN_ID,
   name: 'SLC',
-  icon: 'http://testapi.artixv.com/coin/SLC-logo.png',
+  icon: 'https://espacemainnetapi.xunion.io/coin/SLC-logo.png',
 };

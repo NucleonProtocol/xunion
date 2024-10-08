@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://testapi.artixv.com/',
+        target: 'http://espacemainnetapi.xunion.io/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
