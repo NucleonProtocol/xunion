@@ -29,7 +29,7 @@ function Pools() {
 
   return (
     <div className="mt-[30px] flex  min-h-[420px]  flex-col items-center p-[20px] max-md:mt-0 max-md:p-[16px] max-md:pb-[80px]">
-      <div className="max-md:mx-0 max-md:w-[calc(100%)] md:min-w-[1200px]">
+      <div className="w-full max-md:mx-0 max-md:w-[calc(100%)] md:max-w-[1200px]">
         <div className="flex-center-between pb-[32px]">
           <span className="text-[24px] font-bold">
             {t('x-dex.pools.title')}
