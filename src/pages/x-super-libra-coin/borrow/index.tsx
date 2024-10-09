@@ -54,7 +54,7 @@ const Borrow = () => {
             loading={isOverviewLoading}
           />
           <AmountCard
-            title="SLC"
+            title="xUSD"
             amount={String(formatNumber(unitPrice, 5))}
             loading={isOverviewLoading}
           />

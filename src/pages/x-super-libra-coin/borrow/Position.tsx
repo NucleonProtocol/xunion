@@ -124,7 +124,7 @@ const Position = ({
                 {t('x-super-libra-coin.borrow.value')}
               </span>
               <div className="flex flex-col text-[16px]">
-                <span> {formatCurrency(userBorrowedAmount, false)} SLC</span>
+                <span> {formatCurrency(userBorrowedAmount, false)} xUSD</span>
                 <span className="text-[12px] text-tc-secondary">
                   {formatCurrency(borrowedTotalPrice)}
                 </span>
@@ -135,7 +135,7 @@ const Position = ({
                 {t('x-super-libra-coin.available.borrow')}
               </span>
               <div className="flex flex-col text-[16px]">
-                <span> {formatCurrency(userAvailableAmount, false)} SLC</span>
+                <span> {formatCurrency(userAvailableAmount, false)} xUSD</span>
                 <span className="text-[12px] text-tc-secondary">
                   {formatCurrency(availableTotalPrice)}
                 </span>
