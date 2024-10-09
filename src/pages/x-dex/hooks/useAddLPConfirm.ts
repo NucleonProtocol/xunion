@@ -64,10 +64,10 @@ const useAddLPConfirm = ({
 
   const txValue = useMemo(() => {
     if (isNativeToken(tokenA!) && tokenADecimals) {
-      return Number(tokenAAmount) * 10 ** tokenADecimals;
+      return (Number(tokenAAmount) + 0.0001) * 10 ** tokenADecimals;
     }
     if (isNativeToken(tokenB!) && tokenBDecimals) {
-      return Number(tokenBAmount) * 10 ** tokenBDecimals;
+      return (Number(tokenBAmount) + 0.0001) * 10 ** tokenBDecimals;
     }
     return 0;
   }, [tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
