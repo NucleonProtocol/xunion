@@ -7,6 +7,7 @@ import { getAddress, parseUnits } from 'ethers';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { Token } from '@/types/swap.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
+import { formatNumber } from '@/hooks/useErc20Balance';
 
 const useAddLPConfirm = ({
   lpPairInfo,
@@ -64,10 +65,16 @@ const useAddLPConfirm = ({
 
   const txValue = useMemo(() => {
     if (isNativeToken(tokenA!) && tokenADecimals) {
-      return (Number(tokenAAmount) + 0.0001) * 10 ** tokenADecimals;
+      return (
+        formatNumber(Number(tokenAAmount || 0) + 0.0001, 5) *
+        10 ** tokenADecimals
+      );
     }
     if (isNativeToken(tokenB!) && tokenBDecimals) {
-      return (Number(tokenBAmount) + 0.0001) * 10 ** tokenBDecimals;
+      return (
+        formatNumber(Number(tokenBAmount || 0) + 0.0001, 5) *
+        10 ** tokenBDecimals
+      );
     }
     return 0;
   }, [tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
