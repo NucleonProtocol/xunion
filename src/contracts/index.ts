@@ -56,13 +56,13 @@ export const XUNION_SLC_CONTRACT: Record<
 
 export const NATIVE_ERC20_TOKEN: Record<string, Token> = {
   71: {
-    address: '0x26efcdc7ada14ecaf755557cc62f4fd7757586cc',
+    address: '0x26efCdC7adA14EcAf755557cc62f4FD7757586CC',
     symbol: 'WXCFX',
     name: 'WXCFX',
     decimals: 18,
   },
   1_030: {
-    address: '0x26efcdc7ada14ecaf755557cc62f4fd7757586cc',
+    address: '0x26efCdC7adA14EcAf755557cc62f4FD7757586CC',
     symbol: 'CFX',
     name: 'CFX',
     decimals: 18,
