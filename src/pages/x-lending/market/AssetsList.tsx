@@ -38,7 +38,7 @@ const AssetsList = ({
               />
             </span>
             <div className="flex flex-col items-start gap-[2px] max-md:justify-end">
-              <span className="max-md:text-right">{`Wrapped ${record.token.name}`}</span>
+              <span className="max-md:text-right">{`${record?.token?.name || ''}`}</span>
               <div className="flex gap-[5px]">
                 <span className="text-[12px] text-tc-secondary">{`${record.token.symbol}`}</span>
                 {record.lending_mode_num === '1' && (
