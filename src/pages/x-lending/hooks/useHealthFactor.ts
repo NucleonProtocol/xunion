@@ -1,5 +1,5 @@
 import { useAccount } from 'wagmi';
-import { formatUnits } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers';
 import useLendingContract from '@/hooks/useLendingContract.ts';
 import { LendingAsset } from '@/types/Lending.ts';
 import { formatNumber } from '@/hooks/useErc20Balance';
@@ -15,7 +15,7 @@ const useHealthFactor = (asset: LendingAsset) => {
         .usersHealthFactorEstimate(
           address,
           asset.token.address,
-          String(formatNumber(Number(amount), 6) * 10 ** 18),
+          parseUnits(String(formatNumber(Number(amount), 6))),
           0
         )
         .then((factor) => formatUnits(factor, 18));
@@ -28,7 +28,7 @@ const useHealthFactor = (asset: LendingAsset) => {
         .usersHealthFactorEstimate(
           address,
           asset.token.address,
-          String(formatNumber(Number(amount), 6) * 10 ** 18),
+          parseUnits(String(formatNumber(Number(amount), 6))),
           1
         )
         .then((factor) => formatUnits(factor, 18));
@@ -41,7 +41,7 @@ const useHealthFactor = (asset: LendingAsset) => {
         .usersHealthFactorEstimate(
           address,
           asset.token.address,
-          String(formatNumber(Number(amount), 6) * 10 ** 18),
+          parseUnits(String(formatNumber(Number(amount), 6))),
           2
         )
         .then((factor) => formatUnits(factor, 18));
@@ -53,7 +53,7 @@ const useHealthFactor = (asset: LendingAsset) => {
         .usersHealthFactorEstimate(
           address,
           asset.token.address,
-          String(formatNumber(Number(amount), 6) * 10 ** 18),
+          parseUnits(String(formatNumber(Number(amount), 6))),
           3
         )
         .then((factor) => formatUnits(factor, 18));
