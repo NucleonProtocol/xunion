@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import useErc20Balance from '@/hooks/useErc20Balance.ts';
+import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
 import { XUNION_LENDING_CONTRACT } from '@/contracts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
@@ -65,7 +65,9 @@ const useLending = ({
 
   const lendNormal = async () => {
     if (decimals) {
-      const amountIn = parseUnits(payAmount, decimals);
+      const amountIn = parseUnits(
+        String(formatNumber(Number(payAmount || 0), 4))
+      );
 
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
       writeContractAsync({
@@ -80,7 +82,9 @@ const useLending = ({
   const lendCFX = async () => {
     if (decimals) {
       const { address, abi } = XUNION_LENDING_CONTRACT.interface;
-      const amountIn = parseUnits(payAmount, decimals);
+      const amountIn = parseUnits(
+        String(formatNumber(Number(payAmount || 0), 4))
+      );
       writeContractAsync({
         address: address as Address,
         abi,
