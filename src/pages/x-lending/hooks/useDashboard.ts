@@ -143,11 +143,17 @@ const useDashboard = () => {
                 const unitPrice = Number(
                   formatUnits(allUnitPrice.returnData[index])
                 );
-                const depositAmount = Number(
-                  formatUnits(depositAmounts[index])
+                const depositAmount = formatNumber(
+                  Number(formatUnits(depositAmounts[index])),
+                  6
                 );
-                const lendingAmount = Number(
-                  formatUnits(lendingAmounts[index])
+                console.log(lendingAmounts[index]);
+                const lendingAmount = formatNumber(
+                  Number(formatUnits(lendingAmounts[index])) < 0.00001 &&
+                    0 < Number(formatUnits(lendingAmounts[index]))
+                    ? 0.000001
+                    : Number(formatUnits(lendingAmounts[index])),
+                  6
                 );
                 const depositTotalPrice = formatNumber(
                   depositAmount * unitPrice,
