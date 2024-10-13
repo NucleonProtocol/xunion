@@ -21,6 +21,7 @@ const useXWriteContract = ({
   const { writeTxErrorNotification, writeTxNotification } = usePendingNotice();
   const updateSubmitted = useTxStore((state) => state.updateSubmitted);
   const [loading, setLoading] = useState(false);
+  const [_, refresh] = useState(0);
   const {
     data: hash,
     isPending: isSubmittedLoading,
@@ -75,6 +76,7 @@ const useXWriteContract = ({
       setLoading(true);
       updateSubmitted({ hash });
       onSubmitted?.(hash);
+      refresh(Math.random());
     }
   }, [isSubmitted, showSubmittedModal]);
 

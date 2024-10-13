@@ -1,12 +1,12 @@
 import { Token } from '@/types/swap.ts';
 const presets = [
   {
-    label: '1000',
-    value: '1000',
+    label: '100',
+    value: '100',
   },
   {
-    label: '2000',
-    value: '2000',
+    label: '1000',
+    value: '1000',
   },
   {
     label: '3000',

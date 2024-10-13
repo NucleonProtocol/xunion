@@ -296,7 +296,7 @@ const useAddLP = (): LiquidityReturnType => {
         return true;
       } else {
         if (lpPairInfo?.isInitialPool && SLCUnitPrice && tokenA?.address) {
-          return tokenATotalPrice >= 1000 * SLCUnitPrice;
+          return tokenATotalPrice >= 100 * SLCUnitPrice;
         }
       }
     }
@@ -309,7 +309,7 @@ const useAddLP = (): LiquidityReturnType => {
         return true;
       } else {
         if (lpPairInfo?.isInitialPool && SLCUnitPrice) {
-          return tokenBTotalPrice >= 1000 * SLCUnitPrice;
+          return tokenBTotalPrice >= 100 * SLCUnitPrice;
         }
       }
     }

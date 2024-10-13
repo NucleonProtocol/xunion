@@ -163,7 +163,7 @@ const useListing = () => {
     if (!tokenAAmount || Number(tokenAAmount) < 0.0000001) {
       return true;
     }
-    if (!tokenBAmount || Number(tokenBAmount) < 1000) {
+    if (!tokenBAmount || Number(tokenBAmount) < 100) {
       return true;
     }
     return invalidWallet || !tokenA?.address || !!lpPairAddress;

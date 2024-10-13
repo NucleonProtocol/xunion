@@ -102,7 +102,7 @@ function CreatePool() {
             editable
             title={t('x-dex.liquidity.input.tokenB')}
             token={tokenB}
-            placeholder="1000"
+            placeholder="100"
             amount={tokenBAmount}
             onAmountChange={setTokenBAmount}
             ownerAmount={tokenBOwnerAmount}
