@@ -94,7 +94,8 @@ const VOL = ({
     if (vols?.items.length) {
       return formatCurrency(
         Number(formatUnits(vols?.items[vols?.items.length - 1]?.amount || 0n)),
-        false
+        false,
+        0
       );
     }
     return 0;
@@ -160,7 +161,8 @@ const TVL = ({
     if (tvls?.items.length) {
       return formatCurrency(
         Number(formatUnits(tvls?.items[tvls?.items.length - 1]?.amount || 0n)),
-        false
+        false,
+        0
       );
     }
     return 0;
@@ -224,7 +226,7 @@ const Price = ({
   }, [recently]);
 
   const total = useMemo(() => {
-    return formatCurrency(totalPrice || 0, false);
+    return formatCurrency(totalPrice || 0, false, 0);
   }, [totalPrice]);
 
   return (

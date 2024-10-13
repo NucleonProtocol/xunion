@@ -25,7 +25,8 @@ const SwapTVL = ({
     if (data?.length) {
       return formatCurrency(
         Number(formatUnits(data[data.length - 1]?.amount || 0n)),
-        false
+        false,
+        0
       );
     }
     return 0;

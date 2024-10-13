@@ -49,7 +49,7 @@ function Pools() {
           <AmountCard
             title={t('common.tvl')}
             amount={String(
-              formatCurrency(Number(formatUnits(data?.tvl || 0n)), false)
+              formatCurrency(Number(formatUnits(data?.tvl || 0n)), false, 0)
             )}
             loading={false}
             className="w-auto flex-1"
@@ -57,7 +57,11 @@ function Pools() {
           <AmountCard
             title={t('x-dex.pools.volume.24H')}
             amount={String(
-              formatCurrency(Number(formatUnits(data?.volume24h || 0n)), false)
+              formatCurrency(
+                Number(formatUnits(data?.volume24h || 0n)),
+                false,
+                0
+              )
             )}
             loading={false}
             className="w-auto flex-1"

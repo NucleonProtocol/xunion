@@ -29,7 +29,7 @@ const SwapVolume = ({
         prev + Number(formatUnits(isNumeric(next?.amount) ? next?.amount : 0n)),
       0
     );
-    return formatCurrency(sum, false, 5);
+    return formatCurrency(sum, false, 0);
   }, [data]);
 
   return (

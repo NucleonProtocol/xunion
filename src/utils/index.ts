@@ -40,14 +40,23 @@ export function formatCurrency(num: number, symbol = true, decimals = 5) {
   if (isNaN(num)) {
     return 'Invalid number';
   }
-  if (!symbol) {
-    return formatNumber(num, decimals).toLocaleString();
+  let amount = '';
+  if (Math.abs(num) < Math.pow(10, -decimals) && num > 0) {
+    amount =
+      '< ' +
+      (0.00001).toLocaleString('en-US', {
+        maximumFractionDigits: decimals,
+      });
+  } else {
+    amount = formatNumber(num, decimals).toLocaleString('en-US', {
+      maximumFractionDigits: decimals,
+    });
   }
 
-  return formatNumber(num, decimals).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
+  if (symbol) {
+    amount = '$ ' + amount;
+  }
+  return amount;
 }
 
 export function formatLargeNumber(
