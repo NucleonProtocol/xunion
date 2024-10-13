@@ -9,7 +9,7 @@ export interface ContractCall {
   values: any[];
 }
 
-const useMulticall = () => {
+const useTryMulticall = () => {
   const { address, abi } = XUNION_SLC_CONTRACT.mutilCall;
 
   const provider = useProvider();
@@ -29,10 +29,9 @@ const useMulticall = () => {
         contract.interface.encodeFunctionData(call.name, call.values),
       ]);
     }
-    return await multicallContract.aggregate.staticCall(promises);
-    // return await multicallContract.tryAggregate.staticCall(true, promises);
+    return await multicallContract.tryAggregate.staticCall(false, promises);
   };
   return { multiCall };
 };
 
-export default useMulticall;
+export default useTryMulticall;
