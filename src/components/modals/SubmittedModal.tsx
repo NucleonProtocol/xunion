@@ -43,7 +43,9 @@ const SubmittedModal = () => {
               className="h-[40px] w-[120px]"
               onClick={() => {
                 updateSubmitted(null);
-                window.location.reload();
+                if (submittedTx?.forceReload) {
+                  window.location.reload();
+                }
               }}
             >
               {t('common.pending.submitted.done')}

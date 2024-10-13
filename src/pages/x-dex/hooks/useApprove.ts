@@ -53,6 +53,7 @@ const useApprove = ({
     isSubmittedLoading,
   } = useXWriteContract({
     onWriteSuccess: refetch,
+    forceReload: false,
   });
   const isApproved = useMemo(() => {
     if (isNativeToken(token)) return true;
