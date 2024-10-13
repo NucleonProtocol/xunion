@@ -34,7 +34,9 @@ const SubmittedModal = () => {
           >
             <CheckOutlined />
           </div>
-          <span className="text-[20px] font-bold">Successful</span>
+          <span className="text-[20px] font-bold">
+            {t('common.pending.submitted.success')}
+          </span>
           <div className="mt-[20px]">
             <Button
               type="primary"
@@ -44,7 +46,7 @@ const SubmittedModal = () => {
                 window.location.reload();
               }}
             >
-              Done
+              {t('common.pending.submitted.done')}
             </Button>
           </div>
         </div>
@@ -61,7 +63,9 @@ const SubmittedModal = () => {
           >
             <CloseOutlined />
           </div>
-          <span className="text-[20px] font-bold">Error</span>
+          <span className="text-[20px] font-bold">
+            {t('common.pending.submitted.error')}
+          </span>
         </div>
       );
     }
