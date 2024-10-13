@@ -5,7 +5,8 @@ import VolumeBar from '@/pages/x-dex/explore/charts/VolumeBar.tsx';
 import { useTranslate } from '@/i18n';
 import { Recently, TokenVolume } from '@/types/explore';
 import { useEffect, useMemo, useState } from 'react';
-import { formatLargeNumber } from '@/utils';
+import { formatCurrency } from '@/utils';
+
 import { formatUnits } from 'ethers';
 import { isNumeric } from '@/utils/isNumeric';
 
@@ -28,7 +29,7 @@ const SwapVolume = ({
         prev + Number(formatUnits(isNumeric(next?.amount) ? next?.amount : 0n)),
       0
     );
-    return formatLargeNumber(sum, 4);
+    return formatCurrency(sum, false, 5);
   }, [data]);
 
   return (

@@ -5,6 +5,11 @@ export function formatNumberWithCommas(number: number) {
   return number ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0;
 }
 
+export function formatNumber(number: number, decimals: number) {
+  const factor = Math.pow(10, decimals);
+  return Math.floor(number * factor) / factor;
+}
+
 export function fuzzyMatch(query: string, text: string) {
   const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(escapedQuery, 'i');
@@ -31,15 +36,18 @@ export function isValidURL(url: string) {
   return urlRegex.test(url);
 }
 
-export function formatCurrency(num: number, symbol = true) {
+export function formatCurrency(num: number, symbol = true, decimals = 5) {
   if (isNaN(num)) {
     return 'Invalid number';
   }
   if (!symbol) {
-    return num.toLocaleString();
+    return formatNumber(num, decimals).toLocaleString();
   }
 
-  return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return formatNumber(num, decimals).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 }
 
 export function formatLargeNumber(
