@@ -32,7 +32,7 @@ const useNativeToken = () => {
   const getNativeTokenBalance = async () => {
     if (address) {
       const amount = await provider.getBalance(address).catch(() => 0n);
-      return Number(formatNumber(Number(formatUnits(amount, 18)), 6));
+      return Number(formatNumber(Number(formatUnits(amount, 18)), 7));
     }
     return 0;
   };
