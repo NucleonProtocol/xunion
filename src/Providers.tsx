@@ -97,6 +97,7 @@ const Dapp = ({ children }: PropsWithChildren<{ locale: Locale }>) => {
           <WalletDetailModal />
           {children}
           <div className="w-full max-md:h-[100px] md:h-[50px]" />
+          {/* <ChainBlockHeight /> */}
         </TXPendingProvider>
       </QueryClientProvider>
     </ConfigProvider>
