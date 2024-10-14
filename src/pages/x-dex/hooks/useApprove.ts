@@ -6,12 +6,13 @@ import { isNumeric } from '@/utils/isNumeric.ts';
 import { Token } from '@/types/swap.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
+import { formatNumber } from '@/utils';
 
 const useApprove = ({
   token,
   amount,
   spenderAddress,
-  hf = 1.0001,
+  hf = 1.001,
 }: {
   token: Token;
   amount: string;
@@ -72,7 +73,7 @@ const useApprove = ({
       functionName: 'approve',
       args: [
         spenderAddress,
-        parseUnits((Number(amount) * hf).toString(), decimals),
+        parseUnits((formatNumber(Number(amount), 4) * hf).toString(), decimals),
       ],
     }).finally(() => {
       setApproveLoading(false);
