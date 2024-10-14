@@ -68,6 +68,17 @@ const SubmittedModal = () => {
           <span className="text-[20px] font-bold">
             {t('common.pending.submitted.error')}
           </span>
+          <div className="mt-[20px]">
+            <Button
+              type="primary"
+              className="h-[40px] w-[120px]"
+              onClick={() => {
+                updateSubmitted(null);
+              }}
+            >
+              {t('common.pending.submitted.done')}
+            </Button>
+          </div>
         </div>
       );
     }
