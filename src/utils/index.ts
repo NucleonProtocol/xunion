@@ -41,7 +41,7 @@ export function formatCurrency(num: number, symbol = true, decimals = 5) {
     return 'Invalid number';
   }
   let amount = '';
-  if (Math.abs(num) < Math.pow(10, -decimals) && num > 0) {
+  if (decimals > 4 && Math.abs(num) < Math.pow(10, -decimals) && num > 0) {
     amount =
       '< ' +
       (0.00001).toLocaleString('en-US', {
