@@ -6,6 +6,7 @@ import { confluxScan } from '@/components/notices/usePendingNotice.tsx';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { cn } from '@/utils/classnames';
 import { useWaitForTransactionReceipt } from 'wagmi';
+import { useEffect } from 'react';
 
 const SubmittedModal = () => {
   const { t } = useTranslate();
@@ -22,6 +23,10 @@ const SubmittedModal = () => {
       enabled: !!submittedTx?.hash,
     },
   });
+
+  useEffect(() => {
+    updateSubmitted(null);
+  }, []);
 
   const renderContent = () => {
     if (isSuccess) {

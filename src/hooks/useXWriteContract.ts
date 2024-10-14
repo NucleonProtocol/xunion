@@ -51,6 +51,7 @@ const useXWriteContract = ({
       onError?.(submittedError as WriteContractErrorType);
       const reasonMatch = submittedError?.message.match(/reason: (.*)/);
       writeTxErrorNotification(hash, reasonMatch?.[1]);
+      updateSubmitted(null);
     }
   }, [submittedError, isError]);
 
