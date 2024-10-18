@@ -23,7 +23,7 @@ export const XUNION_SWAP_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0x03aB0709C122C07B716AF49Ab5c201de25a70EaD',
+    address: '0xC00FBD5bbEF47185A6BB0CBea6DcE755fcD718b1',
     abi: SwapInterfaceABI,
   },
   slc: {

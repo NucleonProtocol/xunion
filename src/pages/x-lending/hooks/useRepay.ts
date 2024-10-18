@@ -10,6 +10,7 @@ import { parseUnits } from 'ethers';
 import { LendingAsset } from '@/types/Lending.ts';
 import useHealthFactor from '@/pages/x-lending/hooks/useHealthFactor.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
+import { formatNumber } from '@/utils';
 
 const useRepay = ({
   asset,
@@ -97,6 +98,10 @@ const useRepay = ({
           abi,
           functionName: 'repayLoanMax2',
           args: [inputToken?.address],
+          value: parseUnits(
+            String(formatNumber(Number(availableAmount) * 1.001, 4)),
+            decimals
+          ),
         });
       } else {
         writeContractAsync({
