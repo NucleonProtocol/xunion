@@ -59,7 +59,10 @@ const useApprove = ({
   const isApproved = useMemo(() => {
     if (isNativeToken(token)) return true;
     if (allowance && isNumeric(amount) && decimals) {
-      const amountIn = parseUnits(amount, decimals);
+      const amountIn = parseUnits(
+        formatNumber(Number(amount), 2).toString(),
+        decimals
+      );
       return allowance > amountIn;
     }
     return false;
@@ -73,7 +76,7 @@ const useApprove = ({
       functionName: 'approve',
       args: [
         spenderAddress,
-        parseUnits((formatNumber(Number(amount), 4) * hf).toString(), decimals),
+        parseUnits((formatNumber(Number(amount), 2) * hf).toString(), decimals),
       ],
     }).finally(() => {
       setApproveLoading(false);
