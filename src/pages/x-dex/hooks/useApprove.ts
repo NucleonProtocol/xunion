@@ -1,6 +1,6 @@
 import { Address, erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
-import { parseUnits } from 'ethers';
+import { formatUnits, parseUnits } from 'ethers';
 import { useMemo, useState } from 'react';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { Token } from '@/types/swap.ts';
@@ -39,6 +39,7 @@ const useApprove = ({
       enabled: !!token?.address && !isNative,
     },
   });
+  console.log(allowance, isAllowanceLoading);
   const { data: decimals, isLoading: isDecimalsLoading } = useReadContract({
     address: token?.address as Address,
     abi: erc20Abi,
@@ -53,31 +54,33 @@ const useApprove = ({
     loading: isWriteLoading,
     isSubmittedLoading,
   } = useXWriteContract({
-    onWriteSuccess: refetch,
+    onSoftWriteSuccess: () => {
+      refetch();
+    },
     forceReload: false,
   });
   const isApproved = useMemo(() => {
     if (isNativeToken(token)) return true;
     if (allowance && isNumeric(amount) && decimals) {
-      const amountIn = parseUnits(
-        formatNumber(Number(amount), 2).toString(),
-        decimals
-      );
-      return allowance > amountIn;
+      return Number(formatUnits(allowance, decimals)) > Number(amount);
     }
     return false;
   }, [allowance, amount, decimals, token]);
 
   const approve = () => {
     setApproveLoading(true);
+
+    const amountIn = (
+      formatNumber(Number(amount) < 0.0001 ? 0.001 : Number(amount), 4) *
+      hf *
+      10 ** (decimals || 18)
+    ).toFixed(0);
+
     writeContractAsync({
       address: token?.address as Address,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [
-        spenderAddress,
-        parseUnits((formatNumber(Number(amount), 2) * hf).toString(), decimals),
-      ],
+      args: [spenderAddress, amountIn as unknown as bigint],
     }).finally(() => {
       setApproveLoading(false);
     });

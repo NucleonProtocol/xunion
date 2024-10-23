@@ -11,12 +11,14 @@ const useXWriteContract = ({
   onWriteSuccess,
   onError,
   forceReload = true,
+  onSoftWriteSuccess,
 }: {
   showSubmittedModal?: boolean;
   globalNotice?: boolean;
   pendingPool?: boolean;
   onSubmitted?: (hash: string) => void;
   onWriteSuccess?: (e: any) => void;
+  onSoftWriteSuccess?: (e: any) => void;
   onError?: (e: WriteContractErrorType) => void;
   forceReload?: boolean;
 }) => {
@@ -73,6 +75,7 @@ const useXWriteContract = ({
       if (!forceReload) {
         onWriteSuccess?.(writeEvent);
       }
+      onSoftWriteSuccess?.(writeEvent);
     }
   }, [isSuccess, hash, globalNotice]);
 
