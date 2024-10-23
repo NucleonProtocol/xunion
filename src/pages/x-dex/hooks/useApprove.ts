@@ -6,13 +6,12 @@ import { isNumeric } from '@/utils/isNumeric.ts';
 import { Token } from '@/types/swap.ts';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
-import { formatNumber } from '@/utils';
 
 const useApprove = ({
   token,
   amount,
   spenderAddress,
-  hf = 1.1,
+  hf = 1.01,
 }: {
   token: Token;
   amount: string;
@@ -39,7 +38,6 @@ const useApprove = ({
       enabled: !!token?.address && !isNative,
     },
   });
-  console.log(allowance, isAllowanceLoading);
   const { data: decimals, isLoading: isDecimalsLoading } = useReadContract({
     address: token?.address as Address,
     abi: erc20Abi,
@@ -69,18 +67,19 @@ const useApprove = ({
 
   const approve = () => {
     setApproveLoading(true);
-
-    const amountIn = (
-      formatNumber(Number(amount) < 0.0001 ? 0.001 : Number(amount), 4) *
-      hf *
-      10 ** (decimals || 18)
-    ).toFixed(0);
+    const amountIn = BigInt(
+      (Math.ceil(
+        (Number(amount) < 0.0001 ? 0.001 : Number(amount) * hf) * 10000
+      ) /
+        10000) *
+        10 ** (decimals || 18)
+    );
 
     writeContractAsync({
       address: token?.address as Address,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [spenderAddress, amountIn as unknown as bigint],
+      args: [spenderAddress, amountIn],
     }).finally(() => {
       setApproveLoading(false);
     });
