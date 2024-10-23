@@ -12,7 +12,7 @@ const useApprove = ({
   token,
   amount,
   spenderAddress,
-  hf = 1.001,
+  hf = 1.1,
 }: {
   token: Token;
   amount: string;
