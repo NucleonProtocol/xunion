@@ -1,6 +1,6 @@
 import { Address, erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
-import { formatUnits, parseUnits } from 'ethers';
+import { formatUnits } from 'ethers';
 import { useMemo, useState } from 'react';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import { Token } from '@/types/swap.ts';
