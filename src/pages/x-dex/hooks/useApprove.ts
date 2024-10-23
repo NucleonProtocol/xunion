@@ -60,7 +60,10 @@ const useApprove = ({
   const isApproved = useMemo(() => {
     if (isNativeToken(token)) return true;
     if (allowance && isNumeric(amount) && decimals) {
-      return Number(formatUnits(allowance, decimals)) > Number(amount);
+      return (
+        Number(formatUnits(allowance, decimals)) > Number(amount) ||
+        Number(formatUnits(allowance, decimals)) == Number(amount)
+      );
     }
     return false;
   }, [allowance, amount, decimals, token]);
