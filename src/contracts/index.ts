@@ -13,7 +13,7 @@ export const XUNION_LENDING_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0xC28A0796975f0DC1a02D95812dA5c88C9F2174b5',
+    address: '0x03C8a0B004b06d31bE5C65CE71170eCc5f8476FF',
     abi: LendingInterfaceABI,
   },
 };
