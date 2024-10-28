@@ -208,6 +208,8 @@
   "x-lending.market.supplied": "所有儲備資產",
   "x-lending.market.borrow.variable": "借貸收益率, 可變的",
   "x-lending.market.supply.variable": "存儲收益率, 可變的",
+  "x-lending.market.borrow.apy": "借貸收益率",
+  "x-lending.market.supply.apy": "存儲收益率",
   "x-lending.market.risk.tip": "隔離的",
   "x-lending.market.detail.size": "儲備規模",
   "x-lending.market.detail.available": "可用流動性",

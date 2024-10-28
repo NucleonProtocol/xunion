@@ -208,6 +208,8 @@
   "x-lending.market.supplied": "Total supplied",
   "x-lending.market.borrow.variable": "Borrow APY, variable",
   "x-lending.market.supply.variable": "Supply APY, variable",
+  "x-lending.market.borrow.apy": "Borrow APY",
+  "x-lending.market.supply.apy": "Supply APY",
   "x-lending.market.risk.tip": "Isolated",
   "x-lending.market.detail.size": "Reserve size",
   "x-lending.market.detail.available": "Available liquidity",

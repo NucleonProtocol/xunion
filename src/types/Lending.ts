@@ -32,3 +32,9 @@ export interface LendingAssetInterest {
   loan_interest: string;
   token: Token;
 }
+
+export interface EstimatedHealthFactor {
+  healthFactor: string;
+  borrowInterest: string;
+  supplyInterest: string;
+}

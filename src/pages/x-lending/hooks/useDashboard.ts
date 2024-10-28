@@ -147,7 +147,6 @@ const useDashboard = () => {
                   Number(formatUnits(depositAmounts[index])),
                   6
                 );
-                console.log(lendingAmounts[index]);
                 const lendingAmount = formatNumber(
                   Number(formatUnits(lendingAmounts[index])) < 0.00001 &&
                     0 < Number(formatUnits(lendingAmounts[index]))
