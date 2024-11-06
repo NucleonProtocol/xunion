@@ -23,13 +23,12 @@ const useHealthFactor = (asset: LendingAsset) => {
           mode
         )
         .then((factor) => {
-          console.log(factor);
           return {
             healthFactor: formatUnits(factor[0], 18),
             supplyInterest:
-              formatNumber(Number(String(factor[1][0])) / 10000, 2) + '%',
+              formatNumber(Number(String(factor[1][0])) / 100, 2) + '%',
             borrowInterest:
-              formatNumber(Number(String(factor[1][1])) / 10000, 2) + '%',
+              formatNumber(Number(String(factor[1][1])) / 100, 2) + '%',
           };
         });
     }
