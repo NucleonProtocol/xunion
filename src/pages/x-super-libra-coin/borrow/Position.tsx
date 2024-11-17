@@ -91,7 +91,8 @@ const Position = ({
               <Button
                 type="primary"
                 shape="round"
-                disabled={!userAvailableAmount}
+                // disabled={!userAvailableAmount}
+                disabled={true}
                 onClick={() => {
                   setBorrowOpen(true);
                 }}

@@ -41,7 +41,7 @@ export const XUNION_SLC_CONTRACT: Record<
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
-    address: '0xE68e282127c555B2b806d9BFD9EC1D4619A40e50',
+    address: '0xabD9999dE5De626Af8Bb224c700b87D3954273AF',
     abi: SLCInterfaceABI,
   },
   oracle: {
