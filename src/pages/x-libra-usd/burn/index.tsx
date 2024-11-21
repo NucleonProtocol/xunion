@@ -1,4 +1,4 @@
-import TokenInput from '@/components/TokenInput.tsx';
+import TokenInput from '@/components/XUSDTokenInput.tsx';
 import { ArrowDownOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import SwapInfo from '@/pages/x-super-libra-coin/mint/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
@@ -104,6 +104,12 @@ function BurnSLC() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center pt-[40px]   max-md:pt-[40px]">
       <div className="mt-[30px] min-h-[420px] w-full  flex-1 rounded-[20px] bg-fill-niubi p-[20px] max-md:min-w-[300px] md:min-w-[500px]">
+        <div className="flex flex-col gap-[10px]">
+          <span className="text-[16px] font-[500]">Burn xUSD</span>
+          <span className="text-[12px] text-theme">
+            1 xUSD = 1.0001 USDC ($1)
+          </span>
+        </div>
         <div className="mt-[20px]">
           <TokenInput
             editable
@@ -124,7 +130,7 @@ function BurnSLC() {
           </div>
           <TokenInput
             title={t('x-dex.swap.input.receive')}
-            editable
+            editable={false}
             token={outputToken}
             onTokenChange={setOutputToken}
             amount={receiveAmount}

@@ -8,18 +8,18 @@ import {
   XUNION_SWAP_CONTRACT,
 } from '@/contracts';
 import useLP from '@/pages/x-dex/hooks/useLP.ts';
+import useCalcBurnAmount from './useCalcBurnAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
 import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { parseUnits } from 'ethers';
-import useCalcMintAmount from '@/pages/x-super-libra-coin/hooks/useCalcMintAmount.ts';
 
-const useMintSLC = () => {
+const useBurnSLC = () => {
   const { getBalance } = useErc20Balance();
-  const [inputToken, setInputToken] = useState<Token | undefined>();
-  const [outputToken] = useState<Token | undefined>(SLCToken);
+  const [inputToken] = useState<Token | undefined>(SLCToken);
+  const [outputToken, setOutputToken] = useState<Token | undefined>();
   const [payAmount, setPayAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [inputOwnerAmount, setInputOwnerAmount] = useState(0);
@@ -29,10 +29,8 @@ const useMintSLC = () => {
 
   const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
 
-  const { autoGetPayAmount, autoGetReceiveAmount } = useCalcMintAmount({
+  const { autoGetReceiveAmount } = useCalcBurnAmount({
     setIsInsufficientLiquidity,
-    setPayAmount,
-    setInputTokenTotalPrice,
     setReceiveAmount,
     setOutputTokenTotalPrice,
   });
@@ -46,11 +44,9 @@ const useMintSLC = () => {
     fromToken: outputToken,
     toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
   });
-
-  const { getLpPrice } = useLP();
-
   const { getRealAddress, isNativeToken, getNativeTokenBalance } =
     useNativeToken();
+  const { getLpPrice } = useLP();
 
   useEffect(() => {
     if (fromWithSLCPairAddress && payAmount) {
@@ -89,16 +85,14 @@ const useMintSLC = () => {
     }
   }, [outputToken]);
 
-  const onInputTokenChange = useCallback(
+  const onOutputTokenChange = useCallback(
     (token: Token) => {
-      setInputToken(token);
-      if (payAmount) {
-        autoGetReceiveAmount({ outputToken, inputToken: token, payAmount });
-      } else {
-        autoGetPayAmount({ outputToken, inputToken: token, receiveAmount });
+      setOutputToken(token);
+      if (!receiveAmount) {
+        autoGetReceiveAmount({ outputToken: token, inputToken, payAmount });
       }
     },
-    [outputToken?.address, receiveAmount]
+    [inputToken?.address, payAmount]
   );
 
   const onPayAmountChange = useCallback(
@@ -107,14 +101,6 @@ const useMintSLC = () => {
       autoGetReceiveAmount({ outputToken, inputToken, payAmount: value });
     },
     [inputToken?.address, outputToken?.address, receiveAmount]
-  );
-
-  const onReceiveAmountChange = useCallback(
-    (value: string) => {
-      setReceiveAmount(value);
-      autoGetPayAmount({ outputToken, inputToken, receiveAmount: value });
-    },
-    [inputToken?.address, outputToken?.address, payAmount]
   );
 
   const fromPairUnit = useMemo(() => {
@@ -131,6 +117,28 @@ const useMintSLC = () => {
         price: formatNumber(
           (Number(outputTokenTotalPrice) / Number(receiveAmount)) *
             Number(amount),
+          4
+        ),
+      };
+    }
+    return {
+      amount: 0,
+      price: 0,
+    };
+  }, [payAmount, receiveAmount, outputTokenTotalPrice, inputTokenTotalPrice]);
+
+  const toPairUnit = useMemo(() => {
+    if (
+      isNumeric(receiveAmount) &&
+      isNumeric(payAmount) &&
+      outputTokenTotalPrice &&
+      inputTokenTotalPrice
+    ) {
+      const amount = formatNumber(Number(payAmount) / Number(receiveAmount), 8);
+      return {
+        amount,
+        price: formatNumber(
+          (Number(inputTokenTotalPrice) / Number(payAmount)) * Number(amount),
           4
         ),
       };
@@ -167,25 +175,15 @@ const useMintSLC = () => {
   });
 
   const onConfirm = () => {
-    if (decimals && payAmount && inputToken) {
+    if (decimals && receiveAmount && outputToken) {
       const amountIn = parseUnits(payAmount, decimals);
       const { address, abi } = XUNION_SLC_CONTRACT.interface;
-      if (isNativeToken(inputToken)) {
-        writeContractAsync({
-          address: address as Address,
-          abi,
-          functionName: 'buySlcByCFX',
-          value: `${amountIn}` as unknown as bigint,
-          args: [],
-        });
-      } else {
-        writeContractAsync({
-          address: address as Address,
-          abi,
-          functionName: 'slcTokenBuy',
-          args: [inputToken?.address, amountIn],
-        });
-      }
+      writeContractAsync({
+        address: address as Address,
+        abi,
+        functionName: 'burnSLC',
+        args: [outputToken?.address, amountIn],
+      });
     }
   };
 
@@ -198,16 +196,16 @@ const useMintSLC = () => {
     outputOwnerAmount,
     outputTokenTotalPrice,
     inputTokenTotalPrice,
+    toPairUnit,
     fromPairUnit,
     isInsufficient,
     isReady,
     isInsufficientLiquidity,
     onConfirm,
-    setInputToken: onInputTokenChange,
+    setOutputToken: onOutputTokenChange,
     setPayAmount: onPayAmountChange,
-    setReceiveAmount: onReceiveAmountChange,
     isSubmittedLoading,
   };
 };
 
-export default useMintSLC;
+export default useBurnSLC;

@@ -61,8 +61,8 @@ const Nav = () => {
     {
       name: t('common.nav.x-super-libra-coin'),
       description: t('common.nav.x-super-libra-coin.description'),
-      path: '/x-super-libra-coin',
-      mather: (pathname: string) => pathname.includes('/x-super-libra-coin'),
+      path: '/x-libra-usd',
+      mather: (pathname: string) => pathname.includes('/x-libra-usd'),
       children: [],
     },
     {

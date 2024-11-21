@@ -10,9 +10,9 @@ import TokenDetail from '@/pages/x-dex/explore/TokenDetail.tsx';
 import TokenList from '@/pages/x-dex/explore/TokenList';
 import PoolList from '@/pages/x-dex/explore/PoolList';
 
-import MintSLC from 'src/pages/x-super-libra-coin/mint';
-import BurnSLC from 'src/pages/x-super-libra-coin/burn';
-import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
+// import MintSLC from 'src/pages/x-super-libra-coin/mint';
+// import BurnSLC from 'src/pages/x-super-libra-coin/burn';
+// import SLCBorrow from '@/pages/x-super-libra-coin/borrow';
 import XLibraUSD from '@/pages/x-libra-usd';
 import Dashboard from '@/pages/x-lending/dashboard';
 import Market from '@/pages/x-lending/market';
@@ -96,27 +96,6 @@ const routes = [
       {
         path: 'x-libra-usd',
         element: <XLibraUSD />,
-      },
-      {
-        path: 'x-super-libra-coin',
-        children: [
-          {
-            path: '',
-            element: <Navigate to="mint" replace />,
-          },
-          {
-            path: 'mint',
-            element: <MintSLC />,
-          },
-          {
-            path: 'burn',
-            element: <BurnSLC />,
-          },
-          {
-            path: 'borrow',
-            element: <SLCBorrow />,
-          },
-        ],
       },
       {
         path: 'x-lending',

@@ -9,56 +9,20 @@ import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useCalcBurnAmount = ({
   setIsInsufficientLiquidity,
-  setPayAmount,
-  setInputTokenTotalPrice,
   setReceiveAmount,
   setOutputTokenTotalPrice,
 }: {
   setIsInsufficientLiquidity: (value: boolean) => void;
-  setPayAmount: (value: string) => void;
   setReceiveAmount: (value: string) => void;
-  setInputTokenTotalPrice: (value: number) => void;
   setOutputTokenTotalPrice: (value: number) => void;
 }) => {
   const contract = useSLCContract();
 
   const { getRealAddress } = useNativeToken();
 
-  const getInputAmount = async (address: string, amount: string) => {
-    return await contract.slcTokenSellEstimateIn(address, amount);
-  };
-
   const getOutputAmount = async (address: string, amount: string) => {
-    return await contract.slcTokenSellEstimateOut(address, amount);
+    return await contract.burnSLCEst(address, amount);
   };
-  const autoGetPayAmount = useCallback(
-    ({
-      outputToken,
-      receiveAmount,
-    }: {
-      outputToken?: Token;
-      inputToken?: Token;
-      receiveAmount: string;
-    }) => {
-      setIsInsufficientLiquidity(false);
-      if (outputToken?.address && isNumeric(receiveAmount)) {
-        getInputAmount(
-          getRealAddress(outputToken!),
-          parseEther(receiveAmount).toString()
-        )
-          .then((amount) => {
-            const amountStr = formatEther(amount.toString());
-            setPayAmount(formatNumber(Number(amountStr), 8).toString());
-          })
-          .catch(() => {
-            setIsInsufficientLiquidity(true);
-            setPayAmount('');
-            setInputTokenTotalPrice(0);
-          });
-      }
-    },
-    []
-  );
 
   const autoGetReceiveAmount = useCallback(
     ({
@@ -90,7 +54,6 @@ const useCalcBurnAmount = ({
   );
 
   return {
-    autoGetPayAmount,
     autoGetReceiveAmount,
   };
 };

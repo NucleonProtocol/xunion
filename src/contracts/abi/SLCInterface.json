@@ -9,223 +9,22 @@
     "type": "fallback"
   },
   {
-    "inputs": [],
-    "name": "CFXPledge",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [
-      {
-        "internalType": "bool",
-        "name": "_TorF",
-        "type": "bool"
-      }
-    ],
-    "name": "acceptSetter",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "num",
-        "type": "uint256"
-      }
-    ],
-    "name": "assetsSerialNumber",
-    "outputs": [
       {
         "internalType": "address",
         "name": "",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "buySlcByCFX",
+    "name": "UserLatestBlockNumber",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "licensedAssetOverview",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "totalValueOfMortgagedAssets",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_slcSupply",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_slcValue",
+        "name": "",
         "type": "uint256"
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "licensedAssets",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "assetAddr",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maximumLTV",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "liquidationPenalty",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maxDepositAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "mortgagedAmountDisposed",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "mortgagedAmountReturned",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct iSlcVaults.licensedAsset",
-        "name": "asset",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "licensedAssetsPledge",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "obtainSLC",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "redeemCFX",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "redeemPledgedAssets",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "returnSLC",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "sellSlcToCFX",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -236,173 +35,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_superLibraCoin",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_slcVaults",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_wxCFX",
-        "type": "address"
-      }
-    ],
-    "name": "setup",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "slcTokenBuy",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "slcTokenBuyEstimateIn",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "inputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "slcTokenBuyEstimateOut",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "slcTokenSell",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "slcTokenSellEstimateIn",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "inputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "TokenAddr",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "slcTokenSellEstimateOut",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -435,6 +67,23 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "xInterface",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -450,26 +99,74 @@
   {
     "inputs": [
       {
+        "internalType": "bool",
+        "name": "_TorF",
+        "type": "bool"
+      }
+    ],
+    "name": "acceptSetter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
-        "name": "user",
+        "name": "_superLibraCoin",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_slcVaults",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_xInterface",
         "type": "address"
       }
     ],
-    "name": "userAssetOverview",
-    "outputs": [
+    "name": "setup",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
-        "internalType": "address[]",
-        "name": "tokens",
-        "type": "address[]"
+        "internalType": "address",
+        "name": "_USD1",
+        "type": "address"
       },
       {
-        "internalType": "uint256[]",
-        "name": "_amount",
-        "type": "uint256[]"
+        "internalType": "address",
+        "name": "_USD2",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_USD1_USD2_Lp",
+        "type": "address"
+      }
+    ],
+    "name": "setUSDAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTVLAndUSDAmount",
+    "outputs": [
+      {
+        "internalType": "uint256[2]",
+        "name": "_amountUSD",
+        "type": "uint256[2]"
       },
       {
         "internalType": "uint256",
-        "name": "SLCborrowed",
+        "name": "_TVL",
         "type": "uint256"
       }
     ],
@@ -484,17 +181,38 @@
         "type": "address"
       }
     ],
-    "name": "userMode",
+    "name": "getUserMintedAmount",
     "outputs": [
       {
-        "internalType": "uint8",
-        "name": "mode",
-        "type": "uint8"
-      },
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalMintedAmount",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "userSetAssets",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getSlcValue",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -503,23 +221,87 @@
   {
     "inputs": [
       {
-        "internalType": "uint8",
-        "name": "_mode",
-        "type": "uint8"
+        "internalType": "address",
+        "name": "_lp",
+        "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "_userModeAssetsAddress",
-        "type": "address"
+        "internalType": "uint256[2]",
+        "name": "_amountEstimated",
+        "type": "uint256[2]"
       }
     ],
-    "name": "userModeSetting",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "xLpSubscribeEst",
+    "outputs": [
+      {
+        "internalType": "uint256[2]",
+        "name": "_amountActual",
+        "type": "uint256[2]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amountLp",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "inputAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "mintSLCEst",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "outputAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lp",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amountLp",
+        "type": "uint256"
+      }
+    ],
+    "name": "xLpRedeemEst",
+    "outputs": [
+      {
+        "internalType": "uint256[2]",
+        "name": "_amount",
+        "type": "uint256[2]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
       {
         "internalType": "address",
         "name": "user",
@@ -529,112 +311,65 @@
         "internalType": "address",
         "name": "token",
         "type": "address"
+      }
+    ],
+    "name": "burnSLCEst",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "outputAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddr",
+        "type": "address"
       },
       {
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "operator",
-        "type": "bool"
       }
     ],
-    "name": "usersHealthFactorEstimate",
+    "name": "mintSLC",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "userHealthFactor",
+        "name": "outputAmount",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "user",
+        "name": "tokenAddr",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "usersRiskDetails",
+    "name": "burnSLC",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "userHealthFactor",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "userValueUsedRatio",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "userMaxUsedRatio",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenLiquidateRatio",
+        "name": "outputAmount",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "viewUsersHealthFactor",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "userHealthFactor",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "userAssetsValue",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "userBorrowedSLCAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "userAvailbleBorrowedSLCAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "wxCFX",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
   }
 ]
