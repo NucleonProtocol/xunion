@@ -76,9 +76,9 @@ const XLibraUSD = () => {
               </span>
             </div>
             <div className="mt-[10px] flex flex-col gap-[10px]">
-              <span className="text-tc-secondary">Current price</span>
+              <span className="text-tc-secondary">Current value</span>
               <span className="text-[16px] font-[500]">
-                {formatCurrency(slcPriceValue, true, 0)}
+                {formatCurrency(slcPriceValue, true, 6)}
               </span>
             </div>
           </InfoWrapper>
@@ -94,7 +94,7 @@ const XLibraUSD = () => {
                 </span>
               </div>
               <span className="text-[14px] text-tc-secondary">
-                {formatCurrency(userAmount * slcPriceValue, true, 0)}
+                {formatCurrency(userAmount * slcPriceValue, true, 4)}
               </span>
             </div>
             <div className="mt-[10px] text-[14px] text-tc-secondary">

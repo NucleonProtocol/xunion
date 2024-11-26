@@ -1,14 +1,13 @@
 import TokenInput from '@/components/XUSDTokenInput.tsx';
 import { ArrowDownOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import SwapInfo from '@/pages/x-super-libra-coin/mint/SwapInfo.tsx';
+import SwapInfo from '@/pages/x-libra-usd/mint/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
-import useNativeToken from '@/hooks/useNativeToken.ts';
-import useBurnSLC from '@/pages/x-super-libra-coin/hooks/useBurnSLC.ts';
+import useBurn from '@/pages/x-libra-usd/hooks/useBurn.ts';
 import { useTranslate } from '@/i18n';
 
 function BurnSLC() {
@@ -19,7 +18,6 @@ function BurnSLC() {
     payAmount,
     setPayAmount,
     receiveAmount,
-    setReceiveAmount,
     inputOwnerAmount,
     outputOwnerAmount,
     outputTokenTotalPrice,
@@ -28,10 +26,9 @@ function BurnSLC() {
     fromPairUnit,
     isInsufficient,
     isReady,
-    isInsufficientLiquidity,
     isSubmittedLoading,
     onConfirm,
-  } = useBurnSLC();
+  } = useBurn();
 
   const {
     isApproved: isTokenAApproved,
@@ -43,7 +40,6 @@ function BurnSLC() {
     spenderAddress: XUNION_SLC_CONTRACT.interface.address as Address,
   });
 
-  const { isNativeToken } = useNativeToken();
   const { t } = useTranslate();
   const { disabled } = useWalletAuth();
 
@@ -62,14 +58,8 @@ function BurnSLC() {
         </Button>
       );
     }
-    if (isInsufficientLiquidity) {
-      return (
-        <Button className="w-full" type="primary" size="large" disabled>
-          {t('common.error.insufficient.liquidity')}
-        </Button>
-      );
-    }
-    if (!isTokenAApproved && !isNativeToken(inputToken) && isReady) {
+
+    if (!isTokenAApproved && isReady) {
       return (
         <Button
           className="w-full"
@@ -91,9 +81,7 @@ function BurnSLC() {
         className="w-full"
         type="primary"
         size="large"
-        disabled={
-          !isReady || isInsufficient || isInsufficientLiquidity || !toPairUnit
-        }
+        disabled={!isReady || isInsufficient || !toPairUnit}
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
@@ -107,7 +95,7 @@ function BurnSLC() {
         <div className="flex flex-col gap-[10px]">
           <span className="text-[16px] font-[500]">Burn xUSD</span>
           <span className="text-[12px] text-theme">
-            1 xUSD = 1.0001 USDC ($1)
+            {/* 1 xUSD = 1.0001 USDC ($1) */}
           </span>
         </div>
         <div className="mt-[20px]">
@@ -134,7 +122,7 @@ function BurnSLC() {
             token={outputToken}
             onTokenChange={setOutputToken}
             amount={receiveAmount}
-            onAmountChange={setReceiveAmount}
+            onAmountChange={() => {}}
             disabledToken={inputToken}
             disabled={disabled}
             ownerAmount={outputOwnerAmount}

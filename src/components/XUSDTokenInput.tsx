@@ -4,6 +4,7 @@ import { cn } from '@/utils/classnames.ts';
 import { ChangeEvent } from 'react';
 import { useTranslate } from '@/i18n';
 import { Skeleton } from 'antd';
+import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 const TokenInput = ({
   title,
@@ -21,6 +22,7 @@ const TokenInput = ({
   amountLabel,
   showDropArrow = true,
   loading,
+  decimals = 6,
 }: {
   title: string;
   editable?: boolean;
@@ -37,6 +39,7 @@ const TokenInput = ({
   amountLabel?: string;
   showDropArrow?: boolean;
   loading?: boolean;
+  decimals?: number;
 }) => {
   const { t } = useTranslate();
   const label = amountLabel || t('x-dex.swap.token.balance');
@@ -89,7 +92,7 @@ const TokenInput = ({
           {token?.address && (
             <>
               <span className="text-tc-secondary">
-                {label}: {ownerAmount}
+                {label}: {formatNumber(ownerAmount, decimals)}
               </span>
               {onMax && ownerAmount > 0 && (
                 <div

@@ -5,20 +5,13 @@ import { formatEther, parseEther } from 'ethers';
 import { formatNumber } from '@/hooks/useErc20Balance.ts';
 
 import { isNumeric } from '@/utils/isNumeric.ts';
-import useNativeToken from '@/hooks/useNativeToken.ts';
 
 const useCalcMintAmount = ({
-  setIsInsufficientLiquidity,
   setReceiveAmount,
-  setOutputTokenTotalPrice,
 }: {
-  setIsInsufficientLiquidity: (value: boolean) => void;
   setReceiveAmount: (value: string) => void;
-  setOutputTokenTotalPrice: (value: number) => void;
 }) => {
   const contract = useSLCContract();
-
-  const { getRealAddress } = useNativeToken();
 
   const getOutputAmount = async (address: string, amount: string) => {
     return await contract.mintSLCEst(address, amount);
@@ -33,20 +26,14 @@ const useCalcMintAmount = ({
       inputToken?: Token;
       payAmount: string;
     }) => {
-      setIsInsufficientLiquidity(false);
       if (inputToken?.address && isNumeric(payAmount)) {
-        getOutputAmount(
-          getRealAddress(inputToken!),
-          parseEther(payAmount).toString()
-        )
+        getOutputAmount(inputToken.address, parseEther(payAmount).toString())
           .then((amount) => {
             const amountStr = formatEther(amount.toString());
             setReceiveAmount(formatNumber(Number(amountStr), 8).toString());
           })
           .catch(() => {
-            setIsInsufficientLiquidity(true);
             setReceiveAmount('');
-            setOutputTokenTotalPrice(0);
           });
       }
     },

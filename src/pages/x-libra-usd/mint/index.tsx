@@ -1,14 +1,13 @@
-import useMintSLC from '@/pages/x-super-libra-coin/hooks/useMintSLC.ts';
+import useMintSLC from '@/pages/x-libra-usd/hooks/useMint.ts';
 import TokenInput from '@/components/XUSDTokenInput.tsx';
 import { ArrowDownOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import SwapInfo from '@/pages/x-super-libra-coin/mint/SwapInfo.tsx';
+import SwapInfo from '@/pages/x-libra-usd/mint/SwapInfo.tsx';
 import WithAuthButton from '@/components/Wallet/WithAuthButton.tsx';
 import { Button } from 'antd';
 import useWalletAuth from '@/components/Wallet/useWalletAuth.ts';
 import useApprove from '@/pages/x-dex/hooks/useApprove.ts';
 import { XUNION_SLC_CONTRACT } from '@/contracts';
 import { Address } from 'viem';
-import useNativeToken from '@/hooks/useNativeToken.ts';
 import { useTranslate } from '@/i18n';
 
 function MintSLC() {
@@ -19,7 +18,6 @@ function MintSLC() {
     payAmount,
     setPayAmount,
     receiveAmount,
-    setReceiveAmount,
     inputOwnerAmount,
     outputOwnerAmount,
     outputTokenTotalPrice,
@@ -27,7 +25,6 @@ function MintSLC() {
     fromPairUnit,
     isInsufficient,
     isReady,
-    isInsufficientLiquidity,
     isSubmittedLoading,
     onConfirm,
   } = useMintSLC();
@@ -43,8 +40,6 @@ function MintSLC() {
   });
 
   const { t } = useTranslate();
-
-  const { isNativeToken } = useNativeToken();
 
   const { disabled } = useWalletAuth();
 
@@ -63,14 +58,8 @@ function MintSLC() {
         </Button>
       );
     }
-    if (isInsufficientLiquidity) {
-      return (
-        <Button className="w-full" type="primary" size="large" disabled>
-          {t('common.error.insufficient.liquidity')}
-        </Button>
-      );
-    }
-    if (!isTokenAApproved && !isNativeToken(inputToken) && isReady) {
+
+    if (!isTokenAApproved && isReady) {
       return (
         <Button
           className="w-full"
@@ -92,7 +81,7 @@ function MintSLC() {
         className="w-full"
         type="primary"
         size="large"
-        disabled={!isReady || isInsufficient || isInsufficientLiquidity}
+        disabled={!isReady || isInsufficient}
         onClick={onConfirm}
         loading={isSubmittedLoading}
       >
@@ -106,7 +95,7 @@ function MintSLC() {
         <div className="flex flex-col gap-[10px]">
           <span className="text-[16px] font-[500]">Mint xUSD</span>
           <span className="text-[12px] text-theme">
-            1 USDC = 1.0001 xUSD ($0.9999)
+            {/* 1 USDC = 1.0001 xUSD ($0.9999) */}
           </span>
         </div>
         <div className="mt-[20px]">
@@ -136,7 +125,7 @@ function MintSLC() {
             token={outputToken}
             onTokenChange={() => {}}
             amount={receiveAmount}
-            onAmountChange={setReceiveAmount}
+            onAmountChange={() => {}}
             disabled
             ownerAmount={outputOwnerAmount}
             totalPrice={outputTokenTotalPrice}

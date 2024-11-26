@@ -21,8 +21,6 @@ const ModalContent = ({
   const { tokens, loading } = useXUSDWithPrice();
   const { addToken } = useAddToken();
 
-  const { t } = useTranslate();
-
   return (
     <div className="h-[200px] overflow-y-auto">
       <Spin indicator={<SpinIcon />} spinning={loading}>

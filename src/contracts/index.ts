@@ -64,7 +64,7 @@ export const XUNION_SLC_CONTRACT: Record<
 > = {
   // testnet
   interface: {
-    address: '0x2bDeab5D4664Fa5602De7e0e7d3416AFF44aa12D',
+    address: '0xcFB7069024B006F3c1d9C0C67a6aB0c4740f8bB7',
     abi: SLCInterfaceABI,
   },
   // // main

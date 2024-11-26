@@ -1,13 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Token } from '@/types/swap.ts';
 import useErc20Balance, { formatNumber } from '@/hooks/useErc20Balance.ts';
-import usePair from '@/pages/x-dex/hooks/usePair.ts';
-import {
-  SLCToken,
-  XUNION_SLC_CONTRACT,
-  XUNION_SWAP_CONTRACT,
-} from '@/contracts';
-import useLP from '@/pages/x-dex/hooks/useLP.ts';
+import { SLCToken, XUNION_SLC_CONTRACT } from '@/contracts';
 import useCalcBurnAmount from './useCalcBurnAmount.ts';
 import { isNumeric } from '@/utils/isNumeric.ts';
 import useXWriteContract from '@/hooks/useXWriteContract.ts';
@@ -15,6 +9,8 @@ import { Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import useNativeToken from '@/hooks/useNativeToken.ts';
 import { parseUnits } from 'ethers';
+import useSLCContract from '@/hooks/useSLCContract.ts';
+import { formatUnits } from 'ethers';
 
 const useBurnSLC = () => {
   const { getBalance } = useErc20Balance();
@@ -26,45 +22,32 @@ const useBurnSLC = () => {
   const [outputOwnerAmount, setOutputOwnerAmount] = useState(0);
   const [inputTokenTotalPrice, setInputTokenTotalPrice] = useState(0);
   const [outputTokenTotalPrice, setOutputTokenTotalPrice] = useState(0);
-
-  const [isInsufficientLiquidity, setIsInsufficientLiquidity] = useState(false);
+  const contract = useSLCContract();
 
   const { autoGetReceiveAmount } = useCalcBurnAmount({
-    setIsInsufficientLiquidity,
     setReceiveAmount,
-    setOutputTokenTotalPrice,
   });
 
-  const { pairAddress: fromWithSLCPairAddress } = usePair({
-    fromToken: inputToken,
-    toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
-  });
+  useEffect(() => {
+    contract.getSlcValue().then((value) => {
+      const unitPrice = Number(formatUnits(value));
+      setInputTokenTotalPrice(
+        formatNumber(Number(payAmount || 0) * unitPrice, 2)
+      );
+    });
+  }, [payAmount]);
 
-  const { pairAddress: toWithSLCPairAddress } = usePair({
-    fromToken: outputToken,
-    toToken: { address: XUNION_SWAP_CONTRACT.slc.address },
-  });
+  useEffect(() => {
+    contract.getSlcValue().then((value) => {
+      const unitPrice = Number(formatUnits(value));
+      setOutputTokenTotalPrice(
+        formatNumber(Number(receiveAmount || 0) * unitPrice, 2)
+      );
+    });
+  }, [receiveAmount]);
+
   const { getRealAddress, isNativeToken, getNativeTokenBalance } =
     useNativeToken();
-  const { getLpPrice } = useLP();
-
-  useEffect(() => {
-    if (fromWithSLCPairAddress && payAmount) {
-      getLpPrice(fromWithSLCPairAddress).then((unitPrice) => {
-        setInputTokenTotalPrice(formatNumber(Number(payAmount) * unitPrice, 2));
-      });
-    }
-  }, [fromWithSLCPairAddress, payAmount]);
-
-  useEffect(() => {
-    if (toWithSLCPairAddress && receiveAmount) {
-      getLpPrice(toWithSLCPairAddress).then((unitPrice) => {
-        setOutputTokenTotalPrice(
-          formatNumber(Number(receiveAmount) * unitPrice, 2)
-        );
-      });
-    }
-  }, [toWithSLCPairAddress, receiveAmount]);
 
   useEffect(() => {
     if (inputToken?.address) {
@@ -88,7 +71,7 @@ const useBurnSLC = () => {
   const onOutputTokenChange = useCallback(
     (token: Token) => {
       setOutputToken(token);
-      if (!receiveAmount) {
+      if (payAmount) {
         autoGetReceiveAmount({ outputToken: token, inputToken, payAmount });
       }
     },
@@ -98,9 +81,13 @@ const useBurnSLC = () => {
   const onPayAmountChange = useCallback(
     (value: string) => {
       setPayAmount(value);
-      autoGetReceiveAmount({ outputToken, inputToken, payAmount: value });
+      if (!value) {
+        setReceiveAmount('');
+      } else {
+        autoGetReceiveAmount({ outputToken, inputToken, payAmount: value });
+      }
     },
-    [inputToken?.address, outputToken?.address, receiveAmount]
+    [outputToken?.address]
   );
 
   const fromPairUnit = useMemo(() => {
@@ -200,7 +187,6 @@ const useBurnSLC = () => {
     fromPairUnit,
     isInsufficient,
     isReady,
-    isInsufficientLiquidity,
     onConfirm,
     setOutputToken: onOutputTokenChange,
     setPayAmount: onPayAmountChange,
