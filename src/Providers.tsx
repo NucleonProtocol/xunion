@@ -26,6 +26,7 @@ import { CHAINS } from '@/contracts/chains.tsx';
 import useSwapContract from './hooks/useSwapContract';
 import { useCommonStore } from './store/common';
 
+
 const Routes = () => useRoutes(routes);
 
 const config = createConfig({
