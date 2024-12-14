@@ -6,7 +6,6 @@ import LendingInterfaceABI from './abi/LendingInterface.json';
 import { Abi, Address, erc20Abi, isAddress } from 'viem';
 import { getAddress, InterfaceAbi } from 'ethers';
 import { Token } from '@/types/swap.ts';
-import { CHAIN_ID } from '@/components/Wallet/useWalletAuth.ts';
 
 export const XUNION_LENDING_CONTRACT: Record<
   'interface',
@@ -26,52 +25,52 @@ export const XUNION_SWAP_CONTRACT: Record<
     address: '0xC00FBD5bbEF47185A6BB0CBea6DcE755fcD718b1',
     abi: SwapInterfaceABI,
   },
-  // // main
-  // slc: {
-  //   address: '0xF65050e2AC003569a4b18E612B86CC833afE5960',
-  //   abi: erc20Abi,
-  // },
-  // // main
-  // usdt: {
-  //   address: '0xfe97E85d13ABD9c1c33384E796F10B73905637cE',
-  //   abi: erc20Abi,
-  // },
-  // // main
-  // usdc: {
-  //   address: '0x6963EfED0aB40F6C3d7BdA44A05dcf1437C44372',
-  //   abi: erc20Abi,
-  // },
-  // testnet
+  // main
   slc: {
-    address: '0x8c4B892AF3655eAE24cf426c4D242Ab95bc3903D',
+    address: '0xF65050e2AC003569a4b18E612B86CC833afE5960',
     abi: erc20Abi,
   },
-  // testnet
+  // main
   usdt: {
-    address: '0x27Fc32d2AD515c9AFE5e6c8434B32053ce0b042B',
+    address: '0xfe97e85d13abd9c1c33384e796f10b73905637ce',
     abi: erc20Abi,
   },
-  // testnet
+  // main
   usdc: {
-    address: '0xcB12b404c3Ed1bB67d9Bd6ca044283497a8eB18a',
+    address: '0x6963efed0ab40f6c3d7bda44a05dcf1437c44372',
     abi: erc20Abi,
   },
+  // // testnet
+  // slc: {
+  //   address: '0x8c4B892AF3655eAE24cf426c4D242Ab95bc3903D',
+  //   abi: erc20Abi,
+  // },
+  // // testnet
+  // usdt: {
+  //   address: '0x27Fc32d2AD515c9AFE5e6c8434B32053ce0b042B',
+  //   abi: erc20Abi,
+  // },
+  // // testnet
+  // usdc: {
+  //   address: '0xcB12b404c3Ed1bB67d9Bd6ca044283497a8eB18a',
+  //   abi: erc20Abi,
+  // },
 };
 
 export const XUNION_SLC_CONTRACT: Record<
   'interface' | 'oracle' | 'mutilCall',
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
-  // testnet
-  interface: {
-    address: '0xcFB7069024B006F3c1d9C0C67a6aB0c4740f8bB7',
-    abi: SLCInterfaceABI,
-  },
-  // // main
+  // // testnet
   // interface: {
-  //   address: '',
+  //   address: '0xcFB7069024B006F3c1d9C0C67a6aB0c4740f8bB7',
   //   abi: SLCInterfaceABI,
   // },
+  // main
+  interface: {
+    address: '0xD093AbDEb9dB6555D406C9250Ba10c461479CaDB',
+    abi: SLCInterfaceABI,
+  },
   oracle: {
     address: '0x280fC0D155ABf8cdD5341c9e7CbED669E9A3D466',
     abi: iSlcOracleABI,
@@ -111,7 +110,8 @@ export const SLCToken: Token = {
   address: XUNION_SWAP_CONTRACT.slc.address,
   symbol: 'xUSD',
   decimals: 18,
-  chainId: CHAIN_ID,
+  chainId: 1_030,
+  // chainId: 71,
   name: 'X Libra USD',
   icon: 'https://espacemainnetapi.xunion.io/coin/xUSD.png',
 };

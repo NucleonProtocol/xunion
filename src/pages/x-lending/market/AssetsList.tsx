@@ -117,7 +117,9 @@ const AssetsList = ({
             type="text"
             className="text-left text-primary "
             onClick={() => {
-              navigate(`/x-lending/market/${record.token.address}?chainId=71`);
+              navigate(
+                `/x-lending/market/${record.token.address}?chainId=1_030`
+              );
             }}
             icon={<EyeOutlined />}
           />

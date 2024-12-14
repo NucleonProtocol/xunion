@@ -2,9 +2,7 @@ import { useAccount } from 'wagmi';
 import { usePersistStore } from '@/store/persist.ts';
 import { BUTTON_ACCESS } from '@/types/auth.ts';
 import { useMemo } from 'react';
-
-export const CHAIN_ID = 71; //eSpace testnet  71/ main 1_030
-// export const CHAIN_ID = 1_030; //eSpace testnet  71/ main 1_030
+import useEnv from '@/hooks/useEnv.ts';
 
 const useWalletAuth = (
   access: BUTTON_ACCESS[] = [BUTTON_ACCESS.CONNECTED, BUTTON_ACCESS.CHAIN]
@@ -12,6 +10,7 @@ const useWalletAuth = (
   const { isConnected } = useAccount();
   const { address, chainId } = useAccount();
   const wallet = usePersistStore((state) => state.wallet);
+  const { CHAIN_ID } = useEnv();
 
   const walletConnected = useMemo(
     () =>

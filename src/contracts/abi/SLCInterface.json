@@ -9,75 +9,6 @@
     "type": "fallback"
   },
   {
-    "inputs": [],
-    "name": "setter",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "slcVaults",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "superLibraCoin",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "xInterface",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_set",
-        "type": "address"
-      }
-    ],
-    "name": "transferSetter",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bool",
@@ -94,46 +25,61 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_superLibraCoin",
+        "name": "tokenAddr",
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "_slcVaults",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_xInterface",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "setup",
-    "outputs": [],
+    "name": "burnSLC",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "outputAmount",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_USD1",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       },
       {
         "internalType": "address",
-        "name": "_USD2",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_USD1_USD2_Lp",
+        "name": "token",
         "type": "address"
       }
     ],
-    "name": "setUSDAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "burnSLCEst",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "outputAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getSlcValue",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -148,6 +94,19 @@
       {
         "internalType": "uint256",
         "name": "_TVL",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalMintedAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
         "type": "uint256"
       }
     ],
@@ -175,125 +134,11 @@
   },
   {
     "inputs": [],
-    "name": "getTotalMintedAmount",
+    "name": "getV1MintedCoin",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getSlcValue",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_lp",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[2]",
-        "name": "_amountEstimated",
-        "type": "uint256[2]"
-      }
-    ],
-    "name": "xLpSubscribeEst",
-    "outputs": [
-      {
-        "internalType": "uint256[2]",
-        "name": "_amountActual",
-        "type": "uint256[2]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amountLp",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "inputAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "mintSLCEst",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_lp",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amountLp",
-        "type": "uint256"
-      }
-    ],
-    "name": "xLpRedeemEst",
-    "outputs": [
-      {
-        "internalType": "uint256[2]",
-        "name": "_amount",
-        "type": "uint256[2]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "burnSLCEst",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "outputAmount",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -328,16 +173,16 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "tokenAddr",
+        "name": "token",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "inputAmount",
         "type": "uint256"
       }
     ],
-    "name": "burnSLC",
+    "name": "mintSLCEst",
     "outputs": [
       {
         "internalType": "uint256",
@@ -345,7 +190,122 @@
         "type": "uint256"
       }
     ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_USD1",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_USD2",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_USD1_USD2_Lp",
+        "type": "address"
+      }
+    ],
+    "name": "setUSDAddress",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "setter",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_superLibraCoin",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_slcVaults",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_xInterface",
+        "type": "address"
+      }
+    ],
+    "name": "setup",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slcVaults",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "superLibraCoin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_set",
+        "type": "address"
+      }
+    ],
+    "name": "transferSetter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "xInterface",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]
