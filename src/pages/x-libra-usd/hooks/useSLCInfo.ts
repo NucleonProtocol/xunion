@@ -25,6 +25,13 @@ const useSLCInfo = () => {
   } = useMutation({
     mutationFn: () => contract.getTotalMintedAmount(),
   });
+  const {
+    mutate: getTotalMintedAmountV1,
+    isPending: isGettingTotalMintedAmountV1,
+    data: totalMintedAmountV1,
+  } = useMutation({
+    mutationFn: () => contract.getV1MintedCoin(),
+  });
 
   const {
     mutate: getSlcValue,
@@ -45,6 +52,7 @@ const useSLCInfo = () => {
   useEffect(() => {
     getTVLAndUSDAmount();
     getTotalMintedAmount();
+    getTotalMintedAmountV1();
     getSlcValue();
   }, []);
 
@@ -58,7 +66,8 @@ const useSLCInfo = () => {
     isGettingTVLAndUSDAmount ||
     isGettingTotalMintedAmount ||
     isGettingSlcValue ||
-    isGettingUserMintedAmount;
+    isGettingUserMintedAmount ||
+    isGettingTotalMintedAmountV1;
 
   const tvl = useMemo(() => {
     return Number(
@@ -84,6 +93,12 @@ const useSLCInfo = () => {
     );
   }, [totalMintedAmount]);
 
+  const totalAmountV1 = useMemo(() => {
+    return Number(
+      formatNumber(Number(formatUnits(totalMintedAmountV1 || 0n, 18)), 2)
+    );
+  }, [totalMintedAmountV1]);
+
   const userAmount = useMemo(() => {
     return Number(
       formatNumber(Number(formatUnits(userMintedAmount || 0n, 18)), 2)
@@ -97,6 +112,7 @@ const useSLCInfo = () => {
   return {
     isLoading,
     totalAmount,
+    totalAmountV1,
     tvl,
     usdtAmount,
     usdcAmount,

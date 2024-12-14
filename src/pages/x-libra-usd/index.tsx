@@ -36,6 +36,7 @@ const XLibraUSD = () => {
     usdcAmount,
     userAmount,
     slcPriceValue,
+    totalAmountV1,
   } = useSLCInfo();
 
   return (
@@ -74,8 +75,11 @@ const XLibraUSD = () => {
               <span className="text-[24px] font-[500]">
                 {formatCurrency(totalAmount, false, 0)}
               </span>
+              <span className="text-[14px] text-tc-secondary">
+                ( v1 minted {formatCurrency(totalAmountV1, false, 0)})
+              </span>
             </div>
-            <div className="mt-[10px] flex flex-col gap-[10px]">
+            <div className="mt-[10px] flex flex-col gap-[5px]">
               <span className="text-tc-secondary">Current value</span>
               <span className="text-[16px] font-[500]">
                 {formatCurrency(slcPriceValue, true, 6)}
