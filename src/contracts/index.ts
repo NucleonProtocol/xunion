@@ -19,19 +19,41 @@ export const XUNION_LENDING_CONTRACT: Record<
 };
 
 export const XUNION_SWAP_CONTRACT: Record<
-  'interface' | 'slc' | 'usdt',
+  'interface' | 'slc' | 'usdt' | 'usdc',
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
   interface: {
     address: '0xC00FBD5bbEF47185A6BB0CBea6DcE755fcD718b1',
     abi: SwapInterfaceABI,
   },
+  // // main
+  // slc: {
+  //   address: '0xF65050e2AC003569a4b18E612B86CC833afE5960',
+  //   abi: erc20Abi,
+  // },
+  // // main
+  // usdt: {
+  //   address: '0xfe97E85d13ABD9c1c33384E796F10B73905637cE',
+  //   abi: erc20Abi,
+  // },
+  // // main
+  // usdc: {
+  //   address: '0x6963EfED0aB40F6C3d7BdA44A05dcf1437C44372',
+  //   abi: erc20Abi,
+  // },
+  // testnet
   slc: {
-    address: '0xF65050e2AC003569a4b18E612B86CC833afE5960',
+    address: '0x8c4B892AF3655eAE24cf426c4D242Ab95bc3903D',
     abi: erc20Abi,
   },
+  // testnet
   usdt: {
-    address: '0xfe97E85d13ABD9c1c33384E796F10B73905637cE',
+    address: '0x27Fc32d2AD515c9AFE5e6c8434B32053ce0b042B',
+    abi: erc20Abi,
+  },
+  // testnet
+  usdc: {
+    address: '0xcB12b404c3Ed1bB67d9Bd6ca044283497a8eB18a',
     abi: erc20Abi,
   },
 };
@@ -40,10 +62,16 @@ export const XUNION_SLC_CONTRACT: Record<
   'interface' | 'oracle' | 'mutilCall',
   { address: Address; abi: InterfaceAbi | Abi | any }
 > = {
+  // testnet
   interface: {
-    address: '0xE68e282127c555B2b806d9BFD9EC1D4619A40e50',
+    address: '0xcFB7069024B006F3c1d9C0C67a6aB0c4740f8bB7',
     abi: SLCInterfaceABI,
   },
+  // // main
+  // interface: {
+  //   address: '',
+  //   abi: SLCInterfaceABI,
+  // },
   oracle: {
     address: '0x280fC0D155ABf8cdD5341c9e7CbED669E9A3D466',
     abi: iSlcOracleABI,
@@ -86,4 +114,20 @@ export const SLCToken: Token = {
   chainId: CHAIN_ID,
   name: 'X Libra USD',
   icon: 'https://espacemainnetapi.xunion.io/coin/xUSD.png',
+};
+
+export const USDTToken: Token = {
+  address: XUNION_SWAP_CONTRACT.usdt.address,
+  name: 'Tether USD',
+  symbol: 'USDT',
+  icon: 'https://espacemainnetapi.xunion.io/coin/1728405426994.png',
+  decimals: 18,
+};
+
+export const USDCToken: Token = {
+  address: XUNION_SWAP_CONTRACT.usdc.address,
+  name: 'USD Coin',
+  symbol: 'USDC',
+  icon: 'https://espacemainnetapi.xunion.io/coin/1728402879785.png',
+  decimals: 18,
 };

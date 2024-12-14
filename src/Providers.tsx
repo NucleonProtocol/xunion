@@ -37,7 +37,7 @@ const config = createConfig({
       ...confluxESpaceTestnet,
       rpcUrls: {
         default: {
-          http: [CHAINS.eSpace.rpc[0]],
+          http: [CHAINS.eSpaceTest.rpc[0]],
         },
       },
     },
