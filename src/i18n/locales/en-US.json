@@ -229,5 +229,17 @@
   "x-lending.market.detail.borrow.reserve.factor": "Reserve factor",
   "x-lending.market.detail.borrow.min.accessible.hf": "Min Accessible HF",
   "x-lending.market.detail.borrow.collector.contract": "Collector contract",
-  "x-lending.market.detail.interest.rate.model": "Interest rate model"
+  "x-lending.market.detail.interest.rate.model": "Interest rate model",
+  "x-usd.collateral.tvl": "Collateral TVL",
+  "x-usd.total.minted": "xUSD total minted",
+  "x-usd.total.minted.v1": "v1 minted",
+  "x-usd.total.borrowed": "xUSD total borrowed",
+  "x-usd.total.borrowed.v1": "v1 borrowed",
+  "x-usd.total.supplied": "xUSD total supplied",
+  "x-usd.total.supplied.v1": "v1 supplied",
+  "x-usd.current.value": "Current value",
+  "x-usd.your.minted": "Your minted",
+  "x-usd.you.can.only.burn.the.amount.you.have.minted": "You can only burn the amount you have minted",
+  "x-usd.mint": "Mint xUSD",
+  "x-usd.burn": "Burn xUSD"
 }

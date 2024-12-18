@@ -24,6 +24,34 @@
   {
     "inputs": [
       {
+        "internalType": "bool",
+        "name": "_mintBonusState",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "_burnBonusState",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "_bonusAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_bonusRatio",
+        "type": "uint256"
+      }
+    ],
+    "name": "bonusSetup",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "tokenAddr",
         "type": "address"
@@ -94,6 +122,11 @@
       {
         "internalType": "uint256",
         "name": "_TVL",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amountxUSD",
         "type": "uint256"
       }
     ],
@@ -208,6 +241,11 @@
       {
         "internalType": "address",
         "name": "_USD1_USD2_Lp",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_xUSD",
         "type": "address"
       }
     ],

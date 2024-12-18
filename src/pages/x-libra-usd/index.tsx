@@ -1,4 +1,3 @@
-// import { useTranslate } from '@/i18n';
 import { formatCurrency } from '@/utils';
 import MintSLC from './mint';
 import BurnSLC from './burn';
@@ -7,7 +6,7 @@ import { Skeleton } from 'antd';
 import { cn } from '@/utils/classnames';
 import TokenWithIcon from '@/components/TokenWithIcon';
 import { SLCToken, USDCToken, USDTToken } from '@/contracts';
-
+import { useTranslate } from '@/i18n';
 const InfoWrapper = ({
   loading,
   children,
@@ -27,7 +26,7 @@ const InfoWrapper = ({
 };
 
 const XLibraUSD = () => {
-  // const { t } = useTranslate();
+  const { t } = useTranslate();
   const {
     isLoading,
     totalAmount,
@@ -37,6 +36,7 @@ const XLibraUSD = () => {
     userAmount,
     slcPriceValue,
     totalAmountV1,
+    amountxUSD,
   } = useSLCInfo();
 
   return (
@@ -45,7 +45,9 @@ const XLibraUSD = () => {
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-[10px]">
           <InfoWrapper loading={isLoading}>
             <div className="flex flex-col">
-              <span className="text-tc-secondary">Collateral TVL</span>
+              <span className="text-tc-secondary">
+                {t('x-usd.collateral.tvl')}
+              </span>
               <span className="text-[24px] font-[500]">
                 {formatCurrency(tvl, true, 0)}
               </span>
@@ -67,20 +69,33 @@ const XLibraUSD = () => {
                   <TokenWithIcon token={USDCToken} />
                 </span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[16px] font-[500]">
+                  {formatCurrency(amountxUSD, false, 0)}
+                </span>
+                <span>
+                  <TokenWithIcon token={SLCToken} />
+                </span>
+              </div>
             </div>
           </InfoWrapper>
           <InfoWrapper loading={isLoading}>
             <div className="flex flex-col">
-              <span className="text-tc-secondary">xUSD total minted</span>
+              <span className="text-tc-secondary">
+                {t('x-usd.total.minted')}
+              </span>
               <span className="text-[24px] font-[500]">
                 {formatCurrency(totalAmount, false, 0)}
               </span>
               <span className="text-[14px] text-tc-secondary">
-                ( v1 minted {formatCurrency(totalAmountV1, false, 0)})
+                ( {t('x-usd.total.minted.v1')}{' '}
+                {formatCurrency(totalAmountV1, false, 0)})
               </span>
             </div>
             <div className="mt-[10px] flex flex-col gap-[5px]">
-              <span className="text-tc-secondary">Current value</span>
+              <span className="text-tc-secondary">
+                {t('x-usd.current.value')}
+              </span>
               <span className="text-[16px] font-[500]">
                 {formatCurrency(slcPriceValue, true, 6)}
               </span>
@@ -88,7 +103,9 @@ const XLibraUSD = () => {
           </InfoWrapper>
           <InfoWrapper loading={isLoading}>
             <div className="flex flex-col">
-              <span className="text-tc-secondary">Your minted</span>
+              <span className="text-tc-secondary">
+                {t('x-usd.your.minted')}
+              </span>
               <div className="flex items-center justify-between">
                 <span className="text-[24px] font-[500]">
                   {formatCurrency(userAmount, false, 0)}
@@ -102,7 +119,7 @@ const XLibraUSD = () => {
               </span>
             </div>
             <div className="mt-[10px] text-[14px] text-tc-secondary">
-              You can only burn the amount you have minted
+              {t('x-usd.you.can.only.burn.the.amount.you.have.minted')}
             </div>
           </InfoWrapper>
         </div>

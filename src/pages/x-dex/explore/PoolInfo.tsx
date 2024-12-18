@@ -69,7 +69,7 @@ const PoolInfo = ({ pool }: { pool?: PoolType }) => {
       return {
         ...pool?.tokenB,
         amount: formatNumber(
-          Number(formatUnits((info as bigint[][])[1][0]) || 0n),
+          Number(formatUnits((info as bigint[][])[0][1]) || 0n),
           4
         ),
       };

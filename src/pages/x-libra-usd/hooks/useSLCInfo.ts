@@ -87,6 +87,12 @@ const useSLCInfo = () => {
     );
   }, [tvlAndUSDAmount]);
 
+  const amountxUSD = useMemo(() => {
+    return Number(
+      formatNumber(Number(formatUnits(tvlAndUSDAmount?.[2] || 0n, 18)), 2)
+    );
+  }, [tvlAndUSDAmount]);
+
   const totalAmount = useMemo(() => {
     return Number(
       formatNumber(Number(formatUnits(totalMintedAmount || 0n, 18)), 2)
@@ -118,6 +124,7 @@ const useSLCInfo = () => {
     usdcAmount,
     userAmount,
     slcPriceValue,
+    amountxUSD,
   };
 };
 

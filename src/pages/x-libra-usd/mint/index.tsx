@@ -93,7 +93,7 @@ function MintSLC() {
     <div className="flex flex-1 flex-col items-center justify-center pt-[40px]   max-md:pt-[40px]">
       <div className="mt-[30px] min-h-[420px] w-full  flex-1 rounded-[20px] bg-fill-niubi p-[20px] max-md:min-w-[300px] md:min-w-[500px]">
         <div className="flex flex-col gap-[10px]">
-          <span className="text-[16px] font-[500]">Mint xUSD</span>
+          <span className="text-[16px] font-[500]">{t('x-usd.mint')}</span>
           <span className="text-[12px] text-theme">
             {/* 1 USDC = 1.0001 xUSD ($0.9999) */}
           </span>

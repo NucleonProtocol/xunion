@@ -229,5 +229,17 @@
   "x-lending.market.detail.borrow.reserve.factor": "儲備係數",
   "x-lending.market.detail.borrow.min.accessible.hf": "最低可達健康係數",
   "x-lending.market.detail.borrow.collector.contract": "合約地址",
-  "x-lending.market.detail.interest.rate.model": "利率模型"
+  "x-lending.market.detail.interest.rate.model": "利率模型",
+  "x-usd.collateral.tvl": "抵押品TVL",
+  "x-usd.total.minted": "xUSD 總鑄造",
+  "x-usd.total.minted.v1": "v1 鑄造",
+  "x-usd.total.borrowed": "xUSD 總借出",
+  "x-usd.total.borrowed.v1": "v1 借出",
+  "x-usd.total.supplied": "xUSD 總供應",
+  "x-usd.total.supplied.v1": "v1 供應",
+  "x-usd.current.value": "當前價值",
+  "x-usd.your.minted": "您鑄造的",
+  "x-usd.you.can.only.burn.the.amount.you.have.minted": "您只能銷毀您鑄造的數量",
+  "x-usd.mint": "鑄造 xUSD",
+  "x-usd.burn": "銷毀 xUSD"
 }
