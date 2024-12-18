@@ -43,7 +43,7 @@ const useSetDefaultTokens = (
         setLoading(false);
       }
     }
-  }, [names, tokens]);
+  }, [names.length, tokens.length]);
 
   return { loading };
 };

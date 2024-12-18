@@ -17,8 +17,18 @@ import { useCopy } from '@/hooks/useCopy';
 import Warning from '@/components/Warning';
 
 const getPerAmount = (amountA: string, amountB: string) => {
-  if (!isNumeric(amountA) || !isNumeric(amountB)) return 0;
-  return formatNumber(Number(amountB) / Number(amountA), 6);
+  if (!amountA || !amountB || !isNumeric(amountA) || !isNumeric(amountB)) {
+    return '0';
+  }
+
+  const numA = Number(amountA);
+  const numB = Number(amountB);
+
+  if (numA === 0) {
+    return '0';
+  }
+
+  return formatNumber(numB / numA, 6);
 };
 
 const AmountSelector = ({
@@ -216,7 +226,7 @@ function RemoveLiquidity() {
                 <span className="text-tc-secondary">Share of pool</span>
                 <span> {shareOfPool}%</span>
               </div>
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span className="text-tc-secondary">Position</span>
                 <div className="flex flex-col">
                   <span className="text-right text-[14px]">
@@ -224,13 +234,13 @@ function RemoveLiquidity() {
                   </span>
                   <span className="text-right text-[14px]">
                     {getPerAmount(
-                      String(tokenA?.amount),
-                      String(tokenB?.amount)
+                      String(tokenAReceiveAmount),
+                      String(tokenBReceiveAmount)
                     )}
                     {tokenB?.symbol}
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
