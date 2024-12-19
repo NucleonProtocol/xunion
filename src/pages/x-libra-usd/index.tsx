@@ -57,23 +57,23 @@ const XLibraUSD = () => {
                 <span className="text-[16px] font-[500]">
                   {formatCurrency(usdtAmount, false, 0)}
                 </span>
-                <span>
-                  <TokenWithIcon token={USDTToken} />
+                <span className="justify-estart flex w-[80px] items-start">
+                  <TokenWithIcon token={USDCToken} />
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[16px] font-[500]">
                   {formatCurrency(usdcAmount, false, 0)}
                 </span>
-                <span>
-                  <TokenWithIcon token={USDCToken} />
+                <span className="justify-estart flex w-[80px] items-start">
+                  <TokenWithIcon token={USDTToken} />
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[16px] font-[500]">
                   {formatCurrency(amountxUSD, false, 0)}
                 </span>
-                <span>
+                <span className="justify-estart flex w-[80px] items-start">
                   <TokenWithIcon token={SLCToken} />
                 </span>
               </div>
