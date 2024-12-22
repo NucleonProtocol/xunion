@@ -7,7 +7,7 @@ import { LogoIcon } from '@/components/icons';
 import { useTranslate } from '@/i18n';
 import React from 'react';
 import Audited from '@/components/Header/Audited';
-
+import useResize from '@/hooks/useResize';
 const MenuItem = ({
   item,
 }: {
@@ -29,6 +29,8 @@ const Nav = () => {
   const [open, setOpen] = useState(false);
 
   const { t } = useTranslate();
+
+  const { isMobile } = useResize();
 
   const menus = [
     {
@@ -115,6 +117,8 @@ const Nav = () => {
           }}
           trigger={['click']}
           onOpenChange={setOpen}
+          getPopupContainer={(el) => el.parentElement as HTMLElement}
+          placement={isMobile ? 'top' : 'bottomRight'}
           dropdownRender={(menu) => (
             <div style={contentStyle}>
               {React.cloneElement(menu as React.ReactElement, {
