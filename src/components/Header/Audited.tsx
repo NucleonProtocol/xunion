@@ -3,12 +3,14 @@ import github from '@/assets/images/Github.svg';
 import salus from '@/assets/images/salus.svg';
 import telegram from '@/assets/images/Telegram.svg';
 import twitter from '@/assets/images/Twitter.svg';
+import Docsd from '@/assets/images/Subtract-dark.svg';
 
 import beosind from '@/assets/images/Beosin-dark.svg';
 import githubd from '@/assets/images/Github-dark.svg';
 import salusd from '@/assets/images/salus-dark.svg';
 import telegramd from '@/assets/images/Telegram-dark.svg';
 import twitterd from '@/assets/images/Twitter-dark.svg';
+import Docs from '@/assets/images/Subtract.svg';
 import { Link } from 'react-router-dom';
 import { getTheme } from '../Theme';
 
@@ -41,6 +43,13 @@ const Audited = () => {
           </Link>
           <Link to="https://github.com/artixv" target="_blank">
             <img src={theme === 'dark' ? githubd : github} alt="" />
+          </Link>
+          <Link to="https://doc.xunion.io" target="_blank">
+            <img
+              src={theme === 'dark' ? Docsd : Docs}
+              alt=""
+              className="mt-[3px]"
+            />
           </Link>
         </div>
         <span className="flex items-center gap-[5px] pb-[20px] text-[14px]">
