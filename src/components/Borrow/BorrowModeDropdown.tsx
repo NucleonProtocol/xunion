@@ -15,7 +15,9 @@ const BorrowModeDropdown = ({
   options: { label: string; description: string; value: BorrowModeType }[];
   description?: string;
 }) => {
-  const selected = options.find((item) => item.value === value);
+  const preValue = value > 1 ? 2 : value;
+  const selected = options.find((item) => item.value === preValue);
+
   return (
     <Popover
       content={

@@ -20,7 +20,7 @@ const useRepay = ({
   refresh: () => void;
 }) => {
   const { getBalance } = useErc20Balance();
-  const availableAmount = asset.lendingAmount;
+  const [availableAmount, setAvailableAmount] = useState(0);
   const inputToken = asset.token;
   const [payAmount, setPayAmount] = useState<string>('');
   const [healthFactor, setHealthFactor] = useState<EstimatedHealthFactor>();
@@ -43,7 +43,12 @@ const useRepay = ({
 
   useEffect(() => {
     if (inputToken?.address) {
-      getBalance(inputToken.address).then(setInputOwnerAmount);
+      getBalance(inputToken.address).then((amount) => {
+        setInputOwnerAmount(amount);
+        setAvailableAmount(
+          Math.min(Number(asset.lendingAmount || 0), Number(amount || 0))
+        );
+      });
     }
   }, [inputToken]);
 

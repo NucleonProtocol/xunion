@@ -230,6 +230,7 @@
   "x-lending.market.detail.borrow.min.accessible.hf": "最低可達健康係數",
   "x-lending.market.detail.borrow.collector.contract": "合約地址",
   "x-lending.market.detail.interest.rate.model": "利率模型",
+  "x-lending.market.detail.available.amount": "可借出金額",
   "x-usd.collateral.tvl": "抵押品TVL",
   "x-usd.total.minted": "xUSD 總鑄造",
   "x-usd.total.minted.v1": "v1 鑄造",

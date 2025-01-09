@@ -24,6 +24,7 @@ const useBorrowMode = (contact: { abi: Abi; address: Address }) => {
     setOpen,
     mode,
     setMode,
+    data,
     effectiveMode: (data as number[])?.[0] || BorrowModeType.HighLiquidity,
   };
 };
