@@ -3,7 +3,7 @@ import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { useMemo, useState } from 'react';
 import RiskModal from '@/components/Borrow/RiskModal.tsx';
 import { Button } from 'antd';
-import { XUNION_LENDING_CONTRACT } from '@/contracts';
+import { SLCToken, XUNION_LENDING_CONTRACT } from '@/contracts';
 import { formatUnits } from 'ethers';
 import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import { BorrowModeType } from '@/types/slc.ts';
@@ -34,7 +34,7 @@ const MarketInfo = ({
   const { tokens } = useTokensWithPrice();
 
   const { availableAmount } = useCalcRiskValue(
-    (data as Address[])?.[1] || '',
+    SLCToken.address as Address,
     effectiveMode
   );
 
@@ -69,7 +69,7 @@ const MarketInfo = ({
     if (effectiveMode > 1 && tokenAssets?.length) {
       return (
         <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
-          <span className="text-[16px] text-tc-secondary">
+          <span className="flex  items-center justify-end text-tc-secondary max-md:justify-start">
             {t('x-dex.swap.token')}
           </span>
           <span className="text-[16px] font-bold">
@@ -79,16 +79,16 @@ const MarketInfo = ({
                   key={asset.token?.symbol}
                   className="flex items-center gap-[4px]"
                 >
-                  <div className="flex h-full w-[18px] items-center">
+                  <div className="flex h-full w-[20px] items-center">
                     <TokenIcon
                       src={asset?.token.icon}
-                      width={15}
-                      height={15}
+                      width={20}
+                      height={20}
                       name={asset?.token?.symbol}
                     />
                   </div>
                   <div className="flex  flex-1  items-center">
-                    <span className="text-[10px] text-tc-secondary">
+                    <span className="text-[12px] text-tc-secondary">
                       {asset.token.symbol}
                     </span>
                   </div>
@@ -110,17 +110,22 @@ const MarketInfo = ({
       return (
         <>
           <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
-            <span className="text-[16px] text-tc-secondary">
+            <span className="flex  items-center justify-end text-tc-secondary max-md:justify-start">
               {t('x-dex.swap.token')}
             </span>
-            <span className="text-[20px] font-bold">{token?.symbol}</span>
+            <span className="flex items-center justify-end gap-[10px] text-right text-[16px] font-bold max-md:justify-start">
+              {token?.symbol}
+            </span>
           </div>
           <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
-            <span className="text-[16px] text-tc-secondary">
+            <span className="flex  items-center justify-end text-tc-secondary max-md:justify-start">
               {t('x-lending.market.detail.available.amount')}
             </span>
-            <span className="text-[20px] font-bold">
-              {formatNumber(Number(formatUnits(availableAmount.toString())), 0)}
+            <span className="flex items-center justify-end gap-[10px] text-right text-[16px] font-bold max-md:justify-start">
+              {formatNumber(
+                Number(formatUnits(availableAmount < 0 ? 0 : availableAmount)),
+                0
+              )}
             </span>
           </div>
         </>
@@ -171,7 +176,7 @@ const MarketInfo = ({
           </Button>
         </div>
       </div>
-      {renderBorrrowModeInfo()}
+
       <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
         <span className="flex  items-center justify-end text-tc-secondary max-md:justify-start">
           {t('x-lending.borrow.mode')}
@@ -185,6 +190,7 @@ const MarketInfo = ({
           />
         </div>
       </div>
+      {renderBorrrowModeInfo()}
     </div>
   );
 };

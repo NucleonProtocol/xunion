@@ -157,7 +157,7 @@ const useCollateral = () => {
   return {
     assets: assetsWithPrices,
     loading,
-    isAssetsLoading,
+    isAssetsLoading: false,
   };
 };
 
