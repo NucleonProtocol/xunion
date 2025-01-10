@@ -19,7 +19,7 @@ const useCollateral = () => {
 
   const { getRealAddress, isNativeToken, getNativeTokenBalance } =
     useNativeToken();
-  const { data: assetsOverview, isLoading: isAssetsLoading } = useReadContract({
+  const { data: assetsOverview } = useReadContract({
     address: XUNION_SLC_CONTRACT.interface.address as Address,
     abi: XUNION_SLC_CONTRACT.interface.abi,
     functionName: 'userAssetOverview',
