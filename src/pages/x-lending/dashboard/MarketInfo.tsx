@@ -33,8 +33,17 @@ const MarketInfo = ({
 
   const { tokens } = useTokensWithPrice();
 
+  const riskIsolationToken = useMemo(
+    () =>
+      tokens.find(
+        (item) =>
+          item.address.toLowerCase() === (data as string[])?.[1].toLowerCase()
+      ),
+    [tokens, data]
+  );
+
   const { availableAmount } = useCalcRiskValue(
-    SLCToken.address as Address,
+    riskIsolationToken?.address as Address,
     effectiveMode
   );
 
@@ -103,10 +112,6 @@ const MarketInfo = ({
       );
     }
     if (effectiveMode === BorrowModeType.RiskIsolation) {
-      const token = tokens.find(
-        (item) =>
-          item.address.toLowerCase() === (data as string[])?.[1].toLowerCase()
-      );
       return (
         <>
           <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
@@ -114,7 +119,7 @@ const MarketInfo = ({
               {t('x-dex.swap.token')}
             </span>
             <span className="flex items-center justify-end gap-[10px] text-right text-[16px] font-bold max-md:justify-start">
-              {token?.symbol}
+              {riskIsolationToken?.symbol}
             </span>
           </div>
           <div className="flex h-[84px] min-w-[200px] flex-col gap-[10px]  py-[12px] pr-[16px] max-md:min-w-[160px] max-md:flex-1">
