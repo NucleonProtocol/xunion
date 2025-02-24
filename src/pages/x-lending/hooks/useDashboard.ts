@@ -194,7 +194,7 @@ const useDashboard = () => {
                   (mode === '1'
                     ? asset?.token?.address.toLowerCase() ===
                       SLCToken?.address.toLowerCase()
-                    : true) && !!availableAmount;
+                    : asset?.lending_mode_num !== '1') && !!availableAmount;
 
                 const data = {
                   ...asset,

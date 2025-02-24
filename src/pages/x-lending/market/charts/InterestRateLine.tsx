@@ -7,6 +7,7 @@ import {
   ChartTooltipContent,
 } from '@/components/Charts';
 import useLendingRate from '@/pages/x-lending/hooks/useLendingRate.ts';
+import { LendingAsset } from '@/types/Lending';
 
 const chartConfig = {
   DIR: {
@@ -17,10 +18,17 @@ const chartConfig = {
 
 const InterestRateLine = ({
   onUTRateChange,
+  mode,
+  asset,
 }: {
   onUTRateChange: (value: string) => void;
+  mode: number;
+  asset?: LendingAsset;
 }) => {
-  const { depositInterestRates, lendingInterestRates } = useLendingRate();
+  const { depositInterestRates, lendingInterestRates } = useLendingRate({
+    mode,
+    asset,
+  });
 
   const chartData = depositInterestRates.slice(0, 95).map((item, index) => ({
     index: index + 1,

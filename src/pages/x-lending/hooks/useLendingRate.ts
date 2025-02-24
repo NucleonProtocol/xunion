@@ -1,14 +1,29 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
-const useLendingRate = () => {
-  const assetsBaseInfo = () => {
+import { LendingAsset } from '@/types/Lending';
+
+const useLendingRate = ({
+  mode,
+  asset,
+}: {
+  mode: number;
+  asset?: LendingAsset;
+}) => {
+  const assetsBaseInfo = useCallback(() => {
+    if (!asset)
+      return {
+        maximumLTV: 0,
+        bestLendingRatio: 0,
+        lendingModeNum: 0,
+        bestDepositInterestRate: 0,
+      };
     return {
-      maximumLTV: 9600,
-      bestLendingRatio: 8500,
-      lendingModeNum: 2,
-      bestDepositInterestRate: 400,
+      maximumLTV: Number(asset?.max_ltv),
+      bestLendingRatio: Number(asset?.best_lending_ratio),
+      lendingModeNum: Number(asset?.lending_mode_num),
+      bestDepositInterestRate: Number(asset?.best_deposit_interest_rate),
     };
-  };
+  }, [asset, mode]);
 
   const depositInterestRate = (lendingRatio: number) => {
     const { bestLendingRatio, bestDepositInterestRate } = assetsBaseInfo();
@@ -77,20 +92,18 @@ const useLendingRate = () => {
     return _rate;
   };
 
-  const depositInterestRates = useMemo(
-    () =>
-      [...new Array(99)].map(
-        (_, index) => depositInterestRate((index + 1) * 100) / 100
-      ),
-    []
-  );
-  const lendingInterestRates = useMemo(
-    () =>
-      [...new Array(99)].map(
-        (_, index) => lendingInterestRate((index + 1) * 100) / 100
-      ),
-    []
-  );
+  const depositInterestRates = useMemo(() => {
+    if (!asset) return [];
+    return [...new Array(99)].map(
+      (_, index) => depositInterestRate((index + 1) * 100) / 100
+    );
+  }, [asset]);
+  const lendingInterestRates = useMemo(() => {
+    if (!asset) return [];
+    return [...new Array(99)].map(
+      (_, index) => lendingInterestRate((index + 1) * 100) / 100
+    );
+  }, [asset]);
 
   return {
     depositInterestRates,

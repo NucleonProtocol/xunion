@@ -117,7 +117,10 @@ function MarketDetail() {
             )}
           </div>
           <div className="flex w-full flex-shrink-0 flex-col gap-[24px] overflow-hidden">
-            <InterestRateModel />
+            <InterestRateModel
+              asset={tokenAsset}
+              mode={Number(tokenAsset?.lending_mode_num || 0)}
+            />
           </div>
         </div>
       </div>

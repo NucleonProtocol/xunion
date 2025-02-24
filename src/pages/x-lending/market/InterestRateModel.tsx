@@ -2,8 +2,15 @@ import LendingCard from '@/components/LendingCard.tsx';
 import InterestRateLine from '@/pages/x-lending/market/charts/InterestRateLine.tsx';
 import { useTranslate } from '@/i18n';
 import { useState } from 'react';
+import { LendingAsset } from '@/types/Lending';
 
-const InterestRateModel = () => {
+const InterestRateModel = ({
+  asset,
+  mode,
+}: {
+  asset?: LendingAsset;
+  mode: number;
+}) => {
   const { t } = useTranslate();
   const [UTRate, onUTRateChange] = useState('0');
   return (
@@ -32,7 +39,11 @@ const InterestRateModel = () => {
             </span>
           </div>
         </div>
-        <InterestRateLine onUTRateChange={onUTRateChange} />
+        <InterestRateLine
+          onUTRateChange={onUTRateChange}
+          mode={mode}
+          asset={asset}
+        />
       </div>
     </LendingCard>
   );

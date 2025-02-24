@@ -226,7 +226,10 @@ const Price = ({
   }, [recently]);
 
   const total = useMemo(() => {
-    return formatCurrency(totalPrice || 0, false, 0);
+    if (!totalPrice) return 0;
+    return totalPrice < 0.0000001
+      ? '< 0.000001'
+      : formatCurrency(totalPrice || 0, false, 4);
   }, [totalPrice]);
 
   return (

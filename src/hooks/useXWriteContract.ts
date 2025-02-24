@@ -4,6 +4,14 @@ import useTxStore from '@/store/pending.ts';
 import { WriteContractErrorType } from 'viem';
 import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
 
+const extraError = (error: WriteContractErrorType) => {
+  const split = `Contract Call:`;
+  return (
+    error.message.split(split)[0] ||
+    'Unknown error. please check the logs or contact support'
+  );
+};
+
 const useXWriteContract = ({
   showSubmittedModal = true,
   globalNotice = true,
@@ -51,8 +59,10 @@ const useXWriteContract = ({
     if (isError) {
       setLoading(false);
       onError?.(submittedError as WriteContractErrorType);
-      const reasonMatch = submittedError?.message.match(/reason: (.*)/);
-      writeTxErrorNotification(hash, reasonMatch?.[1]);
+      writeTxErrorNotification(
+        hash,
+        extraError(submittedError as WriteContractErrorType)
+      );
       updateSubmitted(null);
     }
   }, [submittedError, isError]);
@@ -61,8 +71,10 @@ const useXWriteContract = ({
     if (isWriteError) {
       setLoading(false);
       onError?.(writeError as WriteContractErrorType);
-      const reasonMatch = writeError?.message.match(/reason: (.*)/);
-      writeTxErrorNotification(hash, reasonMatch?.[1]);
+      writeTxErrorNotification(
+        hash,
+        extraError(writeError as WriteContractErrorType)
+      );
     }
   }, [writeError, isWriteError]);
 

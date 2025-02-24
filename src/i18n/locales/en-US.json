@@ -230,7 +230,7 @@
   "x-lending.market.detail.borrow.min.accessible.hf": "Min Accessible HF",
   "x-lending.market.detail.borrow.collector.contract": "Collector contract",
   "x-lending.market.detail.interest.rate.model": "Interest rate model",
-  "x-lending.market.detail.available.amount": "Total amount of borrowing available",
+  "x-lending.market.detail.available.amount": "Available",
   "x-usd.collateral.tvl": "Collateral TVL",
   "x-usd.total.minted": "xUSD total minted",
   "x-usd.total.minted.v1": "v1 minted",

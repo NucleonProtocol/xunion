@@ -4,6 +4,14 @@ import useTxStore from '@/store/pending.ts';
 import { WriteContractErrorType } from 'viem';
 import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
 
+const extraError = (error: WriteContractErrorType) => {
+  const split = `Contract Call:`;
+  return (
+    error.message.split(split)[0] ||
+    'Unknown error. please check the logs or contact support'
+  );
+};
+
 const useXSendTransaction = ({
   showSubmittedModal = true,
   globalNotice = true,
@@ -44,14 +52,20 @@ const useXSendTransaction = ({
   useEffect(() => {
     if (isError) {
       onError?.(submittedError as WriteContractErrorType);
-      writeTxErrorNotification(hash, submittedError?.message);
+      writeTxErrorNotification(
+        hash,
+        extraError(submittedError as WriteContractErrorType)
+      );
     }
   }, [submittedError, isError]);
 
   useEffect(() => {
     if (isWriteError) {
       onError?.(writeError as WriteContractErrorType);
-      writeTxErrorNotification(hash, writeError?.message);
+      writeTxErrorNotification(
+        hash,
+        extraError(writeError as WriteContractErrorType)
+      );
     }
   }, [writeError, isWriteError]);
 

@@ -27,7 +27,7 @@ function ResponsiveTable<T extends AnyObject>({
 
   return (
     <div className="flex-col">
-      <div className="max-md:hidden">
+      <div className="flex max-h-[800px]  w-full overflow-y-auto max-md:hidden">
         <Table
           columns={cols}
           dataSource={dataSource}
@@ -36,6 +36,7 @@ function ResponsiveTable<T extends AnyObject>({
           pagination={false}
           rowKey={rowKey}
           size={size}
+          className="w-0 flex-1"
           {...rest}
         />
       </div>
