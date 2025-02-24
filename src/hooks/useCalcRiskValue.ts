@@ -2,7 +2,7 @@ import { useReadContract } from 'wagmi';
 
 import { Address } from 'viem';
 
-import { XUNION_LENDING_CONTRACT } from '@/contracts';
+import { SLCToken, XUNION_LENDING_CONTRACT } from '@/contracts';
 import { useMemo } from 'react';
 import { BorrowModeType } from '@/types/slc';
 
@@ -21,7 +21,7 @@ const useCalcRiskValue = (address: Address, mode: BorrowModeType) => {
     address: XUNION_LENDING_CONTRACT.interface.address,
     abi: XUNION_LENDING_CONTRACT.interface.abi,
     functionName: 'riskIsolationModeLendingNetAmount',
-    args: [address!],
+    args: [SLCToken.address],
     query: {
       enabled: !!address && mode === BorrowModeType.RiskIsolation,
     },
