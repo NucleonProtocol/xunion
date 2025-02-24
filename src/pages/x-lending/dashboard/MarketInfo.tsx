@@ -3,7 +3,7 @@ import HealthFactor from '@/components/Borrow/HealthFactor.tsx';
 import { useMemo, useState } from 'react';
 import RiskModal from '@/components/Borrow/RiskModal.tsx';
 import { Button } from 'antd';
-import { SLCToken, XUNION_LENDING_CONTRACT } from '@/contracts';
+import { XUNION_LENDING_CONTRACT } from '@/contracts';
 import { formatUnits } from 'ethers';
 import BorrowMode from '@/components/Borrow/BorrowMode.tsx';
 import { BorrowModeType } from '@/types/slc.ts';
