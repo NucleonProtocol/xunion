@@ -17,6 +17,7 @@ import { Address } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken';
 import useApprove from '../hooks/useApprove';
 import { useCommonStore } from '@/store/common';
+import { isNumeric } from '@/utils/isNumeric.ts';
 
 function CreatePool() {
   const {
@@ -63,6 +64,37 @@ function CreatePool() {
   const approvedAll =
     (isNativeToken(tokenA!) || isTokenAApproved) &&
     (isNativeToken(tokenB!) || isTokenBApproved);
+
+  const renderButton = () => {
+    if (isNumeric(tokenAAmount) && Number(tokenAAmount) > tokenAOwnerAmount) {
+      return (
+        <Button className="w-full" type="primary" size="large" disabled>
+          {t('common.error.insufficient', { name: `${tokenA?.symbol}` })}
+        </Button>
+      );
+    }
+    if (isNumeric(tokenBAmount) && Number(tokenBAmount) > tokenBOwnerAmount) {
+      return (
+        <Button className="w-full" type="primary" size="large" disabled>
+          {t('common.error.insufficient', { name: `${tokenB?.symbol}` })}
+        </Button>
+      );
+    }
+    return (
+      <Button
+        className="w-full"
+        type="primary"
+        size="large"
+        onClick={onCreate}
+        loading={loading}
+        disabled={disabled || !approvedAll}
+      >
+        {lpPairAddress
+          ? `${tokenA?.symbol} already listed`
+          : t('x-dex.liquidity.listing')}
+      </Button>
+    );
+  };
 
   return (
     <div className="mb-[60px] flex flex-1 flex-col items-center justify-center pt-[20px] max-md:pt-[20px]">
@@ -145,18 +177,7 @@ function CreatePool() {
                 )}
               </div>
             )}
-            <Button
-              className="w-full"
-              type="primary"
-              size="large"
-              onClick={onCreate}
-              loading={loading}
-              disabled={disabled || !approvedAll}
-            >
-              {lpPairAddress
-                ? `${tokenA?.symbol} already listed`
-                : t('x-dex.liquidity.listing')}
-            </Button>
+            {renderButton()}
           </div>
         </WithAuthButton>
         <UploadInfo lpAddress={lpPairAddress} tokenAddress={tokenA?.address} />

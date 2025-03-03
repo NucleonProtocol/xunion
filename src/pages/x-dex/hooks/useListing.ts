@@ -2,22 +2,23 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import useLP from '@/pages/x-dex/hooks/useLP.ts';
 import useErc20Balance from '@/hooks/useErc20Balance.ts';
 import { Token } from '@/types/swap.ts';
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
+import { useReadContract } from 'wagmi';
 import { SLCToken, XUNION_SWAP_CONTRACT } from '@/contracts';
 import { Address, erc20Abi } from 'viem';
 import useNativeToken from '@/hooks/useNativeToken.ts';
-import usePendingNotice from '@/components/notices/usePendingNotice.tsx';
 import useWalletAuth from '@/components/Wallet/useWalletAuth';
 import { parseUnits } from 'ethers';
 import useSetDefaultToken from '@/hooks/useSetDefaultToken';
 import { useCommonStore } from '@/store/common';
 
+import useXWriteContract from '@/hooks/useXWriteContract.ts';
+
 const useListing = () => {
   const listingLimit = useCommonStore((state) => state.swapLimit?.[0] || 200);
+
+  const { writeContractAsync, isSubmittedLoading: loading } = useXWriteContract(
+    {}
+  );
 
   const tokenB = SLCToken;
   const { disabled: invalidWallet } = useWalletAuth();
@@ -37,9 +38,7 @@ const useListing = () => {
     string | undefined
   >();
   const [lpPairAddress, setLpPairAddress] = useState<string>();
-  const [loading, setLoading] = useState(false);
 
-  const { writeTxNotification } = usePendingNotice();
   const { getSLCPairAddress, getPairAddress } = useLP();
 
   const { isNativeToken, getNativeTokenERC20Address } = useNativeToken();
@@ -71,31 +70,6 @@ const useListing = () => {
       getPairAddress(tokenA, tokenB).then(setLpPairAddress);
     }
   }, [tokenB, tokenA]);
-
-  const { data: hash, writeContractAsync } = useWriteContract();
-
-  const { isSuccess, isError } = useWaitForTransactionReceipt({
-    hash,
-    query: {
-      enabled: !!hash,
-    },
-  });
-
-  useEffect(() => {
-    if (isSuccess && hash) {
-      setLoading(false);
-      writeTxNotification(hash);
-      if (tokenB?.address && tokenA?.address) {
-        getPairAddress(tokenA, tokenB).then(setLpPairAddress);
-      }
-    }
-  }, [isSuccess]);
-
-  useEffect(() => {
-    if (isError) {
-      setLoading(false);
-    }
-  }, [isError]);
 
   const onTokenAAmountChange = useCallback(
     (value: string) => {
@@ -146,7 +120,6 @@ const useListing = () => {
   }, [tokenAAmount, tokenBAmount, tokenADecimals, tokenBDecimals]);
 
   const onCreate = () => {
-    setLoading(true);
     if (tokenB && tokenA) {
       const { address, abi } = XUNION_SWAP_CONTRACT.interface;
 
@@ -156,8 +129,6 @@ const useListing = () => {
         functionName: 'createLpAndSubscribeInitLiq',
         args: [getRealAddress(tokenA), getRealAddress(tokenB), sortedAmounts],
         value: `${txValue}` as unknown as bigint,
-      }).catch(() => {
-        setLoading(false);
       });
     }
   };
