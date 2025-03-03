@@ -33,7 +33,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
             {t('x-lending.market.detail.size')}
           </span>
           <span className="text-[20px] font-bold">
-            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), true)}
+            {formatCurrency(formatNumber(asset?.depositAmount || 0, 6), false)}
           </span>
         </div>
 
@@ -47,7 +47,7 @@ const AssetInfo = ({ asset }: { asset?: LendingAsset }) => {
                 (asset?.depositAmount || 0) - (asset?.lendingAmount || 0),
                 6
               ),
-              true
+              false
             )}
           </span>
         </div>
