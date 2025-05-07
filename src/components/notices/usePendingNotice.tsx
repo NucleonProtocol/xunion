@@ -32,11 +32,11 @@ const usePendingNotice = () => {
                 {t('common.pending.view.scan')}
               </a>
             ) : (
-              <div className="flex h-[auto] flex-1 flex-wrap text-tc-secondary">
+              <div className="flex h-[auto] flex-1 flex-wrap text-tc-secondary break-all">
                 {message}
               </div>
             )}
-          </div>
+          </div>·
         </div>
       ),
       duration: 10,

@@ -34,6 +34,25 @@ const Nav = () => {
 
   const menus = [
     {
+      name: t('common.nav.x-lending'),
+      description: t('common.nav.x-lending.description'),
+      path: '/x-lending',
+      mather: (pathname: string) => pathname.includes('/x-lending'),
+      children: [
+        {
+          name: t('common.nav.x-lending.dashboard'),
+          path: '/x-lending/dashboard',
+          mather: (pathname: string) =>
+            pathname.includes('/x-lending/dashboard'),
+        },
+        {
+          name: t('common.nav.x-lending.market'),
+          path: '/x-lending/market',
+          mather: (pathname: string) => pathname.includes('/x-lending/market'),
+        },
+      ],
+    },
+    {
       name: t('common.nav.x-dex'),
       description: t('common.nav.x-dex.description'),
       path: '/x-dex',
@@ -66,25 +85,6 @@ const Nav = () => {
       path: '/x-libra-usd',
       mather: (pathname: string) => pathname.includes('/x-libra-usd'),
       children: [],
-    },
-    {
-      name: t('common.nav.x-lending'),
-      description: t('common.nav.x-lending.description'),
-      path: '/x-lending',
-      mather: (pathname: string) => pathname.includes('/x-lending'),
-      children: [
-        {
-          name: t('common.nav.x-lending.dashboard'),
-          path: '/x-lending/dashboard',
-          mather: (pathname: string) =>
-            pathname.includes('/x-lending/dashboard'),
-        },
-        {
-          name: t('common.nav.x-lending.market'),
-          path: '/x-lending/market',
-          mather: (pathname: string) => pathname.includes('/x-lending/market'),
-        },
-      ],
     },
   ];
 

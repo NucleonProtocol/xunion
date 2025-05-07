@@ -25,8 +25,9 @@ const BorrowAPYLine = ({ data }: { data: LendingAssetInterest[] }) => {
   const chartData = useMemo(() => {
     return (data || []).map((n) => ({
       date: dayjs.unix(Number(n.date)).format('YYYY-MM-DD'),
-      interest: Number(n.loan_interest || 0) / 100,
-    }));
+        interest: Number(n.loan_interest || 0) / 100,
+      }))
+      .reverse();
   }, [data]);
 
   const { locale } = useLocale();
@@ -45,7 +46,7 @@ const BorrowAPYLine = ({ data }: { data: LendingAssetInterest[] }) => {
         }}
       >
         <YAxis
-          domain={['auto', 'dataMax + 50']}
+          domain={['auto']}
           includeHidden
           width={0}
           padding={{ bottom: 30 }}

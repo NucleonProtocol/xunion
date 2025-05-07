@@ -27,7 +27,7 @@ const routes = [
     children: [
       {
         path: '',
-        element: <Navigate to="x-dex" replace />,
+        element: <Navigate to="x-lending" replace />,
       },
       {
         path: 'x-dex',

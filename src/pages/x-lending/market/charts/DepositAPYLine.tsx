@@ -25,8 +25,9 @@ const DepositAPYLine = ({ data }: { data: LendingAssetInterest[] }) => {
   const chartData = useMemo(() => {
     return (data || []).map((n) => ({
       date: dayjs.unix(Number(n.date)).format('YYYY-MM-DD'),
-      interest: Number(n.deposit_interest || 0) / 100,
-    }));
+        interest: Number(n.deposit_interest || 0) / 100,
+      }))
+      .reverse();
   }, [data]);
   const { locale } = useLocale();
   return (
@@ -42,7 +43,7 @@ const DepositAPYLine = ({ data }: { data: LendingAssetInterest[] }) => {
           right: 12,
         }}
       >
-        <YAxis domain={['auto', 'dataMax + 50']} includeHidden width={0} />
+        <YAxis domain={['auto']} includeHidden width={0} />
         <XAxis
           dataKey="date"
           tickLine={false}
